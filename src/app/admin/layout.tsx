@@ -21,12 +21,12 @@ export default async function AdminLayout({children}: { children: ReactNode }) {
         :root {
           --bs-font-sans-serif: 'PP Neue Montreal', var(--font-inter), 'Inter', -apple-system, sans-serif;
           --bs-body-font-family: 'PP Neue Montreal', var(--font-inter), 'Inter', -apple-system, sans-serif;
-          --bs-primary: #6366f1;
-          --bs-primary-rgb: 99,102,241;
-          --bs-primary-text-emphasis: #4f46e5;
-          --bs-primary-bg-subtle: #eef2ff;
-          --bs-primary-border-subtle: rgba(99,102,241,0.2);
-          --bs-link-color: #6366f1;
+          --bs-primary: hsl(212, 70%, 45%);
+          --bs-primary-rgb: 34,109,195;
+          --bs-primary-text-emphasis: hsl(212, 70%, 38%);
+          --bs-primary-bg-subtle: hsl(212, 70%, 95%);
+          --bs-primary-border-subtle: hsla(212, 70%, 45%, 0.2);
+          --bs-link-color: hsl(212, 70%, 45%);
         }
 
         h1,h2,h3,h4,h5,h6,.card-title {
@@ -74,7 +74,7 @@ export default async function AdminLayout({children}: { children: ReactNode }) {
           }
           .form-control:focus, .form-select:focus {
             background-color: #263348;
-            border-color: #818cf8;
+            border-color: hsl(205, 85%, 66%);
             color: #f1f5f9;
             box-shadow: 0 0 0 0.2rem rgba(99,102,241,0.25);
           }
@@ -103,7 +103,7 @@ export default async function AdminLayout({children}: { children: ReactNode }) {
 
           /* Badges */
           .bg-label-secondary { background-color: rgba(255,255,255,0.07) !important; color: #cbd5e1 !important; }
-          .bg-label-primary   { background-color: rgba(99,102,241,0.18) !important; color: #818cf8 !important; }
+          .bg-label-primary   { background-color: hsla(205, 85%, 62%, 0.18) !important; color: hsl(205, 85%, 66%) !important; }
           .bg-label-warning   { background-color: rgba(245,158,11,0.18) !important; color: #fbbf24 !important; }
           .bg-label-danger    { background-color: rgba(239,68,68,0.18) !important;  color: #f87171 !important; }
           .bg-label-success   { background-color: rgba(34,197,94,0.18) !important;  color: #4ade80 !important; }

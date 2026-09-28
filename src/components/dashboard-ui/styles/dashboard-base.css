@@ -3,34 +3,34 @@
 /* Те же токены, что у .dash — нужны для порталов в document.body (шторки вне оболочки .dash). */
 .dash,
 .dash-theme-scope {
-    --dash-bg: hsl(270, 50%, 10%);
-    --dash-surface: hsl(270, 50%, 11%);
-    --dash-surface2: hsl(270, 50%, 13%);
-    --dash-surface3: hsl(270, 50%, 15%);
-    --dash-sidebar-bg: hsl(270, 50%, 8%);
-    --dash-hdr-bg: hsl(270, 50%, 10%);
-    --dash-border: hsla(0, 0%, 50%, 0.14);
-    --dash-border2: hsla(0, 0%, 50%, 0.08);
-    --dash-text: hsl(270, 10%, 82%);
-    --dash-text2: hsl(235, 5%, 68%);
-    --dash-muted: hsl(270, 12%, 50%);
-    --dash-muted2: hsl(270, 12%, 36%);
-    --dash-accent: hsl(210, 60%, 62%);
-    --dash-accent-bg: hsla(210, 60%, 62%, 0.12);
-    --dash-accent-border: hsla(210, 60%, 62%, 0.28);
-    --dash-shadow: 0 4px 12px hsla(270, 30%, 3%, 0.35);
-    --dash-shadow-lg: 0 6px 16px hsla(270, 30%, 3%, 0.45);
-    --dash-success: hsl(145, 55%, 56%);
-    --dash-success-bg: hsla(145, 55%, 56%, 0.14);
+    --dash-bg: hsl(218, 32%, 9%);
+    --dash-surface: hsl(218, 30%, 11%);
+    --dash-surface2: hsl(218, 28%, 14%);
+    --dash-surface3: hsl(218, 26%, 17%);
+    --dash-sidebar-bg: hsl(220, 34%, 7%);
+    --dash-hdr-bg: hsl(218, 32%, 9%);
+    --dash-border: hsla(210, 30%, 70%, 0.16);
+    --dash-border2: hsla(210, 30%, 70%, 0.09);
+    --dash-text: hsl(210, 25%, 90%);
+    --dash-text2: hsl(212, 16%, 74%);
+    --dash-muted: hsl(214, 13%, 63%);
+    --dash-muted2: hsl(214, 12%, 46%);
+    --dash-accent: hsl(200, 75%, 62%);
+    --dash-accent-bg: hsla(200, 75%, 62%, 0.12);
+    --dash-accent-border: hsla(200, 75%, 62%, 0.28);
+    --dash-shadow: 0 4px 12px hsla(220, 40%, 3%, 0.35);
+    --dash-shadow-lg: 0 6px 16px hsla(220, 40%, 3%, 0.45);
+    --dash-success: hsl(152, 50%, 55%);
+    --dash-success-bg: hsla(152, 50%, 55%, 0.14);
     --dash-warn: hsl(35, 80%, 60%);
     --dash-warn-bg: hsla(35, 80%, 60%, 0.14);
-    --dash-danger: hsl(0, 70%, 65%);
-    --dash-danger-bg: hsla(0, 70%, 65%, 0.14);
+    --dash-danger: hsl(0, 72%, 68%);
+    --dash-danger-bg: hsla(0, 72%, 68%, 0.14);
     --dash-sidebar-icon: hsla(0, 0%, 100%, 0.28);
     --dash-sidebar-icon-hover: hsla(0, 0%, 100%, 0.7);
     --dash-sidebar-icon-active: #fff;
     --dash-sidebar-icon-active-bg: hsla(0, 0%, 100%, 0.08);
-    --dash-glass-bg: rgba(20, 25, 40, 0.68);
+    --dash-glass-bg: hsla(220, 34%, 12%, 0.72);
     --dash-glass-border: rgba(255, 255, 255, 0.12);
     --dash-radius-sm: 10px;
     --dash-radius-md: 14px;
@@ -60,10 +60,7 @@
     display: flex;
     flex-direction: column;
     z-index: 50;
-    background: radial-gradient(1150px 440px at 50% 102%, hsla(215, 88%, 64%, 0.26), transparent 62%),
-    radial-gradient(1200px 680px at 12% 8%, hsla(215, 88%, 64%, 0.22), transparent 55%),
-    radial-gradient(980px 620px at 88% 0%, hsla(282, 82%, 62%, 0.2), transparent 60%),
-    linear-gradient(145deg, hsl(258, 52%, 13%) 0%, hsl(270, 54%, 10%) 54%, hsl(248, 50%, 12%) 100%);
+    background: var(--dash-bg);
     color: var(--dash-text);
     font-size: 14px;
     font-family: 'PP Neue Montreal', Inter, -apple-system, "Segoe UI", sans-serif;
@@ -512,13 +509,13 @@
 
 /* Портал вне .dash — задаём токены здесь, иначе var(--dash-*) не работают и панель «пустая» */
 .dash-drawer-root {
-    --dash-border: hsla(0, 0%, 50%, 0.14);
-    --dash-accent: hsl(210, 60%, 62%);
-    --dash-accent-bg: hsla(210, 60%, 62%, 0.12);
-    --dash-accent-border: hsla(210, 60%, 62%, 0.28);
-    --dash-text: hsl(270, 10%, 82%);
-    --dash-text2: hsl(235, 5%, 68%);
-    --dash-muted: hsl(270, 12%, 50%);
+    --dash-border: hsla(210, 30%, 70%, 0.16);
+    --dash-accent: hsl(200, 75%, 62%);
+    --dash-accent-bg: hsla(200, 75%, 62%, 0.12);
+    --dash-accent-border: hsla(200, 75%, 62%, 0.28);
+    --dash-text: hsl(210, 25%, 90%);
+    --dash-text2: hsl(212, 16%, 74%);
+    --dash-muted: hsl(214, 13%, 63%);
     position: fixed;
     inset: 0;
     z-index: 240;
@@ -544,8 +541,7 @@
     display: flex;
     flex-direction: column;
     /* Непрозрачный фон: без color-mix / полупрозрачных токенов, чтобы контент под панелью не просвечивал */
-    background-color: hsl(268, 44%, 10%);
-    background-image: linear-gradient(180deg, hsl(270, 48%, 7%) 0%, hsl(268, 44%, 11%) 55%, hsl(266, 42%, 12%) 100%);
+    background-color: var(--dash-sidebar-bg);
     animation: dash-drawer-panel-in 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -576,7 +572,7 @@
     padding: 14px 16px;
     border-bottom: 1px solid var(--dash-border);
     flex-shrink: 0;
-    background: hsl(270, 48%, 7%);
+    background: var(--dash-sidebar-bg);
 }
 
 .dash-drawer__title {

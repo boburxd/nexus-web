@@ -61,24 +61,26 @@
 
 :root {
     --font-sans: 'PP Neue Montreal', var(--font-inter), 'Inter', -apple-system, 'Segoe UI', sans-serif;
-    --background: #0f1535;
+    /* Холодная палитра: сланцево-синие поверхности вместо фиолетовых, текст ≥ WCAG AA
+       (foreground 12:1, muted-foreground 6:1 на --background, белый на --primary 5.2:1). */
+    --background: hsl(220, 40%, 10%);
     --foreground: #d3d7dc;
-    --card: #070c29;
+    --card: hsl(222, 44%, 7%);
     --card-foreground: #e6ecf0;
-    --popover: #070c29;
+    --popover: hsl(222, 44%, 7%);
     --popover-foreground: #d3d7dc;
-    --primary: #7928ca;
+    --primary: hsl(212, 70%, 45%);
     --primary-foreground: #ffffff;
-    --secondary: #181f4a;
+    --secondary: hsl(218, 34%, 18%);
     --secondary-foreground: #d3d7dc;
-    --muted: #181f4a;
+    --muted: hsl(218, 34%, 18%);
     --muted-foreground: #939aa0;
-    --accent: #181f4a;
+    --accent: hsl(218, 34%, 18%);
     --accent-foreground: #ffffff;
     --destructive: #f01414;
     --border: rgba(255, 255, 255, 0.15);
     --input: rgba(255, 255, 255, 0.15);
-    --ring: #7928ca;
+    --ring: hsl(205, 85%, 62%);
     --radius: 0.625rem;
 }
 

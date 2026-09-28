@@ -126,31 +126,31 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
 
             <style>{`
         .adm-root {
-          --adm-outer:          #f3f4f6;
+          --adm-outer:          hsl(214, 32%, 95%);
           --adm-sidebar:        #ffffff;
-          --adm-sidebar-border: #e5e7eb;
-          --adm-text:           #111827;
-          --adm-muted:          #9ca3af;
-          --adm-active-bg:      rgba(99,102,241,0.10);
-          --adm-active-color:   #6366f1;
-          --adm-hover-bg:       rgba(99,102,241,0.06);
+          --adm-sidebar-border: hsl(214, 28%, 88%);
+          --adm-text:           hsl(218, 40%, 12%);
+          --adm-muted:          hsl(215, 16%, 40%);
+          --adm-active-bg:      hsla(212, 70%, 45%, 0.10);
+          --adm-active-color:   hsl(212, 70%, 42%);
+          --adm-hover-bg:       hsla(212, 70%, 45%, 0.06);
           --adm-content-bg:     #ffffff;
-          --adm-card-bg:        #f7f8fa;
-          --adm-name-color:     #4b5563;
+          --adm-card-bg:        hsl(214, 30%, 97%);
+          --adm-name-color:     hsl(215, 20%, 32%);
         }
         @media (prefers-color-scheme: dark) {
           .adm-root {
-            --adm-outer:          #0f172a;
-            --adm-sidebar:        #1e293b;
-            --adm-sidebar-border: #334155;
-            --adm-text:           #f1f5f9;
-            --adm-muted:          #94a3b8;
-            --adm-active-bg:      rgba(129,140,248,0.18);
-            --adm-active-color:   #818cf8;
-            --adm-hover-bg:       rgba(129,140,248,0.10);
-            --adm-content-bg:     #0f172a;
-            --adm-card-bg:        #16213c;
-            --adm-name-color:     #cbd5e1;
+            --adm-outer:          hsl(220, 40%, 9%);
+            --adm-sidebar:        hsl(218, 32%, 14%);
+            --adm-sidebar-border: hsl(216, 24%, 24%);
+            --adm-text:           hsl(210, 30%, 94%);
+            --adm-muted:          hsl(214, 16%, 66%);
+            --adm-active-bg:      hsla(205, 85%, 62%, 0.16);
+            --adm-active-color:   hsl(205, 85%, 66%);
+            --adm-hover-bg:       hsla(205, 85%, 62%, 0.09);
+            --adm-content-bg:     hsl(220, 40%, 9%);
+            --adm-card-bg:        hsl(219, 36%, 13%);
+            --adm-name-color:     hsl(212, 22%, 80%);
           }
         }
 
