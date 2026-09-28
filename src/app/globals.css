@@ -38,6 +38,8 @@
     --color-input: var(--input);
     --color-border: var(--border);
     --color-destructive: var(--destructive);
+    --color-success: var(--success);
+    --color-warning: var(--warning);
     --color-accent-foreground: var(--accent-foreground);
     --color-accent: var(--accent);
     --color-muted-foreground: var(--muted-foreground);
@@ -62,15 +64,16 @@
 :root {
     --font-sans: 'PP Neue Montreal', var(--font-inter), 'Inter', -apple-system, 'Segoe UI', sans-serif;
     /* Холодная палитра: сланцево-синие поверхности вместо фиолетовых, текст ≥ WCAG AA
-       (foreground 12:1, muted-foreground 6:1 на --background, белый на --primary 5.2:1). */
+       (foreground 12:1, muted-foreground 6:1 на --background; --primary и как заливка с
+       --primary-foreground, и как цвет текста/ссылки на тёмном фоне — 6.7–7:1). */
     --background: hsl(220, 40%, 10%);
     --foreground: #d3d7dc;
     --card: hsl(222, 44%, 7%);
     --card-foreground: #e6ecf0;
     --popover: hsl(222, 44%, 7%);
     --popover-foreground: #d3d7dc;
-    --primary: hsl(212, 70%, 45%);
-    --primary-foreground: #ffffff;
+    --primary: hsl(208, 80%, 62%);
+    --primary-foreground: hsl(222, 44%, 7%);
     --secondary: hsl(218, 34%, 18%);
     --secondary-foreground: #d3d7dc;
     --muted: hsl(218, 34%, 18%);
@@ -78,10 +81,26 @@
     --accent: hsl(218, 34%, 18%);
     --accent-foreground: #ffffff;
     --destructive: #f01414;
+    --success: hsl(152, 50%, 55%);
+    --warning: hsl(38, 85%, 62%);
     --border: rgba(255, 255, 255, 0.15);
     --input: rgba(255, 255, 255, 0.15);
     --ring: hsl(205, 85%, 62%);
     --radius: 0.625rem;
+
+    /* Шкала слоёв (z-index) — единственный источник значений выше 900. Значения сохранены
+       такими, какими они были в разметке, поэтому порядок наложения не меняется. */
+    --z-hint: 900;
+    --z-dropdown: 1000;
+    --z-modal: 1050;
+    --z-sheet: 1080;
+    --z-overlay: 1100;
+    --z-dialog: 1200;
+    --z-picker: 5000;
+    --z-toast: 9999;
+    --z-lightbox: 10000;
+    --z-tour: 10000;
+    --z-studio: 10050;
 }
 
 .dark {
@@ -111,6 +130,8 @@
         --muted-foreground: #64748b;
         --border: rgba(15, 23, 42, 0.12);
         --input: rgba(15, 23, 42, 0.12);
+        --primary: hsl(212, 70%, 42%);
+        --primary-foreground: #ffffff;
     }
 }
 
