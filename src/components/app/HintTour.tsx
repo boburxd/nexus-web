@@ -86,9 +86,8 @@ export function resetHintTour(storageKey: string): void {
 }
 
 /**
- * Слой-подсказка: затемняет и размывает всё, кроме объясняемого элемента.
- * Размытие даёт «дырка» из четырёх панелей вокруг цели — backdrop-filter не умеет
- * вырезать область, поэтому не размываем именно её, а окружение.
+ * Слой-подсказка: затемняет всё, кроме объясняемого элемента.
+ * Затемнение даёт «дырка» из четырёх панелей вокруг цели: сама цель остаётся открытой.
  */
 export function HintTour({
                              steps,
@@ -276,7 +275,7 @@ export function HintTour({
     if (!mounted || !active || !step) return null
 
     const dim = "rgba(10,10,18,0.55)"
-    const blurPanel: React.CSSProperties = {
+    const dimPanel: React.CSSProperties = {
         position: "fixed",
         background: dim,
         zIndex: "var(--z-tour)",
@@ -287,10 +286,10 @@ export function HintTour({
             {rect ? (
                 <>
                     {/* Четыре панели вокруг цели: сама цель остаётся резкой и кликабельной. */}
-                    <div style={{...blurPanel, top: 0, left: 0, right: 0, height: Math.max(0, rect.top)}}/>
-                    <div style={{...blurPanel, top: rect.top + rect.height, left: 0, right: 0, bottom: 0}}/>
-                    <div style={{...blurPanel, top: rect.top, left: 0, width: Math.max(0, rect.left), height: rect.height}}/>
-                    <div style={{...blurPanel, top: rect.top, left: rect.left + rect.width, right: 0, height: rect.height}}/>
+                    <div style={{...dimPanel, top: 0, left: 0, right: 0, height: Math.max(0, rect.top)}}/>
+                    <div style={{...dimPanel, top: rect.top + rect.height, left: 0, right: 0, bottom: 0}}/>
+                    <div style={{...dimPanel, top: rect.top, left: 0, width: Math.max(0, rect.left), height: rect.height}}/>
+                    <div style={{...dimPanel, top: rect.top, left: rect.left + rect.width, right: 0, height: rect.height}}/>
                     <div
                         style={{
                             position: "fixed",
@@ -306,7 +305,7 @@ export function HintTour({
                     />
                 </>
             ) : (
-                <div style={{...blurPanel, inset: 0}}/>
+                <div style={{...dimPanel, inset: 0}}/>
             )}
 
             <div

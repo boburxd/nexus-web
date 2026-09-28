@@ -8,6 +8,7 @@ import {useAdminViewer} from "./AdminViewerContext"
 import NotificationBell from "@/components/Community/NotificationBell"
 import {SignOutButton} from "@/components/auth/SignOutButton"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 const NAV = [
     {href: "/admin", label: "Дашборд", icon: "bx-home-alt"},
@@ -64,9 +65,12 @@ function AdminProfileMenu() {
 
     return (
         <div className="adm-profile" ref={rootRef}>
-            <button
+            {/* Цвета — вариант secondary (= --adm-active-bg/--adm-active-color), форма — общий круг шапки. */}
+            <Button
                 type="button"
-                className="adm-header-icon-btn adm-profile-avatar"
+                variant="secondary"
+                size="icon-lg"
+                className="adm-header-icon-btn"
                 title={displayName}
                 aria-label="Меню профиля"
                 aria-haspopup="menu"
@@ -74,7 +78,7 @@ function AdminProfileMenu() {
                 onClick={() => setOpen((v) => !v)}
             >
                 <Icon name="user"/>
-            </button>
+            </Button>
             {/* Меню не размонтируем: диалог подтверждения выхода живёт внутри SignOutButton. */}
             <div className="adm-profile-menu" role="menu" hidden={!open}>
                 <div className="adm-profile-menu__user">
@@ -236,10 +240,6 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
         /* Счётчик непрочитанных — на краю круга, а не внутри. */
         .adm-header-bell > span { top: -3px !important; right: -3px !important; }
         .adm-profile { position: relative; }
-        .adm-profile-avatar {
-          background: var(--adm-active-bg);
-          color: var(--adm-active-color);
-        }
         .adm-profile-menu {
           position: absolute; top: calc(100% + 8px); right: 0; z-index: var(--z-overlay);
           min-width: 180px; padding: 6px;

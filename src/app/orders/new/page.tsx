@@ -120,10 +120,10 @@ function StepObject({d, set}: { d: D; set: (k: string, v: string) => void }) {
         <Field label="Сегмент бизнеса" required hint="Укажите отрасль: HoReCa, ретейл, IT, медицина и т.д."><Input placeholder="HoReCa, ретейл, IT…" value={d.companySegment ?? ""}
             onChange={e => set("companySegment", e.target.value)}/></Field>
         <Field label="Описание бизнеса"
-               hint="Чем занимается компания, кто ваши клиенты — это поможет дизайнеру понять контекст"><Textarea
+               hint="Чем занимается компания, кто ваши клиенты: это поможет дизайнеру понять контекст"><Textarea
             className="min-h-20" placeholder="Чем занимается компания, целевая аудитория…" value={d.companyDesc ?? ""}
             onChange={e => set("companyDesc", e.target.value)}/></Field>
-        <Field label="Адрес объекта" required hint="Город и адрес — нужен для выезда дизайнера на замеры"><Input placeholder="Москва, ул. Примерная, д. 1" value={d.objAddress ?? ""}
+        <Field label="Адрес объекта" required hint="Город и адрес (нужен для выезда дизайнера на замеры)"><Input placeholder="Москва, ул. Примерная, д. 1" value={d.objAddress ?? ""}
             onChange={e => set("objAddress", e.target.value)}/></Field>
         <Field label="Стадия объекта" required hint="На какой стадии находится помещение сейчас"><Select
             value={d.objStage ?? ""} options={OBJ_STAGES} onChange={v => set("objStage", v)}/></Field>
@@ -196,11 +196,11 @@ function StepStyle({d, set, toggle}: {
                                                                                onChange={v => set("lightingPref", v)}/></Field>
         <Field label="Предпочтительные материалы" hint="Натуральные, искусственные, комбинация"><Input placeholder="Дерево, камень, металл…" value={d.materials ?? ""}
             onChange={e => set("materials", e.target.value)}/></Field>
-        <Field label="Образ / история пространства" hint="Самое важное — здесь рождается концепция">
+        <Field label="Образ / история пространства" hint="Самое важное: здесь рождается концепция">
             <Textarea className="min-h-25" value={d.styleStory ?? ""}
                       onChange={e => set("styleStory", e.target.value)}/>
         </Field>
-        <Field label="Ссылки на референсы" hint="Ссылки на Pinterest, Behance, Instagram — то, что нравится"><Input placeholder="https://pin.it/..., https://behance.net/..." value={d.references ?? ""}
+        <Field label="Ссылки на референсы" hint="Ссылки на Pinterest, Behance, Instagram: то, что нравится"><Input placeholder="https://pin.it/…, https://behance.net/…" value={d.references ?? ""}
             onChange={e => set("references", e.target.value)}/></Field>
         <Field label="Антиреференсы" hint="Примеры того, что категорически не подходит"><Input
                                                                                                placeholder="Слишком холодный минимализм, тяжёлая классика"

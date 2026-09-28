@@ -114,7 +114,6 @@
     font-size: 12px;
     color: rgba(255, 255, 255, 0.86);
     background: color-mix(in oklab, var(--dash-surface2) 72%, transparent);
-    border: 1px solid var(--dash-border);
     min-width: 0;
     max-width: min(220px, 28vw);
 }
@@ -231,14 +230,13 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    border: 1px solid var(--dash-border);
     background: color-mix(in oklab, var(--dash-surface2) 70%, transparent);
     color: var(--dash-text2);
     font-family: inherit;
     font-size: 18px;
     line-height: 1;
     cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    transition: color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
 
 .dash-header__icon-btn i {
@@ -248,7 +246,6 @@
 .dash-header__icon-btn:hover,
 .dash-header__icon-btn[aria-expanded="true"] {
     color: #fff;
-    border-color: var(--dash-accent-border);
     background: color-mix(in oklab, var(--dash-surface3) 85%, transparent);
     box-shadow: 0 0 0 3px color-mix(in oklab, var(--dash-accent) 18%, transparent);
 }
@@ -274,7 +271,6 @@
 .dash-profile__btn {
     color: var(--dash-accent);
     background: var(--dash-accent-bg);
-    border-color: var(--dash-accent-border);
 }
 
 .dash-profile__menu {
@@ -371,7 +367,6 @@
     border-radius: 10px;
     color: var(--dash-accent);
     background: var(--dash-accent-bg);
-    border: 1px solid var(--dash-accent-border);
     white-space: nowrap;
     max-width: 140px;
     overflow: hidden;
@@ -636,7 +631,6 @@
     font-weight: 700;
     color: var(--dash-success);
     background: var(--dash-success-bg);
-    border: 1px solid hsla(145, 55%, 56%, 0.2);
     border-radius: 8px;
     padding: 4px 10px;
 }
@@ -798,7 +792,6 @@
     border-radius: 14px;
     padding: 14px 16px;
     margin-bottom: 14px;
-    border: 1px solid var(--dash-accent-border);
     background: color-mix(in oklab, var(--dash-accent-bg) 55%, var(--dash-surface2));
 }
 
@@ -967,7 +960,6 @@
     height: 52px;
     border-radius: 14px;
     background: color-mix(in oklab, var(--dash-accent) 45%, var(--dash-surface3));
-    border: 3px solid rgba(255, 255, 255, 0.18);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1048,7 +1040,6 @@
     font-weight: 600;
     color: rgba(255, 255, 255, 0.78);
     background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 10px;
     padding: 4px 10px 4px 8px;
     margin: 0;
@@ -1219,8 +1210,7 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    border: 1px solid var(--dash-accent);
-    background: var(--dash-bg);
+    background: var(--dash-muted2);
     transform: translateX(-4px);
 }
 
@@ -1311,7 +1301,6 @@
     font-weight: 600;
     background: var(--dash-accent-bg);
     color: var(--dash-accent);
-    border: 1px solid var(--dash-accent-border);
 }
 
 .dash-list__help-badge > i {

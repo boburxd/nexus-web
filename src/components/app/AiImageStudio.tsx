@@ -283,7 +283,6 @@ function AiImageStudioStyles() {
         border-radius: 14px; overflow-y: auto;
         background: var(--dash-surface, var(--card));
         color: var(--dash-text, var(--card-foreground));
-        box-shadow: var(--dash-shadow-md, 0 24px 60px rgba(0,0,0,0.45));
       }
       .ai-studio__hd { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
       .ai-studio__hd-title { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 1rem; }
