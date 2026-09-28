@@ -37,7 +37,7 @@ export function SettingsCol1({
             <div className="dash-list-heading-wrap">
                 <h2 className="dash-list-heading">Профиль</h2>
             </div>
-            <div style={{display: "flex", alignItems: "center", gap: 12, marginBottom: 14}}>
+            <div style={{display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, marginBottom: 14}}>
                 <AvatarUpload initials={initials} currentUrl={avatarUrl} onUploaded={onAvatarChange}/>
                 <span style={{fontSize: 12.5, color: "var(--dash-muted)"}}>Нажмите на фото, чтобы изменить</span>
             </div>

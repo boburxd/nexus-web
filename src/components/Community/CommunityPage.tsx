@@ -293,7 +293,7 @@ export default function CommunityPage({
                 </DashHeroFrame>
 
                 {/* Раздел кабинета */}
-                <div className={`dash-content${activeTab === "payments" ? " dash-content--payments" : ""}`}>
+                <div className={`dash-content${activeTab === "payments" ? " dash-content--payments" : activeTab === "settings" ? " dash-content--settings" : ""}`}>
                     {children}
                 </div>
 

@@ -383,7 +383,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                     border: "1px solid rgba(91,79,207,0.15)"
                 }}>
                     <p className="small text-muted mb-2">Выделите область для аватара:</p>
-                    <div style={{maxWidth: 360}}>
+                    <div style={{width: "100%", maxWidth: 360}}>
                         <ReactCrop
                             crop={crop}
                             onChange={c => setCrop(c)}

@@ -937,6 +937,11 @@
     grid-template-columns: 420px minmax(0, 1fr);
 }
 
+/* Settings: wider left profile column so the right-side data form takes proportionally less width. */
+.dash-content--settings {
+    grid-template-columns: 380px minmax(0, 1fr);
+}
+
 .dash-projects-panel {
     display: flex;
     flex-direction: column;
@@ -986,6 +991,7 @@
 
 .dash-col1 {
     min-width: 0;
+    overflow-x: hidden;
 }
 
 .dash-col2 {
