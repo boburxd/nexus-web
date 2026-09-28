@@ -3,6 +3,7 @@
 import {useCallback, useEffect, useState} from "react"
 import {usePathname} from "next/navigation"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 import {stripBx} from "@/lib/icon-map"
 
 type Anchor =
@@ -267,7 +268,6 @@ export function OrderHistoryTimeline({
         <div
             style={{
                 background: "var(--dash-surface)",
-                border: "1px solid var(--dash-border)",
                 borderRadius: 14,
                 padding: "14px 16px",
             }}
@@ -282,23 +282,15 @@ export function OrderHistoryTimeline({
                 <div style={{fontWeight: 600, fontSize: "1rem", color: "var(--dash-text)"}}>
                     {stageId ? "История этапа" : "История"}
                 </div>
-                <button
+                <Button
                     type="button"
+                    variant="outline"
+                    size="xs"
                     onClick={() => void loadInitial()}
                     disabled={loading}
-                    style={{
-                        border: "1px solid var(--dash-border)",
-                        background: "transparent",
-                        borderRadius: 8,
-                        padding: "4px 10px",
-                        fontSize: "0.75rem",
-                        color: "var(--dash-muted)",
-                        cursor: loading ? "default" : "pointer",
-                        fontFamily: "inherit",
-                    }}
                 >
                     Обновить
-                </button>
+                </Button>
             </div>
 
             {error && (
@@ -354,23 +346,14 @@ export function OrderHistoryTimeline({
                         const jumpLabel = jumpLabelFor(log.anchor)
 
                         const jump = log.anchor ? (
-                            <button
+                            <Button
                                 type="button"
+                                variant="link"
+                                size="xs"
                                 onClick={() => followAnchor(log)}
-                                style={{
-                                    border: "none",
-                                    background: "none",
-                                    padding: 0,
-                                    margin: 0,
-                                    fontSize: "0.75rem",
-                                    color: "var(--dash-accent)",
-                                    cursor: "pointer",
-                                    whiteSpace: "nowrap",
-                                    fontFamily: "inherit",
-                                }}
                             >
                                 {jumpLabel}
-                            </button>
+                            </Button>
                         ) : null
 
                         return (
@@ -476,26 +459,16 @@ export function OrderHistoryTimeline({
             )}
 
             {nextCursor ? (
-                <button
+                <Button
                     type="button"
+                    variant="outline"
+                    size="sm"
+                    className="mt-3 w-full"
                     onClick={() => void loadOlder()}
                     disabled={loadingMore || loading}
-                    style={{
-                        marginTop: 12,
-                        width: "100%",
-                        padding: "6px",
-                        borderRadius: 8,
-                        border: "1px solid var(--dash-border)",
-                        background: "var(--dash-surface2)",
-                        color: "var(--dash-text2)",
-                        fontSize: "0.75rem",
-                        fontWeight: 500,
-                        cursor: loadingMore ? "default" : "pointer",
-                        fontFamily: "inherit",
-                    }}
                 >
                     {loadingMore ? "Загрузка…" : "Раньше"}
-                </button>
+                </Button>
             ) : null}
         </div>
     )

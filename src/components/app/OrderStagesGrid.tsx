@@ -11,7 +11,7 @@ import {Icon} from "@/components/ui/icon"
 type MiniBadge = { key: string; label: string; variant: "default" | "secondary" | "destructive" | "outline" }
 
 const miniBadgeClass =
-    "max-w-[100%] whitespace-normal py-0.5 px-2 leading-snug h-auto min-h-5 text-[0.65rem] font-medium [overflow-wrap:anywhere]"
+    "max-w-[100%] whitespace-normal py-0.5 px-2 leading-snug h-auto min-h-5 text-xs font-medium [overflow-wrap:anywhere]"
 
 function formatRubKopecks(k: number | null | undefined): string | null {
     if (k == null || k <= 0) return null
@@ -159,7 +159,7 @@ export function OrderStagesGrid({
                 <div className="flex flex-wrap items-end justify-between gap-3">
                     <div>
                         <div className="text-sm font-semibold tracking-tight text-foreground">Ход работ</div>
-                        <div className="mt-1 text-xs text-muted-foreground">Открывайте этапы по очереди — следующий
+                        <div className="mt-1 text-xs text-muted-foreground">Открывайте этапы по очереди: следующий
                             доступен после принятия предыдущего.
                         </div>
                     </div>
@@ -193,7 +193,7 @@ export function OrderStagesGrid({
                     const insightBadges = !locked ? stageInsightBadges(stage) : []
 
                     const cardFrame = cn(
-                        "group relative flex h-full min-h-0 flex-col overflow-hidden transition-all duration-200",
+                        "group relative flex h-full min-h-0 flex-col overflow-hidden transition-[color,background-color,border-color,box-shadow] duration-200",
                         locked && "bg-muted/25 shadow-none",
                         !locked && isDone && "bg-primary/[0.06] shadow-none",
                         !locked && !isDone && isActive && "shadow-md",
@@ -275,7 +275,7 @@ export function OrderStagesGrid({
                                                 <div className="flex flex-wrap gap-1.5">
                                                     <Badge
                                                         variant={statusBadgeVariant(stage.status)}
-                                                        className="max-w-full whitespace-normal py-1 text-left text-[0.72rem] font-medium leading-snug"
+                                                        className="max-w-full whitespace-normal py-1 text-left text-xs font-medium leading-snug"
                                                     >
                                                         {statusLabel}
                                                     </Badge>
@@ -301,14 +301,14 @@ export function OrderStagesGrid({
                                         {showActivityFooter ? (
                                             <div
                                                 className="mt-auto flex flex-col gap-2 border-t border-border/50 pt-4 sm:flex-row sm:items-end sm:justify-between">
-                                                <p className="min-w-0 flex-1 text-left text-[0.75rem] leading-relaxed text-muted-foreground [overflow-wrap:anywhere] line-clamp-4">
+                                                <p className="min-w-0 flex-1 text-left text-xs leading-relaxed text-muted-foreground [overflow-wrap:anywhere] line-clamp-4">
                                                     {activity.kind === "none" ? "Пока без действий" : activity.label}
                                                 </p>
                                                 <div
                                                     className="flex shrink-0 items-center justify-end gap-1.5 sm:flex-col sm:items-end sm:justify-center">
                                                     {activity.kind !== "none" ? (
                                                         <span
-                                                            className="tabular-nums text-[0.7rem] text-muted-foreground">
+                                                            className="tabular-nums text-xs text-muted-foreground">
                               {new Date(activity.at).toLocaleDateString("ru-RU", {day: "2-digit", month: "2-digit"})}
                             </span>
                                                     ) : null}

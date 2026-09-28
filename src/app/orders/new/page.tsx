@@ -15,6 +15,10 @@ import {confirmDialog} from "@/lib/dialog-store"
 import {buildClientCabinetNavItems} from "@/components/Client/client-cabinet/constants"
 import {CLIENT_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
 import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
+import {Textarea} from "@/components/ui/textarea"
+import {Checkbox} from "@/components/ui/checkbox"
+import {Select as UiSelect, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import {
     BUDGET_FLEX,
     BUDGET_RANGE,
@@ -49,29 +53,12 @@ function normalizeBriefData(raw: unknown): D {
     return out
 }
 
-const inputStyle: React.CSSProperties = {
-    width: "100%", padding: "10px 14px", borderRadius: 8,
-    fontSize: "0.875rem", color: "var(--dash-text)", background: "var(--dash-surface2)", fontFamily: "inherit",
-    outline: "none", boxSizing: "border-box",
-}
-const taStyle: React.CSSProperties = {...inputStyle, resize: "vertical", minHeight: 80}
-
 function Chip({label, active, onClick}: { label: string; active: boolean; onClick: () => void }) {
     return (
-        <button type="button" onClick={onClick} style={{
-            padding: "6px 14px",
-            borderRadius: 14,
-            fontSize: "0.75rem",
-            fontWeight: 500,
-            cursor: "pointer",
-            fontFamily: "inherit",
-            whiteSpace: "nowrap",
-            border: active ? "1.5px solid var(--dash-accent)" : "1.5px solid var(--dash-border)",
-            background: active ? "var(--dash-accent-bg)" : "transparent",
-            color: active ? "var(--dash-accent)" : "var(--dash-text2)",
-        }}>
-            {active && <span style={{marginRight: "4px"}}>✓</span>}{label}
-        </button>
+        <Button type="button" variant={active ? "secondary" : "outline"} size="sm" onClick={onClick}
+                aria-pressed={active}>
+            {active && <span>✓</span>}{label}
+        </Button>
     )
 }
 
@@ -87,8 +74,6 @@ function Field({label, hint, required, children}: {
                 display: "block",
                 fontSize: "0.75rem",
                 fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.06em",
                 color: "var(--dash-muted)",
                 marginBottom: 6
             }}>
@@ -103,11 +88,14 @@ function Field({label, hint, required, children}: {
 
 function Select({value, options, onChange}: { value: string; options: string[]; onChange: (v: string) => void }) {
     return (
-        <select value={value || ""} onChange={e => onChange(e.target.value)}
-                style={{...inputStyle, appearance: "auto"}}>
-            <option value="">— выберите —</option>
-            {options.map(o => <option key={o} value={o}>{o}</option>)}
-        </select>
+        <UiSelect value={value || null} onValueChange={v => onChange(typeof v === "string" ? v : "")}>
+            <SelectTrigger className="w-full">
+                <SelectValue placeholder="Выберите"/>
+            </SelectTrigger>
+            <SelectContent>
+                {options.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}
+            </SelectContent>
+        </UiSelect>
     )
 }
 
@@ -118,47 +106,38 @@ function StepObject({d, set}: { d: D; set: (k: string, v: string) => void }) {
         <Field label="Тип объекта" required>
             <div style={{display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8}}>
                 {OBJECT_TYPES.map(t => (
-                    <button key={t.label} type="button" onClick={() => set("objectType", t.label)} style={{
-                        padding: "12px 8px",
-                        borderRadius: 10,
-                        cursor: "pointer",
-                        fontFamily: "inherit",
-                        textAlign: "center",
-                        border: d.objectType === t.label ? "2px solid var(--dash-accent)" : "1.5px solid var(--dash-border)",
-                        background: d.objectType === t.label ? "var(--dash-accent-bg)" : "transparent",
-                        color: d.objectType === t.label ? "var(--dash-accent)" : "var(--dash-text2)",
-                        fontSize: "0.75rem",
-                    }}>
-                        <div style={{fontSize: "1.5rem", marginBottom: 4}}><Icon name={stripBx(t.icon)}/></div>
-                        {t.label}
-                    </button>
+                    <Button key={t.label} type="button" variant={d.objectType === t.label ? "secondary" : "outline"}
+                            onClick={() => set("objectType", t.label)} aria-pressed={d.objectType === t.label}
+                            className="h-auto flex-col whitespace-normal text-center">
+                        <span style={{display: "block", padding: "12px 0", fontSize: "0.75rem"}}>
+                            <span style={{display: "block", fontSize: "1.5rem", marginBottom: 4}}><Icon name={stripBx(t.icon)} className="size-6"/></span>
+                            {t.label}
+                        </span>
+                    </Button>
                 ))}
             </div>
         </Field>
-        <Field label="Сегмент бизнеса" required hint="Укажите отрасль: HoReCa, ретейл, IT, медицина и т.д."><input
-            style={inputStyle} placeholder="HoReCa, ретейл, IT…" value={d.companySegment ?? ""}
+        <Field label="Сегмент бизнеса" required hint="Укажите отрасль: HoReCa, ретейл, IT, медицина и т.д."><Input placeholder="HoReCa, ретейл, IT…" value={d.companySegment ?? ""}
             onChange={e => set("companySegment", e.target.value)}/></Field>
         <Field label="Описание бизнеса"
-               hint="Чем занимается компания, кто ваши клиенты — это поможет дизайнеру понять контекст"><textarea
-            style={taStyle} placeholder="Чем занимается компания, целевая аудитория…" value={d.companyDesc ?? ""}
+               hint="Чем занимается компания, кто ваши клиенты — это поможет дизайнеру понять контекст"><Textarea
+            className="min-h-20" placeholder="Чем занимается компания, целевая аудитория…" value={d.companyDesc ?? ""}
             onChange={e => set("companyDesc", e.target.value)}/></Field>
-        <Field label="Адрес объекта" required hint="Город и адрес — нужен для выезда дизайнера на замеры"><input
-            style={inputStyle} placeholder="Москва, ул. Примерная, д. 1" value={d.objAddress ?? ""}
+        <Field label="Адрес объекта" required hint="Город и адрес — нужен для выезда дизайнера на замеры"><Input placeholder="Москва, ул. Примерная, д. 1" value={d.objAddress ?? ""}
             onChange={e => set("objAddress", e.target.value)}/></Field>
         <Field label="Стадия объекта" required hint="На какой стадии находится помещение сейчас"><Select
             value={d.objStage ?? ""} options={OBJ_STAGES} onChange={v => set("objStage", v)}/></Field>
         <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
-            <Field label="Площадь, м²" required hint="Общая площадь всех помещений"><input type="number"
-                                                                                           style={inputStyle}
+            <Field label="Площадь, м²" required hint="Общая площадь всех помещений"><Input type="number"
                                                                                            placeholder="150"
                                                                                            value={d.objArea ?? ""}
                                                                                            onChange={e => set("objArea", e.target.value)}/></Field>
-            <Field label="Этажей" hint="Количество уровней в помещении"><input type="number" style={inputStyle}
+            <Field label="Этажей" hint="Количество уровней в помещении"><Input type="number"
                                                                                placeholder="1" value={d.objFloors ?? ""}
                                                                                onChange={e => set("objFloors", e.target.value)}/></Field>
         </div>
         <Field label="Описание объекта"
-               hint="Особенности: высота потолков, наличие окон, несущие стены, коммуникации"><textarea style={taStyle}
+               hint="Особенности: высота потолков, наличие окон, несущие стены, коммуникации"><Textarea className="min-h-20"
                                                                                                         placeholder="Особенности помещения, текущее состояние…"
                                                                                                         value={d.objDesc ?? ""}
                                                                                                         onChange={e => set("objDesc", e.target.value)}/></Field>
@@ -177,19 +156,18 @@ function StepTasks({d, set, toggle}: {
                 {TASKS.map(t => <Chip key={t} label={t} active={active.has(t)} onClick={() => toggle("tasks", t)}/>)}
             </div>
         </Field>
-        <Field label="Главная цель проекта" required hint="Одно предложение: что должен решить дизайн-проект"><input
-            style={inputStyle} placeholder="Создать уютное пространство для команды из 30 человек"
+        <Field label="Главная цель проекта" required hint="Одно предложение: что должен решить дизайн-проект"><Input placeholder="Создать уютное пространство для команды из 30 человек"
             value={d.taskMain ?? ""} onChange={e => set("taskMain", e.target.value)}/></Field>
         <Field label="Целевая аудитория объекта" required
-               hint="Кто будет пользоваться пространством: сотрудники, клиенты, посетители"><textarea style={taStyle}
+               hint="Кто будет пользоваться пространством: сотрудники, клиенты, посетители"><Textarea className="min-h-20"
                                                                                                       placeholder="Молодые специалисты 25-35 лет, ценящие комфорт"
                                                                                                       value={d.targetAudience ?? ""}
                                                                                                       onChange={e => set("targetAudience", e.target.value)}/></Field>
-        <Field label="Конкуренты / референсные объекты" hint="Примеры похожих объектов, которые вам нравятся"><textarea
-            style={taStyle} placeholder="Офис Яндекса, коворкинг SOK, ресторан White Rabbit" value={d.competitors ?? ""}
+        <Field label="Конкуренты / референсные объекты" hint="Примеры похожих объектов, которые вам нравятся"><Textarea
+            className="min-h-20" placeholder="Офис Яндекса, коворкинг SOK, ресторан White Rabbit" value={d.competitors ?? ""}
             onChange={e => set("competitors", e.target.value)}/></Field>
         <Field label="Что не устраивает в пространстве?"
-               hint="Что хотите изменить: планировка, освещение, стиль, функциональность"><textarea style={taStyle}
+               hint="Что хотите изменить: планировка, освещение, стиль, функциональность"><Textarea className="min-h-20"
                                                                                                     placeholder="Тёмные коридоры, неудобная планировка, устаревший ремонт"
                                                                                                     value={d.currentProblem ?? ""}
                                                                                                     onChange={e => set("currentProblem", e.target.value)}/></Field>
@@ -209,26 +187,22 @@ function StepStyle({d, set, toggle}: {
                                        onClick={() => toggle("styleDir", s)}/>)}
             </div>
         </Field>
-        <Field label="Пожелания по цветовой гамме" hint="Основные цвета, которые хотите видеть в интерьере"><input
-            style={inputStyle} placeholder="Тёплые бежевые тона, акценты терракотового" value={d.colorPalette ?? ""}
+        <Field label="Пожелания по цветовой гамме" hint="Основные цвета, которые хотите видеть в интерьере"><Input placeholder="Тёплые бежевые тона, акценты терракотового" value={d.colorPalette ?? ""}
             onChange={e => set("colorPalette", e.target.value)}/></Field>
-        <Field label="Нежелательные цвета / элементы" hint="Что точно не должно быть в проекте"><input
-            style={inputStyle} placeholder="Ярко-красный, неон, пластик" value={d.colorAvoid ?? ""}
+        <Field label="Нежелательные цвета / элементы" hint="Что точно не должно быть в проекте"><Input placeholder="Ярко-красный, неон, пластик" value={d.colorAvoid ?? ""}
             onChange={e => set("colorAvoid", e.target.value)}/></Field>
         <Field label="Освещение" hint="Какую атмосферу создать светом"><Select value={d.lightingPref ?? ""}
                                                                                options={LIGHTING}
                                                                                onChange={v => set("lightingPref", v)}/></Field>
-        <Field label="Предпочтительные материалы" hint="Натуральные, искусственные, комбинация"><input
-            style={inputStyle} placeholder="Дерево, камень, металл…" value={d.materials ?? ""}
+        <Field label="Предпочтительные материалы" hint="Натуральные, искусственные, комбинация"><Input placeholder="Дерево, камень, металл…" value={d.materials ?? ""}
             onChange={e => set("materials", e.target.value)}/></Field>
         <Field label="Образ / история пространства" hint="Самое важное — здесь рождается концепция">
-            <textarea style={{...taStyle, minHeight: 100}} value={d.styleStory ?? ""}
+            <Textarea className="min-h-25" value={d.styleStory ?? ""}
                       onChange={e => set("styleStory", e.target.value)}/>
         </Field>
-        <Field label="Ссылки на референсы" hint="Ссылки на Pinterest, Behance, Instagram — то, что нравится"><input
-            style={inputStyle} placeholder="https://pin.it/..., https://behance.net/..." value={d.references ?? ""}
+        <Field label="Ссылки на референсы" hint="Ссылки на Pinterest, Behance, Instagram — то, что нравится"><Input placeholder="https://pin.it/..., https://behance.net/..." value={d.references ?? ""}
             onChange={e => set("references", e.target.value)}/></Field>
-        <Field label="Антиреференсы" hint="Примеры того, что категорически не подходит"><input style={inputStyle}
+        <Field label="Антиреференсы" hint="Примеры того, что категорически не подходит"><Input
                                                                                                placeholder="Слишком холодный минимализм, тяжёлая классика"
                                                                                                value={d.antiReferences ?? ""}
                                                                                                onChange={e => set("antiReferences", e.target.value)}/></Field>
@@ -248,11 +222,10 @@ function StepBudget({d, set}: { d: D; set: (k: string, v: string) => void }) {
         <Field label="Гибкость бюджета" hint="Насколько возможно отклонение от заявленного бюджета"><Select
             value={d.budgetFlex ?? ""} options={BUDGET_FLEX} onChange={v => set("budgetFlex", v)}/></Field>
         <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
-            <Field label="Срок дизайн-проекта" hint="Когда нужен готовый проект"><input type="date" style={inputStyle}
+            <Field label="Срок дизайн-проекта" hint="Когда нужен готовый проект"><Input type="date"
                                                                                         value={d.deadlineDesign ?? ""}
                                                                                         onChange={e => set("deadlineDesign", e.target.value)}/></Field>
-            <Field label="Желаемое открытие" required hint="Дата, к которой объект должен быть готов"><input type="date"
-                                                                                                             style={inputStyle}
+            <Field label="Желаемое открытие" required hint="Дата, к которой объект должен быть готов"><Input type="date"
                                                                                                              value={d.deadlineOpen ?? ""}
                                                                                                              onChange={e => set("deadlineOpen", e.target.value)}/></Field>
         </div>
@@ -305,25 +278,14 @@ function StepFiles({
         return `${(bytes / (1024 * 1024)).toFixed(1)} МБ`
     }
 
-    const outlineBtnStyle: React.CSSProperties = {
-        border: "1px solid var(--dash-border)",
-        background: "var(--dash-surface2)",
-        color: "var(--dash-text)",
-    }
-    const dangerBtnStyle: React.CSSProperties = {
-        border: "1px solid rgba(239, 68, 68, 0.55)",
-        background: "rgba(239, 68, 68, 0.12)",
-        color: "rgba(239, 68, 68, 0.95)",
-    }
-
     return <>
         <p style={{fontSize: "0.875rem", color: "var(--dash-muted)", marginBottom: "1.5rem"}}>
-            Загрузите имеющиеся документы. Чем больше контекста — тем точнее первая встреча.
+            Загрузите имеющиеся документы. Чем больше контекста, тем точнее первая встреча.
         </p>
 
         <Field
             label="Документы к брифу (массовая загрузка)"
-            hint="PDF, DWG, DXF, JPG, PNG, ZIP, RAR, MP4, WEBM, MOV — до 500МБ за файл. Можно перетаскивать пачкой."
+            hint="PDF, DWG, DXF, JPG, PNG, ZIP, RAR, MP4, WEBM, MOV: до 500МБ за файл. Можно перетаскивать пачкой."
         >
             <input
                 ref={filesInputRef}
@@ -339,7 +301,15 @@ function StepFiles({
             />
 
             <div
+                role="button"
+                tabIndex={uploading ? -1 : 0}
                 onClick={() => filesInputRef.current?.click()}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault()
+                        filesInputRef.current?.click()
+                    }
+                }}
                 onDragOver={(e) => {
                     e.preventDefault();
                     setDragOver(true)
@@ -394,7 +364,6 @@ function StepFiles({
                                 gap: 10,
                                 padding: "10px 12px",
                                 borderRadius: 10,
-                                border: "1px solid var(--dash-border)",
                                 background: "var(--dash-surface)",
                             }}
                         >
@@ -428,7 +397,6 @@ function StepFiles({
                                     variant="destructive"
                                     size="sm"
                                     disabled={uploading}
-                                    style={dangerBtnStyle}
                                     onClick={async () => {
                                         const ok = await confirmDialog({title: "Удалить файл из брифа?", variant: "destructive"})
                                         if (!ok) return
@@ -445,7 +413,7 @@ function StepFiles({
                         size="sm"
                         disabled={uploading}
                         onClick={onRefreshFiles}
-                        style={{...outlineBtnStyle, alignSelf: "flex-start"}}
+                        className="self-start"
                     >
                         Обновить список
                     </Button>
@@ -479,7 +447,7 @@ function StepFiles({
                     onClick={() => {
                         videoInputRef.current?.click()
                     }}
-                    style={{...outlineBtnStyle, alignSelf: "flex-start"}}
+                    className="self-start"
                 >
                     Выбрать видео
                 </Button>
@@ -487,7 +455,6 @@ function StepFiles({
                     <div style={{
                         padding: "10px 12px",
                         borderRadius: 10,
-                        border: "1px solid var(--dash-border)",
                         background: "var(--dash-surface)"
                     }}>
                         <div style={{
@@ -527,15 +494,15 @@ function StepFiles({
         </Field>
 
         <Field label="Сохраняемые элементы / ограничения"
-               hint="Что нельзя менять: несущие стены, вентиляция, существующая мебель"><textarea style={taStyle}
+               hint="Что нельзя менять: несущие стены, вентиляция, существующая мебель"><Textarea className="min-h-20"
                                                                                                   placeholder="Несущая стена между залом и кухней, вентиляционный короб"
                                                                                                   value={d.constraints ?? ""}
                                                                                                   onChange={e => set("constraints", e.target.value)}/></Field>
-        <Field label="Особые требования" hint="Нормативы, доступная среда, пожарная безопасность, акустика"><textarea
-            style={taStyle} placeholder="Доступная среда для МГН, пожарные нормы для ресторана"
+        <Field label="Особые требования" hint="Нормативы, доступная среда, пожарная безопасность, акустика"><Textarea
+            className="min-h-20" placeholder="Доступная среда для МГН, пожарные нормы для ресторана"
             value={d.specialReqs ?? ""} onChange={e => set("specialReqs", e.target.value)}/></Field>
-        <Field label="Что еще важно знать дизайнеру?" hint="Любая информация, которая поможет в работе"><textarea
-            style={{...taStyle, minHeight: 100}} placeholder="Планируем расширение через год, нужна модульная мебель"
+        <Field label="Что еще важно знать дизайнеру?" hint="Любая информация, которая поможет в работе"><Textarea
+            className="min-h-25" placeholder="Планируем расширение через год, нужна модульная мебель"
             value={d.additionalComments ?? ""} onChange={e => set("additionalComments", e.target.value)}/></Field>
     </>
 }
@@ -568,8 +535,6 @@ function StepReview({d}: { d: D }) {
                         fontSize: "0.875rem",
                         fontWeight: 600,
                         color: "var(--dash-muted)",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.05em",
                         margin: "0 0 6px",
                         display: "flex",
                         alignItems: "center",
@@ -639,26 +604,10 @@ function AiInteriorPreview({orderId}: { orderId: string }) {
                 специалиста может отличаться.
             </p>
 
-            <button
-                type="button"
-                onClick={() => void generate()}
-                disabled={loading}
-                style={{
-                    padding: "8px 20px",
-                    borderRadius: 8,
-                    border: "1px solid var(--dash-accent-border, rgba(121,40,202,0.35))",
-                    background: "var(--dash-accent-bg, rgba(121,40,202,0.08))",
-                    color: "var(--dash-accent)",
-                    fontSize: "0.875rem",
-                    fontWeight: 600,
-                    fontFamily: "inherit",
-                    cursor: loading ? "default" : "pointer",
-                    opacity: loading ? 0.7 : 1,
-                }}
-            >
-                <Icon name={stripBx(loading ? "bx-loader-alt bx-spin" : "bx-planet")} style={{marginRight: 6}}/>
+            <Button type="button" variant="secondary" size="lg" onClick={() => void generate()} disabled={loading}>
+                <Icon name={stripBx(loading ? "bx-loader-alt bx-spin" : "bx-planet")}/>
                 {loading ? "Генерируем 4 варианта…" : images.length > 0 ? "Сгенерировать заново" : "Показать, как это может выглядеть"}
-            </button>
+            </Button>
 
             {error && (
                 <p style={{marginTop: 10, fontSize: "0.75rem", color: "var(--dash-danger)"}}>{error}</p>
@@ -1030,9 +979,11 @@ export default function NewOrderPage() {
                 }}>
                     <div style={{
                         height: "100%",
-                        width: `${pct}%`,
+                        width: "100%",
+                        transform: `scaleX(${pct / 100})`,
+                        transformOrigin: "left",
                         background: "var(--dash-accent)",
-                        transition: "width 0.3s"
+                        transition: "transform 0.3s"
                     }}/>
                 </div>
             )}
@@ -1082,37 +1033,23 @@ export default function NewOrderPage() {
                     {!bootError && (
                         <>
                             {/* Step nav */}
-                            <DashSurfaceCard style={{
-                                borderRadius: 0,
-                                borderLeft: "none",
-                                borderRight: "none",
+                            <div style={{
+                                borderTop: "1px solid var(--dash-border)",
+                                borderBottom: "1px solid var(--dash-border)",
                                 overflowX: "auto",
-                                padding: "0 1.5rem",
+                                padding: "6px 24px",
                                 display: "flex",
                                 justifyContent: "center"
                             }}>
                                 <div style={{display: "flex", gap: 0}}>
                                     {STEPS.map((s, i) => (
-                                        <button key={s.key} type="button" onClick={() => {
-                                            if (!(i <= step || isStepValid(step))) return
-                                            void flushSave().then(() => setStep(i))
-                                        }} style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            gap: 6,
-                                            padding: "0.875rem 1rem",
-                                            fontSize: "0.875rem",
-                                            fontFamily: "inherit",
-                                            cursor: "pointer",
-                                            whiteSpace: "nowrap",
-                                            border: "none",
-                                            borderBottomWidth: 2,
-                                            borderBottomStyle: "solid",
-                                            borderBottomColor: i === step ? "var(--dash-accent)" : "transparent",
-                                            color: i === step ? "var(--dash-accent)" : i < step ? "var(--dash-success)" : "var(--dash-muted)",
-                                            fontWeight: i === step ? 600 : 400,
-                                            background: "none",
-                                        }}>
+                                        <Button key={s.key} type="button" size="lg"
+                                                variant={i === step ? "secondary" : "ghost"}
+                                                aria-current={i === step ? "step" : undefined}
+                                                onClick={() => {
+                                                    if (!(i <= step || isStepValid(step))) return
+                                                    void flushSave().then(() => setStep(i))
+                                                }}>
                   <span style={{
                       width: 20,
                       height: 20,
@@ -1127,10 +1064,10 @@ export default function NewOrderPage() {
                       color: i < step ? "#fff" : "var(--dash-muted)",
                   }}>{i < step ? "✓" : i + 1}</span>
                                             {s.label}
-                                        </button>
+                                        </Button>
                                     ))}
                                 </div>
-                            </DashSurfaceCard>
+                            </div>
 
                             <div className="dash-main__scroll"
                                  style={{display: "flex", justifyContent: "center", flex: 1, minHeight: 0}}>
@@ -1173,9 +1110,9 @@ export default function NewOrderPage() {
                                                     color: "var(--dash-text2)",
                                                     cursor: "pointer"
                                                 }}>
-                                                    <input type="checkbox" checked={agreed}
-                                                           onChange={e => setAgreed(e.target.checked)}
-                                                           style={{marginTop: 4}}/>
+                                                    <Checkbox checked={agreed}
+                                                              onChange={e => setAgreed(e.target.checked)}
+                                                              className="mt-1"/>
                                                     <span>
                         Я согласен с{" "}
                                                         <Link href="/privacy" target="_blank" rel="noopener noreferrer"
@@ -1194,7 +1131,6 @@ export default function NewOrderPage() {
                                     {bootError && (
                                         <div style={{
                                             background: "var(--dash-danger-bg)",
-                                            border: "1px solid var(--dash-danger)",
                                             borderRadius: 10,
                                             padding: "0.75rem 1rem",
                                             marginBottom: "1rem",
@@ -1206,7 +1142,6 @@ export default function NewOrderPage() {
                                     {error && (
                                         <div style={{
                                             background: "var(--dash-danger-bg)",
-                                            border: "1px solid var(--dash-danger)",
                                             borderRadius: 10,
                                             padding: "0.75rem 1rem",
                                             marginBottom: "1rem",
@@ -1220,24 +1155,16 @@ export default function NewOrderPage() {
                                         justifyContent: "space-between",
                                         alignItems: "center"
                                     }}>
-                                        <button type="button" onClick={() => {
+                                        <Button type="button" variant="outline" size="lg" onClick={() => {
                                             void flushSave().then(() => setStep(s => s - 1))
-                                        }} disabled={step === 0} style={{
-                                            padding: "10px 24px",
-                                            border: "1px solid var(--dash-border)",
-                                            borderRadius: 8,
-                                            background: "transparent",
-                                            color: step === 0 ? "var(--dash-muted)" : "var(--dash-text)",
-                                            fontSize: "0.875rem",
-                                            fontWeight: 500,
-                                            cursor: step === 0 ? "default" : "pointer",
-                                            fontFamily: "inherit",
-                                            visibility: step === 0 ? "hidden" : "visible",
-                                        }}>← Назад
-                                        </button>
+                                        }} disabled={step === 0} style={{visibility: step === 0 ? "hidden" : "visible"}}>
+                                            ← Назад
+                                        </Button>
 
-                                        <button
+                                        <Button
                                             type="button"
+                                            variant="outline"
+                                            size="sm"
                                             disabled={!orderId || helpRequested}
                                             onClick={async () => {
                                                 if (!orderId) return
@@ -1259,52 +1186,22 @@ export default function NewOrderPage() {
                                                     setSaving(false)
                                                 }
                                             }}
-                                            style={{
-                                                padding: "8px 16px",
-                                                borderRadius: 8,
-                                                border: helpRequested ? "1px solid var(--dash-success)" : "1px solid var(--dash-accent-border)",
-                                                background: helpRequested ? "var(--dash-success-bg)" : "transparent",
-                                                color: helpRequested ? "var(--dash-success)" : "var(--dash-accent)",
-                                                fontSize: "0.75rem",
-                                                fontWeight: 500,
-                                                cursor: !orderId || helpRequested ? "default" : "pointer",
-                                                fontFamily: "inherit",
-                                            }}
                                         >
-                                            <Icon name={stripBx(helpRequested ? "bx-check" : "bx-support")}
-                                               style={{marginRight: 4, verticalAlign: "middle"}}/>
+                                            <Icon name={stripBx(helpRequested ? "bx-check" : "bx-support")}/>
                                             {helpRequested ? "Менеджер уведомлен" : "Нужна помощь менеджера"}
-                                        </button>
+                                        </Button>
 
                                         {step < STEPS.length - 1 ? (
-                                            <button type="button" onClick={() => {
-                                                if (!orderId || !isStepValid(step)) return;
-                                                void flushSave().then(() => setStep(s => s + 1))
-                                            }} style={{
-                                                padding: "10px 32px",
-                                                borderRadius: 8,
-                                                border: "none",
-                                                fontSize: "0.875rem",
-                                                fontWeight: 600,
-                                                fontFamily: "inherit",
-                                                background: orderId && isStepValid(step) ? "var(--dash-accent)" : "var(--dash-border)",
-                                                color: orderId && isStepValid(step) ? "#fff" : "var(--dash-muted)",
-                                                cursor: orderId && isStepValid(step) ? "pointer" : "default",
-                                            }}>Продолжить →</button>
+                                            <Button type="button" size="lg" disabled={!orderId || !isStepValid(step)}
+                                                    onClick={() => {
+                                                        if (!orderId || !isStepValid(step)) return;
+                                                        void flushSave().then(() => setStep(s => s + 1))
+                                                    }}>Продолжить →</Button>
                                         ) : (
-                                            <button type="button" onClick={handleSubmit}
-                                                    disabled={submitting || !agreed || !orderId} style={{
-                                                padding: "10px 32px",
-                                                borderRadius: 8,
-                                                border: "none",
-                                                fontSize: "0.875rem",
-                                                fontWeight: 600,
-                                                fontFamily: "inherit",
-                                                background: agreed && orderId ? "var(--dash-accent)" : "var(--dash-border)",
-                                                color: agreed && orderId ? "#fff" : "var(--dash-muted)",
-                                                cursor: submitting || !agreed || !orderId ? "default" : "pointer",
-                                                opacity: submitting ? 0.7 : 1,
-                                            }}>{submitting ? "Отправляем…" : "Отправить бриф →"}</button>
+                                            <Button type="button" size="lg" onClick={handleSubmit}
+                                                    disabled={submitting || !agreed || !orderId}>
+                                                {submitting ? "Отправляем…" : "Отправить бриф →"}
+                                            </Button>
                                         )}
                                     </div>
 
@@ -1333,7 +1230,7 @@ export default function NewOrderPage() {
                         maxWidth: 230,
                         opacity: showHelpHint ? 1 : 0,
                         transform: showHelpHint ? "translateY(0)" : "translateY(6px)",
-                        transition: "opacity 0.35s ease, transform 0.35s ease",
+                        transition: "opacity 0.3s ease, transform 0.3s ease",
                         pointerEvents: "none",
                     }}
                 >
@@ -1351,8 +1248,12 @@ export default function NewOrderPage() {
                     />
                 </div>
             )}
-            <button
+            <Button
                 type="button"
+                size="icon-lg"
+                variant={confirmHelp ? "destructive" : "default"}
+                className="fixed right-6 bottom-6 z-50 size-13"
+                style={{borderRadius: "50%"}}
                 disabled={Boolean(bootError) || !orderId || helpRequested}
                 onClick={async () => {
                     const id = orderIdRef.current
@@ -1394,44 +1295,16 @@ export default function NewOrderPage() {
                                 : "Запросить помощь менеджера"
                 }
                 aria-label="Помощь менеджера"
-                style={{
-                    position: "fixed",
-                    bottom: 24,
-                    right: 24,
-                    zIndex: 50,
-                    width: 52,
-                    height: 52,
-                    borderRadius: "50%",
-                    background: !orderId || helpRequested ? "var(--dash-border)" : confirmHelp ? "var(--dash-warn)" : "var(--dash-accent)",
-                    color: !orderId || helpRequested ? "var(--dash-muted)" : "#fff",
-                    border: "none",
-                    cursor: !orderId || helpRequested ? "not-allowed" : "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "1.5rem",
-                    transition: "transform 0.2s",
-                    opacity: !orderId ? 0.85 : 1,
-                }}
-                onMouseEnter={e => {
-                    if (orderId && !helpRequested) {
-                        e.currentTarget.style.transform = "scale(1.1)"
-                        e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.2)"
-                    }
-                }}
-                onMouseLeave={e => {
-                    e.currentTarget.style.transform = "scale(1)"
-                    e.currentTarget.style.boxShadow = "none"
-                }}
             >
-                <Icon name={stripBx(helpRequested ? "bx-check-circle" : confirmHelp ? "bx-error" : "bx-help-circle")}/>
-            </button>
+                <Icon name={stripBx(helpRequested ? "bx-check-circle" : confirmHelp ? "bx-error" : "bx-help-circle")}
+                      className="size-6"/>
+            </Button>
 
             {/* Toast */}
             {toast && (
                 <div style={{
                     position: "fixed", top: 72, right: 24, zIndex: 60,
-                    background: "rgba(40,199,111,0.14)",
+                    background: "var(--dash-success-bg)",
                     borderRadius: 10, padding: "0.75rem 1.25rem",
                     display: "flex", alignItems: "center", gap: 10, fontSize: "0.875rem", color: "var(--dash-text)",
                     animation: "toast-in 0.3s ease",

@@ -125,7 +125,7 @@ function AdminCoverThumb({file}: { file: PortfolioFile }) {
                     background: "var(--adm-outer)",
                 }}
             >
-                <Icon name="image" style={{fontSize: 36, opacity: 0.35, color: "var(--adm-muted)"}}
+                <Icon name="image" style={{fontSize: 24, opacity: 0.35, color: "var(--adm-muted)"}}
                    aria-hidden/>
             </div>
         )
@@ -294,7 +294,7 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
                                             }}
                                         >
                                             <Icon name="folder" style={{
-                                                fontSize: 52,
+                                                fontSize: 24,
                                                 opacity: 0.42,
                                                 color: "var(--adm-active-color)"
                                             }} aria-hidden/>
@@ -359,7 +359,7 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
                                                     }}
                                                 >
                                                     <Icon name="image"
-                                                       style={{fontSize: 32, opacity: 0.35, color: "var(--adm-muted)"}}
+                                                       style={{fontSize: 24, opacity: 0.35, color: "var(--adm-muted)"}}
                                                        aria-hidden/>
                                                 </div>
                                             )}

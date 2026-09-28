@@ -10,15 +10,15 @@
     gap: 8px;
     min-width: 0;
     font-family: inherit;
-    --du-text: var(--dash-text, #f4f4f4);
+    --du-text: var(--dash-text, var(--foreground));
     --du-muted: var(--dash-muted, rgba(255, 255, 255, 0.45));
     --du-border: var(--dash-border, rgba(255, 255, 255, 0.14));
     --du-surface: var(--dash-surface2, rgba(255, 255, 255, 0.04));
-    --du-accent: var(--dash-accent, #a78bfa);
-    --du-accent-bg: var(--dash-accent-bg, rgba(167, 139, 250, 0.1));
-    --du-success: var(--dash-success, #34d399);
-    --du-success-bg: var(--dash-success-bg, rgba(52, 211, 153, 0.1));
-    --du-danger: var(--dash-danger, #f87171);
+    --du-accent: var(--dash-accent, var(--primary));
+    --du-accent-bg: var(--dash-accent-bg, color-mix(in oklab, var(--primary) 10%, transparent));
+    --du-success: var(--dash-success, var(--success));
+    --du-success-bg: var(--dash-success-bg, color-mix(in oklab, var(--success) 10%, transparent));
+    --du-danger: var(--dash-danger, var(--destructive));
 }
 
 /* Админка: светлая по умолчанию, тёмная по prefers-color-scheme — цвета из --adm-*. */
@@ -27,15 +27,15 @@
     --du-muted: var(--adm-muted, #6b7280);
     --du-border: var(--adm-sidebar-border, #e5e7eb);
     --du-surface: var(--adm-outer, #f3f4f6);
-    --du-accent: var(--adm-active-color, #6366f1);
-    --du-accent-bg: var(--adm-active-bg, rgba(99, 102, 241, 0.1));
+    --du-accent: var(--adm-active-color, var(--bs-primary));
+    --du-accent-bg: var(--adm-active-bg, color-mix(in oklab, var(--bs-primary) 10%, transparent));
     --du-success: #16a34a;
     --du-success-bg: rgba(22, 163, 74, 0.08);
     --du-danger: #dc2626;
 }
 
 .label {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: var(--du-muted);
 }
@@ -55,9 +55,9 @@
     gap: 12px;
     min-width: 0;
     padding: 14px 16px;
-    border-radius: 12px;
+    border-radius: 10px;
     border: 1px solid var(--du-border);
-    background: var(--du-surface);
+    background: transparent;
     color: var(--du-text);
     transition: border-color 0.2s, background 0.2s, opacity 0.2s;
 }
@@ -87,7 +87,7 @@
 
 .dropzone.locked:hover {
     border-color: var(--du-border);
-    background: var(--du-surface);
+    background: transparent;
 }
 
 .submitted {
@@ -106,7 +106,7 @@
     border-radius: 10px;
     background: var(--du-accent-bg);
     color: var(--du-accent);
-    font-size: 1.35rem;
+    font-size: 1.5rem;
 }
 
 .iconDone {
@@ -119,14 +119,14 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
 }
 
 .title {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 0.88rem;
+    font-size: 0.875rem;
     font-weight: 600;
     color: var(--du-text);
 }
@@ -143,7 +143,7 @@
 }
 
 .sub {
-    font-size: 0.76rem;
+    font-size: 0.75rem;
     line-height: 1.35;
     color: var(--du-muted);
     overflow-wrap: anywhere;
@@ -153,7 +153,7 @@
     display: block;
     height: 4px;
     margin-top: 4px;
-    border-radius: 2px;
+    border-radius: 4px;
     overflow: hidden;
     background: color-mix(in oklab, var(--du-accent) 18%, transparent);
 }
@@ -161,50 +161,13 @@
 .progress > span {
     display: block;
     height: 100%;
-    border-radius: 2px;
+    border-radius: 4px;
     background: var(--du-accent);
-    transition: width 0.2s ease;
 }
 
+/* Кнопки — Button; класс оставлен только для раскладки (flex-shrink, order на мобильных). */
 .action {
     flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 6px 12px;
-    border-radius: 8px;
-    border: 1px solid var(--du-border);
-    background: transparent;
-    color: var(--du-text);
-    font-family: inherit;
-    font-size: 0.78rem;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.action:hover {
-    border-color: var(--du-accent);
-    color: var(--du-accent);
-}
-
-.remove {
-    flex-shrink: 0;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 0;
-    border-radius: 8px;
-    background: transparent;
-    color: var(--du-muted);
-    font-size: 1.2rem;
-    cursor: pointer;
-}
-
-.remove:hover {
-    color: var(--du-danger);
-    background: color-mix(in oklab, var(--du-danger) 12%, transparent);
 }
 
 .lock {
@@ -215,7 +178,7 @@
 
 .error {
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--du-danger);
 }
 
@@ -230,15 +193,15 @@
     width: 32px;
     height: 32px;
     border-radius: 8px;
-    font-size: 1.1rem;
+    font-size: 1.125rem;
 }
 
 .sm .title {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
 }
 
 .sm .sub {
-    font-size: 0.72rem;
+    font-size: 0.75rem;
 }
 
 @media (max-width: 480px) {

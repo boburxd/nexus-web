@@ -1,15 +1,18 @@
 "use client"
 import Link from "next/link"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 export default function Navbar() {
     return (
         <nav
             className="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme">
             <div className="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-                <a className="nav-item nav-link px-0 me-xl-4" href="#">
+                {/* Мобильное меню Sneat раскрывается классом layout-menu-expanded на <html>. */}
+                <Button type="button" variant="ghost" size="icon" aria-label="Открыть меню"
+                        onClick={() => document.documentElement.classList.toggle("layout-menu-expanded")}>
                     <Icon name="menu" className="bx-md"/>
-                </a>
+                </Button>
             </div>
 
             <div className="navbar-nav-right d-flex align-items-center" id="navbar-collapse">

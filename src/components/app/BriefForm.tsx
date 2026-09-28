@@ -2,6 +2,10 @@
 
 import {useState} from "react"
 import {AiIcon} from "@/components/app/AiIcon"
+import {Button} from "@/components/ui/button"
+import {Badge} from "@/components/ui/badge"
+import {Icon} from "@/components/ui/icon"
+import {Input} from "@/components/ui/input"
 
 // ─── Типы ────────────────────────────────────────────────────────────────────
 
@@ -23,7 +27,7 @@ interface BriefFormProps {
 const BRIEF_FIELDS = [
     {key: "area", label: "Площадь", placeholder: "Например: 65 м²", hint: "Общая площадь помещения"},
     {key: "style", label: "Стиль", placeholder: "Скандинавский, лофт, классика…", hint: "Желаемый стиль интерьера"},
-    {key: "budget", label: "Бюджет", placeholder: "Например: 500 000 — 800 000 руб.", hint: "Общий бюджет на проект"},
+    {key: "budget", label: "Бюджет", placeholder: "Например: 500 000 – 800 000 руб.", hint: "Общий бюджет на проект"},
     {key: "rooms", label: "Помещения", placeholder: "Гостиная, спальня, кухня…", hint: "Перечислите все комнаты"},
     {key: "deadline", label: "Срок", placeholder: "Например: 3 месяца", hint: "Желаемый срок выполнения"},
     {key: "address", label: "Адрес", placeholder: "Город, район или полный адрес", hint: "Для выезда дизайнера"},
@@ -34,86 +38,38 @@ const BRIEF_FIELDS = [
 
 const S = {
     card: {
-        background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        borderRadius: 12,
+        background: "var(--card)",
+        borderRadius: 14,
         padding: "1.5rem",
         marginBottom: "1rem",
     } as React.CSSProperties,
 
     label: {
         display: "block",
-        color: "rgba(255,255,255,0.45)",
-        fontSize: "0.72rem",
+        color: "var(--muted-foreground)",
+        fontSize: "0.75rem",
         fontWeight: 600,
-        textTransform: "uppercase" as const,
-        letterSpacing: "0.07em",
-        marginBottom: "0.4em",
+        marginBottom: 6,
     } as React.CSSProperties,
 
     hint: {
-        color: "rgba(255,255,255,0.25)",
+        color: "var(--muted-foreground)",
         fontSize: "0.75rem",
-        marginTop: "0.3em",
-    } as React.CSSProperties,
-
-    input: {
-        width: "100%",
-        background: "rgba(255,255,255,0.05)",
-        border: "1px solid rgba(255,255,255,0.1)",
-        borderRadius: 8,
-        color: "#f4f4f4",
-        fontSize: "0.9rem",
-        padding: "0.65em 0.875em",
-        outline: "none",
-        fontFamily: "inherit",
-        transition: "border-color 0.2s",
-    } as React.CSSProperties,
-
-    inputDisabled: {
-        opacity: 0.6,
-        cursor: "not-allowed",
-    } as React.CSSProperties,
-
-    btnPrimary: {
-        background: "rgba(121,40,202,0.75)",
-        border: "1px solid rgba(121,40,202,0.5)",
-        borderRadius: 8,
-        color: "#f4f4f4",
-        cursor: "pointer",
-        fontSize: "0.875rem",
-        fontWeight: 500,
-        padding: "0.6em 1.4em",
-        fontFamily: "inherit",
-        transition: "background 0.2s",
-    } as React.CSSProperties,
-
-    btnGhost: {
-        background: "rgba(255,255,255,0.05)",
-        border: "1px solid rgba(255,255,255,0.1)",
-        borderRadius: 8,
-        color: "rgba(255,255,255,0.6)",
-        cursor: "pointer",
-        fontSize: "0.875rem",
-        padding: "0.6em 1.2em",
-        fontFamily: "inherit",
-        transition: "background 0.2s",
+        marginTop: 4,
     } as React.CSSProperties,
 
     suggestionCard: {
-        background: "rgba(121,40,202,0.07)",
-        border: "1px solid rgba(121,40,202,0.2)",
+        background: "var(--secondary)",
         borderRadius: 10,
-        padding: "1rem 1.1rem",
-        marginBottom: "0.75rem",
+        padding: "16px 16px",
+        marginBottom: 12,
     } as React.CSSProperties,
 
     appliedCard: {
-        background: "rgba(52,211,153,0.06)",
-        border: "1px solid rgba(52,211,153,0.2)",
+        background: "color-mix(in oklab, var(--success) 8%, transparent)",
         borderRadius: 10,
-        padding: "1rem 1.1rem",
-        marginBottom: "0.75rem",
+        padding: "16px 16px",
+        marginBottom: 12,
         opacity: 0.6,
     } as React.CSSProperties,
 }
@@ -183,13 +139,13 @@ export function BriefForm({orderId, initialData, editable = true}: BriefFormProp
     return (
         <div>
             {/* ── Заголовок ── */}
-            <div style={{marginBottom: "1.75rem"}}>
-                <h2 style={{color: "#f4f4f4", fontSize: "1.25rem", fontWeight: 500, margin: 0}}>
+            <div style={{marginBottom: 24}}>
+                <h2 style={{color: "var(--foreground)", fontSize: "1.125rem", fontWeight: 500, margin: 0}}>
                     Бриф проекта
                 </h2>
-                <p style={{color: "rgba(255,255,255,0.35)", fontSize: "0.82rem", marginTop: "0.3em"}}>
+                <p style={{color: "var(--muted-foreground)", fontSize: "0.875rem", marginTop: 4}}>
                     {editable
-                        ? "Заполните детали — чем точнее бриф, тем лучше результат"
+                        ? "Заполните детали: чем точнее бриф, тем лучше результат"
                         : "Бриф передан дизайнеру"}
                 </p>
             </div>
@@ -197,20 +153,13 @@ export function BriefForm({orderId, initialData, editable = true}: BriefFormProp
             {/* ── Поля ── */}
             <div style={S.card}>
                 {BRIEF_FIELDS.map(({key, label, placeholder, hint}) => (
-                    <div key={key} style={{marginBottom: "1.25rem"}}>
+                    <div key={key} style={{marginBottom: 20}}>
                         <label style={S.label}>{label}</label>
-                        <input
+                        <Input
                             value={data[key] ?? ""}
                             onChange={e => handleChange(key, e.target.value)}
                             disabled={!editable}
                             placeholder={placeholder}
-                            style={{...S.input, ...(!editable ? S.inputDisabled : {})}}
-                            onFocus={e => {
-                                e.currentTarget.style.borderColor = "rgba(121,40,202,0.5)"
-                            }}
-                            onBlur={e => {
-                                e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"
-                            }}
                         />
                         <p style={S.hint}>{hint}</p>
                     </div>
@@ -219,24 +168,15 @@ export function BriefForm({orderId, initialData, editable = true}: BriefFormProp
 
             {/* ── Кнопки действий ── */}
             {editable && (
-                <div style={{display: "flex", gap: "0.75rem", marginBottom: "1.5rem"}}>
-                    <button onClick={handleSave} disabled={saving} style={S.btnPrimary}>
+                <div style={{display: "flex", gap: 12, marginBottom: 24}}>
+                    <Button onClick={handleSave} disabled={saving}>
                         {saving ? "Сохранение…" : saved ? "Сохранено ✓" : "Сохранить"}
-                    </button>
+                    </Button>
 
-                    <button
-                        onClick={handleAI}
-                        disabled={loadingAI}
-                        style={{
-                            ...S.btnGhost,
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "0.4em",
-                        }}
-                    >
+                    <Button variant="outline" onClick={handleAI} disabled={loadingAI}>
                         <AiIcon/>
                         {loadingAI ? "Анализирую…" : "Подсказки AI"}
-                    </button>
+                    </Button>
                 </div>
             )}
 
@@ -247,47 +187,27 @@ export function BriefForm({orderId, initialData, editable = true}: BriefFormProp
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
-                        marginBottom: "0.875rem"
+                        marginBottom: 14
                     }}>
-                        <div style={{display: "flex", alignItems: "center", gap: "0.5em"}}>
+                        <div style={{display: "flex", alignItems: "center", gap: 8}}>
                             <AiIcon size="1rem"/>
                             <span style={{
-                                color: "rgba(255,255,255,0.6)",
-                                fontSize: "0.8rem",
+                                color: "var(--muted-foreground)",
+                                fontSize: "0.75rem",
                                 fontWeight: 600,
-                                textTransform: "uppercase",
-                                letterSpacing: "0.07em"
                             }}>
                 AI-предложения
               </span>
-                            <span style={{
-                                background: "rgba(121,40,202,0.25)",
-                                borderRadius: 100,
-                                color: "rgba(255,255,255,0.5)",
-                                fontSize: "0.72rem",
-                                padding: "0.15em 0.6em"
-                            }}>
-                только подсказки
-              </span>
+                            <Badge variant="secondary">только подсказки</Badge>
                         </div>
-                        <button
-                            onClick={() => setShowAI(false)}
-                            style={{
-                                background: "none",
-                                border: "none",
-                                color: "rgba(255,255,255,0.3)",
-                                cursor: "pointer",
-                                fontSize: "1rem",
-                                padding: 0
-                            }}
-                        >
-                            ✕
-                        </button>
+                        <Button variant="ghost" size="icon-sm" aria-label="Закрыть" onClick={() => setShowAI(false)}>
+                            <Icon name="x"/>
+                        </Button>
                     </div>
 
                     {loadingAI && (
                         <div style={{...S.card, textAlign: "center", padding: "2rem"}}>
-                            <div style={{color: "rgba(255,255,255,0.35)", fontSize: "0.875rem"}}>
+                            <div style={{color: "var(--muted-foreground)", fontSize: "0.875rem"}}>
                                 Анализирую бриф…
                             </div>
                         </div>
@@ -296,10 +216,9 @@ export function BriefForm({orderId, initialData, editable = true}: BriefFormProp
                     {aiError && (
                         <div style={{
                             ...S.card,
-                            borderColor: "rgba(240,20,20,0.25)",
-                            background: "rgba(240,20,20,0.05)"
+                            background: "color-mix(in oklab, var(--destructive) 8%, transparent)"
                         }}>
-                            <p style={{color: "rgba(255,100,100,0.8)", fontSize: "0.875rem", margin: 0}}>{aiError}</p>
+                            <p style={{color: "var(--destructive)", fontSize: "0.875rem", margin: 0}}>{aiError}</p>
                         </div>
                     )}
 
@@ -311,36 +230,34 @@ export function BriefForm({orderId, initialData, editable = true}: BriefFormProp
                             <div key={i} style={isApplied ? S.appliedCard : S.suggestionCard}>
                                 {label && (
                                     <div style={{
-                                        color: "rgba(121,40,202,0.9)",
-                                        fontSize: "0.7rem",
+                                        color: "var(--primary)",
+                                        fontSize: "0.75rem",
                                         fontWeight: 600,
-                                        textTransform: "uppercase",
-                                        letterSpacing: "0.07em",
-                                        marginBottom: "0.4em"
+                                        marginBottom: 6
                                     }}>
                                         {label}
                                     </div>
                                 )}
                                 <p style={{
-                                    color: "#f4f4f4",
+                                    color: "var(--card-foreground)",
                                     fontSize: "0.875rem",
                                     fontWeight: 500,
-                                    margin: "0 0 0.3em"
+                                    margin: "0 0 4px"
                                 }}>
                                     {s.tip}
                                 </p>
-                                <p style={{color: "rgba(255,255,255,0.4)", fontSize: "0.8rem", margin: "0 0 0.75em"}}>
+                                <p style={{color: "var(--muted-foreground)", fontSize: "0.75rem", margin: "0 0 10px"}}>
                                     {s.reason}
                                 </p>
                                 <div style={{
                                     display: "flex",
                                     alignItems: "flex-start",
                                     justifyContent: "space-between",
-                                    gap: "1rem"
+                                    gap: 16
                                 }}>
                                     <p style={{
-                                        color: "rgba(255,255,255,0.55)",
-                                        fontSize: "0.8rem",
+                                        color: "var(--muted-foreground)",
+                                        fontSize: "0.75rem",
                                         fontStyle: "italic",
                                         margin: 0,
                                         flex: 1
@@ -348,26 +265,14 @@ export function BriefForm({orderId, initialData, editable = true}: BriefFormProp
                                         «{s.example}»
                                     </p>
                                     {!isApplied && editable && s.field && (
-                                        <button
-                                            onClick={() => applySuggestion(i, s.field, s.example)}
-                                            style={{
-                                                background: "rgba(121,40,202,0.2)",
-                                                border: "1px solid rgba(121,40,202,0.35)",
-                                                borderRadius: 6,
-                                                color: "rgba(255,255,255,0.7)",
-                                                cursor: "pointer",
-                                                fontSize: "0.75rem",
-                                                padding: "0.3em 0.8em",
-                                                fontFamily: "inherit",
-                                                flexShrink: 0,
-                                            }}
-                                        >
+                                        <Button variant="secondary" size="xs" className="shrink-0"
+                                                onClick={() => applySuggestion(i, s.field, s.example)}>
                                             Применить →
-                                        </button>
+                                        </Button>
                                     )}
                                     {isApplied && (
                                         <span
-                                            style={{color: "rgba(52,211,153,0.7)", fontSize: "0.75rem", flexShrink: 0}}>✓ Применено</span>
+                                            style={{color: "var(--success)", fontSize: "0.75rem", flexShrink: 0}}>✓ Применено</span>
                                     )}
                                 </div>
                             </div>

@@ -3,6 +3,7 @@
 import {type ReactNode, useEffect, useRef, useState} from "react"
 import {createPortal} from "react-dom"
 import {registerDashDrawerEscape} from "./dashDrawerEscapeStack"
+import {Button} from "@/components/ui/button"
 
 export function DashRightDrawer({
                                     open,
@@ -74,17 +75,12 @@ export function DashRightDrawer({
             }}
             aria-hidden={!open}
         >
-            <button
-                type="button"
-                tabIndex={open ? 0 : -1}
-                aria-label="Закрыть панель"
+            <div
+                role="presentation"
                 onClick={() => onCloseRef.current()}
                 style={{
                     position: "absolute",
                     inset: 0,
-                    margin: 0,
-                    padding: 0,
-                    border: "none",
                     cursor: open ? "pointer" : "default",
                     background: "rgba(0,0,0,0.35)",
                     opacity: open ? 1 : 0,
@@ -105,7 +101,7 @@ export function DashRightDrawer({
                     width: panelWidth,
                     maxWidth: "100%",
                     boxSizing: "border-box",
-                    background: "var(--dash-surface, #fff)",
+                    background: "var(--dash-surface)",
                     display: "flex",
                     flexDirection: "column",
                     transform: open ? "translateX(0)" : "translateX(100%)",
@@ -134,24 +130,16 @@ export function DashRightDrawer({
             </span>
                         {badge}
                     </div>
-                    <button
+                    <Button
                         type="button"
+                        variant="outline"
+                        size="icon-sm"
+                        className="shrink-0"
                         onClick={() => onCloseRef.current()}
-                        style={{
-                            flexShrink: 0,
-                            background: "var(--dash-surface, #fff)",
-                            border: "1px solid var(--dash-border, rgba(0,0,0,0.12))",
-                            borderRadius: 8,
-                            color: "var(--dash-muted)",
-                            cursor: "pointer",
-                            fontSize: "0.875rem",
-                            lineHeight: 1,
-                            padding: "4px 8px",
-                        }}
                         aria-label="Закрыть"
                     >
                         ✕
-                    </button>
+                    </Button>
                 </div>
 
                 <div

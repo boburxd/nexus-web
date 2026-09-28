@@ -8,6 +8,9 @@ import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 import {uploadWithProgress} from "@/lib/upload-progress"
 import {AiIcon} from "@/components/app/AiIcon"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
+import {Textarea} from "@/components/ui/textarea"
 import {stripBx} from "@/lib/icon-map"
 
 const DESC_MAX = 500
@@ -107,22 +110,22 @@ function AiChatDrawer({
             {/* Backdrop */}
             <div
                 onClick={onClose}
+                role="presentation"
                 style={{
                     position: "absolute", inset: 0,
-                    background: "rgba(0,0,0,0.45)", backdropFilter: "blur(2px)",
+                    background: "rgba(0,0,0,0.45)",
                     opacity: open ? 1 : 0, transition: "opacity 0.3s ease",
                 }}
             />
 
             {/* Панель */}
-            <div style={{
+            <div role="dialog" aria-modal="true" aria-label="AI-помощник" style={{
                 position: "absolute", top: 0, right: 0, bottom: 0,
                 width: "min(420px, 94vw)",
-                background: "#0d1230",
-                borderLeft: "1px solid rgba(255,255,255,0.08)",
+                background: "var(--dash-surface, var(--card))",
                 display: "flex", flexDirection: "column",
                 transform: open ? "translateX(0)" : "translateX(100%)",
-                transition: "transform 0.35s cubic-bezier(0.4,0,0.2,1)",
+                transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
                 fontFamily: "'PP Neue Montreal', 'Inter', Arial, sans-serif",
             }}>
 
@@ -131,46 +134,37 @@ function AiChatDrawer({
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    padding: "1.1rem 1.4rem",
+                    padding: "16px 24px",
                     borderBottom: "1px solid rgba(255,255,255,0.07)",
                     flexShrink: 0
                 }}>
                     <div style={{display: "flex", alignItems: "center", gap: "0.5em"}}>
                         <AiIcon size="1rem"/>
-                        <span style={{color: "#f4f4f4", fontSize: "0.92rem", fontWeight: 500}}>AI-помощник</span>
+                        <span style={{color: "var(--dash-text, var(--foreground))", fontSize: "0.875rem", fontWeight: 500}}>AI-помощник</span>
                         <span style={{
-                            background: "rgba(121,40,202,0.25)",
-                            borderRadius: 100,
-                            color: "rgba(255,255,255,0.4)",
-                            fontSize: "0.65rem",
+                            background: "var(--dash-accent-bg, var(--muted))",
+                            borderRadius: 10,
+                            color: "var(--dash-muted, var(--muted-foreground))",
+                            fontSize: "0.75rem",
                             fontWeight: 600,
-                            letterSpacing: "0.05em",
-                            padding: "0.2em 0.6em",
-                            textTransform: "uppercase"
+                            padding: "2px 10px",
                         }}>
               описание
             </span>
                     </div>
-                    <button onClick={onClose} style={{
-                        background: "rgba(255,255,255,0.06)",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                        borderRadius: 6,
-                        color: "rgba(255,255,255,0.45)",
-                        cursor: "pointer",
-                        fontSize: "0.9rem",
-                        padding: "0.3em 0.55em"
-                    }}>✕
-                    </button>
+                    <Button variant="ghost" size="icon-sm" onClick={onClose} aria-label="Закрыть">
+                        <Icon name="x"/>
+                    </Button>
                 </div>
 
                 {/* Сообщения */}
                 <div style={{
                     flex: 1,
                     overflowY: "auto",
-                    padding: "1rem 1.4rem",
+                    padding: "16px 24px",
                     display: "flex",
                     flexDirection: "column",
-                    gap: "0.75rem"
+                    gap: 12
                 }}>
                     {messages.map((m, i) => {
                         const isUser = m.role === "user"
@@ -183,17 +177,16 @@ function AiChatDrawer({
                                 display: "flex",
                                 flexDirection: "column",
                                 alignItems: isUser ? "flex-end" : "flex-start",
-                                gap: "0.3rem"
+                                gap: 4
                             }}>
                                 <div style={{
-                                    background: isUser ? "rgba(121,40,202,0.22)" : "rgba(255,255,255,0.05)",
-                                    border: `1px solid ${isUser ? "rgba(121,40,202,0.3)" : "rgba(255,255,255,0.08)"}`,
-                                    borderRadius: isUser ? "12px 12px 2px 12px" : "12px 12px 12px 2px",
-                                    color: isUser ? "rgba(255,255,255,0.85)" : "#e8e8f0",
-                                    fontSize: "0.85rem",
+                                    background: isUser ? "var(--dash-accent-bg, var(--muted))" : "rgba(255,255,255,0.05)",
+                                    borderRadius: isUser ? "14px 14px 2px 14px" : "14px 14px 14px 2px",
+                                    color: isUser ? "rgba(255,255,255,0.85)" : "var(--dash-text, var(--foreground))",
+                                    fontSize: "0.875rem",
                                     lineHeight: 1.55,
                                     maxWidth: "88%",
-                                    padding: "0.65rem 0.9rem",
+                                    padding: "10px 14px",
                                     whiteSpace: "pre-wrap",
                                 }}>
                                     {displayText}
@@ -203,54 +196,42 @@ function AiChatDrawer({
                                 {ready && (
                                     <div style={{maxWidth: "88%", width: "100%"}}>
                                         <div style={{
-                                            background: "rgba(52,211,153,0.06)",
-                                            border: "1px solid rgba(52,211,153,0.2)",
+                                            background: "var(--dash-success-bg, color-mix(in oklab, var(--success) 10%, transparent))",
                                             borderRadius: 8,
-                                            padding: "0.65rem 0.9rem",
-                                            marginBottom: "0.4rem"
+                                            padding: "10px 14px",
+                                            marginBottom: 6
                                         }}>
                                             <div style={{
-                                                color: "rgba(52,211,153,0.7)",
-                                                fontSize: "0.65rem",
+                                                color: "var(--dash-success, var(--success))",
+                                                fontSize: "0.75rem",
                                                 fontWeight: 600,
-                                                letterSpacing: "0.06em",
-                                                textTransform: "uppercase",
-                                                marginBottom: "0.35rem"
+                                                marginBottom: 6
                                             }}>Готовое описание
                                             </div>
                                             <p style={{
-                                                color: "#e8e8f0",
-                                                fontSize: "0.83rem",
+                                                color: "var(--dash-text, var(--foreground))",
+                                                fontSize: "0.875rem",
                                                 lineHeight: 1.5,
                                                 margin: 0,
                                                 whiteSpace: "pre-wrap"
                                             }}>{ready}</p>
                                             <div style={{
                                                 color: "rgba(255,255,255,0.25)",
-                                                fontSize: "0.7rem",
-                                                marginTop: "0.35rem"
+                                                fontSize: "0.75rem",
+                                                marginTop: 6
                                             }}>{ready.length} / 500 символов
                                             </div>
                                         </div>
-                                        <button
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
                                             onClick={() => {
                                                 onApply(ready.slice(0, DESC_MAX));
                                                 onClose()
                                             }}
-                                            style={{
-                                                background: "rgba(52,211,153,0.15)",
-                                                border: "1px solid rgba(52,211,153,0.3)",
-                                                borderRadius: 6,
-                                                color: "rgba(52,211,153,0.9)",
-                                                cursor: "pointer",
-                                                fontSize: "0.8rem",
-                                                fontFamily: "inherit",
-                                                fontWeight: 500,
-                                                padding: "0.4em 0.9em"
-                                            }}
                                         >
                                             Применить →
-                                        </button>
+                                        </Button>
                                     </div>
                                 )}
                             </div>
@@ -258,27 +239,18 @@ function AiChatDrawer({
                     })}
 
                     {loading && (
-                        <div style={{display: "flex", gap: "0.3rem", padding: "0.5rem 0"}}>
-                            {[0, 1, 2].map(i => (
-                                <div key={i} style={{
-                                    width: 6,
-                                    height: 6,
-                                    borderRadius: "50%",
-                                    background: "rgba(255,255,255,0.3)",
-                                    animation: `bounce 1.2s ${i * 0.2}s ease-in-out infinite`
-                                }}/>
-                            ))}
+                        <div style={{display: "flex", padding: "8px 0", color: "rgba(255,255,255,0.3)"}}>
+                            <Icon name="loader-alt" className="bx-spin" aria-label="AI печатает"/>
                         </div>
                     )}
 
                     {error && (
                         <div style={{
-                            background: "rgba(240,20,20,0.07)",
-                            border: "1px solid rgba(240,20,20,0.2)",
+                            background: "var(--dash-danger-bg, color-mix(in oklab, var(--destructive) 10%, transparent))",
                             borderRadius: 8,
-                            color: "rgba(255,100,100,0.8)",
-                            fontSize: "0.83rem",
-                            padding: "0.7rem 0.9rem"
+                            color: "var(--dash-danger, var(--destructive))",
+                            fontSize: "0.875rem",
+                            padding: "10px 14px"
                         }}>
                             {error}
                         </div>
@@ -288,9 +260,9 @@ function AiChatDrawer({
                 </div>
 
                 {/* Ввод */}
-                <div style={{borderTop: "1px solid rgba(255,255,255,0.07)", padding: "0.9rem 1.4rem", flexShrink: 0}}>
+                <div style={{borderTop: "1px solid rgba(255,255,255,0.07)", padding: "14px 24px", flexShrink: 0}}>
                     <div style={{display: "flex", gap: "0.5rem", alignItems: "flex-end"}}>
-            <textarea
+            <Textarea
                 ref={inputRef}
                 rows={2}
                 value={input}
@@ -301,44 +273,21 @@ function AiChatDrawer({
                         send()
                     }
                 }}
-                placeholder="Напишите ответ… (Enter — отправить)"
+                placeholder="Напишите ответ… (Enter: отправить)"
                 disabled={loading}
-                style={{
-                    flex: 1, resize: "none",
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    borderRadius: 8, color: "#f4f4f4",
-                    fontSize: "0.85rem", fontFamily: "inherit",
-                    padding: "0.6em 0.8em", outline: "none",
-                    lineHeight: 1.5,
-                }}
+                className="flex-1 resize-none"
             />
-                        <button
+                        <Button
+                            size="icon-lg"
                             onClick={send}
                             disabled={!input.trim() || loading}
-                            style={{
-                                background: "rgba(121,40,202,0.4)",
-                                border: "1px solid rgba(121,40,202,0.5)",
-                                borderRadius: 8, color: "#fff",
-                                cursor: !input.trim() || loading ? "not-allowed" : "pointer",
-                                fontSize: "1rem", padding: "0.55em 0.75em",
-                                opacity: !input.trim() || loading ? 0.5 : 1,
-                                transition: "opacity 0.15s",
-                            }}
                             aria-label="Отправить"
                         >
                             ↑
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
-
-            <style>{`
-        @keyframes bounce {
-          0%, 80%, 100% { transform: translateY(0) }
-          40% { transform: translateY(-6px) }
-        }
-      `}</style>
         </div>,
         document.body
     )
@@ -411,10 +360,10 @@ function PreviewModal({file, url, onClose, onSave}: {
         <AppModal open onClose={onClose} maxWidth={960}>
             {isImage(file) && (
                 <div style={{
-                    background: "#111",
+                    background: "var(--dash-bg, var(--background))",
                     maxHeight: "55vh",
                     overflow: "hidden",
-                    borderRadius: "16px 16px 0 0",
+                    borderRadius: "14px 14px 0 0",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center"
@@ -428,10 +377,10 @@ function PreviewModal({file, url, onClose, onSave}: {
                 <div className="d-flex align-items-start justify-content-between gap-3 mb-3">
                     <div style={{flex: 1, minWidth: 0}}>
                         {editing
-                            ? <input className="form-control fw-semibold mb-1" style={{fontSize: 17}} value={title}
+                            ? <Input className="mb-1" value={title}
                                      onChange={e => setTitle(e.target.value)} placeholder="Название работы" autoFocus/>
                             :
-                            <h5 className="mb-0 fw-semibold" style={{fontSize: 17}}>{file.title || file.filename}</h5>}
+                            <h5 className="mb-0 fw-semibold" style={{fontSize: 18}}>{file.title || file.filename}</h5>}
                         <small
                             className="text-muted">{fmt(file.size)}{file.size ? " · " : ""}{new Date(file.createdAt).toLocaleDateString("ru-RU")}</small>
                     </div>
@@ -440,16 +389,16 @@ function PreviewModal({file, url, onClose, onSave}: {
                             <ActionButton icon="bx-edit" onClick={() => setEditing(true)}>Изменить</ActionButton>}
                         <ActionButton icon="bx-link-external"
                                       onClick={() => window.open(url, "_blank")}>Открыть</ActionButton>
-                        <button className="btn btn-sm btn-outline-secondary px-2" onClick={onClose}><Icon name="x" style={{fontSize: 18}}/></button>
+                        <Button variant="outline" size="icon-sm" onClick={onClose} aria-label="Закрыть"><Icon name="x"/></Button>
                     </div>
                 </div>
                 <div>
                     <SectionLabel>Описание</SectionLabel>
                     {editing
-                        ? <textarea className="form-control" rows={3} value={description}
+                        ? <Textarea rows={3} value={description}
                                     onChange={e => setDescription(e.target.value)}
                                     placeholder="Объект, стиль, площадь, использованные решения…"/>
-                        : <p className="text-muted mb-0" style={{fontSize: "0.9rem", whiteSpace: "pre-wrap"}}>
+                        : <p className="text-muted mb-0" style={{fontSize: "0.875rem", whiteSpace: "pre-wrap"}}>
                             {file.description || <span style={{opacity: 0.45}}>Описание не добавлено</span>}
                         </p>}
                 </div>
@@ -697,32 +646,40 @@ export default function PortfolioUploader() {
             <div key={f.id} className={isList ? "col-12" : "col-sm-6 col-xl-4"}>
                 <div
                     className="up-card"
+                    role="button"
+                    tabIndex={0}
                     style={{
                         padding: 0, overflow: "hidden", cursor: "pointer", margin: 0,
                         display: isList ? "flex" : "block", alignItems: isList ? "center" : undefined
                     }}
                     onClick={() => openPreview(f)}
+                    onKeyDown={e => {
+                        if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {
+                            e.preventDefault()
+                            void openPreview(f)
+                        }
+                    }}
                 >
                     {/* Превью/иконка */}
                     {(!isList && img) ? (
                         <div style={{
                             height: 180,
                             overflow: "hidden",
-                            background: "rgba(91,79,207,0.06)",
+                            background: "var(--dash-accent-bg, var(--muted))",
                             position: "relative"
                         }}>
                             {preview
                                 // eslint-disable-next-line @next/next/no-img-element
                                 ? <img src={preview} alt={f.title ?? f.filename}
                                        style={{width: "100%", height: "100%", objectFit: "cover"}}/>
-                                : <div className="d-flex align-items-center justify-content-center h-100"><Icon name="image" className="text-muted" style={{fontSize: 48}}/></div>}
-                            <div className="portfolio-overlay"><Icon name="zoom-in"
-                                                                  style={{fontSize: 28, color: "#fff"}}/></div>
+                                : <div className="d-flex align-items-center justify-content-center h-100"><Icon name="image" className="text-muted" size={48}/></div>}
+                            <div className="portfolio-overlay"><Icon name="zoom-in" size={28}
+                                                                  style={{color: "#fff"}}/></div>
                         </div>
                     ) : (
                         <div style={{
                             width: isList ? 44 : 48, height: isList ? 44 : 48, flexShrink: 0,
-                            background: img ? "rgba(91,79,207,0.06)" : "rgba(91,79,207,0.08)",
+                            background: "var(--dash-accent-bg, var(--muted))",
                             borderRadius: isList ? "8px 0 0 8px" : 8,
                             display: "flex", alignItems: "center", justifyContent: "center",
                             margin: isList ? 0 : "16px 16px 0",
@@ -736,7 +693,7 @@ export default function PortfolioUploader() {
                                     borderRadius: isList ? "8px 0 0 8px" : 8
                                 }}/>
                                 : <Icon name={stripBx(img ? "bx-image" : "bx-file")} className="text-primary"
-                                     style={{fontSize: 20}}/>}
+                                     size={20}/>}
                         </div>
                     )}
 
@@ -747,7 +704,7 @@ export default function PortfolioUploader() {
                                 <p className="fw-semibold mb-0 small text-truncate">{f.title || f.filename}</p>
                                 {f.description && (
                                     <p className="text-muted mb-0" style={{
-                                        fontSize: "0.78rem",
+                                        fontSize: "0.75rem",
                                         display: "-webkit-box",
                                         WebkitLineClamp: isList ? 1 : 2,
                                         WebkitBoxOrient: "vertical",
@@ -761,12 +718,12 @@ export default function PortfolioUploader() {
                                 </small>
                             </div>
                             <div className="d-flex gap-1 flex-shrink-0">
-                                <button className="up-icon-btn" onClick={e => {
+                                <Button variant="ghost" size="icon-xs" onClick={e => {
                                     e.stopPropagation();
                                     setConfirmDeleteId(f.id)
                                 }} aria-label="Удалить">
                                     <Icon name="trash" className="text-danger"/>
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     </div>
@@ -801,12 +758,12 @@ export default function PortfolioUploader() {
                         <p className="pf-carousel__title">{f.title || f.filename}</p>
                         {f.description && <p className="pf-carousel__desc">{f.description}</p>}
                         <div className="pf-carousel__actions">
-                            <button className="up-icon-btn" onClick={e => {
+                            <Button variant="ghost" size="icon-xs" onClick={e => {
                                 e.stopPropagation();
                                 void setConfirmDeleteId(f.id)
                             }} aria-label="Удалить">
                                 <Icon name="trash" className="text-danger"/>
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -822,13 +779,14 @@ export default function PortfolioUploader() {
             <div className="d-flex align-items-center justify-content-between mb-3">
                 <div className="d-flex gap-2">
                     {TABS.map(t => (
-                        <button key={t.id} onClick={() => {
-                            setTab(t.id);
-                            clearPending()
-                        }}
-                                className={`btn btn-sm ${tab === t.id ? "btn-primary" : "btn-outline-secondary"}`}>
+                        <Button key={t.id} size="sm" variant={tab === t.id ? "default" : "outline"}
+                                aria-pressed={tab === t.id}
+                                onClick={() => {
+                                    setTab(t.id);
+                                    clearPending()
+                                }}>
                             {t.label}
-                        </button>
+                        </Button>
                     ))}
                 </div>
             </div>
@@ -853,8 +811,7 @@ export default function PortfolioUploader() {
                                         overflow: "hidden",
                                         height: "100%",
                                         minHeight: 140,
-                                        background: "rgba(91,79,207,0.04)",
-                                        border: "1px solid rgba(255,255,255,0.08)"
+                                        background: "var(--dash-surface2, var(--muted))",
                                     }}>
                                         {pendingPreview ? (
                                             // eslint-disable-next-line @next/next/no-img-element
@@ -867,31 +824,18 @@ export default function PortfolioUploader() {
                                         ) : (
                                             <div
                                                 className="d-flex flex-column align-items-center justify-content-center h-100 gap-2 p-3">
-                                                <Icon name="file" className="text-primary" style={{fontSize: 36}}/>
+                                                <Icon name="file" className="text-primary" size={36}/>
                                                 <p className="mb-0 small fw-medium text-truncate text-center"
                                                    style={{maxWidth: "90%"}}>{pendingFile.name}</p>
                                                 <small className="text-muted">{fmt(pendingFile.size)}</small>
                                             </div>
                                         )}
                                         {!uploading && (
-                                            <button onClick={clearPending} style={{
-                                                position: "absolute",
-                                                top: 6,
-                                                right: 6,
-                                                width: 26,
-                                                height: 26,
-                                                borderRadius: "50%",
-                                                border: "none",
-                                                background: "rgba(0,0,0,0.55)",
-                                                color: "#fff",
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                                cursor: "pointer",
-                                                fontSize: 14
-                                            }} aria-label="Отменить выбор">
+                                            <Button variant="secondary" size="icon-sm" onClick={clearPending}
+                                                    style={{position: "absolute", top: 6, right: 6}}
+                                                    aria-label="Отменить выбор">
                                                 <Icon name="x"/>
-                                            </button>
+                                            </Button>
                                         )}
                                         {uploading && (
                                             <div style={{
@@ -904,8 +848,8 @@ export default function PortfolioUploader() {
                                                 justifyContent: "center",
                                                 gap: 8
                                             }}>
-                                                <Icon name="loader-alt" className="bx-spin"
-                                                   style={{fontSize: 28, color: "#fff"}}/>
+                                                <Icon name="loader-alt" className="bx-spin" size={28}
+                                                   style={{color: "#fff"}}/>
                                                 <div style={{width: "70%"}}>
                                                     <div className="progress" style={{
                                                         height: 4,
@@ -915,7 +859,6 @@ export default function PortfolioUploader() {
                                                         <div className="progress-bar" style={{
                                                             width: `${progress}%`,
                                                             background: "#fff",
-                                                            transition: "width 0.2s"
                                                         }}/>
                                                     </div>
                                                     <small style={{color: "#fff", opacity: 0.85}}>{progress}%</small>
@@ -931,9 +874,18 @@ export default function PortfolioUploader() {
                                         }}
                                         onDragLeave={() => setDragging(false)}
                                         onDrop={onDrop}
+                                        role="button"
+                                        tabIndex={0}
+                                        aria-label="Выбрать файл"
                                         onClick={() => inputRef.current?.click()}
+                                        onKeyDown={e => {
+                                            if (e.key === "Enter" || e.key === " ") {
+                                                e.preventDefault()
+                                                inputRef.current?.click()
+                                            }
+                                        }}
                                         style={{
-                                            border: `1px dashed ${dragging ? "rgba(91,79,207,0.58)" : "rgba(255,255,255,0.12)"}`,
+                                            border: `1px dashed ${dragging ? "var(--dash-accent, var(--primary))" : "rgba(255,255,255,0.12)"}`,
                                             borderRadius: 10,
                                             height: "100%",
                                             minHeight: 140,
@@ -942,15 +894,15 @@ export default function PortfolioUploader() {
                                             alignItems: "center",
                                             justifyContent: "center",
                                             gap: 6,
-                                            background: dragging ? "var(--dash-accent-bg, rgba(91,79,207,0.04))" : "var(--dash-surface2, rgba(32,29,29,0.015))",
+                                            background: dragging ? "var(--dash-accent-bg, var(--muted))" : undefined,
                                             cursor: "pointer",
                                             transition: "border-color 0.2s, background 0.2s",
                                             textAlign: "center",
-                                            padding: "1rem",
+                                            padding: 16,
                                         }}
                                     >
                                         <Icon name="cloud-upload" className={dragging ? "text-primary" : "text-muted"}
-                                           style={{fontSize: 30}}/>
+                                           size={30}/>
                                         <p className="mb-0 fw-medium small"
                                            style={{color: dragging ? "var(--dash-accent, var(--bs-primary))" : "var(--dash-text, var(--foreground))"}}>
                                             {dragging ? "Отпустите для выбора" : "Перетащите файл или нажмите"}
@@ -978,8 +930,7 @@ export default function PortfolioUploader() {
                             <div className="col-md-7 d-flex flex-column gap-2">
                                 <div>
                                     <label className="form-label small fw-medium mb-1">Название работы</label>
-                                    <input className="form-control form-control-sm"
-                                           placeholder="Офис на ул. Ленина, 80 м²" value={title}
+                                    <Input placeholder="Офис на ул. Ленина, 80 м²" value={title}
                                            onChange={e => setTitle(e.target.value)}
                                            disabled={uploading || !pendingFile}/>
                                 </div>
@@ -987,36 +938,27 @@ export default function PortfolioUploader() {
                                     <div className="d-flex align-items-center justify-content-between mb-1">
                                         <label className="form-label small fw-medium mb-0">Описание <span
                                             className="text-muted fw-normal"
-                                            style={{fontSize: "0.73rem"}}>(необязательно)</span></label>
+                                            style={{fontSize: "0.75rem"}}>(необязательно)</span></label>
                                         <small className="text-muted"
-                                               style={{fontSize: "0.7rem"}}>{description.length} / {DESC_MAX}</small>
+                                               style={{fontSize: "0.75rem"}}>{description.length} / {DESC_MAX}</small>
                                     </div>
-                                    <textarea className="form-control form-control-sm flex-grow-1" rows={3}
+                                    <Textarea className="flex-grow-1 resize-none" rows={3}
                                               maxLength={DESC_MAX}
                                               placeholder={pendingFile ? "Стиль, площадь, особенности проекта…" : "Сначала выберите файл"}
                                               value={description}
                                               onChange={e => setDescription(e.target.value.slice(0, DESC_MAX))}
-                                              disabled={uploading || !pendingFile} style={{resize: "none"}}/>
+                                              disabled={uploading || !pendingFile}/>
                                 </div>
                                 <div className="d-flex align-items-center gap-2 mt-1 flex-wrap">
-                                    <button className="btn btn-primary btn-sm d-flex align-items-center gap-1"
-                                            onClick={uploadPending} disabled={!pendingFile || uploading}
+                                    <Button size="sm" onClick={uploadPending} disabled={!pendingFile || uploading}
                                             style={{minWidth: 120}}>
                                         {uploading ? <><Icon name="loader-alt" className="bx-spin"/>Загрузка…</> : <><Icon name="upload"/>Загрузить</>}
-                                    </button>
-                                    <button type="button" className="btn btn-sm d-flex align-items-center gap-1"
-                                            style={{
-                                                fontSize: "0.8rem",
-                                                padding: "0.3rem 0.65rem",
-                                                background: "rgba(91,79,207,0.06)",
-                                                border: "1px solid rgba(91,79,207,0.25)",
-                                                borderRadius: 6,
-                                                color: "#5b4fcf",
-                                                whiteSpace: "nowrap"
-                                            }} onClick={() => setDrawerOpen(true)} disabled={uploading || !pendingFile}
+                                    </Button>
+                                    <Button type="button" variant="outline" size="sm"
+                                            onClick={() => setDrawerOpen(true)} disabled={uploading || !pendingFile}
                                             title="Составить описание с помощью AI">
-                                        <AiIcon size="0.85rem"/> AI описание
-                                    </button>
+                                        <AiIcon size="0.875rem"/> AI описание
+                                    </Button>
                                     {error && <small className="text-danger">{error}</small>}
                                 </div>
                             </div>
@@ -1033,19 +975,19 @@ export default function PortfolioUploader() {
             </span>
                         <div className="d-flex align-items-center gap-2">
                             {files.length > 0 && <span className="badge bg-label-secondary"
-                                                       style={{fontSize: "0.7rem"}}>{files.length}</span>}
+                                                       style={{fontSize: "0.75rem"}}>{files.length}</span>}
                             {tab === "PORTFOLIO" && files.length > 0 && (
-                                <div className="btn-group btn-group-sm">
-                                    <button
-                                        className={`btn ${view === "grid" ? "btn-primary" : "btn-outline-secondary"}`}
-                                        onClick={() => setView("grid")} title="Блок">
+                                <div className="d-flex gap-1">
+                                    <Button variant={view === "grid" ? "default" : "outline"} size="icon-sm"
+                                            aria-pressed={view === "grid"} aria-label="Блок"
+                                            onClick={() => setView("grid")} title="Блок">
                                         <Icon name="grid-alt"/>
-                                    </button>
-                                    <button
-                                        className={`btn ${view === "list" ? "btn-primary" : "btn-outline-secondary"}`}
-                                        onClick={() => setView("list")} title="Списком">
+                                    </Button>
+                                    <Button variant={view === "list" ? "default" : "outline"} size="icon-sm"
+                                            aria-pressed={view === "list"} aria-label="Списком"
+                                            onClick={() => setView("list")} title="Списком">
                                         <Icon name="list-ul"/>
-                                    </button>
+                                    </Button>
                                 </div>
                             )}
                         </div>
@@ -1096,40 +1038,38 @@ export default function PortfolioUploader() {
             <style>{`
         .pf-upload-block { margin-bottom: 14px; }
         .pf-gallery-block__inner {
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 12px;
+          border-radius: 14px;
           background: rgba(20,25,40,0.22);
           padding: 12px;
           min-height: 540px;
         }
         .pf-carousel-wrap { position: relative; }
-        .pf-carousel__item { flex: 0 0 120px; transition: 0.5s ease-in-out; scroll-snap-align: start; }
-        .pf-carousel__item:hover { flex: 0 0 250px; transform: translateY(-18px); }
+        .pf-carousel__item { flex: 0 0 120px; scroll-snap-align: start; }
         .pf-carousel__card {
           height: 500px;
-          border-radius: 12px;
+          border-radius: 14px;
           overflow: hidden;
           position: relative;
-          border: 1px solid rgba(255,255,255,0.12);
-          background: rgba(91,79,207,0.06);
-          box-shadow: 1px 3px 15px rgba(0,0,0,0.28);
+          background: var(--dash-surface2, var(--muted));
         }
+        .pf-carousel__card:focus-visible { outline: 2px solid var(--dash-accent, var(--ring)); outline-offset: 2px; }
         .pf-carousel__img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-        .pf-carousel__empty { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--dash-muted); font-size: 30px; }
+        .pf-carousel__empty { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--dash-muted); font-size: 24px; }
         .pf-carousel__overlay {
           position: absolute; inset: 0;
           display: flex; flex-direction: column; justify-content: flex-end;
           align-items: flex-start;
           padding: 10px;
-          background: linear-gradient(0deg, rgba(2,2,46,0.68) 0%, rgba(255,255,255,0) 100%);
+          background: color-mix(in oklab, var(--dash-bg, var(--background)) 68%, transparent);
           opacity: 0;
           visibility: hidden;
           transform: translateY(100%);
-          transition: opacity 0.5s ease-in-out, transform 0.5s 0.2s, visibility 0.5s ease-in-out;
+          transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
         }
-        .pf-carousel__card:hover .pf-carousel__overlay { opacity: 1; visibility: visible; transform: translateY(0%); }
-        .pf-carousel__title { margin: 0; color: #fff; font-size: 0.78rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .pf-carousel__desc { margin: 2px 0 6px; color: rgba(255,255,255,0.75); font-size: 0.7rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .pf-carousel__card:hover .pf-carousel__overlay,
+        .pf-carousel__card:focus-visible .pf-carousel__overlay { opacity: 1; visibility: visible; transform: translateY(0%); }
+        .pf-carousel__title { margin: 0; color: #fff; font-size: 0.75rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .pf-carousel__desc { margin: 2px 0 6px; color: rgba(255,255,255,0.75); font-size: 0.75rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .pf-carousel__actions { display: flex; gap: 6px; }
         .portfolio-overlay {
           position: absolute; inset: 0; opacity: 0;

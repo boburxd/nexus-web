@@ -6,6 +6,7 @@ import {uploadUserFileToPortfolio} from "@/lib/portfolioFileUpload"
 import {PortfolioRemoteFilePreview} from "./PortfolioMediaPreview"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 export type ProjectMaterialRow = {
     id: string
@@ -148,12 +149,12 @@ export function PortfolioProjectMaterials({projectId, disabled}: PortfolioProjec
                  style={{borderTop: "1px solid rgba(255,255,255,0.08)"}}>
             <div className="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
                 <div>
-                    <h6 className="mb-0 small fw-semibold text-uppercase"
-                        style={{letterSpacing: "0.06em", color: "rgba(255,255,255,0.5)"}}>
+                    <h6 className="mb-0 small fw-semibold"
+                        style={{color: "rgba(255,255,255,0.5)"}}>
                         Материалы проекта
                     </h6>
                     <p className="small mb-0 text-muted" style={{lineHeight: 1.45}}>
-                        Сюда — файлы <strong>на весь проект</strong> (одна спецификация, пакет PDF на все кадры и т.п.).
+                        Сюда: файлы <strong>на весь проект</strong> (одна спецификация, пакет PDF на все кадры и т.п.).
                         Это не то же самое, что вложения{" "}
                         <strong>внутри работы</strong> (их добавляют в окне «Новая работа» / «Изменить» у плитки).
                         Работы можно оставить только с фото и рендерами.
@@ -194,8 +195,8 @@ export function PortfolioProjectMaterials({projectId, disabled}: PortfolioProjec
         </span>
             ) : rows.length === 0 ? (
                 <p className="small text-muted mb-0" style={{lineHeight: 1.5}}>
-                    Пока нет общих материалов. Кнопка «Добавить в проект» — файлы для <strong>всей папки</strong>. Нужны
-                    файлы к одной работе — откройте плитку
+                    Пока нет общих материалов. Кнопка «Добавить в проект»: файлы для <strong>всей папки</strong>. Нужны
+                    файлы к одной работе? Откройте плитку
                     работы и «Изменить».
                 </p>
             ) : (
@@ -210,7 +211,7 @@ export function PortfolioProjectMaterials({projectId, disabled}: PortfolioProjec
                         <div
                             key={r.id}
                             className="rounded-3 p-2 d-flex flex-column align-items-stretch gap-2"
-                            style={{border: "1px solid rgba(255,255,255,0.12)", background: "rgba(12,16,30,0.35)"}}
+                            style={{background: "rgba(12,16,30,0.35)"}}
                         >
                             <div className="d-flex justify-content-center">
                                 <PortfolioRemoteFilePreview
@@ -226,17 +227,20 @@ export function PortfolioProjectMaterials({projectId, disabled}: PortfolioProjec
                 {r.file.title || r.file.filename}
               </span>
                             <div className="d-flex gap-1 flex-wrap">
-                                <button
+                                <Button
                                     type="button"
-                                    className="btn btn-sm btn-outline-light flex-grow-1"
+                                    variant="outline"
+                                    size="sm"
+                                    className="flex-grow-1"
                                     onClick={() => void openFileInNewTab(r.file.id)}
                                 >
                                     Открыть
-                                </button>
-                                <button type="button" className="btn btn-sm btn-outline-danger"
-                                        onClick={() => void remove(r.id)} title="Убрать из проекта">
+                                </Button>
+                                <Button type="button" variant="destructive" size="icon-sm"
+                                        onClick={() => void remove(r.id)} title="Убрать из проекта"
+                                        aria-label="Убрать из проекта">
                                     <Icon name="trash" aria-hidden/>
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     ))}

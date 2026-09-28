@@ -77,7 +77,7 @@ export default function ClientDashboard({
             {/* Stats Grid */}
             <div className="client-dashboard__stats-grid">
                 <div className="client-dashboard__stat-card">
-                    <div className="client-dashboard__stat-icon" style={{backgroundColor: "rgba(41, 205, 130, 0.1)"}}>
+                    <div className="client-dashboard__stat-icon" style={{backgroundColor: "var(--dash-success-bg)"}}>
                         <Icon name="folder" style={{color: "var(--dash-success)"}}/>
                     </div>
                     <div className="client-dashboard__stat-content">
@@ -87,7 +87,7 @@ export default function ClientDashboard({
                 </div>
 
                 <div className="client-dashboard__stat-card">
-                    <div className="client-dashboard__stat-icon" style={{backgroundColor: "rgba(115, 103, 240, 0.1)"}}>
+                    <div className="client-dashboard__stat-icon" style={{backgroundColor: "var(--dash-accent-bg)"}}>
                         <Icon name="check-circle" style={{color: "var(--dash-accent)"}}/>
                     </div>
                     <div className="client-dashboard__stat-content">
@@ -107,7 +107,7 @@ export default function ClientDashboard({
                 </div>
 
                 <div className="client-dashboard__stat-card">
-                    <div className="client-dashboard__stat-icon" style={{backgroundColor: "rgba(255, 159, 67, 0.1)"}}>
+                    <div className="client-dashboard__stat-icon" style={{backgroundColor: "var(--dash-warn-bg)"}}>
                         <Icon name="time-five" style={{color: "var(--dash-warn)"}}/>
                     </div>
                     <div className="client-dashboard__stat-content">

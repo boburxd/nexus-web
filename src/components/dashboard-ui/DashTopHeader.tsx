@@ -10,6 +10,7 @@ import {DashRightDrawer} from "@/components/dashboard-ui/DashRightDrawer"
 import {OrderChatPanel, type OrderChatPanelHandle} from "@/components/dashboard-ui/OrderChatPanel"
 import {subscribeToOrderChat} from "@/lib/client/order-chat-socket"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 import {stripBx} from "@/lib/icon-map"
 
 export type DashHeaderNavItem = {
@@ -196,19 +197,18 @@ export function DashTopHeader({
         mounted && hasNav && drawerOpen
             ? createPortal(
                 <div className="dash-drawer-root" role="presentation">
-                    <button
-                        type="button"
+                    <div
                         className="dash-drawer-backdrop"
-                        aria-label="Закрыть меню"
+                        role="presentation"
                         onClick={() => setDrawerOpen(false)}
                     />
                     <aside className="dash-drawer" aria-modal aria-label="Меню кабинета">
                         <div className="dash-drawer__top">
                             <span className="dash-drawer__title">Разделы</span>
-                            <button type="button" className="dash-drawer__close" onClick={() => setDrawerOpen(false)}
+                            <Button type="button" variant="outline" size="icon-lg" onClick={() => setDrawerOpen(false)}
                                     aria-label="Закрыть">
                                 <Icon name="x"/>
-                            </button>
+                            </Button>
                         </div>
                         <nav className="dash-drawer__nav" aria-label="Разделы кабинета">
                             {navItems!.map(item => (
@@ -258,15 +258,17 @@ export function DashTopHeader({
             <header className={`dash-header${hasNav ? " dash-header--with-nav" : ""}`}>
                 <div className="dash-header__left">
                     {hasNav ? (
-                        <button
+                        <Button
                             type="button"
+                            variant="outline"
+                            size="icon-lg"
                             className="dash-header__menu-btn"
                             aria-label="Открыть меню"
                             aria-expanded={drawerOpen}
                             onClick={() => setDrawerOpen(true)}
                         >
                             <Icon name="menu" aria-hidden/>
-                        </button>
+                        </Button>
                     ) : null}
                     <Link href={logoHref} className="dash-header__logo">
                         NEXUS
@@ -322,9 +324,10 @@ export function DashTopHeader({
                         </div>
                     ) : null}
                     {orderChat?.orderId ? (
-                        <button
+                        <Button
                             type="button"
-                            className="dash-header__btn dash-header__btn--accent"
+                            size="lg"
+                            className="dash-header__chat-btn relative"
                             onClick={() => {
                                 chatOpenRef.current = true
                                 setUnread(0)
@@ -333,7 +336,6 @@ export function DashTopHeader({
                             aria-haspopup="dialog"
                             aria-expanded={chatOpen}
                             aria-controls={chatOpen ? "order-chat-drawer" : undefined}
-                            style={{display: "inline-flex", alignItems: "center", gap: 8, position: "relative"}}
                         >
                             <Icon name="message-dots" aria-hidden/>
                             Чат
@@ -346,8 +348,8 @@ export function DashTopHeader({
                                         height: 18,
                                         padding: "0 6px",
                                         borderRadius: 10,
-                                        background: "rgba(239,68,68,0.95)",
-                                        color: "#fff",
+                                        background: "var(--dash-danger)",
+                                        color: "var(--dash-bg)",
                                         fontSize: "0.75rem",
                                         fontWeight: 800,
                                         lineHeight: "18px",
@@ -359,7 +361,7 @@ export function DashTopHeader({
                   {unread > 99 ? "99+" : unread}
                 </span>
                             ) : null}
-                        </button>
+                        </Button>
                     ) : null}
                     {primaryAction && showPrimaryActionInHeader ? (
                         primaryAction.disabled ? (

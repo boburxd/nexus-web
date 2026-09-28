@@ -4,6 +4,8 @@ import {forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useStat
 import {StageChatAiAssist} from "./StageChatAiAssist"
 import {ChatEmojiPicker} from "./ChatEmojiPicker"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
+import {Textarea} from "@/components/ui/textarea"
 
 type ChatSender = { id: string; name: string | null; email: string | null; role: string }
 
@@ -318,29 +320,18 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
                 }}
             >
                 <div style={{display: "flex", alignItems: "flex-end", gap: 8, width: "100%", minWidth: 0}}>
-        <textarea
+        <Textarea
             ref={textareaRef}
             value={draft}
             onChange={e => setDraft(e.target.value)}
             placeholder="Сообщение…"
             rows={compact ? 3 : inDrawer ? 6 : 4}
             disabled={sending}
+            className="min-w-0 flex-1"
             style={{
-                width: "100%",
-                flex: 1,
-                minWidth: 0,
-                maxWidth: "100%",
-                boxSizing: "border-box",
                 resize: inDrawer ? "none" : "vertical",
                 minHeight: compact ? 60 : inDrawer ? 120 : 80,
                 maxHeight: inDrawer ? "min(48vh, 280px)" : compact ? 140 : 220,
-                padding: "8px 10px",
-                borderRadius: 8,
-                border: "1px solid var(--dash-border)",
-                background: "var(--dash-bg)",
-                color: "var(--dash-text)",
-                fontFamily: "inherit",
-                fontSize: "0.875rem",
             }}
             onKeyDown={e => {
                 if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
@@ -350,30 +341,17 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
             }}
         />
                 <ChatEmojiPicker disabled={sending} onSelect={insertEmoji}/>
-                    <button
+                    <Button
                         type="button"
+                        size="icon"
+                        className="shrink-0"
                         aria-label="Отправить сообщение"
                         title="Отправить сообщение"
                         onClick={() => void send()}
                         disabled={sending || !draft.trim()}
-                        style={{
-                            width: 34,
-                            height: 34,
-                            padding: 0,
-                            borderRadius: 8,
-                            border: "none",
-                            background: draft.trim() ? "var(--dash-accent)" : "var(--dash-border)",
-                            color: "#fff",
-                            cursor: draft.trim() && !sending ? "pointer" : "default",
-                            opacity: sending ? 0.75 : 1,
-                            flexShrink: 0,
-                            display: "inline-flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                        }}
                     >
                         <Icon name={sending ? "loader-alt" : "send"} className={sending ? "bx-spin" : undefined} style={{fontSize: "1.125rem"}} aria-hidden/>
-                    </button>
+                    </Button>
                 </div>
                 {viewerRole === "CLIENT" && aiAssist ? (
                     <div

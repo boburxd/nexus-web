@@ -28,7 +28,7 @@ export function PendingDraftCard({
         <div className="sp-stage-wave-card sp-stage-wave-card--draft">
             <div style={{fontWeight: 700, fontSize: "0.875rem"}}>Черновик</div>
             <div style={{fontSize: "0.75rem", color: "var(--adm-muted)"}}>
-                После последнего выпуска — ещё не одобрено для показа заказчику
+                После последнего выпуска, ещё не одобрено для показа заказчику
             </div>
 
             <div>

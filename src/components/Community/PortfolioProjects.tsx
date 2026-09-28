@@ -10,6 +10,7 @@ import {type CardFile, type PortfolioCard, PortfolioCardEditorModal} from "./Por
 import {PortfolioProjectMaterials} from "./PortfolioProjectMaterials"
 import {PortfolioRemoteFilePreview} from "./PortfolioMediaPreview"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 const cardShell: React.CSSProperties = {
     background: "rgba(20,25,40,0.22)",
@@ -173,8 +174,8 @@ export default function PortfolioProjects() {
 
     const pageTitle = !selectedProject ? "Проекты" : "Работы"
     const pageSubtitle = useMemo(() => {
-        if (!selectedProject) return "Папки в виде вертикальных плиток (как работы). Внутри проекта — такая же сетка работ и общие материалы папки."
-        return `Проект «${selectedProject.name}». Плитки — работы (файлы к конкретной работе — в окне «Изменить» / при создании). Ниже плиток — материалы проекта: один раз на всю папку, не к одной работе.`
+        if (!selectedProject) return "Папки в виде вертикальных плиток (как работы). Внутри проекта: такая же сетка работ и общие материалы папки."
+        return `Проект «${selectedProject.name}». Плитки: работы (файлы к конкретной работе в окне «Изменить» / при создании). Ниже плиток материалы проекта: один раз на всю папку, не к одной работе.`
     }, [selectedProject])
 
     const editorOpen = createModalOpen || !!editingCard
@@ -195,7 +196,7 @@ export default function PortfolioProjects() {
                     <div className="card" style={cardShell}>
                         <div className="card-body d-flex flex-column gap-3" style={{padding: 12}}>
                             <div>
-                                <div className="text-muted mb-1" style={{fontSize: 11}}>
+                                <div className="text-muted mb-1" style={{fontSize: 12}}>
                                     Проект
                                 </div>
                                 <span className="fw-semibold text-truncate d-block"
@@ -224,29 +225,31 @@ export default function PortfolioProjects() {
                         <nav aria-label="Навигация по портфолио"
                              className="d-flex flex-wrap align-items-center justify-content-between gap-2">
                             <div className="d-flex flex-wrap align-items-center gap-1 small">
-                                <button
+                                <Button
                                     type="button"
-                                    className={`btn btn-link btn-sm p-0 text-decoration-none ${!selectedProject ? "fw-semibold text-body" : "text-muted"}`}
+                                    variant="link"
+                                    size="xs"
+                                    className="h-auto p-0"
+                                    aria-current={!selectedProject ? "page" : undefined}
                                     onClick={goToProjectsRoot}
-                                    style={{color: !selectedProject ? "var(--dash-text, var(--foreground))" : undefined}}
                                 >
                                     Портфолио
-                                </button>
+                                </Button>
                                 {selectedProject && (
                                     <>
                                         <span className="text-muted user-select-none">/</span>
-                                        <button
+                                        <Button
                                             type="button"
-                                            className={`btn btn-link btn-sm p-0 text-decoration-none text-truncate ${editingCard ? "text-muted" : "fw-semibold text-body"}`}
+                                            variant="link"
+                                            size="xs"
+                                            className="h-auto p-0 truncate"
+                                            aria-current={!editingCard ? "page" : undefined}
                                             onClick={goToProjectOnly}
-                                            style={{
-                                                maxWidth: "min(280px, 46vw)",
-                                                color: !editingCard ? "var(--dash-text, var(--foreground))" : undefined
-                                            }}
+                                            style={{maxWidth: "min(280px, 46vw)"}}
                                             title={selectedProject.name}
                                         >
                                             {selectedProject.name}
-                                        </button>
+                                        </Button>
                                     </>
                                 )}
                                 {editingCard && (
@@ -283,7 +286,7 @@ export default function PortfolioProjects() {
                         </nav>
 
                         <div>
-                            <h6 className="mb-1 fw-semibold" style={{fontSize: 15, color: "var(--dash-text, var(--foreground))"}}>
+                            <h6 className="mb-1 fw-semibold" style={{fontSize: 16, color: "var(--dash-text, var(--foreground))"}}>
                                 {pageTitle}
                             </h6>
                             <p className="mb-0 small text-muted" style={{lineHeight: 1.45}}>
@@ -302,7 +305,6 @@ export default function PortfolioProjects() {
                 border-radius: 14px;
                 overflow: hidden;
                 position: relative;
-                border: 1px solid rgba(255,255,255,0.12);
                 background: rgba(12,16,30,0.45);
               }
               .pf-port-grid__add {
@@ -314,20 +316,19 @@ export default function PortfolioProjects() {
                 width: 100%;
                 height: 100%;
                 padding: 10px 8px;
-                border: 2px dashed rgba(115,103,240,0.4);
-                background: rgba(115,103,240,0.08);
-                color: #c9c6ff;
+                border: 2px dashed var(--dash-accent-border, var(--border));
+                color: var(--dash-accent, var(--primary));
                 cursor: pointer;
                 text-align: center;
                 font: inherit;
                 transition: background 0.15s, border-color 0.15s;
               }
               .pf-port-grid__add:hover {
-                background: rgba(115,103,240,0.14);
-                border-color: rgba(115,103,240,0.65);
+                background: var(--dash-accent-bg, var(--muted));
+                border-color: var(--dash-accent, var(--primary));
               }
-              .pf-port-grid__add i { font-size: 1.75rem; opacity: 0.9; }
-              .pf-port-grid__add-title { font-size: 0.78rem; font-weight: 600; color: var(--dash-text, var(--foreground)); }
+              .pf-port-grid__add i { font-size: 1.5rem; opacity: 0.9; }
+              .pf-port-grid__add-title { font-size: 0.75rem; font-weight: 600; color: var(--dash-text, var(--foreground)); }
               .pf-port-grid__card { cursor: pointer; }
               .pf-port-grid__cover { position: absolute; inset: 0; }
               .pf-port-grid__shade {
@@ -337,7 +338,7 @@ export default function PortfolioProjects() {
               }
               .pf-port-grid__title {
                 position: absolute; left: 8px; right: 8px; bottom: 44px;
-                font-size: 0.72rem; font-weight: 600; color: #f4f6ff;
+                font-size: 0.75rem; font-weight: 600; color: #fff;
                 text-shadow: 0 1px 6px rgba(0,0,0,0.75);
                 display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
                 overflow: hidden; line-height: 1.25;
@@ -362,12 +363,11 @@ export default function PortfolioProjects() {
                                     <div
                                         className="rounded-2 p-3 text-center"
                                         style={{
-                                            border: "1px dashed rgba(255,255,255,0.15)",
-                                            background: "rgba(12,16,30,0.25)"
+                                            border: "1px dashed rgba(255,255,255,0.15)"
                                         }}
                                     >
-                                        <Icon name="folder-plus" className="d-block mb-2"
-                                           style={{fontSize: 28, opacity: 0.65}} aria-hidden/>
+                                        <Icon name="folder-plus" className="d-block mb-2 mx-auto" size={28}
+                                           style={{opacity: 0.65}} aria-hidden/>
                                         <p className="small text-muted mb-0" style={{lineHeight: 1.55}}>
                                             Проектов нет. Создайте папку кнопкой <strong>«Добавить
                                             проект»</strong> сверху, затем откройте её здесь.
@@ -376,8 +376,8 @@ export default function PortfolioProjects() {
                                 ) : (
                                     <>
                                         <p className="small text-muted mb-2">
-                                            Плитки в том же формате, что и работы. Нажмите плитку проекта — откроется
-                                            сетка работ. Число справа внизу — сколько работ в
+                                            Плитки в том же формате, что и работы. Нажмите плитку проекта, откроется
+                                            сетка работ. Число справа внизу: сколько работ в
                                             папке.
                                         </p>
                                         <div className="pf-port-grid">
@@ -401,26 +401,25 @@ export default function PortfolioProjects() {
                                                             <div
                                                                 className="d-flex h-100 w-100 align-items-center justify-content-center"
                                                                 style={{
-                                                                    background:
-                                                                        "linear-gradient(165deg, rgba(91,79,207,0.18) 0%, rgba(12,16,30,0.94) 55%, rgba(8,10,18,0.98) 100%)",
+                                                                    background: "var(--dash-surface3, var(--muted))",
                                                                 }}
                                                             >
-                                                                <Icon name="folder" style={{
-                                                                    fontSize: 52,
+                                                                <Icon name="folder" size={52} style={{
                                                                     opacity: 0.38,
-                                                                    color: "#b4bce8"
+                                                                    color: "var(--dash-text2, var(--muted-foreground))"
                                                                 }} aria-hidden/>
                                                             </div>
                                                         </div>
                                                         <div className="pf-port-grid__shade" aria-hidden/>
                                                         <div className="pf-port-grid__title">{project.name}</div>
                                                         <div className="pf-port-grid__foot">
-                              <span className="badge bg-label-secondary" style={{fontSize: "0.65rem", fontWeight: 600}}>
+                              <span className="badge bg-label-secondary" style={{fontSize: "0.75rem", fontWeight: 600}}>
                                 {worksLabel}
                               </span>
-                                                            <button
+                                                            <Button
                                                                 type="button"
-                                                                className="btn btn-sm btn-light"
+                                                                variant="secondary"
+                                                                size="icon-sm"
                                                                 aria-label="Переименовать проект"
                                                                 onClick={(e) => {
                                                                     e.stopPropagation()
@@ -428,7 +427,7 @@ export default function PortfolioProjects() {
                                                                 }}
                                                             >
                                                                 <Icon name="pencil" aria-hidden/>
-                                                            </button>
+                                                            </Button>
                                                         </div>
                                                     </div>
                                                 )
@@ -440,9 +439,9 @@ export default function PortfolioProjects() {
                         ) : (
                             <>
                                 <p className="small text-muted mb-2" style={{lineHeight: 1.45}}>
-                                    <strong>Сверху</strong> — работы: первая плитка «Новая работа», остальные —
-                                    просмотр; файлы к конкретной работе — в её окне.{" "}
-                                    <strong>Снизу</strong> — «Материалы проекта»: общие вложения на всю папку (отдельно
+                                    <strong>Сверху</strong> работы: первая плитка «Новая работа», остальные для
+                                    просмотра; файлы к конкретной работе в её окне.{" "}
+                                    <strong>Снизу</strong> «Материалы проекта»: общие вложения на всю папку (отдельно
                                     от работ).
                                 </p>
                                 {cardsError && <small className="text-danger">{cardsError}</small>}
@@ -455,8 +454,9 @@ export default function PortfolioProjects() {
                                     <>
                                         <div className="pf-port-grid">
                                             <div className="pf-port-grid__cell">
-                                                <button
+                                                <Button
                                                     type="button"
+                                                    variant="ghost"
                                                     data-tour="btn-new-work"
                                                     className="pf-port-grid__add"
                                                     onClick={() => {
@@ -466,7 +466,7 @@ export default function PortfolioProjects() {
                                                 >
                                                     <Icon name="plus" aria-hidden/>
                                                     <span className="pf-port-grid__add-title">Новая работа</span>
-                                                </button>
+                                                </Button>
                                             </div>
                                             {cards.map((card) => {
                                                 const cover = getCardCover(card)
@@ -500,8 +500,8 @@ export default function PortfolioProjects() {
                                                             ) : (
                                                                 <div
                                                                     className="d-flex align-items-center justify-content-center h-100 w-100 text-muted">
-                                                                    <Icon name="image"
-                                                                       style={{fontSize: 32, opacity: 0.35}}
+                                                                    <Icon name="image" size={32}
+                                                                       style={{opacity: 0.35}}
                                                                        aria-hidden/>
                                                                 </div>
                                                             )}
@@ -509,9 +509,10 @@ export default function PortfolioProjects() {
                                                         <div className="pf-port-grid__shade" aria-hidden/>
                                                         <div className="pf-port-grid__title">{card.title}</div>
                                                         <div className="pf-port-grid__foot">
-                                                            <button
+                                                            <Button
                                                                 type="button"
-                                                                className="btn btn-sm btn-light"
+                                                                variant="secondary"
+                                                                size="sm"
                                                                 onClick={(e) => {
                                                                     e.stopPropagation()
                                                                     setBrowseCard(null)
@@ -520,7 +521,7 @@ export default function PortfolioProjects() {
                                                                 }}
                                                             >
                                                                 Изменить
-                                                            </button>
+                                                            </Button>
                                                         </div>
                                                     </div>
                                                 )

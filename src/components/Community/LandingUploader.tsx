@@ -10,6 +10,9 @@ import {DEFAULT_WORK_POS, MAX_LANDING_PORTFOLIO} from "./landing-uploader/consta
 import {missingLandingRequirements} from "@/lib/landing/bundle-requirements"
 import type {LandingFile, LandingUploaderProps, PreviewState} from "./landing-uploader/types"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
+import {Textarea} from "@/components/ui/textarea"
 
 interface Bundle {
     id: string
@@ -33,10 +36,10 @@ const STATUS_LABEL: Record<Bundle["status"], string> = {
 }
 
 const STATUS_COLOR: Record<Bundle["status"], string> = {
-    DRAFT: "#8f95b2",
-    PENDING_REVIEW: "#ff9f43",
-    APPROVED: "#28c76f",
-    REJECTED: "#ea5455",
+    DRAFT: "var(--dash-muted, var(--muted-foreground))",
+    PENDING_REVIEW: "var(--dash-warn, var(--warning))",
+    APPROVED: "var(--dash-success, var(--success))",
+    REJECTED: "var(--dash-danger, var(--destructive))",
 }
 
 export default function LandingUploader({
@@ -346,47 +349,30 @@ export default function LandingUploader({
     const bundleSidebar = (
         <div style={{display: "flex", flexDirection: "column", gap: 8}}>
             <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8}}>
-                <span style={{fontWeight: 600, fontSize: "0.82rem"}}>Сборки</span>
+                <span style={{fontWeight: 600, fontSize: "0.875rem"}}>Сборки</span>
                 {canCreate && bundles.length > 0 && (
-                    <button
-                        onClick={createBundle}
-                        style={{
-                            border: "1px solid rgba(91,79,207,0.35)", background: "rgba(91,79,207,0.1)",
-                            color: "#5b4fcf", borderRadius: 8, padding: "6px 14px", fontSize: "0.78rem",
-                            fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
-                            display: "inline-flex", alignItems: "center", gap: 4,
-                        }}
-                    >
+                    <Button variant="outline" size="sm" onClick={createBundle}>
                         <Icon name="plus"/>Новая сборка
-                    </button>
+                    </Button>
                 )}
             </div>
 
             {bundles.length === 0 && (
                 <div style={{textAlign: "center", padding: "32px 16px"}}>
-                    <Icon name="globe" style={{
-                        fontSize: 40,
+                    <Icon name="globe" size={40} style={{
                         color: "var(--dash-muted, var(--muted-foreground))",
                         opacity: 0.4,
                         display: "block",
                         marginBottom: 12
                     }}/>
-                    <p style={{fontSize: "0.85rem", color: "var(--dash-muted, var(--muted-foreground))", margin: "0 0 16px"}}>
+                    <p style={{fontSize: "0.875rem", color: "var(--dash-muted, var(--muted-foreground))", margin: "0 0 16px"}}>
                         Нет сборок для лендинга
                     </p>
                     {canCreate && (
-                        <button
-                            onClick={createBundle}
-                            style={{
-                                border: "none", background: "#5b4fcf", color: "#fff",
-                                borderRadius: 10, padding: "12px 28px", fontSize: "0.9rem",
-                                fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
-                                display: "inline-flex", alignItems: "center", gap: 6,
-                            }}
-                        >
-                            <Icon name="plus-circle" style={{fontSize: "1.1rem"}}/>
+                        <Button size="lg" onClick={createBundle}>
+                            <Icon name="plus-circle"/>
                             Создать первую сборку
-                        </button>
+                        </Button>
                     )}
                 </div>
             )}
@@ -396,11 +382,21 @@ export default function LandingUploader({
                 return (
                     <div
                         key={b.id}
+                        role="button"
+                        tabIndex={0}
+                        aria-pressed={active}
                         onClick={() => setActiveBundleId(b.id)}
+                        onKeyDown={(e) => {
+                            if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {
+                                e.preventDefault()
+                                setActiveBundleId(b.id)
+                            }
+                        }}
                         style={{
                             padding: "10px 12px", borderRadius: 10, cursor: "pointer",
-                            border: active ? "1px solid rgba(91,79,207,0.4)" : "1px solid var(--dash-border, rgba(255,255,255,0.1))",
-                            background: active ? "rgba(91,79,207,0.08)" : "transparent",
+                            background: active
+                                ? "var(--dash-accent-bg, color-mix(in oklab, var(--primary) 12%, transparent))"
+                                : "var(--dash-surface2, var(--muted))",
                         }}
                     >
                         <div style={{
@@ -409,30 +405,29 @@ export default function LandingUploader({
                             alignItems: "center",
                             marginBottom: 4
                         }}>
-              <span style={{fontSize: "0.76rem", fontWeight: 600}}>
+              <span style={{fontSize: "0.75rem", fontWeight: 600}}>
                 {new Date(b.createdAt).toLocaleDateString("ru-RU")}
               </span>
-                            <span style={{fontSize: "0.65rem", color: STATUS_COLOR[b.status], fontWeight: 500}}>
+                            <span style={{fontSize: "0.75rem", color: STATUS_COLOR[b.status], fontWeight: 500}}>
                 {STATUS_LABEL[b.status]}
               </span>
                         </div>
-                        <div style={{fontSize: "0.68rem", color: "var(--dash-muted, var(--muted-foreground))"}}>
+                        <div style={{fontSize: "0.75rem", color: "var(--dash-muted, var(--muted-foreground))"}}>
                             {[b.workFileId && "интерьер", b.videoFileId && "видео", b.items.length > 0 && `${b.items.length} фото`]
                                 .filter(Boolean).join(" · ") || "пустая"}
                         </div>
                         {(b.status === "DRAFT" || b.status === "REJECTED") && (
-                            <button
+                            <Button
+                                variant="destructive"
+                                size="xs"
+                                className="mt-1.5"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     setConfirmDeleteBundleId(b.id)
                                 }}
-                                style={{
-                                    marginTop: 6, border: "none", background: "none", color: "#d64c67",
-                                    fontSize: "0.65rem", cursor: "pointer", padding: 0,
-                                }}
                             >
-                                <Icon name="trash" style={{marginRight: 2}}/>Удалить
-                            </button>
+                                <Icon name="trash"/>Удалить
+                            </Button>
                         )}
                     </div>
                 )
@@ -450,8 +445,8 @@ export default function LandingUploader({
                     {activeBundle.status === "REJECTED" && activeBundle.rejectReason && (
                         <div style={{
                             padding: "10px 14px", borderRadius: 10, marginBottom: 12,
-                            background: "rgba(234,84,85,0.08)", border: "1px solid rgba(234,84,85,0.2)",
-                            fontSize: "0.8rem", color: "#ea5455",
+                            background: "var(--dash-danger-bg, color-mix(in oklab, var(--destructive) 10%, transparent))",
+                            fontSize: "0.75rem", color: "var(--dash-danger, var(--destructive))",
                         }}>
                             <Icon name="error-circle" style={{marginRight: 6}}/>
                             <strong>Причина отказа:</strong> {activeBundle.rejectReason}
@@ -462,11 +457,11 @@ export default function LandingUploader({
                     {!isEditable && (
                         <div style={{
                             padding: "10px 14px", borderRadius: 10, marginBottom: 12,
-                            background: "rgba(91,79,207,0.06)", border: "1px solid rgba(91,79,207,0.15)",
-                            fontSize: "0.8rem", color: "#5b4fcf",
+                            background: "var(--dash-accent-bg, color-mix(in oklab, var(--primary) 10%, transparent))",
+                            fontSize: "0.75rem", color: "var(--dash-accent, var(--primary))",
                         }}>
                             <Icon name="lock-alt" style={{marginRight: 6}}/>
-                            {activeBundle.status === "PENDING_REVIEW" ? "Сборка на модерации — редактирование заблокировано" : "Сборка одобрена — создайте новую для изменений"}
+                            {activeBundle.status === "PENDING_REVIEW" ? "Сборка на модерации: редактирование заблокировано" : "Сборка одобрена: создайте новую для изменений"}
                         </div>
                     )}
 
@@ -503,56 +498,33 @@ export default function LandingUploader({
                             <div>
                                 <label style={{
                                     display: "block",
-                                    fontSize: "0.7rem",
+                                    fontSize: "0.75rem",
                                     fontWeight: 600,
                                     color: "var(--dash-muted, var(--muted-foreground))",
                                     marginBottom: 4
                                 }}>Специализация (на лендинге)</label>
-                                <input
+                                <Input
                                     type="text"
                                     value={bundleSpecialty}
                                     onChange={(e) => setBundleSpecialty(e.target.value)}
                                     onBlur={() => patchBundle({specialty: bundleSpecialty || null})}
                                     placeholder="Минимализм · Сканди"
-                                    style={{
-                                        width: "100%",
-                                        padding: "6px 10px",
-                                        borderRadius: 8,
-                                        border: "1px solid var(--dash-border, rgba(255,255,255,0.1))",
-                                        background: "var(--dash-surface2, rgba(32,29,29,0.015))",
-                                        color: "var(--dash-text, var(--foreground))",
-                                        fontSize: "0.82rem",
-                                        fontFamily: "inherit",
-                                        outline: "none"
-                                    }}
                                 />
                             </div>
                             <div>
                                 <label style={{
                                     display: "block",
-                                    fontSize: "0.7rem",
+                                    fontSize: "0.75rem",
                                     fontWeight: 600,
                                     color: "var(--dash-muted, var(--muted-foreground))",
                                     marginBottom: 4
                                 }}>О себе (на лендинге)</label>
-                                <textarea
+                                <Textarea
                                     rows={2}
                                     value={bundleAbout}
                                     onChange={(e) => setBundleAbout(e.target.value)}
                                     onBlur={() => patchBundle({about: bundleAbout || null})}
                                     placeholder="Краткое описание для карточки на главной"
-                                    style={{
-                                        width: "100%",
-                                        padding: "6px 10px",
-                                        borderRadius: 8,
-                                        border: "1px solid var(--dash-border, rgba(255,255,255,0.1))",
-                                        background: "var(--dash-surface2, rgba(32,29,29,0.015))",
-                                        color: "var(--dash-text, var(--foreground))",
-                                        fontSize: "0.82rem",
-                                        fontFamily: "inherit",
-                                        outline: "none",
-                                        resize: "vertical"
-                                    }}
                                 />
                             </div>
                         </div>
@@ -563,7 +535,7 @@ export default function LandingUploader({
                         <div style={{marginTop: 14}}>
                             {missing.length > 0 && (
                                 <p style={{
-                                    margin: "0 0 8px", fontSize: "0.74rem", lineHeight: 1.45,
+                                    margin: "0 0 8px", fontSize: "0.75rem", lineHeight: 1.45,
                                     color: "var(--dash-muted, var(--muted-foreground))",
                                 }}>
                                     <Icon name="info-circle" style={{marginRight: 4}}/>
@@ -571,32 +543,24 @@ export default function LandingUploader({
                                 </p>
                             )}
                             <div style={{display: "flex", gap: 8}}>
-                            <button
+                            <Button
+                                size="lg"
                                 onClick={submitBundle}
                                 data-tour="btn-landing-submit"
                                 disabled={missing.length > 0}
                                 title={missing.length > 0 ? `Не заполнено: ${missing.join(", ")}` : undefined}
-                                style={{
-                                    padding: "8px 18px", borderRadius: 8, border: "none",
-                                    cursor: missing.length > 0 ? "not-allowed" : "pointer",
-                                    background: missing.length > 0 ? "rgba(91,79,207,0.2)" : "#5b4fcf",
-                                    color: "#fff", fontSize: "0.8rem", fontWeight: 600,
-                                }}
                             >
-                                <Icon name="send" style={{marginRight: 4}}/>
+                                <Icon name="send"/>
                                 Отправить на модерацию
-                            </button>
-                            <button
+                            </Button>
+                            <Button
+                                variant="destructive"
+                                size="lg"
                                 onClick={() => activeBundleId && setConfirmDeleteBundleId(activeBundleId)}
-                                style={{
-                                    padding: "8px 18px", borderRadius: 8, cursor: "pointer",
-                                    border: "1px solid rgba(214,76,103,0.3)", background: "rgba(214,76,103,0.08)",
-                                    color: "#d64c67", fontSize: "0.8rem", fontWeight: 600,
-                                }}
                             >
-                                <Icon name="trash" style={{marginRight: 4}}/>
+                                <Icon name="trash"/>
                                 Удалить сборку
-                            </button>
+                            </Button>
                             </div>
                         </div>
                     )}
@@ -632,12 +596,12 @@ export default function LandingUploader({
 
             {toast && (
                 <div style={{
-                    position: "fixed", right: 20, top: 72, zIndex: 1200, maxWidth: 360,
+                    position: "fixed", right: 20, top: 72, zIndex: "var(--z-dialog)", maxWidth: 360,
                     padding: "10px 12px", borderRadius: 10,
-                    background: toast.variant === "success" ? "rgba(40,199,111,0.14)" : "rgba(234,84,85,0.14)",
-                    border: `1px solid ${toast.variant === "success" ? "rgba(40,199,111,0.34)" : "rgba(234,84,85,0.34)"}`,
-                    color: toast.variant === "success" ? "#8ff0bc" : "#ffb5b6",
-                    fontSize: 13, backdropFilter: "blur(8px)",
+                    background: "var(--dash-surface3, var(--popover))",
+                    boxShadow: "var(--dash-shadow)",
+                    color: toast.variant === "success" ? "var(--dash-success, var(--success))" : "var(--dash-danger, var(--destructive))",
+                    fontSize: 14,
                 }}>
                     {toast.message}
                 </div>

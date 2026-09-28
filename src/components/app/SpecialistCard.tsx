@@ -86,34 +86,35 @@ function StepProgress({
                 const current = !isRejected && !isActive && i === firstIncomplete
                 const active = done || current
 
-                const dotColor = isRejected ? "#d9534f"
-                    : done ? "#28a745"
-                        : current ? "#fd7e14"
-                            : "#c9cdd4"
+                const dotColor = isRejected ? "var(--destructive)"
+                    : done ? "var(--success)"
+                        : current ? "var(--warning)"
+                            : "var(--adm-sidebar-border)"
 
                 const lineColor = (done && i < STEPS.length - 1)
-                    ? "#28a745" : "#e0e2e5"
+                    ? "var(--success)" : "var(--adm-sidebar-border)"
 
                 return (
                     <div key={i} className="d-flex align-items-center"
                          style={{flex: i < STEPS.length - 1 ? "1" : "none"}}>
                         {/* Dot + label */}
-                        <div className="d-flex flex-column align-items-center" style={{gap: 3}}>
+                        <div className="d-flex flex-column align-items-center" style={{gap: 4}}>
                             <div style={{
                                 width: 28, height: 28, borderRadius: "50%",
                                 background: active && !isRejected ? dotColor : "transparent",
-                                border: `2px solid ${dotColor}`,
+                                outline: active && !isRejected ? "none" : `2px solid ${dotColor}`,
+                                outlineOffset: -2,
                                 display: "flex", alignItems: "center", justifyContent: "center",
-                                fontSize: "0.7rem", fontWeight: 700,
+                                fontSize: "0.75rem", fontWeight: 700,
                                 color: active && !isRejected ? "#fff" : dotColor,
                                 flexShrink: 0,
-                                transition: "all 0.2s",
+                                transition: "background-color 0.2s, outline-color 0.2s, color 0.2s",
                             }}>
-                                {done ? <Icon name="check" style={{fontSize: "0.85rem"}}/> : i + 1}
+                                {done ? <Icon name="check" style={{fontSize: "0.875rem"}}/> : i + 1}
                             </div>
                             <span style={{
-                                fontSize: "0.62rem", whiteSpace: "nowrap",
-                                color: active ? (isRejected ? "#d9534f" : current ? "#fd7e14" : "#28a745") : "#adb5bd",
+                                fontSize: "0.75rem", whiteSpace: "nowrap",
+                                color: active ? (isRejected ? "var(--destructive)" : current ? "var(--warning)" : "var(--success)") : "var(--adm-muted)",
                                 fontWeight: active ? 600 : 400,
                             }}>
                 {step.label}
@@ -154,9 +155,18 @@ export function SpecialistCard({specialist, expanded, onToggle, actions}: Specia
         <div>
             {/* ── Строка (кликабельная) ── */}
             <div
+                role="button"
+                tabIndex={0}
+                aria-expanded={expanded}
                 className="px-4 py-3 d-flex align-items-center gap-3"
                 style={{cursor: "pointer"}}
                 onClick={onToggle}
+                onKeyDown={e => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault()
+                        onToggle()
+                    }
+                }}
             >
                 {/* Аватар */}
                 <div className="avatar avatar-md flex-shrink-0">
@@ -174,12 +184,12 @@ export function SpecialistCard({specialist, expanded, onToggle, actions}: Specia
                             label={ONBOARDING_STATUS_LABEL[onboardingStatus]}
                         />
                         {portfolioCount > 0 && (
-                            <span className="badge bg-label-info rounded-pill" style={{fontSize: "0.62rem"}}>
+                            <span className="badge bg-label-info rounded-pill" style={{fontSize: "0.75rem"}}>
                 <Icon name="images" className="me-1"/>{portfolioCount} фото
               </span>
                         )}
                         {!hasForm && onboardingStatus === "PENDING" && (
-                            <span className="badge bg-label-warning rounded-pill" style={{fontSize: "0.62rem"}}>анкета не заполнена</span>
+                            <span className="badge bg-label-warning rounded-pill" style={{fontSize: "0.75rem"}}>анкета не заполнена</span>
                         )}
                     </div>
                     <small className="text-muted">
@@ -194,7 +204,7 @@ export function SpecialistCard({specialist, expanded, onToggle, actions}: Specia
 
             {/* ── Раскрытое содержимое ── */}
             {expanded && (
-                <div className="border-top" style={{background: "#f8f8f8"}}>
+                <div className="border-top" style={{background: "var(--adm-outer)"}}>
                     <div className="px-4 pt-3 pb-4">
 
                         {/* Прогресс шагов */}
@@ -232,8 +242,8 @@ export function SpecialistCard({specialist, expanded, onToggle, actions}: Specia
                                                 <div className="d-flex align-items-start gap-2 mb-2">
                                                     <Icon name="link-external" className="text-muted mt-1"/>
                                                     <div>
-                                                        <div className="text-uppercase text-muted"
-                                                             style={{fontSize: "0.7rem", letterSpacing: "0.05em"}}>Портфолио</div>
+                                                        <div className="text-muted"
+                                                             style={{fontSize: "0.75rem"}}>Портфолио</div>
                                                         {splitPortfolioLinks(fd.portfolio).map((link) => (
                                                             <a key={link} href={link} target="_blank" rel="noopener noreferrer"
                                                                className="text-primary d-block"
@@ -245,8 +255,8 @@ export function SpecialistCard({specialist, expanded, onToggle, actions}: Specia
                                         )}
                                         {fd?.software && (
                                             <div className="col-12">
-                                                <div className="text-uppercase text-muted fw-semibold mb-2"
-                                                     style={{fontSize: "0.68rem", letterSpacing: "0.07em"}}>
+                                                <div className="text-muted fw-semibold mb-2"
+                                                     style={{fontSize: "0.75rem"}}>
                                                     Программы
                                                 </div>
                                                 <div className="d-flex flex-wrap gap-1">
@@ -259,8 +269,8 @@ export function SpecialistCard({specialist, expanded, onToggle, actions}: Specia
                                         )}
                                         {fd?.aiServices && (
                                             <div className="col-12">
-                                                <div className="text-uppercase text-muted fw-semibold mb-2"
-                                                     style={{fontSize: "0.68rem", letterSpacing: "0.07em"}}>
+                                                <div className="text-muted fw-semibold mb-2"
+                                                     style={{fontSize: "0.75rem"}}>
                                                     Нейросети
                                                 </div>
                                                 <div className="d-flex flex-wrap gap-1">
@@ -273,13 +283,13 @@ export function SpecialistCard({specialist, expanded, onToggle, actions}: Specia
                                         )}
                                         {fd?.about && (
                                             <div className="col-12">
-                                                <div className="text-uppercase text-muted fw-semibold mb-1"
-                                                     style={{fontSize: "0.68rem", letterSpacing: "0.07em"}}>О себе
+                                                <div className="text-muted fw-semibold mb-1"
+                                                     style={{fontSize: "0.75rem"}}>О себе
                                                 </div>
                                                 <p className="mb-0" style={{
                                                     fontSize: "0.875rem",
                                                     whiteSpace: "pre-wrap",
-                                                    color: "#555"
+                                                    color: "var(--adm-muted)"
                                                 }}>{fd.about}</p>
                                             </div>
                                         )}

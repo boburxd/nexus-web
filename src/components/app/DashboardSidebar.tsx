@@ -4,6 +4,7 @@ import Link from "next/link"
 import {usePathname} from "next/navigation"
 import {SignOutButton} from "@/components/auth/SignOutButton"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 import {stripBx} from "@/lib/icon-map"
 
 export interface NavItem {
@@ -65,9 +66,11 @@ export function DashboardSidebar({items}: { items: NavItem[] }) {
                     <span className="app-brand-text demo menu-text fw-bold ms-2">NEXUS</span>
                 </Link>
 
-                <a href="#" className="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+                <Button type="button" variant="ghost" size="icon-sm" aria-label="Закрыть меню"
+                        className="ms-auto d-xl-none"
+                        onClick={() => document.documentElement.classList.remove("layout-menu-expanded")}>
                     <Icon name="chevron-left" className="align-middle"/>
-                </a>
+                </Button>
             </div>
 
             <div className="menu-divider mt-0"/>

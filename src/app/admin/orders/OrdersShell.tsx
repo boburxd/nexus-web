@@ -418,8 +418,7 @@ export function OrdersShell({children}: { children: ReactNode }) {
                                 padding: "12px 14px",
                                 marginBottom: 12,
                                 borderRadius: 10,
-                                border: "1px solid var(--adm-border)",
-                                background: "var(--adm-surface-2)",
+                                background: "color-mix(in oklab, currentColor 6%, transparent)",
                                 fontSize: "0.875rem",
                             }}>
                                 <span style={{color: "var(--adm-muted)"}}>

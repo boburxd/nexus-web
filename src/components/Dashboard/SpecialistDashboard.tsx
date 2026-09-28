@@ -113,7 +113,7 @@ export default function SpecialistDashboard({
             {/* Stats Grid */}
             <div className="spec-dashboard__stats-grid" data-tour="dash-stats">
                 <div className="spec-dashboard__stat-card">
-                    <div className="spec-dashboard__stat-icon" style={{backgroundColor: "rgba(41, 205, 130, 0.1)"}}>
+                    <div className="spec-dashboard__stat-icon" style={{backgroundColor: "var(--dash-success-bg)"}}>
                         <Icon name="folder" style={{color: "var(--dash-success)"}}/>
                     </div>
                     <div className="spec-dashboard__stat-content">
@@ -123,7 +123,7 @@ export default function SpecialistDashboard({
                 </div>
 
                 <div className="spec-dashboard__stat-card">
-                    <div className="spec-dashboard__stat-icon" style={{backgroundColor: "rgba(115, 103, 240, 0.1)"}}>
+                    <div className="spec-dashboard__stat-icon" style={{backgroundColor: "var(--dash-accent-bg)"}}>
                         <Icon name="check-circle" style={{color: "var(--dash-accent)"}}/>
                     </div>
                     <div className="spec-dashboard__stat-content">
@@ -143,7 +143,7 @@ export default function SpecialistDashboard({
                 </div>
 
                 <div className="spec-dashboard__stat-card">
-                    <div className="spec-dashboard__stat-icon" style={{backgroundColor: "rgba(255, 159, 67, 0.1)"}}>
+                    <div className="spec-dashboard__stat-icon" style={{backgroundColor: "var(--dash-warn-bg)"}}>
                         <Icon name="time-five" style={{color: "var(--dash-warn)"}}/>
                     </div>
                     <div className="spec-dashboard__stat-content">

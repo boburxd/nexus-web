@@ -6,6 +6,7 @@ import type {MarkupToastVariant} from "./types"
 import {AnnotationSync} from "./AnnotationSync"
 import {CommentPopup} from "./CommentPopup"
 import {SaveAnnotationsBar} from "./SaveAnnotationsBar"
+import {Button} from "@/components/ui/button"
 
 export function MarkupCanvas({
                                  stageId,
@@ -27,7 +28,7 @@ export function MarkupCanvas({
     const lastSavedJsonRef = useRef<string | null>(null)
     /** Annotorious responsive слой делит на размер viewBox; до загрузки картинки там 0×0 → Infinity/NaN в SVG. */
     const [imageReady, setImageReady] = useState(false)
-    /** Доп. гейт: пока <img> внутри annotator не загрузилась, у Annotorious могут быть NaN/Infinity в SVG. */
+    /** Доп. гейт: пока картинка внутри annotator не загрузилась, у Annotorious могут быть NaN/Infinity в SVG. */
     const [annotatorImgReady, setAnnotatorImgReady] = useState(false)
     const [reloadKey, setReloadKey] = useState(0)
     const [debugEnabled, setDebugEnabled] = useState(false)
@@ -69,7 +70,7 @@ export function MarkupCanvas({
     return (
         <>
             {debugEnabled ? (
-                <div style={{margin: "6px 0 10px", fontSize: "0.72rem", color: "var(--dash-muted)"}}>
+                <div style={{margin: "6px 0 10px", fontSize: "0.75rem", color: "var(--dash-muted)"}}>
                     <span style={{fontWeight: 700, color: "var(--dash-text2)"}}>Разметка:</span>{" "}
                     {editable ? (
                         <span style={{color: "var(--dash-success)"}}>редактирование включено</span>
@@ -143,15 +144,13 @@ export function MarkupCanvas({
                             padding: 20,
                             textAlign: "center",
                             background: "rgba(15, 23, 42, 0.42)",
-                            backdropFilter: "blur(4px)",
-                            WebkitBackdropFilter: "blur(4px)",
                             // Слой поверх картинки: клики по ссылке/кнопке должны работать.
                             pointerEvents: "auto",
                         }}
                     >
             <span
                 style={{
-                    fontSize: "0.88rem",
+                    fontSize: "0.875rem",
                     fontWeight: 600,
                     color: "rgba(255, 255, 255, 0.95)",
                     letterSpacing: "0.02em",
@@ -163,7 +162,7 @@ export function MarkupCanvas({
             </span>
                         <span
                             style={{
-                                fontSize: "0.72rem",
+                                fontSize: "0.75rem",
                                 lineHeight: 1.45,
                                 color: "rgba(255, 255, 255, 0.72)",
                                 maxWidth: 280,
@@ -175,7 +174,7 @@ export function MarkupCanvas({
                         {imageLoadError ? (
                             <div style={{
                                 marginTop: 10,
-                                fontSize: "0.72rem",
+                                fontSize: "0.75rem",
                                 color: "rgba(255,255,255,0.85)",
                                 lineHeight: 1.45
                             }}>
@@ -184,7 +183,7 @@ export function MarkupCanvas({
                                     href={imageUrl}
                                     target="_blank"
                                     rel="noreferrer"
-                                    style={{color: "rgba(96,165,250,0.95)", textDecoration: "underline"}}
+                                    style={{color: "var(--dash-accent, var(--primary))", textDecoration: "underline"}}
                                 >
                                     Открыть файл →
                                 </a>
@@ -195,55 +194,37 @@ export function MarkupCanvas({
                                     justifyContent: "center",
                                     flexWrap: "wrap"
                                 }}>
-                                    <button
+                                    <Button
                                         type="button"
+                                        variant="outline"
+                                        size="xs"
                                         onClick={() => {
                                             if (debugEnabled) console.log("[markup] retry image", {imageUrl})
                                             setImageLoadError(null)
                                             setImageReady(false)
                                             setReloadKey((k) => k + 1)
                                         }}
-                                        style={{
-                                            pointerEvents: "auto",
-                                            padding: "6px 10px",
-                                            borderRadius: 8,
-                                            border: "1px solid rgba(255,255,255,0.18)",
-                                            background: "rgba(255,255,255,0.08)",
-                                            color: "rgba(255,255,255,0.9)",
-                                            fontSize: "0.75rem",
-                                            cursor: "pointer",
-                                            fontFamily: "inherit",
-                                        }}
                                     >
                                         Повторить загрузку
-                                    </button>
-                                    <button
+                                    </Button>
+                                    <Button
                                         type="button"
+                                        variant="secondary"
+                                        size="xs"
                                         onClick={() => {
                                             // Позволяем пройти дальше, чтобы увидеть хотя бы UI разметки/статусы,
                                             // даже если загрузка медленная (реальная ошибка будет видна на картинке).
                                             if (debugEnabled) console.log("[markup] force show annotator", {imageUrl})
                                             setImageReady(true)
                                         }}
-                                        style={{
-                                            pointerEvents: "auto",
-                                            padding: "6px 10px",
-                                            borderRadius: 8,
-                                            border: "1px solid rgba(96,165,250,0.45)",
-                                            background: "rgba(96,165,250,0.12)",
-                                            color: "rgba(255,255,255,0.9)",
-                                            fontSize: "0.75rem",
-                                            cursor: "pointer",
-                                            fontFamily: "inherit",
-                                        }}
                                     >
                                         Показать разметку
-                                    </button>
+                                    </Button>
                                 </div>
                                 {debugEnabled ? (
                                     <div style={{
                                         marginTop: 10,
-                                        fontSize: "0.65rem",
+                                        fontSize: "0.75rem",
                                         opacity: 0.85,
                                         wordBreak: "break-word"
                                     }}>

@@ -140,31 +140,10 @@
 
 .dash-header__menu-btn {
     display: none;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    flex-shrink: 0;
-    border: 1px solid var(--dash-border);
-    border-radius: 10px;
-    background: color-mix(in oklab, var(--dash-surface2) 78%, transparent);
-    color: var(--dash-text);
-    cursor: pointer;
-    font-family: inherit;
 }
 
 .dash-header--with-nav .dash-header__menu-btn {
     display: inline-flex;
-}
-
-.dash-header__menu-btn:hover {
-    background: color-mix(in oklab, var(--dash-surface3) 85%, transparent);
-    color: #fff;
-}
-
-.dash-header__menu-btn > i {
-    font-size: 24px;
-    line-height: 1;
 }
 
 .dash-header__nav {
@@ -434,41 +413,6 @@
     color: #fff;
 }
 
-/** Заметная кнопка действия (напр. «Чат по этапу») — акцент, тень, объём */
-.dash-header__btn--accent {
-    padding: 0 16px;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: #fff;
-    background: color-mix(in oklab, var(--dash-accent) 45%, var(--dash-surface3));
-    border: 1px solid var(--dash-accent-border);
-    cursor: pointer;
-    transition: filter 0.15s ease,
-    transform 0.15s ease,
-    border-color 0.15s ease;
-}
-
-.dash-header__btn--accent:hover {
-    filter: brightness(1.1);
-    border-color: color-mix(in oklab, var(--dash-accent) 55%, #fff);
-}
-
-.dash-header__btn--accent:active {
-    transform: translateY(1px);
-    filter: brightness(0.96);
-}
-
-.dash-header__btn--accent:focus-visible {
-    outline: 2px solid var(--dash-accent);
-    outline-offset: 3px;
-}
-
-.dash-header__btn--accent > i {
-    font-size: 1.125rem;
-    opacity: 0.95;
-}
-
 /* Узкий экран: разделы только в выдвижном меню */
 @media (max-width: 900px) {
     .dash-header__nav {
@@ -489,7 +433,8 @@
         order: 2;
     }
 
-    .dash-header--with-nav .dash-header__btn {
+    .dash-header--with-nav .dash-header__btn,
+    .dash-header--with-nav .dash-header__chat-btn {
         order: 4;
     }
 }
@@ -566,29 +511,6 @@
     font-size: 0.75rem;
     font-weight: 700;
     color: var(--dash-muted);
-}
-
-.dash-drawer__close {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border: 1px solid var(--dash-border);
-    border-radius: 10px;
-    background: var(--dash-surface2);
-    color: var(--dash-text2);
-    cursor: pointer;
-    font-family: inherit;
-}
-
-.dash-drawer__close:hover {
-    color: var(--dash-text);
-    background: var(--dash-surface3);
-}
-
-.dash-drawer__close > i {
-    font-size: 1.125rem;
 }
 
 .dash-drawer__nav {

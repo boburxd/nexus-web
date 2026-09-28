@@ -4,6 +4,7 @@ import {useEffect, useState} from "react"
 import Link from "next/link"
 import {SignOutButton} from "@/components/auth/SignOutButton"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 export function DashboardHeader({
                                     userName,
@@ -38,21 +39,24 @@ export function DashboardHeader({
             id="layout-navbar"
         >
             <div className="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
-                <a className="nav-item nav-link px-0 me-xl-6" href="#">
+                {/* Мобильное меню Sneat раскрывается классом layout-menu-expanded на <html>. */}
+                <Button type="button" variant="ghost" size="icon" aria-label="Открыть меню"
+                        onClick={() => document.documentElement.classList.toggle("layout-menu-expanded")}>
                     <Icon name="menu" className="icon-base icon-md"/>
-                </a>
+                </Button>
             </div>
 
             <div className="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
                 <ul className="navbar-nav flex-row align-items-center ms-auto">
                     <li className={`nav-item navbar-dropdown dropdown-user dropdown${open ? " show" : ""}`}>
-                        <a
-                            className="nav-link dropdown-toggle hide-arrow p-0"
-                            href="#"
-                            onClick={e => {
-                                e.preventDefault();
-                                setOpen(o => !o)
-                            }}
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            className="h-auto p-0"
+                            aria-label="Меню профиля"
+                            aria-haspopup="menu"
+                            aria-expanded={open}
+                            onClick={() => setOpen(o => !o)}
                         >
                             <div className="avatar avatar-online">
                                 {avatarUrl ? (
@@ -75,10 +79,10 @@ export function DashboardHeader({
                   </span>
                                 )}
                             </div>
-                        </a>
+                        </Button>
                         {open && (
                             <>
-                                <div onClick={() => setOpen(false)} style={{position: "fixed", inset: 0, zIndex: 40}}/>
+                                <div role="presentation" onClick={() => setOpen(false)} style={{position: "fixed", inset: 0, zIndex: 40}}/>
                                 <ul className="dropdown-menu dropdown-menu-end show" style={{zIndex: 50}}>
                                     <li>
                                         <div className="dropdown-item">

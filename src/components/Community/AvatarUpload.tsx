@@ -8,6 +8,7 @@ import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 import {uploadJsonWithProgress} from "@/lib/upload-progress"
 import {AiIcon} from "@/components/app/AiIcon"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 import {stripBx} from "@/lib/icon-map"
 
 interface AvatarUploadProps {
@@ -172,29 +173,16 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
     const renderAiButton = (variant: "modal" | "inline") => {
         const disabled = uploading || !completedCrop
         return (
-            <button
+            <Button
                 type="button"
+                variant="outline"
+                size={variant === "modal" ? "lg" : "sm"}
                 onClick={() => void openStudio()}
                 disabled={disabled}
-                style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 6,
-                    padding: variant === "modal" ? "8px 16px" : "0.25rem 0.5rem",
-                    borderRadius: variant === "modal" ? 10 : 6,
-                    border: "1px solid rgba(167,139,250,0.45)",
-                    background: "rgba(167,139,250,0.12)",
-                    color: "#a78bfa",
-                    fontSize: variant === "modal" ? 13 : "0.8125rem",
-                    fontWeight: 500,
-                    fontFamily: "inherit",
-                    cursor: disabled ? "not-allowed" : "pointer",
-                    opacity: disabled ? 0.5 : 1,
-                }}
             >
                 <AiIcon/>
                 {aiResult ? "Изменить запрос к ИИ" : "Редактировать с ИИ"}
-            </button>
+            </Button>
         )
     }
 
@@ -211,29 +199,28 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img src={aiResult.dataUrl} alt="Результат ИИ" style={{
                                 width: 44, height: 44, borderRadius: 8, objectFit: "cover",
-                                border: "2px solid #5b4fcf",
+                                border: "2px solid var(--dash-accent, var(--primary))",
                             }}/>
                             <span style={{fontSize: "0.75rem", color: muted}}>Выбран результат ИИ</span>
-                            <button
+                            <Button
                                 type="button"
+                                variant="ghost"
+                                size="icon-xs"
                                 onClick={() => {
                                     setAiResult(null)
                                     resetCropSelection()
                                 }}
                                 title="Вернуть исходный кадр"
-                                style={{
-                                    border: 0, background: "transparent", cursor: "pointer",
-                                    color: muted, fontSize: "1.05rem", lineHeight: 1, padding: 2,
-                                }}
+                                aria-label="Вернуть исходный кадр"
                             >
                                 <Icon name="x"/>
-                            </button>
+                            </Button>
                         </div>
                     )}
                 </div>
 
                 {!completedCrop && (
-                    <p style={{margin: "6px 0 0", fontSize: "0.72rem", color: muted}}>
+                    <p style={{margin: "6px 0 0", fontSize: "0.75rem", color: muted}}>
                         Сначала выделите область кадра.
                     </p>
                 )}
@@ -243,10 +230,9 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                         marginTop: 8,
                         padding: "8px 10px",
                         borderRadius: 8,
-                        border: "1px solid rgba(248,113,113,0.35)",
-                        background: "rgba(248,113,113,0.08)",
-                        color: "#dc3545",
-                        fontSize: "0.78rem",
+                        background: "var(--dash-danger-bg, color-mix(in oklab, var(--destructive) 10%, transparent))",
+                        color: "var(--dash-danger, var(--destructive))",
+                        fontSize: "0.75rem",
                         lineHeight: 1.45,
                     }}>
                         {aiError}
@@ -285,7 +271,16 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
             <>
                 <div
                     className="dash-col1-avatar dash-avatar-btn"
+                    role="button"
+                    tabIndex={0}
+                    aria-label="Сменить фото профиля"
                     onClick={() => inputRef.current?.click()}
+                    onKeyDown={e => {
+                        if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault()
+                            inputRef.current?.click()
+                        }
+                    }}
                     title="Сменить фото профиля"
                 >
                     {avatarUrl
@@ -307,13 +302,15 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
 
                 {/* Кроппер — модальное окно */}
                 {mounted && srcUrl && createPortal(
-                    <div className="dash-crop-backdrop" onClick={() => setSrcUrl(null)}>
-                        <div className="dash-crop-panel" onClick={e => e.stopPropagation()}>
+                    <div className="dash-crop-backdrop" onClick={() => setSrcUrl(null)} role="presentation">
+                        <div className="dash-crop-panel" onClick={e => e.stopPropagation()} role="dialog"
+                             aria-modal="true">
                             <div className="dash-crop-panel__hd">
                                 <span>Обрезать фото</span>
-                                <button className="dash-crop-panel__close" onClick={() => setSrcUrl(null)}>
+                                <Button variant="ghost" size="icon-sm" className="dash-crop-panel__close"
+                                        onClick={() => setSrcUrl(null)} aria-label="Закрыть">
                                     <Icon name="x"/>
-                                </button>
+                                </Button>
                             </div>
                             <div className="dash-crop-panel__body">
                                 <ReactCrop
@@ -330,18 +327,18 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                                 {renderAiBlock("modal")}
                             </div>
                             <div className="dash-crop-panel__ft">
-                                <button
+                                <Button
                                     className="dash-crop-panel__apply"
                                     onClick={handleApply}
                                     disabled={uploading || !completedCrop}
                                 >
                                     <Icon name={stripBx(uploading ? "bx-loader-alt bx-spin" : "bx-check")}/>
                                     {uploading ? "Загрузка…" : aiResult ? "Применить вариант ИИ" : "Применить"}
-                                </button>
+                                </Button>
                                 {renderAiButton("modal")}
-                                <button className="dash-crop-panel__cancel" onClick={() => setSrcUrl(null)}>
+                                <Button variant="ghost" className="dash-crop-panel__cancel" onClick={() => setSrcUrl(null)}>
                                     Отмена
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     </div>,
@@ -357,19 +354,19 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
             {/* Текущий аватар */}
             <div className="d-flex align-items-center gap-3 mb-3">
                 <div style={{
-                    width: 80, height: 80, borderRadius: 12, overflow: "hidden", flexShrink: 0,
-                    background: "rgba(91,79,207,0.12)", display: "flex", alignItems: "center", justifyContent: "center",
-                    border: "2px solid rgba(91,79,207,0.2)"
+                    width: 80, height: 80, borderRadius: 14, overflow: "hidden", flexShrink: 0,
+                    background: "var(--dash-accent-bg, color-mix(in oklab, var(--primary) 12%, transparent))",
+                    display: "flex", alignItems: "center", justifyContent: "center",
                 }}>
                     {avatarUrl
                         ?
                         <img src={avatarUrl} alt="avatar" style={{width: "100%", height: "100%", objectFit: "cover"}}/>
-                        : <span style={{fontSize: "1.8rem", fontWeight: 700, color: "#5b4fcf"}}>{initials}</span>}
+                        : <span style={{fontSize: "1.5rem", fontWeight: 700, color: "var(--dash-accent, var(--primary))"}}>{initials}</span>}
                 </div>
                 <div>
-                    <button className="btn btn-sm btn-outline-secondary" onClick={() => inputRef.current?.click()}>
-                        <Icon name="upload" className="me-1"/>Выбрать фото
-                    </button>
+                    <Button variant="outline" size="sm" onClick={() => inputRef.current?.click()}>
+                        <Icon name="upload"/>Выбрать фото
+                    </Button>
                     <p className="text-muted small mb-0 mt-1">JPG, PNG · до 10 МБ</p>
                 </div>
                 <input ref={inputRef} type="file" accept="image/jpeg,image/png" className="d-none"
@@ -379,8 +376,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
             {/* Кроппер */}
             {srcUrl && (
                 <div style={{
-                    background: "rgba(0,0,0,0.03)", borderRadius: 12, padding: 16,
-                    border: "1px solid rgba(91,79,207,0.15)"
+                    background: "rgba(0,0,0,0.03)", borderRadius: 14, padding: 16,
                 }}>
                     <p className="small text-muted mb-2">Выделите область для аватара:</p>
                     <div style={{maxWidth: 360}}>
@@ -397,15 +393,14 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                     </div>
                     {renderAiBlock("inline")}
                     <div className="d-flex gap-2 mt-3">
-                        <button className="btn btn-primary btn-sm" onClick={handleApply}
-                                disabled={uploading || !completedCrop}>
-                            <Icon name={stripBx(uploading ? "bx-loader-alt bx-spin" : "bx-check")} className="me-1"/>
-                            {uploading ? "Загрузка..." : aiResult ? "Применить вариант ИИ" : "Применить"}
-                        </button>
+                        <Button size="sm" onClick={handleApply} disabled={uploading || !completedCrop}>
+                            <Icon name={stripBx(uploading ? "bx-loader-alt bx-spin" : "bx-check")}/>
+                            {uploading ? "Загрузка…" : aiResult ? "Применить вариант ИИ" : "Применить"}
+                        </Button>
                         {renderAiButton("inline")}
-                        <button className="btn btn-outline-secondary btn-sm" onClick={() => setSrcUrl(null)}>
+                        <Button variant="outline" size="sm" onClick={() => setSrcUrl(null)}>
                             Отмена
-                        </button>
+                        </Button>
                     </div>
                 </div>
             )}

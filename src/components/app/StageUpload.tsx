@@ -6,6 +6,7 @@ import type {StageType} from "@prisma/client"
 import {UploadingCards, formatFileSize, type UploadItem} from "@/components/app/UploadingCard"
 import {uploadWithProgress} from "@/lib/upload-progress"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 import {stripBx} from "@/lib/icon-map"
 
 type UploadFile = {
@@ -52,7 +53,7 @@ export function StageUpload({
         [stageType],
     );
     const formatsHint = useMemo(() => {
-        const base = "PDF, DWG, DXF, JPG, PNG, ZIP, MP4, WEBM, MOV — до 500 МБ";
+        const base = "PDF, DWG, DXF, JPG, PNG, ZIP, MP4, WEBM, MOV (до 500 МБ)";
         if (stageType === "CONCEPT") return `${base}; фото также WEBP, AVIF, GIF`;
         return stageType === "SPECIFICATION"
             ? `${base}; для спецификации также XLSX, XLS, DOC, DOCX`
@@ -218,29 +219,35 @@ export function StageUpload({
 
             {stageType === "CONCEPT" && (
                 <div className="d-flex gap-2 flex-wrap mb-3">
-                    <button type="button" className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
-                            onClick={() => photoRef.current?.click()}>
+                    <Button type="button" variant="outline" size="sm" onClick={() => photoRef.current?.click()}>
                         <Icon name="image-add"/>
                         Добавить фото
-                    </button>
-                    <button type="button" className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
-                            onClick={() => videoRef.current?.click()}>
+                    </Button>
+                    <Button type="button" variant="outline" size="sm" onClick={() => videoRef.current?.click()}>
                         <Icon name="video-plus"/>
                         Добавить видео
-                    </button>
+                    </Button>
                 </div>
             )}
 
             {/* Drop zone */}
             <div
+                role="button"
+                tabIndex={0}
                 className="border border-dashed rounded p-4 text-center mb-3"
                 style={{
                     cursor: "pointer",
                     borderStyle: "dashed",
                     borderColor: dragOver ? "var(--bs-primary)" : undefined,
-                    background: dragOver ? "rgba(13,110,253,0.05)" : undefined
+                    background: dragOver ? "color-mix(in oklab, var(--bs-primary) 5%, transparent)" : undefined
                 }}
                 onClick={() => inputRef.current?.click()}
+                onKeyDown={e => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault()
+                        inputRef.current?.click()
+                    }
+                }}
                 onDragOver={e => {
                     e.preventDefault();
                     setDragOver(true)
@@ -279,47 +286,46 @@ export function StageUpload({
             <div className="mb-3">
                 {video ? (
                     <div className="d-flex align-items-center gap-2 p-2 rounded"
-                         style={{background: "rgba(13,110,253,0.06)", border: "1px solid rgba(13,110,253,0.15)"}}>
-                        <Icon name="video" className="text-primary" style={{fontSize: "1.2rem"}}/>
+                         style={{background: "color-mix(in oklab, var(--bs-primary) 6%, transparent)"}}>
+                        <Icon name="video" className="text-primary" style={{fontSize: "1.125rem"}}/>
                         <div className="flex-grow-1">
-                            <div style={{fontSize: "0.82rem", fontWeight: 500}}>{video.name}</div>
-                            <div className="text-muted" style={{fontSize: "0.72rem"}}>{formatFileSize(video.size)} ·
+                            <div style={{fontSize: "0.875rem", fontWeight: 500}}>{video.name}</div>
+                            <div className="text-muted" style={{fontSize: "0.75rem"}}>{formatFileSize(video.size)} ·
                                 Видео-пояснение
                             </div>
                         </div>
-                        <button className="btn btn-sm btn-text-secondary" onClick={() => setVideo(null)}><Icon name="x"/></button>
+                        <Button type="button" variant="ghost" size="icon-sm" aria-label="Убрать видео"
+                                onClick={() => setVideo(null)}><Icon name="x"/></Button>
                     </div>
                 ) : stageType !== "CONCEPT" ? (
-                    <button type="button" className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
-                            onClick={() => videoRef.current?.click()}>
+                    <Button type="button" variant="outline" size="sm" onClick={() => videoRef.current?.click()}>
                         <Icon name="video"/>
                         Прикрепить видео-пояснение (MP4, WEBM, MOV, до 500 МБ)
-                    </button>
+                    </Button>
                 ) : null}
             </div>
 
             {(files.length > 0 || video) && !uploaded && (
-                <button
-                    className="btn btn-primary"
+                <Button
                     onClick={handleUpload}
                     disabled={uploading || files.some((f) => f.status === "uploading")}
                 >
-                    <Icon name={stripBx(uploading ? "bx-loader-alt bx-spin" : "bx-cloud-upload")} className="me-1"/>
+                    <Icon name={stripBx(uploading ? "bx-loader-alt bx-spin" : "bx-cloud-upload")}/>
                     {uploading
-                        ? "Загрузка..."
+                        ? "Загрузка…"
                         : files.length > 0
                             ? `Загрузить (${files.length} файл${files.length > 1 ? "а" : ""})`
                             : "Загрузить видео"}
-                </button>
+                </Button>
             )}
 
             {uploaded && !submitted && (
                 <div className="d-flex gap-2 align-items-center">
                     <span className="text-success"><Icon name="check-circle" className="me-1"/>Файлы загружены</span>
-                    <button className="btn btn-primary" onClick={handleSubmit}>
-                        <Icon name="send" className="me-1"/>
+                    <Button onClick={handleSubmit}>
+                        <Icon name="send"/>
                         Сдать на проверку
-                    </button>
+                    </Button>
                 </div>
             )}
         </div>

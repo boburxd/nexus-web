@@ -148,7 +148,7 @@ export function StageSummaryCards({
                     <div style={{
                         fontSize: "0.75rem",
                         color: "var(--adm-muted)",
-                            marginBottom: 6
+                        marginBottom: 6
                     }}>
                         История решений ({reviewsNewestFirst.length})
                     </div>

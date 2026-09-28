@@ -1,11 +1,23 @@
 // Компонент для визуализации индикаторов загрузки ИИ в полях брифа
 import React from "react"
+import {Button} from "@/components/ui/button"
+import {Icon} from "@/components/ui/icon"
 
 interface AILoadingIndicatorProps {
     isLoading: boolean
     fieldKey: string
     position?: "right" | "bottom"
 }
+
+/** Статичная точка статуса рядом с подписью (без зацикленной пульсации). */
+const dot = (size: number, opacity: number): React.CSSProperties => ({
+    display: "inline-block",
+    width: size,
+    height: size,
+    borderRadius: "50%",
+    background: "var(--primary)",
+    opacity,
+})
 
 export function AILoadingIndicator({isLoading, fieldKey, position = "right"}: AILoadingIndicatorProps) {
     if (!isLoading) return null
@@ -14,44 +26,17 @@ export function AILoadingIndicator({isLoading, fieldKey, position = "right"}: AI
         return (
             <div
                 style={{
-                    marginTop: "0.5em",
+                    marginTop: 8,
                     display: "flex",
                     alignItems: "center",
-                    gap: "0.5em",
+                    gap: 8,
                     fontSize: "0.75rem",
-                    color: "rgba(121,40,202,0.7)",
+                    color: "var(--primary)",
                 }}
             >
-                <div
-                    style={{
-                        display: "inline-block",
-                        width: "4px",
-                        height: "4px",
-                        borderRadius: "50%",
-                        background: "rgba(121,40,202,0.7)",
-                        animation: "pulse 1.5s ease-in-out infinite",
-                    }}
-                />
-                <div
-                    style={{
-                        display: "inline-block",
-                        width: "4px",
-                        height: "4px",
-                        borderRadius: "50%",
-                        background: "rgba(121,40,202,0.5)",
-                        animation: "pulse 1.5s ease-in-out 0.3s infinite",
-                    }}
-                />
-                <div
-                    style={{
-                        display: "inline-block",
-                        width: "4px",
-                        height: "4px",
-                        borderRadius: "50%",
-                        background: "rgba(121,40,202,0.3)",
-                        animation: "pulse 1.5s ease-in-out 0.6s infinite",
-                    }}
-                />
+                <div style={dot(4, 0.7)}/>
+                <div style={dot(4, 0.5)}/>
+                <div style={dot(4, 0.3)}/>
                 <span>ИИ анализирует…</span>
             </div>
         )
@@ -62,25 +47,16 @@ export function AILoadingIndicator({isLoading, fieldKey, position = "right"}: AI
             style={{
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "0.4em",
-                marginLeft: "0.5em",
-                padding: "0.3em 0.6em",
-                background: "rgba(121,40,202,0.1)",
+                gap: 6,
+                marginLeft: 8,
+                padding: "4px 10px",
+                background: "color-mix(in oklab, var(--primary) 10%, transparent)",
                 borderRadius: 4,
-                fontSize: "0.7rem",
-                color: "rgba(121,40,202,0.8)",
+                fontSize: "0.75rem",
+                color: "var(--primary)",
             }}
         >
-            <div
-                style={{
-                    display: "inline-block",
-                    width: "3px",
-                    height: "3px",
-                    borderRadius: "50%",
-                    background: "rgba(121,40,202,0.8)",
-                    animation: "pulse 1.5s ease-in-out infinite",
-                }}
-            />
+            <div style={dot(3, 0.8)}/>
             <span>Анализирую…</span>
         </div>
     )
@@ -107,20 +83,12 @@ export function SuggestionStatus({isApplied, isLoading}: SuggestionStatusProps) 
                 style={{
                     display: "inline-flex",
                     alignItems: "center",
-                    gap: "0.3em",
+                    gap: 4,
                     fontSize: "0.75rem",
-                    color: "rgba(121,40,202,0.7)",
+                    color: "var(--primary)",
                 }}
             >
-                <div
-                    style={{
-                        width: "3px",
-                        height: "3px",
-                        borderRadius: "50%",
-                        background: "rgba(121,40,202,0.7)",
-                        animation: "pulse 1.5s ease-in-out infinite",
-                    }}
-                />
+                <div style={dot(3, 0.7)}/>
                 Применение…
             </div>
         )
@@ -128,7 +96,7 @@ export function SuggestionStatus({isApplied, isLoading}: SuggestionStatusProps) 
 
     if (isApplied) {
         return (
-            <span style={{color: "rgba(52,211,153,0.7)", fontSize: "0.75rem", fontWeight: 600}}>
+            <span style={{color: "var(--success)", fontSize: "0.75rem", fontWeight: 600}}>
         ✓ Применено
       </span>
         )
@@ -149,37 +117,25 @@ export function AIError({error, onDismiss}: AIErrorProps) {
     return (
         <div
             style={{
-                background: "rgba(239,68,68,0.1)",
-                border: "1px solid rgba(239,68,68,0.3)",
+                background: "color-mix(in oklab, var(--destructive) 10%, transparent)",
                 borderRadius: 8,
-                padding: "0.875rem 1rem",
+                padding: "14px 16px",
                 marginBottom: "1rem",
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                color: "rgba(239,68,68,0.8)",
+                color: "var(--destructive)",
                 fontSize: "0.875rem",
             }}
         >
-            <div style={{display: "flex", alignItems: "center", gap: "0.5em"}}>
-                <span style={{fontSize: "1.1em"}}>⚠️</span>
+            <div style={{display: "flex", alignItems: "center", gap: 8}}>
+                <Icon name="error-circle"/>
                 <span>{error}</span>
             </div>
             {onDismiss && (
-                <button
-                    onClick={onDismiss}
-                    style={{
-                        background: "none",
-                        border: "none",
-                        color: "rgba(239,68,68,0.6)",
-                        cursor: "pointer",
-                        fontSize: "1.2em",
-                        padding: 0,
-                        lineHeight: 1,
-                    }}
-                >
-                    ✕
-                </button>
+                <Button type="button" variant="ghost" size="icon-xs" aria-label="Закрыть" onClick={onDismiss}>
+                    <Icon name="x"/>
+                </Button>
             )}
         </div>
     )
@@ -210,19 +166,17 @@ export function AnimatedSuggestion({
                                    }: AnimatedSuggestionProps) {
     const S = {
         suggestionCard: {
-            background: "rgba(121,40,202,0.07)",
-            border: "1px solid rgba(121,40,202,0.2)",
+            background: "var(--secondary)",
             borderRadius: 10,
-            padding: "1rem 1.1rem",
-            marginBottom: "0.75rem",
+            padding: "16px 16px",
+            marginBottom: 12,
             animation: `slideIn 0.3s ease-out ${index * 0.1}s both`,
         } as React.CSSProperties,
         appliedCard: {
-            background: "rgba(52,211,153,0.06)",
-            border: "1px solid rgba(52,211,153,0.2)",
+            background: "color-mix(in oklab, var(--success) 8%, transparent)",
             borderRadius: 10,
-            padding: "1rem 1.1rem",
-            marginBottom: "0.75rem",
+            padding: "16px 16px",
+            marginBottom: 12,
             opacity: 0.6,
             animation: `slideIn 0.3s ease-out ${index * 0.1}s both`,
         } as React.CSSProperties,
@@ -232,26 +186,24 @@ export function AnimatedSuggestion({
         <div style={isApplied ? S.appliedCard : S.suggestionCard}>
             {fieldLabel && (
                 <div style={{
-                    color: "rgba(121,40,202,0.9)",
-                    fontSize: "0.7rem",
+                    color: "var(--primary)",
+                    fontSize: "0.75rem",
                     fontWeight: 600,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.07em",
-                    marginBottom: "0.4em"
+                    marginBottom: 6
                 }}>
                     {fieldLabel}
                 </div>
             )}
-            <p style={{color: "#f4f4f4", fontSize: "0.875rem", fontWeight: 500, margin: "0 0 0.3em"}}>
+            <p style={{color: "var(--card-foreground)", fontSize: "0.875rem", fontWeight: 500, margin: "0 0 4px"}}>
                 {suggestion.tip}
             </p>
-            <p style={{color: "rgba(255,255,255,0.4)", fontSize: "0.8rem", margin: "0 0 0.75em"}}>
+            <p style={{color: "var(--muted-foreground)", fontSize: "0.75rem", margin: "0 0 10px"}}>
                 {suggestion.reason}
             </p>
-            <div style={{display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "1rem"}}>
+            <div style={{display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16}}>
                 <p style={{
-                    color: "rgba(255,255,255,0.55)",
-                    fontSize: "0.8rem",
+                    color: "var(--muted-foreground)",
+                    fontSize: "0.75rem",
                     fontStyle: "italic",
                     margin: 0,
                     flex: 1
@@ -259,34 +211,12 @@ export function AnimatedSuggestion({
                     «{suggestion.example}»
                 </p>
                 {!isApplied && editable && suggestion.field && (
-                    <button
-                        onClick={onApply}
-                        style={{
-                            background: "rgba(121,40,202,0.2)",
-                            border: "1px solid rgba(121,40,202,0.35)",
-                            borderRadius: 6,
-                            color: "rgba(255,255,255,0.7)",
-                            cursor: "pointer",
-                            fontSize: "0.75rem",
-                            padding: "0.3em 0.8em",
-                            fontFamily: "inherit",
-                            flexShrink: 0,
-                            transition: "all 0.2s ease",
-                        }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.background = "rgba(121,40,202,0.35)"
-                            e.currentTarget.style.color = "rgba(255,255,255,0.9)"
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.background = "rgba(121,40,202,0.2)"
-                            e.currentTarget.style.color = "rgba(255,255,255,0.7)"
-                        }}
-                    >
+                    <Button type="button" variant="secondary" size="xs" className="shrink-0" onClick={onApply}>
                         Применить →
-                    </button>
+                    </Button>
                 )}
                 {isApplied && (
-                    <span style={{color: "rgba(52,211,153,0.7)", fontSize: "0.75rem", flexShrink: 0}}>
+                    <span style={{color: "var(--success)", fontSize: "0.75rem", flexShrink: 0}}>
             ✓ Применено
           </span>
                 )}

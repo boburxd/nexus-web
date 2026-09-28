@@ -3,6 +3,7 @@
 import {useEffect, useMemo, useState} from "react"
 import type {CardAttachment, CardFile, PortfolioCard} from "./PortfolioCardEditorModal"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 async function fetchJson<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
     const res = await fetch(input, init)
@@ -110,7 +111,7 @@ export function PortfolioCardBrowseModal({card, onClose, onEdit}: PortfolioCardB
             <div
                 key={a.id}
                 className="rounded-3 p-2"
-                style={{border: "1px solid rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.2)"}}
+                style={{background: "rgba(0,0,0,0.2)"}}
             >
                 <div className="small fw-medium mb-2 text-truncate" style={{color: "rgba(255,255,255,0.85)"}}>
                     {name}
@@ -144,37 +145,39 @@ export function PortfolioCardBrowseModal({card, onClose, onEdit}: PortfolioCardB
     return (
         <div
             onClick={onClose}
+            role="presentation"
             style={{
                 position: "fixed",
                 inset: 0,
-                zIndex: 1080,
+                zIndex: "var(--z-sheet)",
                 background: "rgba(8,10,18,0.78)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 padding: 16,
-                backdropFilter: "blur(4px)",
             }}
         >
             <div
                 onClick={(e) => e.stopPropagation()}
+                role="dialog"
+                aria-modal="true"
                 style={{
                     width: "min(900px, 96vw)",
                     maxHeight: "92vh",
                     overflow: "hidden",
                     display: "flex",
                     flexDirection: "column",
-                    borderRadius: 16,
-                    background: "linear-gradient(165deg, rgba(26,31,58,0.98) 0%, rgba(15,19,38,0.99) 100%)",
-                    color: "#e8eaf4",
+                    borderRadius: 14,
+                    background: "var(--dash-surface2, var(--popover))",
+                    color: "var(--dash-text, var(--foreground))",
                 }}
             >
                 <div
                     className="d-flex align-items-start justify-content-between gap-2 flex-wrap"
-                    style={{padding: "14px 18px", borderBottom: "1px solid rgba(255,255,255,0.08)", flexShrink: 0}}
+                    style={{padding: "14px 16px", borderBottom: "1px solid rgba(255,255,255,0.08)", flexShrink: 0}}
                 >
                     <div className="min-w-0">
-                        <h5 className="mb-1 text-truncate" style={{fontSize: "1.05rem", color: "#f4f6ff"}}>
+                        <h5 className="mb-1 text-truncate" style={{fontSize: "1rem", color: "var(--dash-text, var(--foreground))"}}>
                             {c.title}
                         </h5>
                         {c.description && (
@@ -189,30 +192,30 @@ export function PortfolioCardBrowseModal({card, onClose, onEdit}: PortfolioCardB
                         )}
                     </div>
                     <div className="d-flex gap-2 flex-shrink-0">
-                        <button type="button" className="btn btn-sm btn-primary" onClick={onEdit}>
-                            <Icon name="edit-alt" className="me-1"/>
+                        <Button type="button" size="sm" onClick={onEdit}>
+                            <Icon name="edit-alt"/>
                             Изменить
-                        </button>
-                        <button type="button" className="btn btn-sm btn-outline-light" onClick={onClose}>
+                        </Button>
+                        <Button type="button" variant="outline" size="sm" onClick={onClose}>
                             Закрыть
-                        </button>
+                        </Button>
                     </div>
                 </div>
 
-                <div style={{overflowY: "auto", flex: 1, padding: "16px 18px"}}>
-                    <p className="small text-uppercase fw-semibold mb-2"
-                       style={{letterSpacing: "0.06em", color: "rgba(255,255,255,0.45)"}}>
+                <div style={{overflowY: "auto", flex: 1, padding: 16}}>
+                    <p className="small fw-semibold mb-2"
+                       style={{color: "rgba(255,255,255,0.45)"}}>
                         Основной материал
                     </p>
                     <div className="mb-4 d-flex justify-content-center" style={{minHeight: 200}}>
                         {c.mainFile && mainUrl && isImage(c.mainFile) && (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img src={mainUrl} alt=""
-                                 style={{maxWidth: "100%", maxHeight: "55vh", borderRadius: 12, objectFit: "contain"}}/>
+                                 style={{maxWidth: "100%", maxHeight: "55vh", borderRadius: 10, objectFit: "contain"}}/>
                         )}
                         {c.mainFile && mainUrl && isVideo(c.mainFile) && (
                             <video src={mainUrl} controls playsInline
-                                   style={{maxWidth: "100%", maxHeight: "55vh", borderRadius: 12}}/>
+                                   style={{maxWidth: "100%", maxHeight: "55vh", borderRadius: 10}}/>
                         )}
                         {c.mainFile && mainUrl && !isImage(c.mainFile) && !isVideo(c.mainFile) && (
                             <a href={mainUrl} target="_blank" rel="noopener noreferrer"
@@ -227,8 +230,8 @@ export function PortfolioCardBrowseModal({card, onClose, onEdit}: PortfolioCardB
 
                     {underMain.length > 0 && (
                         <div className="mb-4">
-                            <p className="small text-uppercase fw-semibold mb-2"
-                               style={{letterSpacing: "0.06em", color: "rgba(255,255,255,0.45)"}}>
+                            <p className="small fw-semibold mb-2"
+                               style={{color: "rgba(255,255,255,0.45)"}}>
                                 Материалы к главному кадру
                             </p>
                             <div
@@ -238,8 +241,8 @@ export function PortfolioCardBrowseModal({card, onClose, onEdit}: PortfolioCardB
 
                     {galleryImages.length > 0 && (
                         <div className="mb-4">
-                            <p className="small text-uppercase fw-semibold mb-2"
-                               style={{letterSpacing: "0.06em", color: "rgba(255,255,255,0.45)"}}>
+                            <p className="small fw-semibold mb-2"
+                               style={{color: "rgba(255,255,255,0.45)"}}>
                                 Дополнительные кадры
                             </p>
                             <div className="d-flex flex-column gap-4">
@@ -249,7 +252,6 @@ export function PortfolioCardBrowseModal({card, onClose, onEdit}: PortfolioCardB
                                     const name = gi.file.title || gi.file.filename
                                     return (
                                         <div key={gi.id} className="rounded-3 p-2" style={{
-                                            border: "1px solid rgba(255,255,255,0.1)",
                                             background: "rgba(0,0,0,0.15)"
                                         }}>
                                             <div className="small fw-medium mb-2 text-truncate"
@@ -285,8 +287,8 @@ export function PortfolioCardBrowseModal({card, onClose, onEdit}: PortfolioCardB
 
                     {standaloneMaterials.length > 0 && (
                         <div className="mb-0">
-                            <p className="small text-uppercase fw-semibold mb-2"
-                               style={{letterSpacing: "0.06em", color: "rgba(255,255,255,0.45)"}}>
+                            <p className="small fw-semibold mb-2"
+                               style={{color: "rgba(255,255,255,0.45)"}}>
                                 Материалы (отдельная сетка)
                             </p>
                             <div

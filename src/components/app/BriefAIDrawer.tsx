@@ -2,6 +2,9 @@
 
 import {useEffect, useState} from "react"
 import {AiIcon} from "@/components/app/AiIcon"
+import {Button} from "@/components/ui/button"
+import {Badge} from "@/components/ui/badge"
+import {Icon} from "@/components/ui/icon"
 
 interface Suggestion {
     field: string | null
@@ -76,37 +79,10 @@ export function BriefAIDrawer({briefData, onApply}: BriefAIDrawerProps) {
     return (
         <>
             {/* Кнопка-триггер */}
-            <button
-                type="button"
-                onClick={fetchSuggestions}
-                style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "0.4em",
-                    padding: "0.55em 1.1em",
-                    borderRadius: 8,
-                    border: "1.5px solid rgba(32,29,29,0.18)",
-                    background: "rgba(32,29,29,0.04)",
-                    color: "rgba(32,29,29,0.65)",
-                    fontSize: "0.82rem",
-                    fontWeight: 500,
-                    cursor: "pointer",
-                    fontFamily: "inherit",
-                    transition: "all 0.15s",
-                    whiteSpace: "nowrap" as const,
-                }}
-                onMouseEnter={e => {
-                    e.currentTarget.style.background = "rgba(32,29,29,0.08)"
-                    e.currentTarget.style.borderColor = "rgba(32,29,29,0.3)"
-                }}
-                onMouseLeave={e => {
-                    e.currentTarget.style.background = "rgba(32,29,29,0.04)"
-                    e.currentTarget.style.borderColor = "rgba(32,29,29,0.18)"
-                }}
-            >
+            <Button type="button" variant="outline" onClick={fetchSuggestions}>
                 <AiIcon size="0.95em"/>
                 Подсказки AI
-            </button>
+            </Button>
 
             {/* Drawer root */}
             <div
@@ -120,12 +96,12 @@ export function BriefAIDrawer({briefData, onApply}: BriefAIDrawerProps) {
             >
                 {/* Backdrop */}
                 <div
+                    role="presentation"
                     onClick={close}
                     style={{
                         position: "absolute",
                         inset: 0,
                         background: "rgba(0,0,0,0.25)",
-                        backdropFilter: "blur(2px)",
                         opacity: open ? 1 : 0,
                         transition: "opacity 0.3s ease",
                     }}
@@ -139,13 +115,12 @@ export function BriefAIDrawer({briefData, onApply}: BriefAIDrawerProps) {
                         right: 0,
                         bottom: 0,
                         width: "min(400px, 92vw)",
-                        background: "#fafaf9",
-                        borderLeft: "1px solid rgba(32,29,29,0.1)",
+                        background: "var(--popover)",
+                        color: "var(--popover-foreground)",
                         display: "flex",
                         flexDirection: "column" as const,
                         transform: open ? "translateX(0)" : "translateX(100%)",
-                        transition: "transform 0.35s cubic-bezier(0.4,0,0.2,1)",
-                        fontFamily: "'PP Neue Montreal', 'Inter', Arial, sans-serif",
+                        transition: "transform 0.3s cubic-bezier(0.4,0,0.2,1)",
                         boxShadow: "-8px 0 32px rgba(0,0,0,0.08)",
                     }}
                 >
@@ -154,76 +129,50 @@ export function BriefAIDrawer({briefData, onApply}: BriefAIDrawerProps) {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
-                        padding: "1.25rem 1.5rem",
-                        borderBottom: "1px solid rgba(32,29,29,0.08)",
+                        padding: "20px 24px",
+                        borderBottom: "1px solid var(--border)",
                         flexShrink: 0,
-                        background: "#fff",
                     }}>
-                        <div style={{display: "flex", alignItems: "center", gap: "0.5em"}}>
+                        <div style={{display: "flex", alignItems: "center", gap: 8}}>
                             <AiIcon size="1.05rem"/>
-                            <span style={{color: "#201d1d", fontSize: "0.95rem", fontWeight: 600}}>
+                            <span style={{color: "var(--foreground)", fontSize: "1rem", fontWeight: 600}}>
                 AI-подсказки
               </span>
-                            <span style={{
-                                background: "rgba(32,29,29,0.06)",
-                                borderRadius: 100,
-                                color: "rgba(32,29,29,0.4)",
-                                fontSize: "0.65rem",
-                                fontWeight: 700,
-                                letterSpacing: "0.06em",
-                                padding: "0.2em 0.65em",
-                                textTransform: "uppercase" as const,
-                            }}>
-                только советы
-              </span>
+                            <Badge variant="secondary">только советы</Badge>
                         </div>
-                        <button
-                            onClick={close}
-                            style={{
-                                background: "rgba(32,29,29,0.05)",
-                                border: "1px solid rgba(32,29,29,0.12)",
-                                borderRadius: 6,
-                                color: "rgba(32,29,29,0.4)",
-                                cursor: "pointer",
-                                fontSize: "0.875rem",
-                                lineHeight: 1,
-                                padding: "0.35em 0.6em",
-                            }}
-                        >
-                            ✕
-                        </button>
+                        <Button type="button" variant="ghost" size="icon-sm" aria-label="Закрыть" onClick={close}>
+                            <Icon name="x"/>
+                        </Button>
                     </div>
 
                     {/* Контент */}
-                    <div style={{flex: 1, overflowY: "auto", padding: "1.25rem 1.5rem"}}>
+                    <div style={{flex: 1, overflowY: "auto", padding: "20px 24px"}}>
 
                         {/* Скелетон загрузки */}
                         {loading && (
-                            <div style={{display: "flex", flexDirection: "column" as const, gap: "0.75rem"}}>
+                            <div style={{display: "flex", flexDirection: "column" as const, gap: 12}}>
                                 {[1, 2, 3].map(i => (
-                                    <div key={i} style={{
-                                        background: "#fff",
-                                        border: "1px solid rgba(32,29,29,0.08)",
+                                    <div key={i} className="animate-pulse" style={{
+                                        background: "var(--card)",
                                         borderRadius: 10,
-                                        padding: "1rem 1.1rem",
-                                        animation: "brief-pulse 1.5s ease-in-out infinite",
+                                        padding: "16px 16px",
                                     }}>
                                         <div style={{
-                                            background: "rgba(32,29,29,0.07)",
+                                            background: "var(--muted)",
                                             borderRadius: 4,
                                             height: 9,
                                             width: "35%",
                                             marginBottom: 10
                                         }}/>
                                         <div style={{
-                                            background: "rgba(32,29,29,0.05)",
+                                            background: "var(--muted)",
                                             borderRadius: 4,
                                             height: 8,
                                             width: "80%",
                                             marginBottom: 8
                                         }}/>
                                         <div style={{
-                                            background: "rgba(32,29,29,0.04)",
+                                            background: "var(--muted)",
                                             borderRadius: 4,
                                             height: 8,
                                             width: "60%"
@@ -231,10 +180,10 @@ export function BriefAIDrawer({briefData, onApply}: BriefAIDrawerProps) {
                                     </div>
                                 ))}
                                 <p style={{
-                                    color: "rgba(32,29,29,0.3)",
-                                    fontSize: "0.78rem",
+                                    color: "var(--muted-foreground)",
+                                    fontSize: "0.75rem",
                                     textAlign: "center",
-                                    margin: "0.5rem 0 0"
+                                    margin: "8px 0 0"
                                 }}>
                                     Анализирую бриф…
                                 </p>
@@ -244,27 +193,14 @@ export function BriefAIDrawer({briefData, onApply}: BriefAIDrawerProps) {
                         {/* Ошибка */}
                         {error && !loading && (
                             <div style={{
-                                background: "rgba(220,38,38,0.05)",
-                                border: "1px solid rgba(220,38,38,0.2)",
+                                background: "color-mix(in oklab, var(--destructive) 8%, transparent)",
                                 borderRadius: 10,
-                                padding: "1rem 1.1rem",
+                                padding: "16px 16px",
                             }}>
-                                <p style={{color: "#dc2626", fontSize: "0.875rem", margin: "0 0 0.6em"}}>{error}</p>
-                                <button
-                                    onClick={fetchSuggestions}
-                                    style={{
-                                        background: "none",
-                                        border: "none",
-                                        color: "rgba(32,29,29,0.4)",
-                                        cursor: "pointer",
-                                        fontSize: "0.8rem",
-                                        fontFamily: "inherit",
-                                        padding: 0,
-                                        textDecoration: "underline",
-                                    }}
-                                >
+                                <p style={{color: "var(--destructive)", fontSize: "0.875rem", margin: "0 0 8px"}}>{error}</p>
+                                <Button type="button" variant="link" size="xs" onClick={fetchSuggestions}>
                                     Попробовать снова
-                                </button>
+                                </Button>
                             </div>
                         )}
 
@@ -276,53 +212,49 @@ export function BriefAIDrawer({briefData, onApply}: BriefAIDrawerProps) {
                                 <div
                                     key={i}
                                     style={{
-                                        background: isApplied ? "rgba(5,150,105,0.04)" : "#fff",
-                                        border: `1px solid ${isApplied ? "rgba(5,150,105,0.2)" : "rgba(32,29,29,0.1)"}`,
+                                        background: isApplied ? "color-mix(in oklab, var(--success) 8%, transparent)" : "var(--card)",
                                         borderRadius: 10,
-                                        marginBottom: "0.75rem",
+                                        marginBottom: 12,
                                         opacity: isApplied ? 0.6 : 1,
-                                        padding: "1rem 1.1rem",
-                                        transition: "opacity 0.3s, border-color 0.2s",
+                                        padding: "16px 16px",
+                                        transition: "opacity 0.3s",
                                     }}
                                 >
                                     {label && (
                                         <div style={{
-                                            color: "rgba(32,29,29,0.4)",
-                                            fontSize: "0.65rem",
+                                            color: "var(--muted-foreground)",
+                                            fontSize: "0.75rem",
                                             fontWeight: 700,
-                                            letterSpacing: "0.08em",
-                                            marginBottom: "0.4em",
-                                            textTransform: "uppercase" as const,
+                                            marginBottom: 6,
                                         }}>
                                             {label}
                                         </div>
                                     )}
                                     <p style={{
-                                        color: "#201d1d",
+                                        color: "var(--card-foreground)",
                                         fontSize: "0.875rem",
                                         fontWeight: 600,
-                                        margin: "0 0 0.3em"
+                                        margin: "0 0 4px"
                                     }}>
                                         {s.tip}
                                     </p>
                                     <p style={{
-                                        color: "rgba(32,29,29,0.5)",
-                                        fontSize: "0.8rem",
-                                        margin: "0 0 0.75em",
+                                        color: "var(--muted-foreground)",
+                                        fontSize: "0.75rem",
+                                        margin: "0 0 10px",
                                         lineHeight: 1.5
                                     }}>
                                         {s.reason}
                                     </p>
                                     <div style={{
-                                        background: "rgba(32,29,29,0.03)",
-                                        border: "1px solid rgba(32,29,29,0.07)",
-                                        borderRadius: 7,
-                                        marginBottom: "0.75rem",
-                                        padding: "0.65rem 0.875rem",
+                                        background: "var(--muted)",
+                                        borderRadius: 8,
+                                        marginBottom: 12,
+                                        padding: "10px 14px",
                                     }}>
                                         <p style={{
-                                            color: "rgba(32,29,29,0.6)",
-                                            fontSize: "0.8rem",
+                                            color: "var(--muted-foreground)",
+                                            fontSize: "0.75rem",
                                             fontStyle: "italic",
                                             margin: 0,
                                             lineHeight: 1.5
@@ -332,31 +264,12 @@ export function BriefAIDrawer({briefData, onApply}: BriefAIDrawerProps) {
                                     </div>
                                     <div style={{display: "flex", justifyContent: "flex-end"}}>
                                         {isApplied ? (
-                                            <span style={{color: "#059669", fontSize: "0.78rem", fontWeight: 500}}>✓ Применено</span>
+                                            <span style={{color: "var(--success)", fontSize: "0.75rem", fontWeight: 500}}>✓ Применено</span>
                                         ) : s.field ? (
-                                            <button
-                                                onClick={() => apply(i, s.field, s.example)}
-                                                style={{
-                                                    background: "rgba(32,29,29,0.06)",
-                                                    border: "1px solid rgba(32,29,29,0.15)",
-                                                    borderRadius: 6,
-                                                    color: "#201d1d",
-                                                    cursor: "pointer",
-                                                    fontSize: "0.78rem",
-                                                    fontFamily: "inherit",
-                                                    fontWeight: 500,
-                                                    padding: "0.35em 0.9em",
-                                                    transition: "background 0.15s",
-                                                }}
-                                                onMouseEnter={e => {
-                                                    e.currentTarget.style.background = "rgba(32,29,29,0.1)"
-                                                }}
-                                                onMouseLeave={e => {
-                                                    e.currentTarget.style.background = "rgba(32,29,29,0.06)"
-                                                }}
-                                            >
+                                            <Button type="button" variant="secondary" size="xs"
+                                                    onClick={() => apply(i, s.field, s.example)}>
                                                 Применить →
-                                            </button>
+                                            </Button>
                                         ) : null}
                                     </div>
                                 </div>
@@ -367,45 +280,17 @@ export function BriefAIDrawer({briefData, onApply}: BriefAIDrawerProps) {
                     {/* Подвал */}
                     {!loading && suggestions.length > 0 && (
                         <div style={{
-                            borderTop: "1px solid rgba(32,29,29,0.08)",
+                            borderTop: "1px solid var(--border)",
                             flexShrink: 0,
-                            padding: "1rem 1.5rem",
-                            background: "#fff",
+                            padding: "16px 24px",
                         }}>
-                            <button
-                                onClick={fetchSuggestions}
-                                style={{
-                                    background: "rgba(32,29,29,0.04)",
-                                    border: "1px solid rgba(32,29,29,0.12)",
-                                    borderRadius: 8,
-                                    color: "rgba(32,29,29,0.5)",
-                                    cursor: "pointer",
-                                    fontSize: "0.8rem",
-                                    fontFamily: "inherit",
-                                    padding: "0.6em 1em",
-                                    width: "100%",
-                                    transition: "background 0.15s",
-                                }}
-                                onMouseEnter={e => {
-                                    e.currentTarget.style.background = "rgba(32,29,29,0.08)"
-                                }}
-                                onMouseLeave={e => {
-                                    e.currentTarget.style.background = "rgba(32,29,29,0.04)"
-                                }}
-                            >
+                            <Button type="button" variant="outline" className="w-full" onClick={fetchSuggestions}>
                                 ↺ Обновить подсказки
-                            </button>
+                            </Button>
                         </div>
                     )}
                 </div>
             </div>
-
-            <style>{`
-        @keyframes brief-pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.45; }
-        }
-      `}</style>
         </>
     )
 }

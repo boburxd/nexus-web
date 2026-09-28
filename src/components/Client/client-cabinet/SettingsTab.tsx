@@ -218,7 +218,7 @@ export function SettingsTab({name, email, formData}: {
                         <F label="Сайт">
                             <Input
                                 type="url"
-                                placeholder="https://..."
+                                placeholder="https://…"
                                 value={form.website || ""}
                                 onChange={e => setForm(p => ({...p, website: e.target.value}))}
                             />

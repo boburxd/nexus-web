@@ -1,6 +1,7 @@
 "use client"
 import React, {useCallback, useEffect} from "react"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 import {stripBx} from "@/lib/icon-map"
 
 // ─── Card ────────────────────────────────────────────────────────────────────
@@ -10,7 +11,7 @@ interface AppCardProps {
     className?: string
     style?: React.CSSProperties
     /**
-     * Стеклянная карточка (полупрозрачный фон + блюр фона позади неё), не завязанная на
+     * Самодостаточная карточка (непрозрачный фон --card, инлайн-стили), не завязанная на
      * `sneat/core.css` — нужна на страницах онбординга, где этот стиль не подключён.
      */
     glass?: boolean
@@ -22,10 +23,8 @@ export function AppCard({children, className = "", style, glass = false}: AppCar
             <div
                 className={className}
                 style={{
-                    background: "rgba(10,14,32,0.55)",
-                    backdropFilter: "blur(20px)",
-                    WebkitBackdropFilter: "blur(20px)",
-                    borderRadius: 16,
+                    background: "var(--card)",
+                    borderRadius: 14,
                     padding: "1.5rem",
                     ...style,
                 }}
@@ -47,8 +46,8 @@ export function AppCard({children, className = "", style, glass = false}: AppCar
 
 export function SectionLabel({children}: { children: React.ReactNode }) {
     return (
-        <p className="text-uppercase text-muted fw-semibold mb-3"
-           style={{fontSize: "0.72rem", letterSpacing: "0.08em"}}>
+        <p className="text-muted fw-semibold mb-3"
+           style={{fontSize: "0.75rem"}}>
             {children}
         </p>
     )
@@ -81,8 +80,8 @@ export function InfoRow({icon, label, value, href}: { icon: string; label: strin
         <div className="d-flex align-items-start gap-2 mb-2">
             <Icon name={stripBx(icon)} className="text-muted mt-1"/>
             <div>
-                <div className="text-uppercase text-muted"
-                     style={{fontSize: "0.7rem", letterSpacing: "0.05em"}}>{label}</div>
+                <div className="text-muted"
+                     style={{fontSize: "0.75rem"}}>{label}</div>
                 {href ? (
                     <a href={href} target="_blank" rel="noopener noreferrer" className="text-primary"
                        style={{fontSize: "0.875rem"}}>{value}</a>
@@ -126,8 +125,9 @@ export function AppModal({open, onClose, children, maxWidth = 900, variant = "li
     return (
         <div
             onClick={onClose}
+            role="presentation"
             style={{
-                position: "fixed", inset: 0, zIndex: 1050,
+                position: "fixed", inset: 0, zIndex: "var(--z-modal)",
                 background: "rgba(0,0,0,0.72)", display: "flex",
                 alignItems: "center", justifyContent: "center", padding: 16,
             }}
@@ -137,27 +137,27 @@ export function AppModal({open, onClose, children, maxWidth = 900, variant = "li
                 style={
                     variant === "dark"
                         ? {
-                            background: "linear-gradient(165deg, rgba(26,31,58,0.98) 0%, rgba(15,19,38,0.99) 100%)",
-                            color: "#e8eaf4",
-                            borderRadius: 16,
+                            background: "var(--popover)",
+                            color: "var(--popover-foreground)",
+                            borderRadius: 14,
                             width: "100%",
                             maxWidth,
                             maxHeight: "92vh",
                             display: "flex",
                             flexDirection: "column",
                             overflow: "hidden",
-                            animation: "modal-in 0.22s cubic-bezier(0.34,1.56,0.64,1)",
+                            animation: "modal-in 0.22s cubic-bezier(0.16, 1, 0.3, 1)",
                         }
                         : {
                             background: "#fff",
-                            borderRadius: 16,
+                            borderRadius: 14,
                             width: "100%",
                             maxWidth,
                             maxHeight: "92vh",
                             display: "flex",
                             flexDirection: "column",
                             overflow: "hidden",
-                            animation: "modal-in 0.22s cubic-bezier(0.34,1.56,0.64,1)",
+                            animation: "modal-in 0.22s cubic-bezier(0.16, 1, 0.3, 1)",
                         }
                 }
             >
@@ -176,12 +176,13 @@ interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
     children: React.ReactNode
 }
 
+const ACTION_BUTTON_VARIANT = {primary: "default", danger: "destructive", ghost: "outline"} as const
+
 export function ActionButton({variant = "ghost", icon, children, className = "", ...props}: ActionButtonProps) {
-    const cls = variant === "primary" ? "btn btn-primary" : variant === "danger" ? "btn btn-danger" : "btn btn-outline-secondary"
     return (
-        <button {...props} className={`${cls} ${className}`}>
-            {icon && <Icon name={stripBx(icon)} className="me-1"/>}
+        <Button {...props} variant={ACTION_BUTTON_VARIANT[variant]} className={className}>
+            {icon && <Icon name={stripBx(icon)}/>}
             {children}
-        </button>
+        </Button>
     )
 }

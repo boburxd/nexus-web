@@ -1,6 +1,7 @@
 "use client"
 
 import type {CSSProperties, ReactNode} from "react"
+import {Button} from "@/components/ui/button"
 
 export function DashProjectCard({
                                     hue,
@@ -31,9 +32,10 @@ export function DashProjectCard({
             style={{"--hue": hue, cursor: onClick ? "pointer" : undefined} as CSSProperties}
         >
             {onClick ? (
-                <button
+                <Button
                     type="button"
-                    className="dash-card__hit"
+                    variant="ghost"
+                    className="dash-card__hit absolute inset-0 z-[2] h-auto"
                     aria-label={label || title || watermark}
                     onClick={onClick}
                 />

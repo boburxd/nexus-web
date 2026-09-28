@@ -2,6 +2,7 @@
 
 import {useEffect, useRef, useState} from "react"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 const EMOJI_CATEGORIES = [
     {
@@ -64,28 +65,18 @@ export function ChatEmojiPicker({disabled, onSelect}: ChatEmojiPickerProps) {
 
     return (
         <div ref={rootRef} style={{position: "relative", flexShrink: 0}}>
-            <button
+            <Button
                 type="button"
+                variant="outline"
+                size="icon"
                 aria-label="Добавить эмодзи"
                 aria-expanded={open}
                 title="Добавить эмодзи"
                 disabled={disabled}
                 onClick={() => setOpen(value => !value)}
-                style={{
-                    width: 34,
-                    height: 34,
-                    borderRadius: 8,
-                    border: "1px solid var(--dash-border)",
-                    background: open ? "var(--dash-accent-bg)" : "var(--dash-surface2)",
-                    color: "var(--dash-text)",
-                    cursor: disabled ? "default" : "pointer",
-                    fontSize: "1.125rem",
-                    lineHeight: 1,
-                    opacity: disabled ? 0.6 : 1,
-                }}
             >
                 <Icon name="smile" aria-hidden/>
-            </button>
+            </Button>
 
             {open ? (
                 <div
@@ -108,27 +99,20 @@ export function ChatEmojiPicker({disabled, onSelect}: ChatEmojiPickerProps) {
                         style={{display: "flex", overflowX: "auto", borderBottom: "1px solid var(--dash-border)"}}
                     >
                         {EMOJI_CATEGORIES.map((item, index) => (
-                            <button
+                            <Button
                                 key={item.label}
                                 type="button"
+                                variant={category === index ? "secondary" : "ghost"}
+                                size="sm"
+                                className="min-w-[42px] flex-[1_0_42px]"
                                 role="tab"
                                 aria-selected={category === index}
                                 aria-label={item.label}
                                 title={item.label}
                                 onClick={() => setCategory(index)}
-                                style={{
-                                    flex: "1 0 42px",
-                                    minWidth: 42,
-                                    padding: "8px 6px",
-                                    border: 0,
-                                    borderBottom: category === index ? "2px solid var(--dash-accent)" : "2px solid transparent",
-                                    background: category === index ? "var(--dash-accent-bg)" : "transparent",
-                                    cursor: "pointer",
-                                    fontSize: "1rem",
-                                }}
                             >
-                                {item.icon}
-                            </button>
+                                <span style={{fontSize: "1rem", lineHeight: 1}}>{item.icon}</span>
+                            </Button>
                         ))}
                     </div>
                     <div
@@ -144,24 +128,17 @@ export function ChatEmojiPicker({disabled, onSelect}: ChatEmojiPickerProps) {
                         }}
                     >
                         {EMOJI_CATEGORIES[category].emojis.map((emoji, index) => (
-                            <button
+                            <Button
                                 key={`${emoji}-${index}`}
                                 type="button"
+                                variant="ghost"
+                                size="icon-lg"
+                                className="w-full"
                                 aria-label={`Добавить ${emoji}`}
                                 onClick={() => onSelect(emoji)}
-                                style={{
-                                    height: 36,
-                                    padding: 0,
-                                    border: 0,
-                                    borderRadius: 8,
-                                    background: "transparent",
-                                    cursor: "pointer",
-                                    fontSize: "1.125rem",
-                                    lineHeight: 1,
-                                }}
                             >
-                                {emoji}
-                            </button>
+                                <span style={{fontSize: "1.125rem", lineHeight: 1}}>{emoji}</span>
+                            </Button>
                         ))}
                     </div>
                 </div>

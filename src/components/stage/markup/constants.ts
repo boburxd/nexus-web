@@ -3,7 +3,7 @@ import type {CSSProperties} from "react"
 /** Попап комментария в модалке превью не должен уходить под слои и оставаться кликабельным. */
 export const markupPopupZIndexCss = `
 .stage-image-markup-root .a9s-popup.a9s-image-popup {
-  z-index: 10050;
+  z-index: var(--z-studio);
 }
 @keyframes markup-loading-pulse {
   0%, 100% { opacity: 0.82; }
@@ -23,12 +23,9 @@ export const commentPopupRoot: CSSProperties = {
     minWidth: 220,
     maxWidth: 320,
     borderRadius: 8,
-    background: "rgba(20, 25, 40, 0.9)",
+    background: "var(--dash-surface2, var(--popover))",
     color: "var(--dash-text, rgba(255,255,255,0.92))",
-    border: "1px solid rgba(255, 255, 255, 0.18)",
     boxShadow: "0 10px 28px rgba(0, 0, 0, 0.28)",
-    backdropFilter: "blur(8px)",
-    WebkitBackdropFilter: "blur(8px)",
 }
 
 /** Инструкция: те же контрастные цвета, что у всплывающего комментария — читается на любом фоне страницы. */
@@ -36,13 +33,9 @@ export const instructionCard: CSSProperties = {
     marginBottom: 12,
     padding: "10px 12px",
     borderRadius: 8,
-    background: "rgba(20, 25, 40, 0.85)",
+    background: "var(--dash-surface2, var(--popover))",
     color: "var(--dash-text, rgba(255,255,255,0.92))",
-    border: "1px solid rgba(255, 255, 255, 0.16)",
-    boxShadow: "0 8px 22px rgba(0, 0, 0, 0.24)",
-    backdropFilter: "blur(8px)",
-    WebkitBackdropFilter: "blur(8px)",
-    fontSize: "0.78rem",
+    fontSize: "0.75rem",
     lineHeight: 1.55,
 }
 

@@ -23,9 +23,7 @@ export default function PrivacyPage() {
                     justifyContent: "space-between",
                     padding: "1rem 2rem",
                     borderBottom: "1px solid rgba(255,255,255,0.07)",
-                    background: "rgba(15,21,53,0.92)",
-                    backdropFilter: "blur(8px)",
-                    WebkitBackdropFilter: "blur(8px)",
+                    background: "#0f1535",
                 }}
             >
                 <Link href="/" style={{color: "var(--foreground)", fontSize: "1.125rem", fontWeight: 500, textDecoration: "none"}}>

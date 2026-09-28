@@ -473,7 +473,7 @@ export default function RegulationsClient({
                                     <strong style={{color: revealFb.isCorrect ? "var(--success)" : "var(--destructive)"}}>
                                         {revealFb.isCorrect
                                             ? "✓ Верно."
-                                            : revealFb.timedOut ? "⏱ Время вышло." : "✗ Неверно."}
+                                            : revealFb.timedOut ? "✗ Время вышло." : "✗ Неверно."}
                                     </strong>{" "}{revealFb.explain}
                                 </div>
                             )}
@@ -500,7 +500,7 @@ export default function RegulationsClient({
                                 fontSize: "1.125rem",
                                 margin: "0 0 0.5rem"
                             }}>
-                                {shown.passed ? "Тест пройден." : "Тест не пройден"}
+                                {shown.passed ? "Тест пройден" : "Тест не пройден"}
                             </h2>
                             <p style={{color: "rgba(255,255,255,0.55)", fontSize: "0.875rem", margin: "0 0 1rem"}}>
                                 Результат: <strong

@@ -950,7 +950,7 @@ export default function OnboardingTestPage() {
                 {phase === "result" && resultOk && (
                     <AppCard glass style={{background: "rgba(52,211,153,0.06)"}}>
                         <h2 style={{color: "var(--success)", fontSize: "1.125rem", margin: "0 0 0.5rem"}}>
-                            {payload ? `${payload.levelTitle} пройден.` : "Тест пройден"}
+                            {payload ? `${payload.levelTitle} пройден` : "Тест пройден"}
                         </h2>
                         <p style={{color: "rgba(255,255,255,0.55)", fontSize: "0.875rem", margin: 0}}>
                             Результат: {resultOk.percent}% верных ответов.

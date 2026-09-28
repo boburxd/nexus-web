@@ -23,22 +23,22 @@ export function ProjectWorkflowInstructions({defaultOpen = false}: { defaultOpen
               display: "inline-flex",
               alignItems: "center",
               gap: 8,
-              fontSize: "0.82rem",
+              fontSize: "0.875rem",
               fontWeight: 700,
               color: "var(--dash-text)"
           }}>
-            <Icon name="info-circle" style={{color: "var(--dash-accent)", fontSize: "1.05rem"}}/>
+            <Icon name="info-circle" style={{color: "var(--dash-accent)", fontSize: "1rem"}}/>
             Как проходит работа по проекту
           </span>
                     <Icon name="chevron-down" style={{color: "var(--dash-muted)"}}/>
                 </summary>
-                <div style={{padding: "10px 12px", fontSize: "0.82rem", color: "var(--dash-text2)", lineHeight: 1.55}}>
+                <div style={{padding: "10px 12px", fontSize: "0.875rem", color: "var(--dash-text2)", lineHeight: 1.55}}>
                     <div style={{marginBottom: 10}}>
                         <div style={{fontWeight: 700, color: "var(--dash-text)", marginBottom: 4}}>Этапы</div>
                         <div>
                             Проект идёт по этапам (концепция → планировка → визуализация → документация → спецификация).
                             Когда дизайнер сдаёт этап, он уходит на проверку, затем появится статус{" "}
-                            <strong style={{color: "var(--dash-text)"}}>«Ожидает вашего решения»</strong> — тогда можно
+                            <strong style={{color: "var(--dash-text)"}}>«Ожидает вашего решения»</strong>. Тогда можно
                             принять этап или отправить на доработку.
                         </div>
                     </div>
@@ -46,7 +46,7 @@ export function ProjectWorkflowInstructions({defaultOpen = false}: { defaultOpen
                     <div style={{marginBottom: 10}}>
                         <div style={{fontWeight: 700, color: "var(--dash-text)", marginBottom: 4}}>Правки</div>
                         <div>
-                            Замечания и вопросы пишите в чате с администратором — он передаст их дизайнеру и поможет
+                            Замечания и вопросы пишите в чате с администратором: он передаст их дизайнеру и поможет
                             согласовать детали. После отправки на доработку дизайнер загрузит обновлённые материалы, и
                             этап
                             снова придёт к вам на согласование (после проверки администратором).
@@ -64,7 +64,7 @@ export function ProjectWorkflowInstructions({defaultOpen = false}: { defaultOpen
                     <div>
                         <div style={{fontWeight: 700, color: "var(--dash-text)", marginBottom: 4}}>Оплата и счета</div>
                         <div>
-                            Все счета и история оплат — в разделе <strong
+                            Все счета и история оплат: в разделе <strong
                             style={{color: "var(--dash-text)"}}>«Оплата»</strong> (кнопка ниже). Если потребуется
                             доплата за дополнительные правки, система покажет
                             начисление и кнопку оплаты.

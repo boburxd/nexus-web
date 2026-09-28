@@ -9,10 +9,11 @@ export function MarkupToaster({
     if (!toast) return null
     const bg =
         toast.variant === "success"
-            ? "#15803d"
+            ? "var(--success)"
             : toast.variant === "error"
-                ? "#b91c1c"
-                : "#1d4ed8"
+                ? "var(--destructive)"
+                : "var(--primary)"
+    const fg = toast.variant === "error" ? "#fff" : "var(--primary-foreground)"
     return (
         <div
             role="status"
@@ -21,12 +22,12 @@ export function MarkupToaster({
                 top: 24,
                 right: 24,
                 maxWidth: 360,
-                zIndex: 9999,
+                zIndex: "var(--z-toast)",
                 padding: "12px 16px",
                 borderRadius: 10,
                 background: bg,
-                color: "#fff",
-                fontSize: "0.82rem",
+                color: fg,
+                fontSize: "0.875rem",
                 lineHeight: 1.45,
                 boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
                 animation: "markup-toast-in 0.25s ease",

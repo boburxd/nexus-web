@@ -9,6 +9,7 @@ import {
 } from "@/lib/document-file"
 import styles from "./document-upload.module.css"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 export type SubmittedDocument = {
     /** Имя отправленного файла, если известно. */
@@ -123,12 +124,12 @@ export function DocumentUpload({
                         )}
                     </div>
                     {submitted.onDownload && (
-                        <button type="button" className={styles.action} onClick={submitted.onDownload}>
+                        <Button type="button" variant="outline" size="sm" className={styles.action} onClick={submitted.onDownload}>
                             <Icon name="download" aria-hidden/>
                             <span>Скачать</span>
-                        </button>
+                        </Button>
                     )}
-                    <span title="Документ отправлен — изменить нельзя">
+                    <span title="Документ отправлен, изменить нельзя">
                         <Icon name="lock-alt" className={styles.lock} aria-hidden/>
                     </span>
                 </div>
@@ -169,12 +170,14 @@ export function DocumentUpload({
                     </div>
                     {!locked && (
                         <>
-                            <button type="button" className={styles.action} onClick={openPicker}>
+                            <Button type="button" variant="outline" size="sm" className={styles.action} onClick={openPicker}>
                                 <span>Заменить</span>
-                            </button>
-                            <button
+                            </Button>
+                            <Button
                                 type="button"
-                                className={styles.remove}
+                                variant="ghost"
+                                size="icon-sm"
+                                className="shrink-0"
                                 onClick={() => {
                                     setLocalError(null)
                                     onFileChange(null)
@@ -182,7 +185,7 @@ export function DocumentUpload({
                                 aria-label="Убрать файл"
                             >
                                 <Icon name="x" aria-hidden/>
-                            </button>
+                            </Button>
                         </>
                     )}
                 </div>

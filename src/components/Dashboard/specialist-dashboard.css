@@ -169,23 +169,21 @@
     gap: 12px;
     padding: 16px;
     background: var(--dash-bg-alt);
-    border-left: 3px solid var(--dash-warn);
     border-radius: 6px;
     text-decoration: none;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    transition: background-color 0.2s ease;
     cursor: pointer;
 }
 
 .spec-dashboard__urgent-item:hover {
     background: var(--dash-border);
-    transform: translateX(4px);
 }
 
 .spec-dashboard__urgent-icon {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: rgba(255, 159, 67, 0.1);
+    background: var(--dash-warn-bg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -370,7 +368,7 @@
 
 .spec-dashboard__quick-link:hover {
     background: var(--dash-accent);
-    color: white;
+    color: var(--dash-bg);
 }
 
 .spec-dashboard__quick-link i {
@@ -485,7 +483,7 @@
     padding: 6px 12px;
     border-radius: 6px;
     background: var(--dash-accent);
-    color: white;
+    color: var(--dash-bg);
     font-size: 12px;
     font-weight: 600;
     text-decoration: none;

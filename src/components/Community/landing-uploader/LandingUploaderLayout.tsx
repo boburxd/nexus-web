@@ -6,6 +6,7 @@ import {MAX_LANDING_PORTFOLIO, percentToWorkPos, workPosToPercent} from "./const
 import {LandingFile, PreviewState} from "./types"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 import {stripBx} from "@/lib/icon-map"
 
 interface LayoutProps {
@@ -130,9 +131,8 @@ export function LandingUploaderLayout(props: LayoutProps) {
         <div className="landing-up" style={disabled ? {opacity: 0.7, pointerEvents: "none"} : undefined}>
             {error && (
                 <div className="landing-up-error" style={{
-                    background: "rgba(234,84,85,0.08)",
-                    border: "1px solid rgba(234,84,85,0.2)",
-                    color: "#ea5455"
+                    background: "var(--dash-danger-bg, color-mix(in oklab, var(--destructive) 10%, transparent))",
+                    color: "var(--dash-danger, var(--destructive))"
                 }}>
                     <Icon name="error-circle" style={{marginRight: 6}}/>
                     {error}
@@ -150,12 +150,12 @@ export function LandingUploaderLayout(props: LayoutProps) {
                     {cardTitle("bx-video", "Видео-визитка", "9:16, MP4, до 100 МБ")}
                     <div className="landing-up-row-line">
                         {!disabled && (
-                            <button type="button" className="landing-up-upload-tile"
+                            <Button type="button" variant="outline" className="landing-up-upload-tile"
                                     data-tour="btn-landing-video"
                                     onClick={() => videoRef.current?.click()}>
                                 <Icon name={stripBx(uploading === "video" ? "bx-loader-alt bx-spin" : "bx-play-circle")}/>
                                 <span>Загрузить</span>
-                            </button>
+                            </Button>
                         )}
                         <DashCarousel className="landing-up-carousel" viewportClassName="landing-up-carousel__viewport"
                                       ariaLabel="Видео визитки">
@@ -192,19 +192,26 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                                       style={{width: "100%", height: "100%", objectFit: "cover"}}/> :
                                             <Icon name="video"/>}
                                         {!disabled && (
-                                            <span className="landing-up-thumb-actions"
-                                                  onClick={(e) => e.stopPropagation()}>
-                        <button type="button" className="landing-up-select-btn" onClick={() => onSelectVideo(f.id)}
-                                title="Показать на главной">
+                                            <span className="landing-up-thumb-actions">
+                        <Button type="button" variant="ghost" size="icon-xs" className="landing-up-select-btn"
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    onSelectVideo(f.id)
+                                }}
+                                title="Показать на главной" aria-label="Показать на главной">
                           {renderSelectorMark(selected)}
-                        </button>
+                        </Button>
                                                 {onDeleteFile && (
-                                                    <button type="button" className="landing-up-select-btn"
-                                                            onClick={() => onDeleteFile(f.id)} title="Удалить"
-                                                            style={{marginLeft: 2}}>
-                                                        <Icon name="trash"
-                                                           style={{fontSize: 11, color: "#d64c67"}}/>
-                                                    </button>
+                                                    <Button type="button" variant="ghost" size="icon-xs"
+                                                            className="landing-up-select-btn ml-0.5"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation()
+                                                                onDeleteFile(f.id)
+                                                            }}
+                                                            title="Удалить" aria-label="Удалить">
+                                                        <Icon name="trash" size={12}
+                                                           style={{color: "var(--dash-danger, var(--destructive))"}}/>
+                                                    </Button>
                                                 )}
                       </span>
                                         )}
@@ -220,20 +227,20 @@ export function LandingUploaderLayout(props: LayoutProps) {
 
             {card(
                 <>
-                    {cardTitle("bx-image", "Фото интерьера", "Выберите фото из портфолио или загрузите новое — лучше горизонтальное")}
+                    {cardTitle("bx-image", "Фото интерьера", "Выберите фото из портфолио или загрузите новое, лучше горизонтальное")}
                     <div style={{
                         display: "grid",
                         gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
                         gap: 8
                     }}>
                         {!disabled && (
-                            <button type="button" className="landing-up-upload-tile"
+                            <Button type="button" variant="outline" className="landing-up-upload-tile"
                                     data-tour="btn-landing-photo"
                                     style={{aspectRatio: "4/3"}}
                                     onClick={() => photoRef.current?.click()}>
                                 <Icon name={stripBx(uploading === "photo" ? "bx-loader-alt bx-spin" : "bx-image-add")}/>
                                 <span>Загрузить</span>
-                            </button>
+                            </Button>
                         )}
                         {portfolioImages.map((f) => {
                                 const selected = selectedWorkId === f.id
@@ -255,9 +262,8 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                             borderRadius: 8,
                                             overflow: "hidden",
                                             cursor: "pointer",
-                                            border: selected ? "2px solid #5b4fcf" : "2px solid transparent",
+                                            border: selected ? "2px solid var(--dash-accent, var(--primary))" : "2px solid transparent",
                                             position: "relative",
-                                            background: "rgba(91,79,207,0.04)",
                                         }}
                                     >
                                         {url && <img src={url} alt="" style={{
@@ -269,21 +275,22 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                             <span
                                                 className="landing-up-thumb-actions"
                                                 style={{position: "absolute", top: 6, right: 6}}
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    if (url) onSetPreview({
-                                                        url,
-                                                        kind: "image",
-                                                        title: "Фото интерьера",
-                                                        fileId: f.id,
-                                                        category: "LANDING_WORK"
-                                                    })
-                                                }}
                                             >
-                                                <button type="button" className="landing-up-select-btn"
-                                                        title="Просмотреть">
+                                                <Button type="button" variant="ghost" size="icon-xs"
+                                                        className="landing-up-select-btn"
+                                                        title="Просмотреть" aria-label="Просмотреть"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            if (url) onSetPreview({
+                                                                url,
+                                                                kind: "image",
+                                                                title: "Фото интерьера",
+                                                                fileId: f.id,
+                                                                category: "LANDING_WORK"
+                                                            })
+                                                        }}>
                                                     <Icon name="fullscreen"/>
-                                                </button>
+                                                </Button>
                                             </span>
                                         )}
                                         {selected && (
@@ -294,12 +301,11 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                                     bottom: 6,
                                                     left: 6,
                                                     padding: "2px 8px",
-                                                    borderRadius: 999,
-                                                    background: "#5b4fcf",
-                                                    color: "#fff",
-                                                    fontSize: "0.65rem",
+                                                    borderRadius: 10,
+                                                    background: "var(--dash-accent, var(--primary))",
+                                                    color: "var(--dash-bg, var(--primary-foreground))",
+                                                    fontSize: "0.75rem",
                                                     fontWeight: 700,
-                                                    boxShadow: "0 1px 4px rgba(0, 0, 0, 0.3)",
                                                 }}
                                             >
                                                 На главной
@@ -318,7 +324,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                 <div>
                                     <h5 className="landing-up-pos__title">Положение кадра</h5>
                                     <p className="landing-up-pos__sub">
-                                        Рамка — вьюпорт браузера на главной. Перетащите фото внутри неё, чтобы
+                                        Рамка: вьюпорт браузера на главной. Перетащите фото внутри неё, чтобы
                                         выбрать, какая часть останется в кадре.
                                     </p>
                                 </div>
@@ -350,7 +356,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                 <>
                     {cardTitle("bx-grid-alt", "Работы для портфолио", `Выберите до ${MAX_LANDING_PORTFOLIO} фото`)}
                     {portfolioImages.length === 0 && (
-                        <p style={{fontSize: "0.78rem", color: "var(--dash-muted, var(--muted-foreground))", margin: "0 0 8px"}}>
+                        <p style={{fontSize: "0.75rem", color: "var(--dash-muted, var(--muted-foreground))", margin: "0 0 8px"}}>
                             Добавьте фото во вкладке «Портфолио», чтобы выбрать их сюда.
                         </p>
                     )}
@@ -365,16 +371,25 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                 return (
                                     <div
                                         key={f.id}
+                                        role="checkbox"
+                                        aria-checked={selected}
+                                        aria-disabled={isDisabled}
+                                        tabIndex={0}
                                         onClick={() => !isDisabled && onTogglePortfolio(f.id)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === "Enter" || e.key === " ") {
+                                                e.preventDefault()
+                                                if (!isDisabled) onTogglePortfolio(f.id)
+                                            }
+                                        }}
                                         style={{
                                             aspectRatio: "4/3",
                                             borderRadius: 8,
                                             overflow: "hidden",
                                             cursor: isDisabled ? "not-allowed" : "pointer",
-                                            border: selected ? "2px solid #5b4fcf" : "2px solid transparent",
+                                            border: selected ? "2px solid var(--dash-accent, var(--primary))" : "2px solid transparent",
                                             opacity: isDisabled && !selected ? 0.4 : 1,
                                             position: "relative",
-                                            background: "rgba(91,79,207,0.04)",
                                         }}
                                     >
                                         {portfolioUrls[f.id] && <img src={portfolioUrls[f.id]} alt="" style={{
@@ -391,16 +406,14 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                                 width: 20,
                                                 height: 20,
                                                 boxSizing: "border-box",
-                                                border: selected ? "2px solid #5b4fcf" : "2px solid #fff",
                                                 borderRadius: "50%",
-                                                background: selected ? "#5b4fcf" : "rgba(12, 14, 22, 0.45)",
-                                                color: "#fff",
+                                                background: selected ? "var(--dash-accent, var(--primary))" : "rgba(12, 14, 22, 0.45)",
+                                                color: selected ? "var(--dash-bg, var(--primary-foreground))" : "#fff",
                                                 display: "flex",
                                                 alignItems: "center",
                                                 justifyContent: "center",
-                                                fontSize: "0.65rem",
+                                                fontSize: "0.75rem",
                                                 fontWeight: 700,
-                                                boxShadow: "0 1px 4px rgba(0, 0, 0, 0.3)",
                                             }}
                                         >
                                             {selected ? Array.from(selectedIds).indexOf(f.id) + 1 : null}
@@ -414,11 +427,11 @@ export function LandingUploaderLayout(props: LayoutProps) {
 
             {/* Preview modal — always interactive */}
             {preview && (
-                <div onClick={() => onSetPreview(null)} style={{
+                <div onClick={() => onSetPreview(null)} role="presentation" style={{
                     position: "fixed",
                     inset: 0,
                     background: "rgba(10,12,18,0.72)",
-                    zIndex: 1100,
+                    zIndex: "var(--z-overlay)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -426,23 +439,23 @@ export function LandingUploaderLayout(props: LayoutProps) {
                     pointerEvents: "auto",
                     opacity: 1
                 }}>
-                    <div onClick={(e) => e.stopPropagation()} style={{
+                    <div onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" style={{
                         width: "min(960px, 96vw)", maxHeight: "90vh", borderRadius: 14,
-                        background: "rgba(20, 24, 36, 0.92)", border: "1px solid rgba(255,255,255,0.12)",
+                        background: "var(--dash-surface2, var(--popover))",
                         padding: 12, display: "flex", flexDirection: "column", gap: 8,
                     }}>
                         <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                            <strong style={{fontSize: "0.86rem", color: "#f3f5ff"}}>{preview.title}</strong>
+                            <strong style={{fontSize: "0.875rem", color: "var(--dash-text, var(--foreground))"}}>{preview.title}</strong>
                             <div style={{display: "flex", gap: 6}}>
                                 {!disabled && preview.category && preview.fileId && (
-                                    <button type="button" className="landing-up-small-btn" onClick={makePreviewPrimary}
+                                    <Button type="button" variant="outline" size="xs" onClick={makePreviewPrimary}
                                             disabled={isPreviewPrimary}>
                                         {isPreviewPrimary ? "Основной" : "Сделать основным"}
-                                    </button>
+                                    </Button>
                                 )}
-                                <button type="button" className="landing-up-small-btn"
+                                <Button type="button" variant="outline" size="xs"
                                         onClick={() => onSetPreview(null)}>Закрыть
-                                </button>
+                                </Button>
                             </div>
                         </div>
                         <div style={{

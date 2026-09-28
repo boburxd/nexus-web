@@ -122,7 +122,7 @@ export function TestAnswersModal({testModal, onClose}: Readonly<{
                                                             {expandable && (
                                                                 <Icon
                                                                     name={expanded ? "chevron-up" : "chevron-down"}
-                                                                    style={{fontSize: "0.8rem", color: "var(--adm-muted, #94a3b8)", flexShrink: 0}}
+                                                                    style={{fontSize: "0.75rem", color: "var(--muted-foreground)", flexShrink: 0}}
                                                                 />
                                                             )}
                                                             {code} — {LEVEL_LABELS[code]}
@@ -195,7 +195,7 @@ export function TestAnswersModal({testModal, onClose}: Readonly<{
                                             border: "1px solid var(--adm-sidebar-border)",
                                             borderRadius: 8,
                                             padding: "8px 10px",
-                                            fontSize: "0.78rem",
+                                            fontSize: "0.75rem",
                                         }}
                                     >
                                         {detailQuestions.map((q) => {
@@ -225,7 +225,7 @@ export function TestAnswersModal({testModal, onClose}: Readonly<{
                                                         <span
                                                             style={{
                                                                 marginLeft: 8,
-                                                                color: ok ? "var(--adm-success, #28c76f)" : "var(--adm-danger, #ea5455)",
+                                                                color: ok ? "var(--bs-success)" : "var(--bs-danger)",
                                                             }}
                                                         >
                                                             {saved === undefined ? "—" : timedOut ? "время" : ok ? "верно" : "неверно"}

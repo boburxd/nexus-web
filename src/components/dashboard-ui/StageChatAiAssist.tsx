@@ -4,6 +4,7 @@ import {useCallback, useState} from "react"
 import {DashRightDrawer} from "./DashRightDrawer"
 import {type DashAiSuggestion, DashAiSuggestionsBody} from "./DashAiSuggestionsBody"
 import {AiIcon} from "@/components/app/AiIcon"
+import {Button} from "@/components/ui/button"
 
 export function StageChatAiAssist({
                                       orderId,
@@ -64,29 +65,11 @@ export function StageChatAiAssist({
 
     return (
         <>
-            <button
-                type="button"
-                onClick={() => void fetchSuggestions()}
-                style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    padding: "6px 14px",
-                    borderRadius: 8,
-                    border: "1px solid var(--dash-accent-border, rgba(121,40,202,0.35))",
-                    background: "var(--dash-accent-bg, rgba(121,40,202,0.08))",
-                    color: "var(--dash-accent)",
-                    fontSize: "0.75rem",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    fontFamily: "inherit",
-                    whiteSpace: "nowrap",
-                    flexShrink: 0,
-                }}
-            >
+            <Button type="button" variant="outline" size="sm" className="shrink-0"
+                    onClick={() => void fetchSuggestions()}>
                 <AiIcon/>
                 ИИ для текста
-            </button>
+            </Button>
 
             <DashRightDrawer
                 open={open}
@@ -97,7 +80,6 @@ export function StageChatAiAssist({
                     <span
                         style={{
                             background: "var(--dash-surface)",
-                            border: "1px solid var(--dash-border)",
                             borderRadius: 10,
                             color: "var(--dash-muted)",
                             fontSize: "0.75rem",
@@ -121,23 +103,10 @@ export function StageChatAiAssist({
                                 background: "var(--dash-surface2)",
                             }}
                         >
-                            <button
-                                type="button"
-                                onClick={() => void fetchSuggestions()}
-                                style={{
-                                    background: "var(--dash-surface)",
-                                    border: "1px solid var(--dash-border)",
-                                    borderRadius: 8,
-                                    color: "var(--dash-text2)",
-                                    cursor: "pointer",
-                                    fontSize: "0.75rem",
-                                    fontFamily: "inherit",
-                                    padding: "8px 14px",
-                                    width: "100%",
-                                }}
-                            >
+                            <Button type="button" variant="outline" size="sm" className="w-full"
+                                    onClick={() => void fetchSuggestions()}>
                                 ↻ Обновить варианты
-                            </button>
+                            </Button>
                         </div>
                     ) : undefined
                 }

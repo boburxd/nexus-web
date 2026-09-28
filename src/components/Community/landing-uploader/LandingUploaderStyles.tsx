@@ -11,13 +11,13 @@ export function LandingUploaderStyles() {
         display: flex;
         align-items: center;
         gap: 8px;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
       }
       .landing-up-error {
-        padding: 9px 12px;
+        padding: 8px 12px;
         border-radius: 8px;
         margin-bottom: 10px;
-        font-size: 0.78rem;
+        font-size: 0.75rem;
       }
       .landing-up-grid-2 {
         display: grid;
@@ -28,37 +28,20 @@ export function LandingUploaderStyles() {
       .landing-up-row { margin-bottom: 10px; }
       .landing-up-card {
         padding: 14px;
-        border-radius: 12px;
-        background: rgba(91,79,207,0.03);
-        border: 1px solid rgba(91,79,207,0.1);
+        border-radius: 14px;
+        background: var(--dash-surface2, var(--muted));
       }
       .landing-up-card__head { margin-bottom: 10px; }
       .landing-up-card__title-row { display: flex; align-items: center; gap: 6px; margin-bottom: 2px; }
-      .landing-up-card__title-icon { color: #5b4fcf; font-size: 0.95rem; }
-      .landing-up-card__title { font-size: 0.84rem; font-weight: 600; margin: 0; }
-      .landing-up-card__sub { font-size: 0.7rem; color: var(--dash-muted, var(--muted-foreground)); margin: 0; }
+      .landing-up-card__title-icon { color: var(--dash-accent, var(--primary)); font-size: 1rem; }
+      .landing-up-card__title { font-size: 0.875rem; font-weight: 600; margin: 0; }
+      .landing-up-card__sub { font-size: 0.75rem; color: var(--dash-muted, var(--muted-foreground)); margin: 0; }
       .landing-up-media-row { display: flex; gap: 10px; align-items: flex-end; }
       .landing-up-media-preview {
         width: 92px; height: 136px; border-radius: 10px; overflow: hidden; cursor: pointer;
         display: flex; align-items: center; justify-content: center;
       }
       .landing-up-btn { font-size: 0.75rem; }
-      .landing-up-small-btn {
-        border: 1px solid rgba(91,79,207,0.3);
-        background: rgba(91,79,207,0.09);
-        color: #5b4fcf;
-        border-radius: 7px;
-        padding: 4px 7px;
-        font-size: 0.68rem;
-        line-height: 1.1;
-        cursor: pointer;
-        white-space: nowrap;
-      }
-      .landing-up-small-btn--danger {
-        color: #d64c67;
-        border-color: rgba(214,76,103,0.36);
-        background: rgba(214,76,103,0.1);
-      }
       .landing-up-row-line {
         display: grid;
         grid-template-columns: 92px 1fr;
@@ -69,31 +52,29 @@ export function LandingUploaderStyles() {
         width: 92px;
         height: 126px;
         border-radius: 10px;
-        border: 2px dashed rgba(91,79,207,0.24);
-        background: rgba(91,79,207,0.05);
-        color: #5b4fcf;
+        border: 2px dashed var(--dash-accent-border, var(--border));
+        color: var(--dash-accent, var(--primary));
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 4px;
         cursor: pointer;
-        font-size: 0.7rem;
+        font-size: 0.75rem;
       }
-      .landing-up-upload-tile i { font-size: 1.2rem; }
+      .landing-up-upload-tile i { font-size: 1.125rem; }
       /* ── Положение кадра: рамка-вьюпорт (16:9), фото внутри перетаскивается ── */
       .landing-up-pos {
         margin-top: 10px;
         padding: 10px;
         border-radius: 10px;
-        background: rgba(91,79,207,0.05);
-        border: 1px solid rgba(91,79,207,0.14);
+        background: var(--dash-surface3, var(--muted));
       }
-      .landing-up-pos__head { display: flex; align-items: flex-start; gap: 7px; margin-bottom: 9px; }
-      .landing-up-pos__head-icon { color: #5b4fcf; font-size: 0.95rem; margin-top: 1px; }
-      .landing-up-pos__title { font-size: 0.78rem; font-weight: 600; margin: 0; }
+      .landing-up-pos__head { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 8px; }
+      .landing-up-pos__head-icon { color: var(--dash-accent, var(--primary)); font-size: 1rem; margin-top: 2px; }
+      .landing-up-pos__title { font-size: 0.75rem; font-weight: 600; margin: 0; }
       .landing-up-pos__sub {
-        font-size: 0.68rem; line-height: 1.4; margin: 1px 0 0;
+        font-size: 0.75rem; line-height: 1.4; margin: 2px 0 0;
         color: var(--dash-muted, var(--muted-foreground));
       }
 
@@ -103,10 +84,9 @@ export function LandingUploaderStyles() {
         display: flex; align-items: center; justify-content: center;
         aspect-ratio: 16 / 9;
         overflow: hidden;
-        border: 1px solid rgba(255,255,255,0.18);
-        background-color: rgba(91,79,207,0.1);
+        background-color: var(--dash-surface2, var(--muted));
         background-repeat: no-repeat;
-        color: var(--dash-muted, var(--muted-foreground)); font-size: 1.4rem;
+        color: var(--dash-muted, var(--muted-foreground)); font-size: 1.5rem;
         cursor: grab;
         touch-action: none;
         user-select: none;
@@ -121,7 +101,7 @@ export function LandingUploaderStyles() {
       .landing-up-carousel { min-height: 126px; }
       .landing-up-carousel__viewport {
         height: 126px;
-        padding: 0 18px 0;
+        padding: 0 16px 0;
         align-items: stretch;
       }
       .landing-up-carousel__item {
@@ -131,33 +111,31 @@ export function LandingUploaderStyles() {
       .landing-up-thumb {
         width: 92px;
         height: 126px;
-        border: 1px solid rgba(91,79,207,0.24);
+        border: 1px solid var(--dash-border, var(--border));
         border-radius: 8px;
         overflow: hidden;
-        background: rgba(91,79,207,0.04);
         padding: 0;
         position: relative;
         cursor: pointer;
       }
-      .landing-up-thumb.is-selected { border-color: #5b4fcf; }
+      .landing-up-thumb.is-selected { border-color: var(--dash-accent, var(--primary)); }
       .landing-up-thumb-actions {
         position: absolute;
         right: 4px;
         top: 4px;
       }
       .landing-up-select-btn {
-        border: 0;
         background: rgba(12, 14, 22, 0.6);
-        border-radius: 999px;
+        border-radius: 50%;
         width: 22px;
         height: 22px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: #c9d0ff;
+        color: var(--dash-text, var(--foreground));
         cursor: pointer;
       }
-      .landing-up-tick.is-selected { color: #3ad488; }
+      .landing-up-tick.is-selected { color: var(--dash-success, var(--success)); }
       @media (max-width: 960px) {
         .landing-up-grid-2 { grid-template-columns: 1fr; }
         .landing-up-row-line { grid-template-columns: 1fr; }

@@ -34,8 +34,8 @@ export default function OnboardingInterviewPage() {
                     data-planerka-user="nexus-admin-ruwdkr"
                     data-planerka-event="30min"
                     data-planerka-bg="transparent"
-                    data-planerka-border="#2f4156"
-                    data-planerka-shadow-color="#3c2e60"
+                    data-planerka-border="#181f4a"
+                    data-planerka-shadow-color="#070c29"
                     style={{width: "100%", minHeight: 600}}
                 />
 

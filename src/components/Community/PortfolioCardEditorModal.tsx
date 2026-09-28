@@ -8,11 +8,14 @@ import {uploadUserFileToPortfolio} from "@/lib/portfolioFileUpload"
 import {PortfolioLocalFilePreview, PortfolioRemoteFilePreview} from "./PortfolioMediaPreview"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
+import {Textarea} from "@/components/ui/textarea"
 
 function DashSectionLabel({children}: { children: ReactNode }) {
     return (
-        <p className="fw-semibold text-uppercase mb-2"
-           style={{fontSize: "0.7rem", letterSpacing: "0.08em", color: "rgba(255,255,255,0.45)"}}>
+        <p className="fw-semibold mb-2"
+           style={{fontSize: "0.75rem", color: "rgba(255,255,255,0.45)"}}>
             {children}
         </p>
     )
@@ -348,8 +351,8 @@ export function PortfolioCardEditorModal({
     const heading = mode === "create" ? "Новая работа" : "Работа"
     const sub =
         mode === "create"
-            ? "Здесь — только вложения к этой работе (блок файлов включается чекбоксом ниже). Общие файлы на всю папку — на экране проекта, «Материалы проекта» под плитками работ."
-            : "Вложения ниже относятся к этой работе. Общие материалы на весь проект — на экране папки, под сеткой работ."
+            ? "Здесь: только вложения к этой работе (блок файлов включается чекбоксом ниже). Общие файлы на всю папку: на экране проекта, «Материалы проекта» под плитками работ."
+            : "Вложения ниже относятся к этой работе. Общие материалы на весь проект: на экране папки, под сеткой работ."
 
     return (
         <AppModal open={open} onClose={handleClose} maxWidth={640} variant="dark">
@@ -360,22 +363,23 @@ export function PortfolioCardEditorModal({
                     style={{padding: "16px 20px", borderBottom: "1px solid rgba(255,255,255,0.08)", flexShrink: 0}}
                 >
                     <div>
-                        <h5 className="mb-1" style={{fontSize: "1.05rem", color: "#f4f6ff"}}>
+                        <h5 className="mb-1" style={{fontSize: "1rem", color: "var(--dash-text, var(--foreground))"}}>
                             {heading}
                         </h5>
                         <p className="small mb-0" style={{lineHeight: 1.45, color: "rgba(255,255,255,0.55)"}}>
                             {sub}
                         </p>
                     </div>
-                    <button
+                    <Button
                         type="button"
-                        className="btn btn-sm btn-link text-white-50 p-1"
+                        variant="ghost"
+                        size="icon-sm"
                         aria-label="Закрыть"
                         onClick={handleClose}
                         disabled={saving}
                     >
-                        <Icon name="x" style={{fontSize: 22}}/>
-                    </button>
+                        <Icon name="x"/>
+                    </Button>
                 </div>
 
                 <div style={{overflowY: "auto", flex: 1, padding: "16px 20px"}}>
@@ -389,9 +393,8 @@ export function PortfolioCardEditorModal({
                             className="py-2 small mb-3 rounded-2 px-2"
                             role="alert"
                             style={{
-                                background: "rgba(220,53,69,0.12)",
-                                border: "1px solid rgba(220,53,69,0.35)",
-                                color: "#ffc9c9"
+                                background: "var(--dash-danger-bg, color-mix(in oklab, var(--destructive) 12%, transparent))",
+                                color: "var(--dash-danger, var(--destructive))"
                             }}
                         >
                             {error}
@@ -399,8 +402,8 @@ export function PortfolioCardEditorModal({
                     )}
 
                     <DashSectionLabel>Название</DashSectionLabel>
-                    <input
-                        className="form-control form-control-sm mb-3"
+                    <Input
+                        className="mb-3"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="Например: Гостиная, вид 1"
@@ -408,8 +411,8 @@ export function PortfolioCardEditorModal({
                     />
 
                     <DashSectionLabel>Описание</DashSectionLabel>
-                    <textarea
-                        className="form-control form-control-sm mb-3"
+                    <Textarea
+                        className="mb-3"
                         rows={3}
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
@@ -419,7 +422,7 @@ export function PortfolioCardEditorModal({
 
                     <DashSectionLabel>Основное фото / рендер</DashSectionLabel>
                     <p className="small mb-2" style={{marginTop: -6, color: "rgba(255,255,255,0.5)"}}>
-                        JPG или PNG — превью появится сразу после выбора или загрузки.
+                        JPG или PNG: превью появится сразу после выбора или загрузки.
                     </p>
                     <div className="d-flex flex-wrap align-items-start gap-3 mb-3">
                         <div className="d-flex flex-column align-items-center gap-1">
@@ -440,11 +443,10 @@ export function PortfolioCardEditorModal({
                                         height: 120,
                                         borderRadius: 10,
                                         border: "1px dashed rgba(255,255,255,0.2)",
-                                        background: "rgba(0,0,0,0.2)",
                                         color: "rgba(255,255,255,0.35)",
                                     }}
                                 >
-                                    <Icon name="image" style={{fontSize: 36}} aria-hidden/>
+                                    <Icon name="image" size={36} aria-hidden/>
                                 </div>
                             )}
                         </div>
@@ -519,7 +521,6 @@ export function PortfolioCardEditorModal({
                                                 key={`${row.file.name}-${i}`}
                                                 className="d-flex flex-wrap align-items-center gap-2 p-2 rounded-2"
                                                 style={{
-                                                    border: "1px solid rgba(255,255,255,0.1)",
                                                     background: "rgba(0,0,0,0.2)"
                                                 }}
                                             >
@@ -560,11 +561,10 @@ export function PortfolioCardEditorModal({
                         </span>
                                                     )}
                                                 </div>
-                                                <button type="button"
-                                                        className="btn btn-link btn-sm p-0 text-danger text-nowrap"
+                                                <Button type="button" variant="destructive" size="xs"
                                                         onClick={() => removeExtraDraft(i)} disabled={saving}>
                                                     убрать
-                                                </button>
+                                                </Button>
                                             </div>
                                         )
                                     })}
@@ -591,7 +591,6 @@ export function PortfolioCardEditorModal({
                                                     key={a.id}
                                                     className="d-flex flex-wrap align-items-center gap-2 p-2 rounded-2"
                                                     style={{
-                                                        border: "1px solid rgba(255,255,255,0.1)",
                                                         background: "rgba(0,0,0,0.18)"
                                                     }}
                                                 >
@@ -633,14 +632,15 @@ export function PortfolioCardEditorModal({
                           Кадр галереи
                         </span>
                                                     )}
-                                                    <button
+                                                    <Button
                                                         type="button"
-                                                        className="btn btn-link btn-sm p-0 text-danger text-nowrap"
+                                                        variant="destructive"
+                                                        size="xs"
                                                         onClick={() => void removeAttachmentOnServer(a.id)}
                                                         disabled={saving}
                                                     >
                                                         удалить
-                                                    </button>
+                                                    </Button>
                                                 </div>
                                             )
                                         })}
@@ -654,15 +654,14 @@ export function PortfolioCardEditorModal({
                     className="d-flex justify-content-end gap-2"
                     style={{padding: "12px 20px", borderTop: "1px solid rgba(255,255,255,0.08)", flexShrink: 0}}
                 >
-                    <button type="button" className="btn btn-sm btn-outline-light" onClick={handleClose}
+                    <Button type="button" variant="outline" size="sm" onClick={handleClose}
                             disabled={saving}>
                         Отмена
-                    </button>
-                    <button type="button" className="btn btn-sm btn-primary d-inline-flex align-items-center gap-1"
-                            onClick={() => void submit()} disabled={saving}>
+                    </Button>
+                    <Button type="button" size="sm" onClick={() => void submit()} disabled={saving}>
                         <Icon name="check"/>
                         {saving ? "Сохранение…" : mode === "create" ? "Создать работу" : "Сохранить"}
-                    </button>
+                    </Button>
                 </div>
 
                 <style>{`
@@ -671,14 +670,14 @@ export function PortfolioCardEditorModal({
             background-color: rgba(0,0,0,0.25);
           }
           .portfolio-dash-modal .form-check-input:checked {
-            background-color: rgba(115,103,240,0.95);
-            border-color: rgba(115,103,240,1);
+            background-color: var(--dash-accent, var(--primary));
+            border-color: var(--dash-accent, var(--primary));
           }
           .portfolio-dash-modal .form-control,
           .portfolio-dash-modal .form-select {
             background: rgba(255,255,255,0.06);
             border-color: rgba(255,255,255,0.14);
-            color: #f0f2ff;
+            color: var(--dash-text, var(--foreground));
           }
           .portfolio-dash-modal .form-control::placeholder {
             color: rgba(255,255,255,0.38);
@@ -686,9 +685,9 @@ export function PortfolioCardEditorModal({
           .portfolio-dash-modal .form-control:focus,
           .portfolio-dash-modal .form-select:focus {
             background: rgba(255,255,255,0.09);
-            border-color: rgba(115,103,240,0.55);
+            border-color: var(--dash-accent, var(--ring));
             color: #fff;
-            box-shadow: 0 0 0 0.15rem rgba(115,103,240,0.2);
+            box-shadow: none;
           }
         `}</style>
             </div>

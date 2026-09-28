@@ -4,6 +4,8 @@ import React, {useCallback, useEffect, useRef, useState} from "react"
 import {createPortal} from "react-dom"
 import {AiIcon} from "@/components/app/AiIcon"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
+import {Textarea} from "@/components/ui/textarea"
 import {stripBx} from "@/lib/icon-map"
 
 export type AiImageStudioSource = {
@@ -152,7 +154,7 @@ export default function AiImageStudio({open, source, context, title, applyLabel,
     const busy = loading || applying
 
     return createPortal(
-        <div className="ai-studio__backdrop" onClick={() => !busy && onClose()}>
+        <div className="ai-studio__backdrop" role="presentation" onClick={() => !busy && onClose()}>
             <AiImageStudioStyles/>
             <div className="ai-studio" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
                 <header className="ai-studio__hd">
@@ -160,10 +162,10 @@ export default function AiImageStudio({open, source, context, title, applyLabel,
                         <AiIcon/>
                         <span>{title ?? "Редактор фото с ИИ"}</span>
                     </div>
-                    <button type="button" className="ai-studio__close" onClick={onClose} disabled={busy}
+                    <Button type="button" variant="ghost" size="icon-sm" onClick={onClose} disabled={busy}
                             aria-label="Закрыть">
                         <Icon name="x"/>
-                    </button>
+                    </Button>
                 </header>
 
                 <div className="ai-studio__stage">
@@ -179,21 +181,23 @@ export default function AiImageStudio({open, source, context, title, applyLabel,
                 </div>
 
                 <div className="ai-studio__strip" ref={stripRef}>
-                    <button type="button"
-                            className={`ai-studio__thumb ${activeId === "original" ? "is-active" : ""}`}
+                    <Button type="button" variant={activeId === "original" ? "secondary" : "ghost"}
+                            aria-pressed={activeId === "original"}
+                            className="ai-studio__thumb h-auto w-16 shrink-0 flex-col gap-0 overflow-hidden p-0"
                             onClick={() => setActiveId("original")} disabled={busy} title="Исходное фото">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={source.previewUrl} alt=""/>
                         <span>Оригинал</span>
-                    </button>
+                    </Button>
                     {turns.map((turn, i) => (
-                        <button key={turn.id} type="button"
-                                className={`ai-studio__thumb ${activeId === turn.id ? "is-active" : ""}`}
+                        <Button key={turn.id} type="button" variant={activeId === turn.id ? "secondary" : "ghost"}
+                                aria-pressed={activeId === turn.id}
+                                className="ai-studio__thumb h-auto w-16 shrink-0 flex-col gap-0 overflow-hidden p-0"
                                 onClick={() => setActiveId(turn.id)} disabled={busy} title={turn.prompt}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img src={turn.dataUrl} alt=""/>
                             <span>Шаг {i + 1}</span>
-                        </button>
+                        </Button>
                     ))}
                 </div>
 
@@ -204,10 +208,10 @@ export default function AiImageStudio({open, source, context, title, applyLabel,
 
                 <div className="ai-studio__suggest">
                     {SUGGESTIONS.map((s) => (
-                        <button key={s} type="button" className="ai-studio__chip" disabled={busy}
-                                onClick={() => void generate(s)} title={s}>
+                        <Button key={s} type="button" variant="secondary" size="xs" className="shrink-0"
+                                disabled={busy} onClick={() => void generate(s)} title={s}>
                             {s.split(":")[0].split(",")[0]}
-                        </button>
+                        </Button>
                     ))}
                 </div>
 
@@ -218,9 +222,8 @@ export default function AiImageStudio({open, source, context, title, applyLabel,
                         void generate(prompt)
                     }}
                 >
-                    <textarea
+                    <Textarea
                         ref={inputRef}
-                        className="ai-studio__input"
                         value={prompt}
                         maxLength={MAX_PROMPT}
                         rows={2}
@@ -236,10 +239,11 @@ export default function AiImageStudio({open, source, context, title, applyLabel,
                             }
                         }}
                     />
-                    <button type="submit" className="ai-studio__send" disabled={busy || prompt.trim().length === 0}>
+                    <Button type="submit" variant="secondary" size="sm" className="self-start"
+                            disabled={busy || prompt.trim().length === 0}>
                         <Icon name={stripBx(loading ? "bx-loader-alt bx-spin" : "bx-send")}/>
                         <span>{loading ? "Генерируем…" : "Применить запрос"}</span>
-                    </button>
+                    </Button>
                 </form>
 
                 <footer className="ai-studio__ft">
@@ -247,14 +251,15 @@ export default function AiImageStudio({open, source, context, title, applyLabel,
                         {activeTurn ? "Выбран результат ИИ" : "Выберите или создайте вариант"}
                     </span>
                     <div className="ai-studio__ft-actions">
-                        <button type="button" className="ai-studio__cancel" onClick={onClose} disabled={busy}>
+                        <Button type="button" variant="outline" className="ai-studio__ft-btn" onClick={onClose}
+                                disabled={busy}>
                             Отмена
-                        </button>
-                        <button type="button" className="ai-studio__apply" onClick={() => void handleApply()}
+                        </Button>
+                        <Button type="button" className="ai-studio__ft-btn" onClick={() => void handleApply()}
                                 disabled={busy || !activeTurn}>
                             <Icon name={stripBx(applying ? "bx-loader-alt bx-spin" : "bx-check")}/>
                             {applying ? "Сохраняем…" : (applyLabel ?? "Применить")}
-                        </button>
+                        </Button>
                     </div>
                 </footer>
             </div>
@@ -267,31 +272,25 @@ function AiImageStudioStyles() {
     return (
         <style>{`
       .ai-studio__backdrop {
-        position: fixed; inset: 0; z-index: 10050;
-        background: rgba(12,13,20,0.72); backdrop-filter: blur(3px);
+        position: fixed; inset: 0; z-index: var(--z-studio);
+        background: rgba(12,13,20,0.72);
         display: flex; align-items: center; justify-content: center; padding: 16px;
       }
       .ai-studio {
         width: min(560px, 100%); max-height: min(92vh, 880px);
         display: flex; flex-direction: column; gap: 10px;
         padding: 14px 16px 16px;
-        border-radius: 16px; overflow-y: auto;
-        background: var(--dash-surface, #1b1c27);
-        border: 1px solid rgba(255,255,255,0.08);
-        color: #f2f2f7;
-        box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+        border-radius: 14px; overflow-y: auto;
+        background: var(--dash-surface, var(--card));
+        color: var(--dash-text, var(--card-foreground));
+        box-shadow: var(--dash-shadow-md, 0 24px 60px rgba(0,0,0,0.45));
       }
       .ai-studio__hd { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-      .ai-studio__hd-title { display: flex; align-items: center; gap: 7px; font-weight: 600; font-size: 0.95rem; }
-      .ai-studio__hd-title svg { color: #a78bfa; width: 1.1rem; height: 1.1rem; }
-      .ai-studio__close {
-        border: 0; background: transparent; color: rgba(255,255,255,0.6);
-        font-size: 1.35rem; line-height: 1; cursor: pointer; padding: 2px 4px; border-radius: 8px;
-      }
-      .ai-studio__close:hover:not(:disabled) { color: #fff; background: rgba(255,255,255,0.08); }
+      .ai-studio__hd-title { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 1rem; }
+      .ai-studio__hd-title svg { color: var(--dash-accent, var(--primary)); width: 1.1rem; height: 1.1rem; }
 
       .ai-studio__stage {
-        position: relative; border-radius: 12px; overflow: hidden;
+        position: relative; border-radius: 10px; overflow: hidden;
         background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center;
         min-height: 200px; max-height: 42vh;
       }
@@ -300,79 +299,44 @@ function AiImageStudioStyles() {
         position: absolute; inset: 0; display: flex; flex-direction: column; gap: 4px;
         align-items: center; justify-content: center; background: rgba(10,10,16,0.72); text-align: center;
       }
-      .ai-studio__stage-veil i { font-size: 1.6rem; color: #a78bfa; }
-      .ai-studio__stage-veil span { font-size: 0.85rem; font-weight: 500; }
-      .ai-studio__stage-veil small { font-size: 0.72rem; color: rgba(255,255,255,0.6); }
+      .ai-studio__stage-veil i { font-size: 1.5rem; color: var(--dash-accent, var(--primary)); }
+      .ai-studio__stage-veil span { font-size: 0.875rem; font-weight: 500; }
+      .ai-studio__stage-veil small { font-size: 0.75rem; color: var(--dash-muted, var(--muted-foreground)); }
 
       .ai-studio__strip { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
-      .ai-studio__thumb {
-        flex: 0 0 auto; width: 64px; padding: 0; cursor: pointer; font-family: inherit;
-        background: transparent; border: 2px solid rgba(255,255,255,0.16); border-radius: 10px; overflow: hidden;
-      }
-      .ai-studio__thumb.is-active { border-color: #a78bfa; box-shadow: 0 0 0 3px rgba(167,139,250,0.22); }
-      .ai-studio__thumb:disabled { cursor: default; opacity: 0.7; }
       .ai-studio__thumb img { width: 100%; height: 60px; object-fit: cover; display: block; }
       .ai-studio__thumb span {
-        display: block; font-size: 0.63rem; padding: 3px 2px; text-align: center;
-        color: rgba(255,255,255,0.65); white-space: nowrap;
+        display: block; width: 100%; font-size: 0.75rem; padding: 2px; text-align: center;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       }
-      .ai-studio__thumb.is-active span { color: #c4b5fd; font-weight: 600; }
 
       .ai-studio__echo {
-        margin: 0; font-size: 0.74rem; color: rgba(255,255,255,0.55); font-style: italic;
+        margin: 0; font-size: 0.75rem; color: var(--dash-muted, var(--muted-foreground)); font-style: italic;
         overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
       }
 
       .ai-studio__notice, .ai-studio__error {
         display: flex; align-items: flex-start; gap: 6px;
-        padding: 8px 10px; border-radius: 9px; font-size: 0.76rem; line-height: 1.45;
+        padding: 8px 10px; border-radius: 8px; font-size: 0.75rem; line-height: 1.45;
       }
-      .ai-studio__notice { border: 1px solid rgba(255,159,67,0.35); background: rgba(255,159,67,0.1); color: #ffbe7d; }
-      .ai-studio__error { border: 1px solid rgba(234,84,85,0.4); background: rgba(234,84,85,0.1); color: #ff9d9e; }
+      .ai-studio__notice { background: var(--dash-warn-bg, color-mix(in oklab, var(--warning) 14%, transparent)); color: var(--dash-warn, var(--warning)); }
+      .ai-studio__error { background: var(--dash-danger-bg, color-mix(in oklab, var(--destructive) 14%, transparent)); color: var(--dash-danger, var(--destructive)); }
 
       .ai-studio__suggest { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
-      .ai-studio__chip {
-        flex: 0 0 auto; cursor: pointer; font-family: inherit; font-size: 0.73rem;
-        padding: 5px 10px; border-radius: 999px; white-space: nowrap;
-        border: 1px solid rgba(167,139,250,0.35); background: rgba(167,139,250,0.1); color: #c4b5fd;
-      }
-      .ai-studio__chip:hover:not(:disabled) { background: rgba(167,139,250,0.2); }
-      .ai-studio__chip:disabled { opacity: 0.5; cursor: default; }
 
       .ai-studio__composer { display: flex; flex-direction: column; gap: 8px; }
-      .ai-studio__input {
-        width: 100%; resize: vertical; font-family: inherit; font-size: 0.85rem; line-height: 1.5;
-        padding: 9px 11px; border-radius: 10px; color: #f2f2f7;
-        border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.05);
-      }
-      .ai-studio__input:focus { outline: none; border-color: rgba(167,139,250,0.6); }
-      .ai-studio__input::placeholder { color: rgba(255,255,255,0.4); }
-      .ai-studio__send {
-        align-self: flex-start; display: inline-flex; align-items: center; gap: 6px;
-        padding: 7px 14px; border-radius: 9px; cursor: pointer; font-family: inherit;
-        font-size: 0.82rem; font-weight: 500;
-        border: 1px solid rgba(167,139,250,0.45); background: rgba(167,139,250,0.16); color: #c4b5fd;
-      }
-      .ai-studio__send:disabled { opacity: 0.5; cursor: default; }
 
       .ai-studio__ft {
         display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
-        border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px;
+        border-top: 1px solid var(--dash-border, var(--border)); padding-top: 10px;
       }
-      .ai-studio__hint { font-size: 0.74rem; color: rgba(255,255,255,0.5); }
+      .ai-studio__hint { font-size: 0.75rem; color: var(--dash-muted, var(--muted-foreground)); }
       .ai-studio__ft-actions { display: flex; gap: 8px; margin-left: auto; }
-      .ai-studio__cancel, .ai-studio__apply {
-        display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-family: inherit;
-        padding: 8px 16px; border-radius: 9px; font-size: 0.83rem; font-weight: 500;
-      }
-      .ai-studio__cancel { border: 1px solid rgba(255,255,255,0.18); background: transparent; color: rgba(255,255,255,0.75); }
-      .ai-studio__apply { border: 0; background: #5b4fcf; color: #fff; }
-      .ai-studio__apply:disabled, .ai-studio__cancel:disabled { opacity: 0.5; cursor: default; }
 
       @media (max-width: 480px) {
         .ai-studio { padding: 12px; border-radius: 14px; }
         .ai-studio__ft-actions { width: 100%; }
-        .ai-studio__apply, .ai-studio__cancel { flex: 1 1 0; justify-content: center; }
+        .ai-studio__ft-btn { flex: 1 1 0; }
       }
     `}</style>
     )

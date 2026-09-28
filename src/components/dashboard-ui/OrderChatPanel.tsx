@@ -4,6 +4,8 @@ import {forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useStat
 import {subscribeToOrderChat} from "@/lib/client/order-chat-socket"
 import {ChatEmojiPicker} from "@/components/dashboard-ui/ChatEmojiPicker"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
+import {Textarea} from "@/components/ui/textarea"
 
 type ChatSender = { id: string; name: string | null; email: string | null; role: string }
 
@@ -303,14 +305,14 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
 
     const counterpartHint =
         viewerRole === "CLIENT"
-            ? "Чат с администратором — вопросы по проекту и согласования."
+            ? "Чат с администратором: вопросы по проекту и согласования."
             : viewerRole === "SPECIALIST"
-                ? "Чат с администратором — уточнения по правкам и статусам."
+                ? "Чат с администратором: уточнения по правкам и статусам."
                 : channel === "ADMIN_CLIENT"
                     ? "Канал админ ↔ заказчик."
                     : channel === "ADMIN_SPECIALIST"
                         ? "Канал админ ↔ дизайнер."
-                        : "Выберите канал: Заказчик / Дизайнер. Сообщения и отправка — внутри выбранного канала."
+                        : "Выберите канал: Заказчик / Дизайнер. Сообщения и отправка внутри выбранного канала."
 
     return (
         <div
@@ -372,24 +374,13 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                             const active = adminViewChannel === t.key
                             const badge = unreadByChannel[t.key]
                             return (
-                                <button
+                                <Button
                                     key={t.key}
                                     type="button"
+                                    variant={active ? "secondary" : "outline"}
+                                    size="sm"
+                                    aria-pressed={active}
                                     onClick={() => setAdminViewChannel(t.key)}
-                                    style={{
-                                        display: "inline-flex",
-                                        alignItems: "center",
-                                        gap: 8,
-                                        padding: "6px 10px",
-                                        borderRadius: 14,
-                                        border: `1px solid ${active ? "var(--dash-accent-border)" : "var(--dash-border)"}`,
-                                        background: active ? "var(--dash-accent-bg)" : "var(--dash-surface2)",
-                                        color: active ? "var(--dash-accent)" : "var(--dash-text2)",
-                                        cursor: "pointer",
-                                        fontSize: "0.75rem",
-                                        fontWeight: 700,
-                                        fontFamily: "inherit",
-                                    }}
                                 >
                                     {t.label}
                                     {badge > 0 ? (
@@ -399,8 +390,8 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                                                 height: 18,
                                                 padding: "0 6px",
                                                 borderRadius: 10,
-                                                background: "rgba(239,68,68,0.95)",
-                                                color: "#fff",
+                                                background: "var(--dash-danger)",
+                                                color: "var(--dash-bg)",
                                                 fontSize: "0.75rem",
                                                 fontWeight: 800,
                                                 lineHeight: "18px",
@@ -410,7 +401,7 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                       {badge > 99 ? "99+" : badge}
                     </span>
                                     ) : null}
-                                </button>
+                                </Button>
                             )
                         })}
                     </div>
@@ -507,29 +498,17 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                 }}
             >
                 <div style={{display: "flex", alignItems: "flex-end", gap: 8, width: "100%", minWidth: 0}}>
-        <textarea
+        <Textarea
             ref={textareaRef}
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             placeholder="Сообщение…"
             rows={composerMinRows}
             disabled={sending}
+            className="min-h-0 min-w-0 flex-1"
             style={{
-                width: "100%",
-                flex: 1,
-                minWidth: 0,
-                maxWidth: "100%",
-                boxSizing: "border-box",
                 resize: inDrawer ? "none" : "vertical",
                 overflowY: "auto",
-                padding: "8px 10px",
-                borderRadius: 8,
-                border: "1px solid var(--dash-border)",
-                background: "var(--dash-bg)",
-                color: "var(--dash-text)",
-                fontFamily: "inherit",
-                fontSize: "0.875rem",
-                lineHeight: 1.4,
             }}
             onKeyDown={(e) => {
                 if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
@@ -539,33 +518,17 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
             }}
         />
                 <ChatEmojiPicker disabled={sending} onSelect={insertEmoji}/>
-                    <button
+                    <Button
                         type="button"
+                        size="icon"
+                        className="shrink-0"
                         aria-label="Отправить сообщение"
                         title="Отправить сообщение"
                         onClick={() => void send()}
                         disabled={sending || !draft.trim()}
-                        style={{
-                            width: 34,
-                            height: 34,
-                            padding: 0,
-                            borderRadius: 8,
-                            border: "none",
-                            background: draft.trim() ? "var(--dash-accent)" : "var(--dash-border)",
-                            color: "#fff",
-                            fontWeight: 600,
-                            fontSize: "0.75rem",
-                            cursor: draft.trim() && !sending ? "pointer" : "default",
-                            fontFamily: "inherit",
-                            opacity: sending ? 0.75 : 1,
-                            flexShrink: 0,
-                            display: "inline-flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                        }}
                     >
                         <Icon name={sending ? "loader-alt" : "send"} className={sending ? "bx-spin" : undefined} style={{fontSize: "1.125rem"}} aria-hidden/>
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

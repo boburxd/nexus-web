@@ -3,6 +3,7 @@
 import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react"
 import {createPortal} from "react-dom"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 export type HintStep = {
     /** CSS-селектор подсвечиваемого элемента. Шаг пропускается, если элемента нет в DOM. */
@@ -278,9 +279,7 @@ export function HintTour({
     const blurPanel: React.CSSProperties = {
         position: "fixed",
         background: dim,
-        backdropFilter: "blur(5px)",
-        WebkitBackdropFilter: "blur(5px)",
-        zIndex: 10000,
+        zIndex: "var(--z-tour)",
     }
 
     return createPortal(
@@ -299,10 +298,10 @@ export function HintTour({
                             left: rect.left,
                             width: rect.width,
                             height: rect.height,
-                            borderRadius: 12,
-                            boxShadow: "0 0 0 3px rgba(139,124,246,0.9)",
+                            borderRadius: 10,
+                            boxShadow: "0 0 0 3px var(--dash-accent, var(--ring))",
                             pointerEvents: "none",
-                            zIndex: 10001,
+                            zIndex: "calc(var(--z-tour) + 1)",
                         }}
                     />
                 </>
@@ -318,78 +317,39 @@ export function HintTour({
                     left: cardPosition.left,
                     width: CARD_WIDTH,
                     maxWidth: "calc(100vw - 32px)",
-                    zIndex: 10002,
+                    zIndex: "calc(var(--z-tour) + 2)",
                     borderRadius: 14,
-                    background: "hsl(247, 40%, 14%)",
+                    background: "var(--dash-surface2, var(--popover))",
                     padding: "14px 16px",
-                    color: "#f4f4f4",
+                    color: "var(--dash-text, var(--popover-foreground))",
                     fontFamily: "inherit",
                 }}
             >
                 <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 6}}>
-                    <Icon name="info-circle" style={{color: "#a78bfa", fontSize: 16}}/>
-                    <span style={{fontWeight: 600, fontSize: "0.9rem"}}>{step.title}</span>
-                    <span style={{marginLeft: "auto", fontSize: "0.72rem", color: "rgba(255,255,255,0.45)"}}>
+                    <Icon name="info-circle" style={{color: "var(--dash-accent, var(--primary))", fontSize: 16}}/>
+                    <span style={{fontWeight: 600, fontSize: "0.875rem"}}>{step.title}</span>
+                    <span style={{marginLeft: "auto", fontSize: "0.75rem", color: "var(--dash-muted, var(--muted-foreground))"}}>
                         {index + 1}/{steps.length}
                     </span>
                 </div>
 
-                <p style={{margin: "0 0 12px", fontSize: "0.82rem", lineHeight: 1.5, color: "rgba(255,255,255,0.75)"}}>
+                <p style={{margin: "0 0 12px", fontSize: "0.875rem", lineHeight: 1.5, color: "var(--dash-text2, var(--popover-foreground))"}}>
                     {step.text}
                 </p>
 
                 <div style={{display: "flex", alignItems: "center", gap: 8}}>
-                    <button
-                        type="button"
-                        onClick={finish}
-                        style={{
-                            border: "none",
-                            background: "transparent",
-                            color: "rgba(255,255,255,0.5)",
-                            fontSize: "0.78rem",
-                            fontFamily: "inherit",
-                            cursor: "pointer",
-                            padding: 0,
-                        }}
-                    >
+                    <Button type="button" variant="ghost" size="xs" onClick={finish}>
                         Пропустить
-                    </button>
+                    </Button>
                     <div style={{marginLeft: "auto", display: "flex", gap: 8}}>
                         {index > 0 && (
-                            <button
-                                type="button"
-                                onClick={() => goTo(index - 1)}
-                                style={{
-                                    padding: "0.4em 0.9em",
-                                    borderRadius: 999,
-                                    border: "1px solid rgba(255,255,255,0.18)",
-                                    background: "transparent",
-                                    color: "rgba(255,255,255,0.75)",
-                                    fontSize: "0.8rem",
-                                    fontFamily: "inherit",
-                                    cursor: "pointer",
-                                }}
-                            >
+                            <Button type="button" variant="outline" size="sm" onClick={() => goTo(index - 1)}>
                                 Назад
-                            </button>
+                            </Button>
                         )}
-                        <button
-                            type="button"
-                            onClick={() => goTo(index + 1)}
-                            style={{
-                                padding: "0.4em 1.1em",
-                                borderRadius: 999,
-                                border: "1px solid rgba(139,124,246,0.5)",
-                                background: "rgba(139,124,246,0.22)",
-                                color: "#ddd6fe",
-                                fontSize: "0.8rem",
-                                fontWeight: 600,
-                                fontFamily: "inherit",
-                                cursor: "pointer",
-                            }}
-                        >
+                        <Button type="button" size="sm" onClick={() => goTo(index + 1)}>
                             {index === steps.length - 1 ? "Понятно" : "Дальше"}
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -409,35 +369,18 @@ export function HintTour({
  */
 export function HintTourLauncher({onClick}: { onClick: () => void }) {
     return (
-        <button
+        <Button
             type="button"
+            variant="secondary"
+            size="icon-lg"
             onClick={onClick}
             title="Показать подсказки по кабинету"
             aria-label="Показать подсказки по кабинету"
             data-tour="btn-hints"
-            style={{
-                position: "fixed",
-                right: 20,
-                bottom: 20,
-                zIndex: 900,
-                width: 42,
-                height: 42,
-                borderRadius: "50%",
-                border: "1px solid rgba(139,124,246,0.45)",
-                background: "rgba(139,124,246,0.16)",
-                backdropFilter: "blur(6px)",
-                WebkitBackdropFilter: "blur(6px)",
-                color: "#ddd6fe",
-                fontSize: "1.1rem",
-                lineHeight: 1,
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
-            }}
+            className="fixed right-5 bottom-5"
+            style={{zIndex: "var(--z-hint)"}}
         >
             <Icon name="help-circle"/>
-        </button>
+        </Button>
     )
 }

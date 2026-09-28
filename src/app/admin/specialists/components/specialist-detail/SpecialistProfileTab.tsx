@@ -112,14 +112,14 @@ export function SpecialistProfileTab({
                     </AdminAccordion>
                     <AdminAccordion icon="bx-edit" title="Редактирование анкеты" defaultOpen>
                         <div style={{
-                            "--dash-accent": "var(--adm-active-color, #6366f1)",
-                            "--dash-success": "#22c55e",
+                            "--dash-accent": "var(--adm-active-color)",
+                            "--dash-success": "var(--bs-success)",
                             "--dash-success-bg": "rgba(34,197,94,0.1)",
-                            "--dash-border": "var(--adm-sidebar-border, #e5e7eb)",
-                            "--dash-surface2": "var(--adm-outer, #f3f4f6)",
-                            "--dash-text": "var(--adm-text, #111827)",
-                            "--dash-muted": "var(--adm-muted, #9ca3af)",
-                            "--dash-danger": "#ef4444",
+                            "--dash-border": "var(--adm-sidebar-border)",
+                            "--dash-surface2": "var(--adm-outer)",
+                            "--dash-text": "var(--adm-text)",
+                            "--dash-muted": "var(--adm-muted)",
+                            "--dash-danger": "var(--bs-danger)",
                             "--dash-danger-bg": "rgba(239,68,68,0.08)",
                         } as React.CSSProperties}>
                             <ProfileForm

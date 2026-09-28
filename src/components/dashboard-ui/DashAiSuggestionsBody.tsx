@@ -1,5 +1,7 @@
 "use client"
 
+import {Button} from "@/components/ui/button"
+
 export type DashAiSuggestion = {
     field: string | null
     tip: string
@@ -47,7 +49,6 @@ export function DashAiSuggestionsBody({
                             key={i}
                             style={{
                                 background: "var(--dash-surface2)",
-                                border: "1px solid var(--dash-border)",
                                 borderRadius: 10,
                                 padding: "1rem",
                                 animation: "dash-ai-suggestions-pulse 1.4s ease-in-out infinite",
@@ -91,29 +92,15 @@ export function DashAiSuggestionsBody({
             {error && !loading && (
                 <div
                     style={{
-                        background: "var(--dash-danger-bg, rgba(220,38,38,0.06))",
-                        border: "1px solid var(--dash-danger, #dc2626)",
+                        background: "var(--dash-danger-bg)",
                         borderRadius: 10,
                         padding: "1rem",
                     }}
                 >
                     <p style={{color: "var(--dash-danger)", fontSize: "0.875rem", margin: "0 0 8px"}}>{error}</p>
-                    <button
-                        type="button"
-                        onClick={onRetry}
-                        style={{
-                            background: "none",
-                            border: "none",
-                            color: "var(--dash-accent)",
-                            cursor: "pointer",
-                            fontSize: "0.75rem",
-                            textDecoration: "underline",
-                            padding: 0,
-                            fontFamily: "inherit",
-                        }}
-                    >
+                    <Button type="button" variant="link" size="xs" onClick={onRetry}>
                         Попробовать снова
-                    </button>
+                    </Button>
                 </div>
             )}
 
@@ -126,8 +113,8 @@ export function DashAiSuggestionsBody({
                         <div
                             key={i}
                             style={{
-                                background: isApplied ? "var(--dash-success-bg, rgba(45,106,45,0.08))" : "var(--dash-surface2)",
-                                border: `1px solid ${isApplied ? "var(--dash-success)" : "var(--dash-border)"}`,
+                                background: isApplied ? "var(--dash-success-bg)" : "var(--dash-surface2)",
+                                ...(isApplied ? {border: "1px solid var(--dash-success)"} : {}),
                                 borderRadius: 10,
                                 marginBottom: "0.75rem",
                                 opacity: isApplied ? 0.72 : 1,
@@ -197,23 +184,13 @@ export function DashAiSuggestionsBody({
                     ✓ {applyMode === "message" ? "Вставлено" : "Применено"}
                   </span>
                                 ) : showApplyButton(s) ? (
-                                    <button
+                                    <Button
                                         type="button"
+                                        size="sm"
                                         onClick={() => onApplyExample(i, s.field, s.example)}
-                                        style={{
-                                            background: "var(--dash-accent)",
-                                            border: "none",
-                                            borderRadius: 8,
-                                            color: "#fff",
-                                            cursor: "pointer",
-                                            fontSize: "0.75rem",
-                                            fontFamily: "inherit",
-                                            fontWeight: 600,
-                                            padding: "6px 14px",
-                                        }}
                                     >
                                         {applyButtonLabel}
-                                    </button>
+                                    </Button>
                                 ) : null}
                             </div>
                         </div>

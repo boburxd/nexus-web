@@ -355,7 +355,7 @@ export function StageRulesTemplatesModal({open, onClose, order, stage, onChanged
                             {sentStatus.kind === "sent_old" ? (
                                 <Alert variant="destructive">
                                     <AlertTitle>У дизайнера старая версия</AlertTitle>
-                                    <AlertDescription>Вы заменили файл после отправки — нажмите «Отправить дизайнеру»,
+                                    <AlertDescription>Вы заменили файл после отправки: нажмите «Отправить дизайнеру»,
                                         чтобы обновить.</AlertDescription>
                                 </Alert>
                             ) : null}
