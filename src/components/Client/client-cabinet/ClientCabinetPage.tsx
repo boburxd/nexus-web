@@ -77,7 +77,7 @@ export default function ClientCabinetPage({
                     activeTab === "orders"
                         ? {
                             href: "/orders/new",
-                            label: "Создать проект",
+                            label: "Создать задание",
                             iconClassName: "bx bx-plus",
                         }
                         : null

@@ -130,7 +130,7 @@ export default function ClientDashboard({
                         <Link href="/orders/new"
                               className="client-dashboard__action-btn client-dashboard__action-btn--primary">
                             <Icon name="plus"/>
-                            <span>Создать проект</span>
+                            <span>Создать задание</span>
                         </Link>
                         <Link href="/orders/payments" className="client-dashboard__action-btn">
                             <Icon name="credit-card"/>

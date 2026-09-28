@@ -274,7 +274,7 @@ export function buildClientHintSteps(goToTab: (tab: string) => void | boolean): 
         },
         {
             target: '[data-tour="btn-create-order"]',
-            title: "Кнопка «Создать проект»",
+            title: "Кнопка «Создать задание»",
             text: "Открывает бриф: опишите объект и задачу — платформа подберёт дизайнера.",
             before: () => goToTab("orders"),
         },

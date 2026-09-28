@@ -9,7 +9,7 @@ import {ClientDashFooter} from "@/components/Client/ClientDashFooter"
 import {DashPageTitle} from "@/components/dashboard-ui/DashPageTitle"
 import {DashSurfaceCard} from "@/components/dashboard-ui/DashSurfaceCard"
 import {DashTopHeader} from "@/components/dashboard-ui/DashTopHeader"
-import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
+import {formatFileSize, UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 import {uploadWithProgress} from "@/lib/upload-progress"
 import {confirmDialog} from "@/lib/dialog-store"
 import {buildClientCabinetNavItems} from "@/components/Client/client-cabinet/constants"
@@ -34,6 +34,15 @@ import {Icon} from "@/components/ui/icon"
 import {stripBx} from "@/lib/icon-map"
 
 type D = Record<string, string>
+
+type BriefFileItem = {
+    id: string
+    s3Key: string
+    filename: string
+    mimeType: string | null
+    size: number | null
+    createdAt: string
+}
 
 /** Prisma Json may deserialize numbers/booleans; PATCH only persisted strings and dropped the rest. */
 function normalizeBriefData(raw: unknown): D {
@@ -187,10 +196,155 @@ function StepTasks({d, set, toggle}: {
     </>
 }
 
-function StepStyle({d, set, toggle}: {
+function ImageAttachmentsUpload({
+                                    files,
+                                    onUpload,
+                                    onDelete,
+                                    uploading,
+                                    uploadItems,
+                                    hint = "Скриншоты, фото, сохранённые изображения",
+                                    deleteConfirmTitle = "Удалить изображение из брифа?",
+                                    deleteLabel = "Удалить изображение",
+                                }: {
+    files: BriefFileItem[]
+    onUpload: (files: File[]) => void
+    onDelete: (fileId: string) => void
+    uploading: boolean
+    uploadItems: UploadItem[]
+    hint?: string
+    deleteConfirmTitle?: string
+    deleteLabel?: string
+}) {
+    const inputRef = useRef<HTMLInputElement>(null)
+    const [dragOver, setDragOver] = useState(false)
+
+    return (
+        <div style={{marginTop: 10}}>
+            <input
+                ref={inputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                style={{display: "none"}}
+                disabled={uploading}
+                onChange={(e) => {
+                    const list = Array.from(e.target.files ?? [])
+                    e.target.value = ""
+                    if (list.length) onUpload(list)
+                }}
+            />
+
+            <div
+                onClick={() => inputRef.current?.click()}
+                onDragOver={(e) => {
+                    e.preventDefault();
+                    setDragOver(true)
+                }}
+                onDragLeave={() => setDragOver(false)}
+                onDrop={(e) => {
+                    e.preventDefault()
+                    setDragOver(false)
+                    const list = Array.from(e.dataTransfer.files ?? [])
+                    if (list.length) onUpload(list)
+                }}
+                style={{
+                    cursor: uploading ? "default" : "pointer",
+                    border: "1.5px dashed var(--dash-border)",
+                    borderColor: dragOver ? "var(--dash-accent)" : "var(--dash-border)",
+                    background: dragOver ? "var(--dash-accent-bg)" : "transparent",
+                    borderRadius: 12,
+                    padding: "14px",
+                    userSelect: "none",
+                    opacity: uploading ? 0.75 : 1,
+                }}
+                aria-disabled={uploading}
+            >
+                <div style={{display: "flex", alignItems: "center", gap: 10}}>
+                    <Icon name="image-add" style={{fontSize: "1.3rem", color: "var(--dash-muted)"}}/>
+                    <div style={{minWidth: 0}}>
+                        <div style={{fontSize: "0.84rem", fontWeight: 600, color: "var(--dash-text)"}}>
+                            Нажмите или перетащите картинки сюда
+                        </div>
+                        <div style={{fontSize: "0.72rem", color: "var(--dash-muted)", marginTop: 2}}>
+                            {uploading ? "Идет загрузка…" : hint}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {uploadItems.length > 0 && (
+                <div style={{marginTop: 10}}>
+                    <UploadingCards items={uploadItems} title="Загрузка"/>
+                </div>
+            )}
+
+            {files.length > 0 && (
+                <div style={{
+                    marginTop: 10,
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(88px, 1fr))",
+                    gap: 8,
+                }}>
+                    {files.map((f) => (
+                        <div key={f.id} style={{position: "relative", aspectRatio: "1 / 1"}}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                                src={`/api/files/download?key=${encodeURIComponent(f.s3Key)}`}
+                                alt={f.filename}
+                                title={`${f.filename} (${formatFileSize(f.size ?? 0)})`}
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover",
+                                    borderRadius: 10,
+                                    border: "1px solid var(--dash-border)",
+                                    background: "var(--dash-surface2)",
+                                }}
+                            />
+                            <button
+                                type="button"
+                                disabled={uploading}
+                                aria-label={deleteLabel}
+                                onClick={async () => {
+                                    const ok = await confirmDialog({title: deleteConfirmTitle, variant: "destructive"})
+                                    if (!ok) return
+                                    onDelete(f.id)
+                                }}
+                                style={{
+                                    position: "absolute", top: 4, right: 4,
+                                    width: 22, height: 22, borderRadius: "50%",
+                                    display: "flex", alignItems: "center", justifyContent: "center",
+                                    border: "none", cursor: uploading ? "default" : "pointer",
+                                    background: "rgba(0,0,0,0.6)", color: "#fff", fontSize: "0.7rem",
+                                }}
+                            >
+                                <Icon name="x"/>
+                            </button>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    )
+}
+
+function StepStyle({
+                       d, set, toggle,
+                       referenceFiles, onUploadReferenceFiles, onDeleteReferenceFile,
+                       antiReferenceFiles, onUploadAntiReferenceFiles, onDeleteAntiReferenceFile,
+                       uploading, uploadItems,
+                   }: {
     d: D;
     set: (k: string, v: string) => void;
     toggle: (k: string, v: string) => void
+    referenceFiles: BriefFileItem[]
+    onUploadReferenceFiles: (files: File[]) => void
+    onDeleteReferenceFile: (fileId: string) => void
+    antiReferenceFiles: BriefFileItem[]
+    onUploadAntiReferenceFiles: (files: File[]) => void
+    onDeleteAntiReferenceFile: (fileId: string) => void
+    uploading: boolean
+    uploadItems: UploadItem[]
 }) {
     const active = new Set((d.styleDir ?? "").split(",").map(s => s.trim()).filter(Boolean))
     return <>
@@ -216,13 +370,37 @@ function StepStyle({d, set, toggle}: {
             <textarea style={{...taStyle, minHeight: 100}} value={d.styleStory ?? ""}
                       onChange={e => set("styleStory", e.target.value)}/>
         </Field>
-        <Field label="Ссылки на референсы"><input
-            style={inputStyle} placeholder="https://pin.it/..., https://behance.net/..." value={d.references ?? ""}
-            onChange={e => set("references", e.target.value)}/></Field>
-        <Field label="Антиреференсы"><input style={inputStyle}
-                                             placeholder="Слишком холодный минимализм, тяжёлая классика"
-                                             value={d.antiReferences ?? ""}
-                                             onChange={e => set("antiReferences", e.target.value)}/></Field>
+        <Field label="Ссылки и файлы референсов">
+            <input
+                style={inputStyle} placeholder="https://pin.it/..., https://behance.net/..." value={d.references ?? ""}
+                onChange={e => set("references", e.target.value)}/>
+            <ImageAttachmentsUpload
+                files={referenceFiles}
+                onUpload={onUploadReferenceFiles}
+                onDelete={onDeleteReferenceFile}
+                uploading={uploading}
+                uploadItems={uploadItems}
+                hint="Скриншоты, фото, сохранённые изображения"
+                deleteConfirmTitle="Удалить референс из брифа?"
+                deleteLabel="Удалить референс"
+            />
+        </Field>
+        <Field label="Антиреференсы (то, что не нравится)">
+            <input style={inputStyle}
+                   placeholder="Слишком холодный минимализм, тяжёлая классика"
+                   value={d.antiReferences ?? ""}
+                   onChange={e => set("antiReferences", e.target.value)}/>
+            <ImageAttachmentsUpload
+                files={antiReferenceFiles}
+                onUpload={onUploadAntiReferenceFiles}
+                onDelete={onDeleteAntiReferenceFile}
+                uploading={uploading}
+                uploadItems={uploadItems}
+                hint="Примеры того, что точно не подходит"
+                deleteConfirmTitle="Удалить антиреференс из брифа?"
+                deleteLabel="Удалить антиреференс"
+            />
+        </Field>
     </>
 }
 
@@ -689,14 +867,9 @@ export default function NewOrderPage() {
         mimeType: string | null;
         createdAt: string
     } | null>(null)
-    const [briefFiles, setBriefFiles] = useState<{
-        id: string;
-        s3Key: string;
-        filename: string;
-        mimeType: string | null;
-        size: number | null;
-        createdAt: string
-    }[]>([])
+    const [briefFiles, setBriefFiles] = useState<BriefFileItem[]>([])
+    const [referenceFiles, setReferenceFiles] = useState<BriefFileItem[]>([])
+    const [antiReferenceFiles, setAntiReferenceFiles] = useState<BriefFileItem[]>([])
     const [submitting, setSubmitting] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [saving, setSaving] = useState(false)
@@ -747,10 +920,28 @@ export default function NewOrderPage() {
                             // ignore
                         }
                         try {
-                            const fr = await fetch(`/api/orders/${draft.id}/brief/files`)
+                            const fr = await fetch(`/api/orders/${draft.id}/brief/files?kind=document`)
                             if (fr.ok) {
-                                const body = await fr.json() as { files?: typeof briefFiles }
+                                const body = await fr.json() as { files?: BriefFileItem[] }
                                 if (!cancelled) setBriefFiles(Array.isArray(body.files) ? body.files : [])
+                            }
+                        } catch {
+                            // ignore
+                        }
+                        try {
+                            const rr = await fetch(`/api/orders/${draft.id}/brief/files?kind=reference`)
+                            if (rr.ok) {
+                                const body = await rr.json() as { files?: BriefFileItem[] }
+                                if (!cancelled) setReferenceFiles(Array.isArray(body.files) ? body.files : [])
+                            }
+                        } catch {
+                            // ignore
+                        }
+                        try {
+                            const ar = await fetch(`/api/orders/${draft.id}/brief/files?kind=antireference`)
+                            if (ar.ok) {
+                                const body = await ar.json() as { files?: BriefFileItem[] }
+                                if (!cancelled) setAntiReferenceFiles(Array.isArray(body.files) ? body.files : [])
                             }
                         } catch {
                             // ignore
@@ -827,16 +1018,23 @@ export default function NewOrderPage() {
     const refreshBriefFiles = useCallback(async () => {
         if (!orderId) return
         try {
-            const r = await fetch(`/api/orders/${orderId}/brief/files`)
+            const r = await fetch(`/api/orders/${orderId}/brief/files?kind=document`)
             if (!r.ok) return
-            const body = await r.json() as { files?: typeof briefFiles }
+            const body = await r.json() as { files?: BriefFileItem[] }
             setBriefFiles(Array.isArray(body.files) ? body.files : [])
         } catch {
             // ignore
         }
     }, [orderId])
 
-    const uploadBriefFiles = useCallback(async (files: File[]) => {
+    /** files/kind — "document" (StepFiles) или "reference" (StepStyle) — тот же эндпоинт, разные бакеты. */
+    const uploadBriefBatch = useCallback(async (
+        files: File[],
+        kind: "document" | "reference" | "antireference",
+        setList: (updater: (prev: BriefFileItem[]) => BriefFileItem[]) => void,
+        refresh: () => Promise<void>,
+        successMessage: string,
+    ) => {
         if (!orderId) return
         if (files.length === 0) return
         setSaving(true)
@@ -853,6 +1051,7 @@ export default function NewOrderPage() {
         try {
             const fd = new FormData()
             for (const f of batch) fd.append("files", f)
+            fd.append("kind", kind)
             const res = await uploadWithProgress(`/api/orders/${orderId}/brief/files`, fd, {
                 onProgress: ({percent}) => patchAll({progress: percent}),
             })
@@ -863,15 +1062,15 @@ export default function NewOrderPage() {
                 patchAll({status: "error", error: message})
                 return
             }
-            const body = JSON.parse(res.text) as { files?: typeof briefFiles }
+            const body = JSON.parse(res.text) as { files?: BriefFileItem[] }
             patchAll({progress: 100, status: "done"})
             if (Array.isArray(body.files)) {
                 // prepend new files
-                setBriefFiles((prev) => [...body.files!, ...prev])
+                setList((prev) => [...body.files!, ...prev])
             } else {
-                await refreshBriefFiles()
+                await refresh()
             }
-            setToast("Файлы прикреплены к брифу")
+            setToast(successMessage)
             setUploadItems([])
         } catch {
             setError("Ошибка сети при загрузке файлов")
@@ -879,9 +1078,17 @@ export default function NewOrderPage() {
         } finally {
             setSaving(false)
         }
-    }, [orderId, refreshBriefFiles])
+    }, [orderId])
 
-    const deleteBriefFile = useCallback(async (fileId: string) => {
+    const uploadBriefFiles = useCallback(
+        (files: File[]) => uploadBriefBatch(files, "document", setBriefFiles, refreshBriefFiles, "Файлы прикреплены к брифу"),
+        [uploadBriefBatch, refreshBriefFiles],
+    )
+
+    const deleteBriefFileEntry = useCallback(async (
+        fileId: string,
+        setList: (updater: (prev: BriefFileItem[]) => BriefFileItem[]) => void,
+    ) => {
         if (!orderId) return
         setSaving(true)
         setError(null)
@@ -892,7 +1099,7 @@ export default function NewOrderPage() {
                 setError(err.error || "Не удалось удалить файл")
                 return
             }
-            setBriefFiles((prev) => prev.filter((f) => f.id !== fileId))
+            setList((prev) => prev.filter((f) => f.id !== fileId))
             setToast("Файл удален")
         } catch {
             setError("Ошибка сети при удалении файла")
@@ -900,6 +1107,55 @@ export default function NewOrderPage() {
             setSaving(false)
         }
     }, [orderId])
+
+    const deleteBriefFile = useCallback(
+        (fileId: string) => deleteBriefFileEntry(fileId, setBriefFiles),
+        [deleteBriefFileEntry],
+    )
+
+    const refreshReferenceFiles = useCallback(async () => {
+        if (!orderId) return
+        try {
+            const r = await fetch(`/api/orders/${orderId}/brief/files?kind=reference`)
+            if (!r.ok) return
+            const body = await r.json() as { files?: BriefFileItem[] }
+            setReferenceFiles(Array.isArray(body.files) ? body.files : [])
+        } catch {
+            // ignore
+        }
+    }, [orderId])
+
+    const uploadReferenceFiles = useCallback(
+        (files: File[]) => uploadBriefBatch(files, "reference", setReferenceFiles, refreshReferenceFiles, "Референсы прикреплены к брифу"),
+        [uploadBriefBatch, refreshReferenceFiles],
+    )
+
+    const deleteReferenceFile = useCallback(
+        (fileId: string) => deleteBriefFileEntry(fileId, setReferenceFiles),
+        [deleteBriefFileEntry],
+    )
+
+    const refreshAntiReferenceFiles = useCallback(async () => {
+        if (!orderId) return
+        try {
+            const r = await fetch(`/api/orders/${orderId}/brief/files?kind=antireference`)
+            if (!r.ok) return
+            const body = await r.json() as { files?: BriefFileItem[] }
+            setAntiReferenceFiles(Array.isArray(body.files) ? body.files : [])
+        } catch {
+            // ignore
+        }
+    }, [orderId])
+
+    const uploadAntiReferenceFiles = useCallback(
+        (files: File[]) => uploadBriefBatch(files, "antireference", setAntiReferenceFiles, refreshAntiReferenceFiles, "Антиреференсы прикреплены к брифу"),
+        [uploadBriefBatch, refreshAntiReferenceFiles],
+    )
+
+    const deleteAntiReferenceFile = useCallback(
+        (fileId: string) => deleteBriefFileEntry(fileId, setAntiReferenceFiles),
+        [deleteBriefFileEntry],
+    )
 
     const set = (k: string, v: string) => setData(p => ({...p, [k]: v}))
     const toggle = (field: string, val: string) => {
@@ -1131,7 +1387,21 @@ export default function NewOrderPage() {
                                     <DashSurfaceCard className="dash-surface-card--pad-lg dash-surface-card--mb">
                                         {step === 0 && <StepObject d={data} set={set}/>}
                                         {step === 1 && <StepTasks d={data} set={set} toggle={toggle}/>}
-                                        {step === 2 && <StepStyle d={data} set={set} toggle={toggle}/>}
+                                        {step === 2 && (
+                                            <StepStyle
+                                                d={data}
+                                                set={set}
+                                                toggle={toggle}
+                                                referenceFiles={referenceFiles}
+                                                onUploadReferenceFiles={uploadReferenceFiles}
+                                                onDeleteReferenceFile={deleteReferenceFile}
+                                                antiReferenceFiles={antiReferenceFiles}
+                                                onUploadAntiReferenceFiles={uploadAntiReferenceFiles}
+                                                onDeleteAntiReferenceFile={deleteAntiReferenceFile}
+                                                uploading={saving}
+                                                uploadItems={uploadItems}
+                                            />
+                                        )}
                                         {step === 3 && <StepBudget d={data} set={set}/>}
                                         {step === 4 && (
                                             <StepFiles

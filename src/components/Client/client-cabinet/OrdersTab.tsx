@@ -19,7 +19,7 @@ export function OrdersTab({
                     <Link href="/orders/new" className="dash-hero-project-btn dash-cta-new-project"
                           data-tour="btn-create-order">
                         <Icon name="plus" aria-hidden/>
-                        Создать проект
+                        Создать задание
                     </Link>
                 }
             />

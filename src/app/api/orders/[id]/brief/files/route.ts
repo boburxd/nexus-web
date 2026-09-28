@@ -30,7 +30,21 @@ function asBriefFileDTO(file: {
     }
 }
 
-export async function GET(_req: NextRequest, {params}: { params: Promise<{ id: string }> }) {
+/**
+ * Референсы/антиреференсы отличаются от обычных документов брифа только заголовком UserFile —
+ * без миграции схемы. "document" (обычные документы) сюда не входит — это фильтр "всё остальное".
+ */
+const KIND_TITLES = {
+    reference: "Референс к брифу",
+    antireference: "Антиреференс к брифу",
+} as const
+type UploadKind = keyof typeof KIND_TITLES | "document"
+
+function isUploadKind(value: string | null): value is keyof typeof KIND_TITLES {
+    return value === "reference" || value === "antireference"
+}
+
+export async function GET(req: NextRequest, {params}: { params: Promise<{ id: string }> }) {
     const user = await getSessionUser()
     if (!user) return NextResponse.json({error: "Unauthorized"}, {status: 401})
 
@@ -50,21 +64,38 @@ export async function GET(_req: NextRequest, {params}: { params: Promise<{ id: s
         (user.role === "SPECIALIST" && order.specialistId === dbUser.id)
     if (!allowed) return NextResponse.json({error: "Forbidden"}, {status: 403})
 
+    const kindParam = req.nextUrl.searchParams.get("kind")
+    type Row = { id: string; s3Key: string; filename: string; mimeType: string | null; size: number | null; createdAt: Date }
+
     // Do not rely on generated Prisma delegate for OrderBriefAttachment (may be stale in runtime).
-    const rows = await prisma.$queryRaw<Array<{
-        id: string
-        s3Key: string
-        filename: string
-        mimeType: string | null
-        size: number | null
-        createdAt: Date
-    }>>`
-    SELECT uf."id", uf."s3Key", uf."filename", uf."mimeType", uf."size", uf."createdAt"
-    FROM "OrderBriefAttachment" oba
-    JOIN "UserFile" uf ON uf."id" = oba."fileId"
-    WHERE oba."orderId" = ${orderId}
-    ORDER BY oba."createdAt" DESC
-  `
+    let rows: Row[]
+    if (isUploadKind(kindParam)) {
+        rows = await prisma.$queryRaw<Row[]>`
+        SELECT uf."id", uf."s3Key", uf."filename", uf."mimeType", uf."size", uf."createdAt"
+        FROM "OrderBriefAttachment" oba
+        JOIN "UserFile" uf ON uf."id" = oba."fileId"
+        WHERE oba."orderId" = ${orderId} AND uf."title" = ${KIND_TITLES[kindParam]}
+        ORDER BY oba."createdAt" DESC
+      `
+    } else if (kindParam === "document") {
+        rows = await prisma.$queryRaw<Row[]>`
+        SELECT uf."id", uf."s3Key", uf."filename", uf."mimeType", uf."size", uf."createdAt"
+        FROM "OrderBriefAttachment" oba
+        JOIN "UserFile" uf ON uf."id" = oba."fileId"
+        WHERE oba."orderId" = ${orderId}
+          AND (uf."title" IS DISTINCT FROM ${KIND_TITLES.reference})
+          AND (uf."title" IS DISTINCT FROM ${KIND_TITLES.antireference})
+        ORDER BY oba."createdAt" DESC
+      `
+    } else {
+        rows = await prisma.$queryRaw<Row[]>`
+        SELECT uf."id", uf."s3Key", uf."filename", uf."mimeType", uf."size", uf."createdAt"
+        FROM "OrderBriefAttachment" oba
+        JOIN "UserFile" uf ON uf."id" = oba."fileId"
+        WHERE oba."orderId" = ${orderId}
+        ORDER BY oba."createdAt" DESC
+      `
+    }
 
     const files = rows.map(asBriefFileDTO)
 
@@ -96,6 +127,8 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
     const filesRaw = fd.getAll("files").filter((x): x is File => x instanceof File)
     if (filesRaw.length === 0) return NextResponse.json({error: "files[] is required"}, {status: 400})
     if (filesRaw.length > 30) return NextResponse.json({error: "Too many files (max 30 per upload)"}, {status: 400})
+    const kindRaw = fd.get("kind")
+    const kind: UploadKind = isUploadKind(typeof kindRaw === "string" ? kindRaw : null) ? (kindRaw as keyof typeof KIND_TITLES) : "document"
 
     const created = await prisma.$transaction(async (tx) => {
         const out: Array<{
@@ -109,14 +142,15 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
 
         for (const file of filesRaw) {
             try {
-                validateFile(file.name, file.size)
+                validateFile(file.name, file.size, kind !== "document" ? {allowAnyImage: true} : undefined)
             } catch (e) {
                 throw new Error((e as Error).message)
             }
 
             const fileId = crypto.randomUUID()
             const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_")
-            const s3Key = `orders/${orderId}/brief/files/${fileId}/${safeName}`
+            const s3Prefix = kind === "document" ? "files" : kind === "reference" ? "references" : "antireferences"
+            const s3Key = `orders/${orderId}/brief/${s3Prefix}/${fileId}/${safeName}`
             const buffer = Buffer.from(await file.arrayBuffer())
 
             await uploadToS3(s3Key, buffer, file.type || "application/octet-stream")
@@ -131,7 +165,7 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
                     filename: file.name,
                     mimeType: file.type || null,
                     size: file.size,
-                    title: "Документ к брифу",
+                    title: kind === "document" ? "Документ к брифу" : KIND_TITLES[kind],
                     description: `Заказ #${orderId.slice(-6).toUpperCase()}`,
                 },
                 select: {id: true, s3Key: true, filename: true, mimeType: true, size: true, createdAt: true},
