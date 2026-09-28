@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(
             {
                 error:
-                    "ИИ не настроен: проверьте AI_PROVIDER и ключ выбранного провайдера в .env. Перезапустите dev-сервер.",
+                    "ИИ не настроен: проверьте GEMINI_API_KEY в .env. Перезапустите dev-сервер.",
             },
             {status: 503},
         )

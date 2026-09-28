@@ -2,8 +2,7 @@ import {NextRequest, NextResponse} from "next/server"
 import {prisma} from "@/lib/db/prisma"
 import {getSessionDbUser, getSessionUser} from "@/lib/session"
 import {rateLimit} from "@/lib/rate-limit"
-import {aiGenerateImage, getAiProvider, isAiConfigured} from "@/lib/ai-provider"
-import {GeminiImageError} from "@/lib/gemini-ai"
+import {AiImageError, aiGenerateImage, getAiProvider, isAiConfigured} from "@/lib/ai-provider"
 import {deleteObject, getDownloadUrl, putObject} from "@/lib/s3"
 
 export const maxDuration = 180
@@ -107,7 +106,7 @@ export async function POST(_req: NextRequest, {params}: { params: Promise<{ id: 
             Array.from({length: PREVIEW_COUNT}, () => aiGenerateImage(prompt)),
         )
     } catch (err) {
-        const code = err instanceof GeminiImageError ? err.code : "FAILED"
+        const code = err instanceof AiImageError ? err.code : "FAILED"
         const message = err instanceof Error ? err.message : "Не удалось сгенерировать изображения"
         console.error("[ai/brief-preview]", code, message)
         return NextResponse.json({error: message, code}, {status: code === "QUOTA" ? 429 : 502})

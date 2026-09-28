@@ -2,8 +2,7 @@ import {NextRequest, NextResponse} from "next/server"
 import {getOrCreateDbUser, getSessionUser} from "@/lib/session"
 import {prisma} from "@/lib/db/prisma"
 import {rateLimit} from "@/lib/rate-limit"
-import {aiEditImage, aiSupportsImageEditing, getAiProvider, isAiConfigured} from "@/lib/ai-provider"
-import {GeminiImageError} from "@/lib/gemini-ai"
+import {AiImageError, aiEditImage, aiSupportsImageEditing, getAiProvider, isAiConfigured} from "@/lib/ai-provider"
 import {getObjectBuffer} from "@/lib/s3"
 
 export const maxDuration = 180
@@ -92,7 +91,7 @@ export async function POST(req: NextRequest) {
             sourceImageUsed: aiSupportsImageEditing(),
         })
     } catch (err) {
-        const code = err instanceof GeminiImageError ? err.code : "FAILED"
+        const code = err instanceof AiImageError ? err.code : "FAILED"
         const message = err instanceof Error ? err.message : "Не удалось обработать изображение"
         console.error("[ai/image-edit]", code, message)
         return NextResponse.json({error: message, code}, {status: code === "QUOTA" ? 429 : 502})

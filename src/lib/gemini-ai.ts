@@ -11,6 +11,7 @@
  */
 
 import {aiFetch} from "@/lib/ai-proxy"
+import {AiImageError} from "@/lib/ai-image-error"
 
 function apiKey(): string {
     return (process.env.GEMINI_API_KEY ?? "").trim()
@@ -79,34 +80,24 @@ export async function geminiGenerate(system: string, userPrompt: string, maxToke
     return text
 }
 
-/** Причина отказа генерации — чтобы роут отдал внятное сообщение, а не «AI недоступен». */
-export type GeminiImageErrorCode = "NOT_CONFIGURED" | "QUOTA" | "SAFETY" | "EMPTY" | "FAILED"
-
-export class GeminiImageError extends Error {
-    constructor(public readonly code: GeminiImageErrorCode, message: string) {
-        super(message)
-        this.name = "GeminiImageError"
-    }
-}
-
 export type GeneratedImage = {
     /** data:image/...;base64,... — готово к <img src> и к обратной загрузке в S3. */
     dataUrl: string
     mimeType: string
 }
 
-function classifyImageError(err: unknown): GeminiImageError {
+function classifyImageError(err: unknown): AiImageError {
     const raw = err instanceof Error ? err.message : String(err)
     if (/RESOURCE_EXHAUSTED|"code":\s*429|quota/i.test(raw)) {
-        return new GeminiImageError(
+        return new AiImageError(
             "QUOTA",
             "Генерация изображений недоступна на текущем тарифе Gemini: у моделей *-image лимит бесплатного тарифа равен нулю. Включите billing в Google AI Studio или укажите ключ с платным тарифом.",
         )
     }
     if (/SAFETY|blocked|PROHIBITED_CONTENT/i.test(raw)) {
-        return new GeminiImageError("SAFETY", "Модель отклонила изображение по правилам безопасности.")
+        return new AiImageError("SAFETY", "Модель отклонила изображение по правилам безопасности.")
     }
-    return new GeminiImageError("FAILED", raw.slice(0, 300))
+    return new AiImageError("FAILED", raw.slice(0, 300))
 }
 
 function firstImageFromResponse(response: GeminiResponse): GeneratedImage {
@@ -118,7 +109,7 @@ function firstImageFromResponse(response: GeminiResponse): GeneratedImage {
             return {dataUrl: `data:${mimeType};base64,${inline.data}`, mimeType}
         }
     }
-    throw new GeminiImageError("EMPTY", "Модель не вернула изображение")
+    throw new AiImageError("EMPTY", "Модель не вернула изображение")
 }
 
 /**
@@ -130,7 +121,7 @@ export async function geminiEditImage(
     image: { data: string; mimeType: string },
 ): Promise<GeneratedImage> {
     if (!isGeminiConfigured()) {
-        throw new GeminiImageError("NOT_CONFIGURED", "GEMINI_API_KEY не задан")
+        throw new AiImageError("NOT_CONFIGURED", "GEMINI_API_KEY не задан")
     }
 
     let response
@@ -159,7 +150,7 @@ export async function geminiEditImage(
  */
 export async function geminiGenerateImage(prompt: string): Promise<GeneratedImage> {
     if (!isGeminiConfigured()) {
-        throw new GeminiImageError("NOT_CONFIGURED", "GEMINI_API_KEY не задан")
+        throw new AiImageError("NOT_CONFIGURED", "GEMINI_API_KEY не задан")
     }
 
     let response

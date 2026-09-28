@@ -85,7 +85,7 @@ describe("POST /api/ai/image-edit", () => {
         expect(prompt).toContain("деловой портрет")
     })
 
-    it("сообщает, что yandex не использует исходник", async () => {
+    it("сообщает клиенту, когда провайдер не использует исходник", async () => {
         mockedSupports.mockReturnValue(false)
         const res = await call({image: TINY_IMAGE, prompt: "деловой портрет"})
         expect(await res.json()).toMatchObject({sourceImageUsed: false})

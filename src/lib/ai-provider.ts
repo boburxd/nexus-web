@@ -1,21 +1,19 @@
 import {geminiEditImage, geminiGenerate, geminiGenerateImage, isGeminiConfigured} from "@/lib/gemini-ai"
-import {isYandexAiConfigured, yandexChat, yandexGenerateImage, type YandexMessage} from "@/lib/yandex-ai"
 
-export type AiProvider = "gemini" | "yandex"
-export type AiMessage = YandexMessage
+export {AiImageError} from "@/lib/ai-image-error"
 
-export function getAiProvider(): AiProvider {
-    const value = (process.env.AI_PROVIDER ?? "gemini").trim().toLowerCase()
-    if (value !== "gemini" && value !== "yandex") throw new Error(`INVALID_AI_PROVIDER:${value}`)
-    return value
+export type AiMessage = { role: "system" | "user" | "assistant"; content: string }
+
+/** Единственный провайдер — Gemini. Значение оставлено в ответах роутов для отладки. */
+export function getAiProvider(): "gemini" {
+    return "gemini"
 }
 
 export function isAiConfigured(): boolean {
-    return getAiProvider() === "yandex" ? isYandexAiConfigured() : isGeminiConfigured()
+    return isGeminiConfigured()
 }
 
 export async function aiChat(messages: AiMessage[], maxTokens = 1024): Promise<string> {
-    if (getAiProvider() === "yandex") return yandexChat(messages, maxTokens)
     const system = messages.filter((message) => message.role === "system").map((message) => message.content).join("\n\n")
     const conversation = messages
         .filter((message) => message.role !== "system")
@@ -28,20 +26,19 @@ export async function aiAsk(system: string, userPrompt: string, maxTokens = 1024
     return aiChat([{role: "system", content: system}, {role: "user", content: userPrompt}], maxTokens)
 }
 
-/** Правит ли провайдер именно исходное фото. YandexART умеет только text-to-image,
- *  то есть при `AI_PROVIDER=yandex` загруженный кадр в генерацию не уходит. */
+/** Gemini редактирует именно исходное фото. */
 export function aiSupportsImageEditing(): boolean {
-    return getAiProvider() === "gemini"
+    return true
 }
 
-/** Редактирование изображения по текстовому запросу. На yandex исходник игнорируется — см. aiSupportsImageEditing. */
-export async function aiEditImage(prompt: string, image: {data: string; mimeType: string}) {
-    return getAiProvider() === "yandex" ? yandexGenerateImage(prompt) : geminiEditImage(prompt, image)
+/** Редактирование изображения по текстовому запросу. */
+export async function aiEditImage(prompt: string, image: { data: string; mimeType: string }) {
+    return geminiEditImage(prompt, image)
 }
 
 /** Генерация изображения с нуля, без исходного фото (например, интерьер по описанию из брифа). */
 export async function aiGenerateImage(prompt: string) {
-    return getAiProvider() === "yandex" ? yandexGenerateImage(prompt) : geminiGenerateImage(prompt)
+    return geminiGenerateImage(prompt)
 }
 
 export function stripJsonFences(raw: string): string {
