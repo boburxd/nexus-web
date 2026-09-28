@@ -3,6 +3,7 @@
 import {useCallback, useEffect, useRef} from "react"
 import {createPortal} from "react-dom"
 import {cn} from "@/lib/utils"
+import {ADM_VARS_DARK, ADM_VARS_LIGHT, readAdminThemeChoice} from "@/lib/admin-theme"
 
 interface ModalProps {
     open: boolean
@@ -34,7 +35,12 @@ export function Modal({open, onClose, children, maxWidth = 720, theme, variant =
 
     if (!open || typeof document === "undefined") return null
 
-    const isDark = theme === "dark" || (!theme && typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches)
+    // Портал рендерится в document.body — вне .adm-root, поэтому CSS-переменные туда не
+    // наследуются. Если явную тему не передали, читаем выбор из профильного меню админки
+    // (data-theme на .adm-root) напрямую через DOM, а не только системную схему.
+    const admThemeChoice = theme ? null : readAdminThemeChoice()
+    const isDark = theme === "dark" || admThemeChoice === "dark"
+        || (!theme && !admThemeChoice && typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches)
     const isGlass = variant === "glass"
     const isTransparent = variant === "transparent"
 
@@ -76,7 +82,12 @@ export function Modal({open, onClose, children, maxWidth = 720, theme, variant =
                     WebkitBackdropFilter: isGlass ? "blur(24px) saturate(1.15)" : undefined,
                     color: isDark ? "var(--adm-text, #f1f5f9)" : "var(--adm-text, #111827)",
                     animation: "modal-in 0.22s cubic-bezier(0.34,1.56,0.64,1)",
-                }}
+                    // Переобъявляем весь набор --adm-* на корне портала, чтобы произвольный
+                    // admin-контент в children (например .sp-btn-primary из orders.css) не
+                    // молча ломался из-за отсутствующего наследования CSS-переменных через
+                    // границу портала — см. комментарий в src/lib/admin-theme.ts.
+                    ...(isDark ? ADM_VARS_DARK : ADM_VARS_LIGHT),
+                } as React.CSSProperties}
             >
                 {children}
             </div>

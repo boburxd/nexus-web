@@ -16,6 +16,45 @@ import {Input} from "@/components/ui/input"
 import {Textarea} from "@/components/ui/textarea"
 import {cn} from "@/lib/utils"
 import {type DialogRequest, type DialogVariant, registerDialogListener} from "@/lib/dialog-store"
+import {readAdminThemeChoice} from "@/lib/admin-theme"
+
+const ADM_DIALOG_LIGHT_VARS: React.CSSProperties = {
+    "--background": "#ffffff",
+    "--foreground": "#0f172a",
+    "--popover": "#ffffff",
+    "--popover-foreground": "#0f172a",
+    "--muted": "#f1f5f9",
+    "--muted-foreground": "#64748b",
+    "--border": "rgba(15, 23, 42, 0.12)",
+    "--input": "rgba(15, 23, 42, 0.12)",
+} as React.CSSProperties
+
+const ADM_DIALOG_DARK_VARS: React.CSSProperties = {
+    "--background": "#0f1535",
+    "--foreground": "#d3d7dc",
+    "--popover": "#070c29",
+    "--popover-foreground": "#d3d7dc",
+    "--muted": "#181f4a",
+    "--muted-foreground": "#939aa0",
+    "--border": "rgba(255, 255, 255, 0.15)",
+    "--input": "rgba(255, 255, 255, 0.15)",
+} as React.CSSProperties
+
+/**
+ * .dialog-surface (globals.css) follows raw OS prefers-color-scheme, so it drifts out of sync
+ * with the admin panel's own manual dark/light switch (data-theme on .adm-root — see
+ * AdminLayout.tsx) once someone picks a theme that differs from their OS setting. DialogHost is
+ * portal-rendered outside .adm-root, so CSS descendant selectors can't reach it — read the
+ * admin's explicit choice via DOM query and force the same tokens with inline styles, which
+ * beat both :root and the OS media query. Returns undefined outside admin (or before the admin
+ * theme hook resolves), leaving the existing OS-driven behavior untouched everywhere else.
+ */
+function admDialogThemeStyle(): React.CSSProperties | undefined {
+    const choice = readAdminThemeChoice()
+    if (choice === "light") return ADM_DIALOG_LIGHT_VARS
+    if (choice === "dark") return ADM_DIALOG_DARK_VARS
+    return undefined
+}
 
 /**
  * Единственный смонтированный хост для confirmDialog()/promptDialog() (см. src/lib/dialog-store.ts) —
@@ -47,6 +86,7 @@ export function DialogHost() {
                 <DialogContent
                     showCloseButton={!accent}
                     className={cn("dialog-surface gap-0 overflow-hidden p-0", !accent && "gap-4 p-4")}
+                    style={admDialogThemeStyle()}
                 >
                     <DialogAccentHead accent={accent} title={options.title} description={options.description}/>
                     <DialogFooter className={cn(accent && "mx-0 mb-0 rounded-t-none bg-transparent p-4")}>
@@ -85,6 +125,7 @@ function PromptDialogBody({request, onDone}: { request: Extract<DialogRequest, {
             <DialogContent
                 showCloseButton={!accent}
                 className={cn("dialog-surface gap-0 overflow-hidden p-0", !accent && "gap-4 p-4")}
+                style={admDialogThemeStyle()}
             >
                 <DialogAccentHead accent={accent} title={options.title} description={options.description}/>
                 <div className={cn(accent && "p-4")}>

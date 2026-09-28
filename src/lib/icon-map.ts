@@ -16,6 +16,8 @@ import {
     Building02Icon,
     DiamondIcon,
     Dumbbell01Icon,
+    Moon02Icon,
+    Sun02Icon,
     Calendar01Icon,
     Cancel01Icon,
     CancelCircleIcon,
@@ -293,6 +295,8 @@ export const ICON_MAP = {
     "message-detail": Message01Icon,
     "paper-plane": SendIcon,
     "quote-alt-left": QuoteUpIcon,
+    "sun": Sun02Icon,
+    "moon": Moon02Icon,
 } as const satisfies Record<string, IconSvgElement>
 
 export type IconName = keyof typeof ICON_MAP

@@ -8,6 +8,7 @@ import {useAdminViewer} from "./AdminViewerContext"
 import NotificationBell from "@/components/Community/NotificationBell"
 import {SignOutButton} from "@/components/auth/SignOutButton"
 import {Icon} from "@/components/ui/icon"
+import {notifyAdminThemeChange} from "@/lib/admin-theme"
 
 const NAV = [
     {href: "/admin", label: "Дашборд", icon: "bx-home-alt"},
@@ -33,14 +34,59 @@ export function AdminLayout({children, noPadding}: AdminLayoutProps) {
     )
 }
 
-/** Иконка профиля в шапке: по клику — меню с выходом. */
-function AdminProfileMenu() {
+type AdmTheme = "light" | "dark" | null
+
+const ADM_THEME_STORAGE_KEY = "adm-theme"
+
+/** Явный выбор темы (перебивает системную) — читается один раз при монтировании. */
+function useAdminTheme(): [AdmTheme, (theme: AdmTheme) => void] {
+    const [theme, setThemeState] = useState<AdmTheme>(null)
+
+    useEffect(() => {
+        let saved: string | null = null
+        try {
+            saved = localStorage.getItem(ADM_THEME_STORAGE_KEY)
+        } catch {
+            // localStorage недоступен (приватный режим и т.п.)
+        }
+        if (saved === "light" || saved === "dark") {
+            setThemeState(saved)
+            return
+        }
+        // Ничего не выбирали раньше — переключатель должен сразу показывать текущую
+        // (системную) тему, а не всегда стартовать с «светлой».
+        setThemeState(window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+    }, [])
+
+    // Уведомляем компоненты вне .adm-root (Toaster и т.п.) уже после того, как data-theme
+    // применился к DOM — эффект гарантированно бежит после коммита, в отличие от вызова
+    // прямо в setTheme().
+    useEffect(() => {
+        if (theme !== null) notifyAdminThemeChange()
+    }, [theme])
+
+    const setTheme = (next: AdmTheme) => {
+        setThemeState(next)
+        try {
+            if (next) localStorage.setItem(ADM_THEME_STORAGE_KEY, next)
+            else localStorage.removeItem(ADM_THEME_STORAGE_KEY)
+        } catch {
+            // ignore
+        }
+    }
+
+    return [theme, setTheme]
+}
+
+/** Иконка профиля в шапке: по клику — меню с выходом и переключателем темы. */
+function AdminProfileMenu({theme, onThemeChange}: { theme: AdmTheme; onThemeChange: (theme: AdmTheme) => void }) {
     const pathname = usePathname()
     const viewer = useAdminViewer()
     const [open, setOpen] = useState(false)
     const rootRef = useRef<HTMLDivElement>(null)
     const displayName = viewer?.name?.trim() || viewer?.email || "Администратор"
     const showEmail = Boolean(viewer?.email && viewer.email !== displayName)
+    const isDark = theme === "dark"
 
     useEffect(() => {
         setOpen(false)
@@ -81,6 +127,19 @@ function AdminProfileMenu() {
                     <span className="adm-profile-menu__name" title={displayName}>{displayName}</span>
                     {showEmail && <span className="adm-profile-menu__email" title={viewer!.email}>{viewer!.email}</span>}
                 </div>
+                <button
+                    type="button"
+                    role="menuitemcheckbox"
+                    aria-checked={isDark}
+                    className="adm-profile-menu__item"
+                    onClick={() => onThemeChange(isDark ? "light" : "dark")}
+                >
+                    <Icon name={isDark ? "moon" : "sun"}/>
+                    Тёмная тема
+                    <span className="adm-theme-switch" data-on={isDark}>
+                        <span className="adm-theme-switch__thumb"/>
+                    </span>
+                </button>
                 <SignOutButton
                     title="Выйти из админки"
                     className="adm-profile-menu__item adm-profile-menu__item--danger"
@@ -96,12 +155,13 @@ function AdminProfileMenu() {
 
 function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
     const pathname = usePathname()
+    const [theme, setTheme] = useAdminTheme()
 
     const isActive = (href: string) =>
         href === "/admin" ? pathname === "/admin" : pathname.startsWith(href)
 
     return (
-        <div className="adm-root">
+        <div className="adm-root" data-theme={theme ?? undefined}>
             <div className="adm-main">
                 <header className="adm-header">
                     <nav className="adm-tabs">
@@ -117,7 +177,7 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
                     </nav>
                     <div className="adm-header-right">
                         <NotificationBell buttonClassName="adm-header-icon-btn adm-header-bell"/>
-                        <AdminProfileMenu/>
+                        <AdminProfileMenu theme={theme} onThemeChange={setTheme}/>
                     </div>
                 </header>
 
@@ -138,8 +198,9 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
           --adm-card-bg:        #f7f8fa;
           --adm-name-color:     #4b5563;
         }
+        /* Без явного выбора в профильном меню — следуем системной теме. */
         @media (prefers-color-scheme: dark) {
-          .adm-root {
+          .adm-root:not([data-theme="light"]) {
             --adm-outer:          #0f172a;
             --adm-sidebar:        #1e293b;
             --adm-sidebar-border: #334155;
@@ -152,6 +213,20 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
             --adm-card-bg:        #16213c;
             --adm-name-color:     #cbd5e1;
           }
+        }
+        /* Явный выбор «тёмная» в профильном меню — перебивает системную тему в любую сторону. */
+        .adm-root[data-theme="dark"] {
+          --adm-outer:          #0f172a;
+          --adm-sidebar:        #1e293b;
+          --adm-sidebar-border: #334155;
+          --adm-text:           #f1f5f9;
+          --adm-muted:          #94a3b8;
+          --adm-active-bg:      rgba(129,140,248,0.18);
+          --adm-active-color:   #818cf8;
+          --adm-hover-bg:       rgba(129,140,248,0.10);
+          --adm-content-bg:     #0f172a;
+          --adm-card-bg:        #16213c;
+          --adm-name-color:     #cbd5e1;
         }
 
         .adm-root {
@@ -188,8 +263,9 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
           border-bottom-color: var(--adm-active-color);
         }
         @media (prefers-color-scheme: dark) {
-          .adm-tab--active { color: #fff; border-bottom-color: #fff; }
+          .adm-root:not([data-theme="light"]) .adm-tab--active { color: #fff; border-bottom-color: #fff; }
         }
+        .adm-root[data-theme="dark"] .adm-tab--active { color: #fff; border-bottom-color: #fff; }
         .adm-header-right {
           margin-left: auto; display: flex;
           align-items: center; gap: 12px;
@@ -252,12 +328,30 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
           transition: background 0.15s, color 0.15s;
         }
         .adm-profile-menu__item i { font-size: 1.05rem; }
+        .adm-profile-menu__item:hover,
+        .adm-profile-menu__item:focus-visible {
+          background: var(--adm-hover-bg);
+          outline: none;
+        }
         .adm-profile-menu__item--danger { color: var(--adm-danger, #ea5455); }
         .adm-profile-menu__item--danger:hover,
         .adm-profile-menu__item--danger:focus-visible {
           background: rgba(234,84,85,0.12);
           outline: none;
         }
+        .adm-theme-switch {
+          margin-left: auto; flex-shrink: 0;
+          width: 32px; height: 18px; border-radius: 999px; padding: 2px;
+          background: var(--adm-sidebar-border);
+          transition: background 0.15s;
+        }
+        .adm-theme-switch[data-on="true"] { background: var(--adm-active-color); }
+        .adm-theme-switch__thumb {
+          display: block; width: 14px; height: 14px; border-radius: 50%;
+          background: #fff;
+          transition: transform 0.15s;
+        }
+        .adm-theme-switch[data-on="true"] .adm-theme-switch__thumb { transform: translateX(14px); }
 
         .adm-main {
           display: flex; flex-direction: column;

@@ -178,8 +178,9 @@ export const SPECIALISTS_STYLES = `
   .sp-detail-tab:hover { color: var(--adm-text); }
   .sp-detail-tab--active { color: var(--adm-active-color); border-bottom-color: var(--adm-active-color); }
   @media (prefers-color-scheme: dark) {
-    .sp-detail-tab--active { color: #fff; border-bottom-color: #fff; }
+    .adm-root:not([data-theme="light"]) .sp-detail-tab--active { color: #fff; border-bottom-color: #fff; }
   }
+  .adm-root[data-theme="dark"] .sp-detail-tab--active { color: #fff; border-bottom-color: #fff; }
   .sp-detail-body { flex: 1; overflow-y: auto; padding: 24px 28px; }
 
   .sp-profile-header { display: flex; align-items: flex-start; gap: 16px; padding: 20px 28px 16px; }
