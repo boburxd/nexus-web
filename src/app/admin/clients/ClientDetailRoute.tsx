@@ -147,7 +147,7 @@ export function ClientDetailRoute({id}: { id: string }) {
                             fw.frameworkContractStatus !== "SIGNED_BY_CLIENT" &&
                             fw.frameworkContractStatus !== "SIGNED_BY_ADMIN" && (
                                 <div style={{marginBottom: 12}}>
-                                    <Button
+                                    <Button variant="success"
                                         type="button"
                                         onClick={async () => {
                                             const ok = await confirmDialog({

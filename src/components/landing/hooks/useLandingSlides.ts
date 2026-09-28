@@ -12,24 +12,30 @@ import {preloadSlides} from "@/lib/landing/preloadMedia"
 export function useLandingSlides() {
     const [slides, setSlides] = useState<DesignerSlide[] | null>(null)
     const [ready, setReady] = useState(false)
+    // Сбой загрузки — отдельное состояние: пустой список означает «никого не отобрали», а не ошибку.
+    const [failed, setFailed] = useState(false)
 
     useEffect(() => {
         let cancelled = false
 
         async function load() {
             let real: DesignerSlide[] = []
+            let loadFailed = false
             try {
                 const res = await fetch("/api/landing/specialists")
-                const data: DesignerSlide[] = await res.json()
-                if (Array.isArray(data)) real = data
+                const data: unknown = await res.json()
+                if (res.ok && Array.isArray(data)) real = data as DesignerSlide[]
+                else loadFailed = true
             } catch {
-                /* сеть/сервер недоступны — покажем пустую главную, а не выдуманных людей */
+                /* сеть/сервер недоступны — скажем об этом, а не покажем выдуманных людей */
+                loadFailed = true
             }
 
             await preloadSlides(real, [], {includeVideos: true})
 
             if (!cancelled) {
                 setSlides(real)
+                setFailed(loadFailed)
                 setReady(true)
             }
         }
@@ -40,5 +46,5 @@ export function useLandingSlides() {
         }
     }, [])
 
-    return {slides, ready}
+    return {slides, failed, ready}
 }

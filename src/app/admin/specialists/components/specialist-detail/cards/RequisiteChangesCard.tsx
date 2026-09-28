@@ -96,7 +96,7 @@ export function RequisiteChangesCard({userId}: { userId: string }) {
                             </AdminTable>
                         </AdminTableWrapper>
                         <div style={{display: "flex", gap: 6, marginTop: 10}}>
-                            <Button type="button" size="sm"
+                            <Button type="button" size="sm" variant="success"
                                     onClick={() => handleAction(r.id, "approve")}>Одобрить
                             </Button>
                             <Button type="button" variant="destructive" size="sm"

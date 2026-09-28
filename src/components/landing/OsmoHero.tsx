@@ -4,15 +4,18 @@ import {useEffect, useRef} from "react"
 import Image from "next/image"
 import {gsap} from "gsap"
 import {DesignerSlider} from "@/components/landing/DesignerSlider"
+import {Button} from "@/components/ui/button"
 import type {DesignerSlide} from "@/components/landing/designer-profile-modal/types"
 
 interface OsmoHeroProps {
     visible: boolean
     slides: DesignerSlide[]
+    /** Список не загрузился (сеть или ответ сервера с ошибкой). */
+    failed?: boolean
     onBrightnessChange: (lightBg: boolean) => void
 }
 
-export function OsmoHero({visible, slides, onBrightnessChange}: OsmoHeroProps) {
+export function OsmoHero({visible, slides, failed = false, onBrightnessChange}: OsmoHeroProps) {
     const imgRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -39,7 +42,7 @@ export function OsmoHero({visible, slides, onBrightnessChange}: OsmoHeroProps) {
                 {slides.length > 0 ? (
                     <DesignerSlider slides={slides} onBrightnessChange={onBrightnessChange}/>
                 ) : (
-                    <EmptyRoster/>
+                    <EmptyRoster failed={failed}/>
                 )}
             </div>
 
@@ -51,9 +54,10 @@ export function OsmoHero({visible, slides, onBrightnessChange}: OsmoHeroProps) {
 
 /**
  * Пока ни один дизайнер не прошёл отбор и не собрал портфолио для главной —
- * показываем честную заглушку вместо выдуманных персонажей.
+ * показываем честную заглушку вместо выдуманных персонажей. Если список просто
+ * не загрузился, говорим об этом и даём повторить.
  */
-function EmptyRoster() {
+function EmptyRoster({failed}: { failed: boolean }) {
     return (
         <div style={{position: "absolute", inset: 0}}>
             <Image src="/interior.jpg" alt="" fill className="object-cover" priority/>
@@ -72,7 +76,7 @@ function EmptyRoster() {
                 }}
             >
                 <p style={{fontSize: "clamp(1.4rem, 4vw, 2.6rem)", fontWeight: 600, margin: 0, lineHeight: 1.2}}>
-                    Идёт отбор дизайнеров
+                    {failed ? "Не удалось загрузить дизайнеров" : "Идёт отбор дизайнеров"}
                 </p>
                 <p
                     style={{
@@ -80,12 +84,18 @@ function EmptyRoster() {
                         maxWidth: "34rem",
                         fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)",
                         lineHeight: 1.55,
-                        color: "rgba(255,255,255,0.6)",
+                        color: "var(--muted-foreground)",
                     }}
                 >
-                    Здесь появятся дизайнеры NEXUS, прошедшие квалификацию, с подтверждённым уровнем и портфолио
-                    реализованных проектов.
+                    {failed
+                        ? "Проверьте подключение и обновите страницу."
+                        : "Здесь появятся дизайнеры NEXUS, прошедшие квалификацию, с подтверждённым уровнем и портфолио реализованных проектов."}
                 </p>
+                {failed && (
+                    <Button type="button" size="lg" className="mt-6" onClick={() => window.location.reload()}>
+                        Обновить
+                    </Button>
+                )}
             </div>
         </div>
     )

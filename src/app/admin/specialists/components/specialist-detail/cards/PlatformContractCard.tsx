@@ -144,6 +144,7 @@ export function PlatformContractCard({
                     <div style={{marginBottom: 12}}>
                         <Button
                             type="button"
+                            variant="success"
                             onClick={async () => {
                                 if (!(await confirmDialog({
                                     title: "Подтвердить подписание договора?",

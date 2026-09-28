@@ -6,14 +6,6 @@ export const SPECIALISTS_STYLES = `
     display: flex;
     height: 100%;
     overflow: hidden;
-    --background: var(--adm-content-bg);
-    --foreground: var(--adm-text);
-    --muted: var(--adm-hover-bg);
-    --muted-foreground: var(--adm-muted);
-    --secondary: var(--adm-active-bg);
-    --secondary-foreground: var(--adm-active-color);
-    --border: var(--adm-sidebar-border);
-    --input: var(--adm-sidebar-border);
   }
 
   /* ── Left list ── */

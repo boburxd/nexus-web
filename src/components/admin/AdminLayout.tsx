@@ -155,6 +155,13 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
           --primary: var(--bs-primary);
           --primary-foreground: #ffffff;
           --ring: var(--adm-active-color);
+          /* Статусные цвета темнее на светлом фоне админки (≥ 5:1 на белом). */
+          --success: hsl(152, 60%, 28%);
+          --warning: hsl(32, 90%, 32%);
+          --destructive: hsl(0, 72%, 42%);
+          --adm-success: var(--success);
+          --adm-warn: var(--warning);
+          --adm-danger: var(--destructive);
         }
         @media (prefers-color-scheme: dark) {
           .adm-root {
@@ -169,6 +176,9 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
             --adm-content-bg:     hsl(220, 40%, 9%);
             --adm-card-bg:        hsl(219, 36%, 13%);
             --adm-name-color:     hsl(212, 22%, 80%);
+            --success: hsl(152, 50%, 55%);
+            --warning: hsl(38, 85%, 62%);
+            --destructive: hsl(0, 84%, 66%);
           }
         }
 

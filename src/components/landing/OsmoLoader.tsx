@@ -99,6 +99,8 @@ export function OsmoLoader({images, onAnimationEnd, canExit = false, onComplete}
             ref={loaderRef}
             className="fixed inset-0 z-[200] flex items-center justify-center overflow-hidden"
             style={{background: "var(--card-foreground)"}}
+            role="status"
+            aria-label="Загрузка"
         >
             {/* Outer clip — hides letters when they slide out */}
             <div className="overflow-hidden flex items-center justify-center select-none"

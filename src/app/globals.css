@@ -80,7 +80,7 @@
     --muted-foreground: #939aa0;
     --accent: hsl(218, 34%, 18%);
     --accent-foreground: #ffffff;
-    --destructive: #f01414;
+    --destructive: hsl(0, 84%, 66%);
     --success: hsl(152, 50%, 55%);
     --warning: hsl(38, 85%, 62%);
     --border: rgba(255, 255, 255, 0.15);
@@ -227,11 +227,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     color: rgba(255, 255, 255, 0.35);
 }
 
-.onb-phone input.PhoneInputInput:-webkit-autofill,
-.onb-phone input.PhoneInputInput:-webkit-autofill:hover,
-.onb-phone input.PhoneInputInput:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0 1000px rgba(28, 28, 32, 0.95) inset !important;
-    box-shadow: 0 0 0 1000px rgba(28, 28, 32, 0.95) inset !important;
+/* Закрашиваем жёлтый фон автозаполнения Chrome. :-webkit-autofill действует и в
+   состояниях hover/focus, отдельные селекторы для них не нужны. */
+.onb-phone input.PhoneInputInput:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px var(--card) inset !important;
+    box-shadow: 0 0 0 1000px var(--card) inset !important;
     border: none !important;
 }
 
@@ -286,8 +286,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     transform-origin: center center;
 }
 
+/* При «уменьшить движение» индикатор остаётся на месте статичной иконкой. */
 @media (prefers-reduced-motion: reduce) {
     .bx-spin {
-        animation-duration: 3.5s;
+        animation: none;
     }
 }

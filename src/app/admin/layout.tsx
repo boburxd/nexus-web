@@ -29,18 +29,6 @@ export default async function AdminLayout({children}: { children: ReactNode }) {
           --bs-link-color: hsl(212, 70%, 45%);
         }
 
-        /* Кнопки shadcn (Button) внутри админки берут нейтральные цвета из --adm-*,
-           чтобы outline/ghost/secondary читались и в светлой, и в тёмной теме. */
-        .adm-root [data-slot="button"] {
-          --background: var(--adm-content-bg);
-          --foreground: var(--adm-text);
-          --muted: var(--adm-hover-bg);
-          --secondary: var(--adm-active-bg);
-          --secondary-foreground: var(--adm-active-color);
-          --border: var(--adm-sidebar-border);
-          --input: var(--adm-sidebar-border);
-        }
-
         h1,h2,h3,h4,h5,h6,.card-title {
           font-family: 'PP Neue Montreal', var(--font-inter), 'Inter', sans-serif;
           font-weight: 500;

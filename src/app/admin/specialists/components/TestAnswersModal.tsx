@@ -82,7 +82,7 @@ export function TestAnswersModal({testModal, onClose}: Readonly<{
     return (
         <Modal open={!!testModal} onClose={onClose} maxWidth={620} className="dialog-surface">
             <div className="sp-modal-body" style={{padding: "16px 20px"}}>
-                <h5 className="sp-modal-title" style={{color: "#fff"}}>Квалификационный тест (по уровням)</h5>
+                <h5 className="sp-modal-title" style={{color: "var(--popover-foreground)"}}>Квалификационный тест (по уровням)</h5>
 
                 {attempts.length === 0 ? (
                     <div className="sp-modal-empty">

@@ -72,7 +72,7 @@ function ActiveDesignerContent({
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img className="ds-avatar" src={slide.avatar ?? undefined} alt={slide.name} decoding="async"/>
                 <div>
-                    <div className="ds-name">{slide.name}</div>
+                    <h2 className="ds-name">{slide.name}</h2>
                     {slide.levelTitle && <div className="ds-specialty"><LevelBadge slide={slide}/></div>}
                 </div>
             </div>
@@ -84,7 +84,10 @@ function ActiveDesignerContent({
             <div className="ds-meta" style={{marginBottom: 4}}>
                 <span>Реализовано {slide.sqm} м²</span>
             </div>
-            <Button type="button" size="lg" className="ds-see-more" onClick={onOpenProfile}>
+            <Button type="button" size="lg" className="ds-see-more" onClick={e => {
+                e.stopPropagation()
+                onOpenProfile()
+            }}>
                 Открыть профиль
             </Button>
         </>
@@ -176,30 +179,10 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                                 }}
                             />
                             <div className="ds-content">
-                                <div className="ds-designer-row">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img className="ds-avatar" src={activeSlide.avatar ?? undefined}
-                                         alt={activeSlide.name} decoding="async"/>
-                                    <div>
-                                        <div className="ds-name">{activeSlide.name}</div>
-                                        {activeSlide.levelTitle && (
-                                            <div className="ds-specialty"><LevelBadge slide={activeSlide}/></div>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="ds-meta">
-                                    <span>{activeSlide.experience} лет опыта</span>
-                                    {activeSlide.has3d && <span>3D</span>}
-                                    {activeSlide.hasRd && <span>РД</span>}
-                                </div>
-                                <div className="ds-meta" style={{marginBottom: 4}}>
-                                    <span>Реализовано {activeSlide.sqm} м²</span>
-                                </div>
-                                <Button size="lg" className="ds-see-more" onClick={e => {
-                                    e.stopPropagation();
-                                    setActiveDesigner(activeSlide)
-                                }}>Открыть профиль
-                                </Button>
+                                <ActiveDesignerContent
+                                    slide={activeSlide}
+                                    onOpenProfile={() => setActiveDesigner(activeSlide)}
+                                />
                             </div>
                         </div>
                     )}
@@ -313,19 +296,12 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
         }
 
         .ds-name {
+          margin: 0;
           font-size: clamp(1.4rem, 2.5vw, 2.8rem);
           font-weight: bold;
           line-height: 1.1;
-          text-transform: uppercase;
-          color: #fff;
-          text-shadow:
-            0 0 1px rgba(0, 0, 0, 0.95),
-            0 0 10px rgba(0, 0, 0, 0.55),
-            0 1px 3px rgba(0, 0, 0, 0.9),
-            -1px -1px 0 rgba(0, 0, 0, 0.75),
-            1px -1px 0 rgba(0, 0, 0, 0.75),
-            -1px 1px 0 rgba(0, 0, 0, 0.75),
-            1px 1px 0 rgba(0, 0, 0, 0.75);
+          color: var(--card-foreground);
+          text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
         }
 
         .ds-level {
@@ -384,7 +360,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           left: 0;
           right: 0;
           padding: 12px 14px;
-          background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+          background: rgba(0, 0, 0, 0.55);
           color: #fff;
           display: block;
         }
@@ -406,13 +382,11 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
         @keyframes ds-animate {
           from {
             opacity: 0;
-            transform: translate(0, 60px);
-            filter: blur(16px);
+            transform: translate(0, 8px);
           }
           to {
             opacity: 1;
             transform: translate(0);
-            filter: blur(0);
           }
         }
 

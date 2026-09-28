@@ -176,18 +176,8 @@ export function ClientsShell({children}: { children: ReactNode }) {
             </Modal>
 
             <style>{`
-        /* Кнопки shadcn (Button) внутри раздела берут цвета из --adm-*, чтобы читаться
-           и в светлой, и в тёмной теме админки. */
         .cl-wrap {
           display: flex; height: 100%; overflow: hidden;
-          --background: var(--adm-content-bg);
-          --foreground: var(--adm-text);
-          --muted: var(--adm-hover-bg);
-          --muted-foreground: var(--adm-muted);
-          --secondary: var(--adm-active-bg);
-          --secondary-foreground: var(--adm-active-color);
-          --border: var(--adm-sidebar-border);
-          --input: var(--adm-sidebar-border);
         }
 
         .cl-list {
