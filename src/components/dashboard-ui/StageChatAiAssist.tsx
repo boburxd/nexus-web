@@ -70,13 +70,13 @@ export function StageChatAiAssist({
                 style={{
                     display: "inline-flex",
                     alignItems: "center",
-                    gap: "0.45em",
-                    padding: "0.45em 0.95em",
+                    gap: "6px",
+                    padding: "6px 14px",
                     borderRadius: 8,
                     border: "1px solid var(--dash-accent-border, rgba(121,40,202,0.35))",
                     background: "var(--dash-accent-bg, rgba(121,40,202,0.08))",
                     color: "var(--dash-accent)",
-                    fontSize: "0.78rem",
+                    fontSize: "0.75rem",
                     fontWeight: 600,
                     cursor: "pointer",
                     fontFamily: "inherit",
@@ -98,13 +98,11 @@ export function StageChatAiAssist({
                         style={{
                             background: "var(--dash-surface)",
                             border: "1px solid var(--dash-border)",
-                            borderRadius: 100,
+                            borderRadius: 10,
                             color: "var(--dash-muted)",
-                            fontSize: "0.62rem",
+                            fontSize: "0.75rem",
                             fontWeight: 700,
-                            letterSpacing: "0.05em",
-                            padding: "0.2em 0.55em",
-                            textTransform: "uppercase",
+                            padding: "2px 6px",
                         }}
                     >
             черновик
@@ -119,7 +117,7 @@ export function StageChatAiAssist({
                         <div
                             style={{
                                 borderTop: "1px solid var(--dash-border)",
-                                padding: "0.85rem 1.25rem",
+                                padding: "14px 1.25rem",
                                 background: "var(--dash-surface2)",
                             }}
                         >
@@ -132,9 +130,9 @@ export function StageChatAiAssist({
                                     borderRadius: 8,
                                     color: "var(--dash-text2)",
                                     cursor: "pointer",
-                                    fontSize: "0.78rem",
+                                    fontSize: "0.75rem",
                                     fontFamily: "inherit",
-                                    padding: "0.55em 1em",
+                                    padding: "8px 14px",
                                     width: "100%",
                                 }}
                             >

@@ -4,6 +4,7 @@ import {toast} from "sonner"
 import type {Stage} from "../types"
 import {STAGE_LABEL} from "../types"
 import {confirmDialog} from "@/lib/dialog-store"
+import {Button} from "@/components/ui/button"
 
 export function StageExtraPaymentActions({
                                              stage,
@@ -18,14 +19,18 @@ export function StageExtraPaymentActions({
 
     return (
         <div style={{marginTop: 8, display: "flex", gap: 6, alignItems: "center"}}>
-            <button
+            <Button
+                type="button"
+                size="sm"
+                variant="outline"
                 onClick={() => onExtraPayment(stage.id, STAGE_LABEL[stage.type])}
                 disabled={acting !== null}
-                className="sp-btn sp-btn-ghost sp-btn-sm"
             >
                 Выставить счет
-            </button>
-            <button
+            </Button>
+            <Button
+                type="button"
+                size="sm"
                 onClick={async () => {
                     const ok = await confirmDialog({
                         title: "Разблокировать этап без оплаты? Специалист сможет продолжить работу.",
@@ -37,11 +42,9 @@ export function StageExtraPaymentActions({
                     else toast.error("Ошибка разблокировки")
                 }}
                 disabled={acting !== null}
-                className="sp-btn sp-btn-primary sp-btn-sm"
             >
                 Разблокировать вручную
-            </button>
+            </Button>
         </div>
     )
 }
-

@@ -3,6 +3,8 @@
 import {useState} from "react"
 import {isStagePaymentsDisabledPublic} from "@/lib/payments/flags"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
+import {Modal} from "@/components/ui/modal"
 
 interface QuickPaymentButtonProps {
     invoiceId: string
@@ -72,137 +74,51 @@ export function QuickPaymentButton({
 
     return (
         <>
-            <button
-                onClick={() => setShowConfirm(true)}
-                disabled={loading}
-                style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "0.5em",
-                    padding: "0.6em 1.2em",
-                    borderRadius: 6,
-                    border: "none",
-                    background: "#059669",
-                    color: "white",
-                    fontSize: "0.875rem",
-                    fontWeight: 600,
-                    cursor: loading ? "not-allowed" : "pointer",
-                    opacity: loading ? 0.7 : 1,
-                    transition: "background 0.2s ease",
-                    fontFamily: "inherit",
-                }}
-                onMouseEnter={(e) => {
-                    if (!loading) e.currentTarget.style.background = "#047857"
-                }}
-                onMouseLeave={(e) => {
-                    if (!loading) e.currentTarget.style.background = "#059669"
-                }}
-            >
-                <Icon name="credit-card" style={{fontSize: "1em"}}/>
-                <span>{loading ? "Обработка..." : skipPayments ? "Продолжить без оплаты" : "Оплатить картой"}</span>
-            </button>
+            <Button onClick={() => setShowConfirm(true)} disabled={loading}>
+                <Icon name="credit-card"/>
+                <span>{loading ? "Обработка…" : skipPayments ? "Продолжить без оплаты" : "Оплатить картой"}</span>
+            </Button>
 
             {/* Модальное окно подтверждения */}
-            {showConfirm && (
-                <div
-                    style={{
-                        position: "fixed",
-                        inset: 0,
-                        background: "rgba(0, 0, 0, 0.5)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        zIndex: 1000,
-                    }}
-                    onClick={() => !loading && setShowConfirm(false)}
-                >
+            <Modal open={showConfirm} onClose={() => !loading && setShowConfirm(false)} maxWidth={400} theme="dark">
+                <div style={{padding: 24}}>
+                    <h3 style={{margin: "0 0 12px", fontSize: 18, fontWeight: 700}}>
+                        Подтверждение платежа
+                    </h3>
+                    <p style={{margin: "0 0 16px", fontSize: 14, color: "var(--muted-foreground)"}}>
+                        {description || `Вы собираетесь оплатить счет за проект #${orderId}`}
+                    </p>
                     <div
                         style={{
-                            background: "white",
-                            borderRadius: 12,
-                            padding: "24px",
-                            maxWidth: "400px",
-                            width: "90%",
+                            background: "var(--muted)",
+                            borderRadius: 8,
+                            padding: "12px 16px",
+                            marginBottom: 20,
                         }}
-                        onClick={(e) => e.stopPropagation()}
                     >
-                        <h3 style={{margin: "0 0 12px", fontSize: "18px", fontWeight: 700, color: "#1f2937"}}>
-                            Подтверждение платежа
-                        </h3>
-                        <p style={{margin: "0 0 16px", fontSize: "14px", color: "#6b7280"}}>
-                            {description || `Вы собираетесь оплатить счет за проект #${orderId}`}
-                        </p>
-                        <div
-                            style={{
-                                background: "#f3f4f6",
-                                borderRadius: 8,
-                                padding: "12px 16px",
-                                marginBottom: "20px",
-                            }}
-                        >
-                            <div style={{fontSize: "12px", color: "#6b7280", marginBottom: "4px"}}>
-                                Сумма к оплате:
-                            </div>
-                            <div style={{fontSize: "24px", fontWeight: 700, color: "#1f2937"}}>
-                                {Math.round(amount / 1000)}k ₽
-                            </div>
+                        <div style={{fontSize: 12, color: "var(--muted-foreground)", marginBottom: 4}}>
+                            Сумма к оплате:
                         </div>
-                        <div style={{display: "flex", gap: "12px"}}>
-                            <button
-                                onClick={() => setShowConfirm(false)}
-                                disabled={loading}
-                                style={{
-                                    flex: 1,
-                                    padding: "10px 16px",
-                                    borderRadius: 6,
-                                    border: "1px solid #d1d5db",
-                                    background: "white",
-                                    color: "#374151",
-                                    fontSize: "14px",
-                                    fontWeight: 600,
-                                    cursor: loading ? "not-allowed" : "pointer",
-                                    transition: "background 0.2s ease",
-                                    fontFamily: "inherit",
-                                }}
-                                onMouseEnter={(e) => {
-                                    if (!loading) e.currentTarget.style.background = "#f9fafb"
-                                }}
-                                onMouseLeave={(e) => {
-                                    if (!loading) e.currentTarget.style.background = "white"
-                                }}
-                            >
-                                Отменить
-                            </button>
-                            <button
-                                onClick={handlePayment}
-                                disabled={loading}
-                                style={{
-                                    flex: 1,
-                                    padding: "10px 16px",
-                                    borderRadius: 6,
-                                    border: "none",
-                                    background: "#059669",
-                                    color: "white",
-                                    fontSize: "14px",
-                                    fontWeight: 600,
-                                    cursor: loading ? "not-allowed" : "pointer",
-                                    opacity: loading ? 0.7 : 1,
-                                    transition: "background 0.2s ease",
-                                    fontFamily: "inherit",
-                                }}
-                                onMouseEnter={(e) => {
-                                    if (!loading) e.currentTarget.style.background = "#047857"
-                                }}
-                                onMouseLeave={(e) => {
-                                    if (!loading) e.currentTarget.style.background = "#059669"
-                                }}
-                            >
-                                {loading ? "Обработка..." : "Оплатить"}
-                            </button>
+                        <div style={{fontSize: 24, fontWeight: 700}}>
+                            {Math.round(amount / 1000)}k ₽
                         </div>
                     </div>
+                    <div style={{display: "flex", gap: 12}}>
+                        <Button
+                            variant="outline"
+                            size="lg"
+                            className="flex-1"
+                            onClick={() => setShowConfirm(false)}
+                            disabled={loading}
+                        >
+                            Отменить
+                        </Button>
+                        <Button size="lg" className="flex-1" onClick={handlePayment} disabled={loading}>
+                            {loading ? "Обработка…" : "Оплатить"}
+                        </Button>
+                    </div>
                 </div>
-            )}
+            </Modal>
         </>
     )
 }

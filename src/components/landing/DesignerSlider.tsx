@@ -1,6 +1,7 @@
 "use client"
 
 import {useCallback, useEffect, useRef, useState} from "react"
+import {Button} from "@/components/ui/button"
 import {Icon} from "@/components/ui/icon"
 import {DesignerProfileModal, type DesignerSlide} from "./DesignerProfileModal"
 
@@ -83,9 +84,9 @@ function ActiveDesignerContent({
             <div className="ds-meta" style={{marginBottom: 4}}>
                 <span>Реализовано {slide.sqm} м²</span>
             </div>
-            <button type="button" className="ds-see-more" onClick={onOpenProfile}>
+            <Button type="button" size="lg" className="ds-see-more" onClick={onOpenProfile}>
                 Открыть профиль
-            </button>
+            </Button>
         </>
     )
 }
@@ -194,11 +195,11 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                                 <div className="ds-meta" style={{marginBottom: 4}}>
                                     <span>Реализовано {activeSlide.sqm} м²</span>
                                 </div>
-                                <button className="ds-see-more" onClick={e => {
+                                <Button size="lg" className="ds-see-more" onClick={e => {
                                     e.stopPropagation();
                                     setActiveDesigner(activeSlide)
                                 }}>Открыть профиль
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     )}
@@ -206,8 +207,10 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                     {previewSlides.length > 0 && (
                         <div className="ds-preview-rail" aria-label="Выбор специалиста">
                             {previewSlides.map(({slide: preview, index}) => (
-                                <button
+                                <Button
                                     type="button"
+                                    variant="ghost"
+                                    size="icon"
                                     key={`preview-${slideKey(preview, index)}`}
                                     className="ds-slide-item ds-slide-item--preview"
                                     style={preview.avatar ? {backgroundImage: `url('${preview.avatar}')`} : undefined}
@@ -217,7 +220,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                                     <div className="ds-card-label">
                                         <div className="ds-card-name">{preview.name}</div>
                                     </div>
-                                </button>
+                                </Button>
                             ))}
                         </div>
                     )}
@@ -234,12 +237,12 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                 )}
 
                 {slides.length > 1 && <div className="ds-nav">
-                    <button className="ds-btn ds-btn-prev" onClick={handlePrev} aria-label="Предыдущий дизайнер">
+                    <Button variant="secondary" size="icon-lg" onClick={handlePrev} aria-label="Предыдущий дизайнер">
                         <Icon name="left-arrow-alt" size={20}/>
-                    </button>
-                    <button className="ds-btn ds-btn-next" onClick={handleNext} aria-label="Следующий дизайнер">
+                    </Button>
+                    <Button variant="secondary" size="icon-lg" onClick={handleNext} aria-label="Следующий дизайнер">
                         <Icon name="right-arrow-alt" size={20}/>
-                    </button>
+                    </Button>
                 </div>}
 
             </div>
@@ -264,13 +267,10 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           position: absolute;
           top: 50%;
           transform: translate(0, -50%);
-          border-radius: 20px;
-          box-shadow: 0 30px 50px #505050;
-          background-color: #1a1818;
           background-size: cover;
           background-position: center top;
           display: inline-block;
-          transition: all 0.5s;
+          transition: box-shadow 0.3s ease-out;
           overflow: hidden;
         }
 
@@ -280,7 +280,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           inset: 0;
           background-size: cover;
           opacity: 0;
-          transition: opacity 0.5s;
+          transition: opacity 0.3s ease-out;
         }
 
         /* ── Контент активной карточки ── */
@@ -289,7 +289,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           bottom: 80px;
           left: 12vw;
           width: 34vw;
-          color: #eee;
+          color: var(--card-foreground);
           display: none;
           z-index: 2;
         }
@@ -300,7 +300,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           gap: 16px;
           margin-bottom: 12px;
           opacity: 0;
-          animation: ds-animate 1s ease-in-out 0s 1 forwards;
+          animation: ds-animate 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0s 1 forwards;
         }
 
         .ds-avatar {
@@ -330,12 +330,11 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
 
         .ds-level {
           display: inline-block;
-          margin-right: 0.5em;
-          padding: 0.15em 0.6em;
-          border-radius: 999px;
-          border: 1px solid rgba(255, 255, 255, 0.35);
+          margin-right: 8px;
+          padding: 2px 8px;
+          border-radius: 10px;
           background: rgba(255, 255, 255, 0.12);
-          font-size: 0.72em;
+          font-size: 0.75rem;
           font-weight: 600;
           letter-spacing: 0.02em;
           vertical-align: middle;
@@ -343,9 +342,8 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
         }
 
         .ds-level--elite {
-          border-color: rgba(212, 175, 55, 0.75);
-          background: rgba(212, 175, 55, 0.18);
-          color: #f0d98c;
+          background: color-mix(in oklab, var(--warning) 18%, transparent);
+          color: var(--warning);
         }
 
         .ds-specialty {
@@ -370,25 +368,13 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
             0 0 1px rgba(0, 0, 0, 0.85),
             0 1px 2px rgba(0, 0, 0, 0.75);
           opacity: 0;
-          animation: ds-animate 1s ease-in-out 0.3s 1 forwards;
+          animation: ds-animate 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.08s 1 forwards;
         }
 
         .ds-see-more {
-          padding: 10px 24px;
-          border: none;
-          cursor: pointer;
           opacity: 0;
-          border-radius: 10px;
-          background-color: rgba(255,255,255,0.7);
-          transition: all 0.3s;
-          animation: ds-animate 1s ease-in-out 0.6s 1 forwards;
-          font-size: 0.9rem;
-          font-weight: 500;
+          animation: ds-animate 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.16s 1 forwards;
           pointer-events: auto;
-        }
-
-        .ds-see-more:hover {
-          background-color: #fff;
         }
 
         /* ── Подпись на маленькой карточке ── */
@@ -404,7 +390,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
         }
 
         .ds-card-name {
-          font-size: 0.85rem;
+          font-size: 0.875rem;
           font-weight: 600;
           white-space: nowrap;
           overflow: hidden;
@@ -442,40 +428,6 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           z-index: 10;
         }
 
-        .ds-btn {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 52px;
-          height: 46px;
-          border-radius: 12px;
-          cursor: pointer;
-          border: none;
-          transition: 0.3s;
-          background: rgba(255,255,255,0.85);
-          backdrop-filter: blur(8px);
-          box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-          pointer-events: auto;
-          color: #201d1d;
-        }
-
-        .ds-btn:hover {
-          background: #fff;
-          transform: scale(1.1);
-          box-shadow: 0 6px 24px rgba(0,0,0,0.3);
-        }
-
-        .ds-btn:focus {
-          transform: scale(1.1);
-          background: #ffffff;
-          outline: none;
-        }
-
-        .ds-btn:active {
-          transform: scale(1.02);
-        }
-
-
         /* Explicit state-driven layout: one active specialist + up to three previews. */
         .ds-slide .ds-slide-item--active {
           top: 0;
@@ -483,9 +435,9 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           width: 100%;
           height: 100%;
           transform: none;
-          border-radius: 0;
+          background-color: var(--card);
           cursor: grab;
-          animation: ds-active-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+          animation: ds-active-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
         .ds-slide .ds-slide-item--active .ds-work-layer {
@@ -514,12 +466,8 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           height: auto;
           aspect-ratio: 1 / 1;
           transform: translateY(-50%);
-          border-radius: 22%;
           background-position: center;
           cursor: pointer;
-          appearance: none;
-          padding: 0;
-          border: 0;
           text-align: left;
           z-index: 4;
         }
@@ -527,8 +475,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
         .ds-slide .ds-slide-item--preview .ds-card-label { display: block; }
 
         .ds-slide .ds-slide-item--preview:hover {
-          transform: translateY(-53%);
-          box-shadow: 0 40px 60px #303030;
+          box-shadow: 0 40px 60px rgba(0, 0, 0, 0.5);
         }
 
         .ds-preview-rail {
@@ -554,15 +501,11 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           width: clamp(120px, 12vw, 220px);
           transform: none;
           margin: 0;
-          animation: ds-preview-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+          animation: ds-preview-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
         .ds-slide .ds-preview-rail .ds-slide-item--preview:nth-child(2) {
           animation-delay: 0.08s;
-        }
-
-        .ds-slide .ds-preview-rail .ds-slide-item--preview:hover {
-          transform: translateY(-3%);
         }
 
         /* Больше одной карточки в очереди — первую в DOM (row-reverse кладёт её крайней у правого края экрана)
@@ -570,7 +513,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
            следом на тот же шаг (8%), чтобы зазоры между всеми карточками остались одинаковыми — при gap:0
            зазор между соседями равен разнице их translate, поэтому весь ряд шагает синхронно. CSS-свойство
            translate отдельное от transform, поэтому не перетирается анимацией ds-preview-in (она анимирует
-           именно transform) и складывается с ней и с hover. */
+           именно transform) и складывается с ней. */
         .ds-slide .ds-preview-rail .ds-slide-item--preview:not(:only-child):nth-child(1) {
           translate: 50% 0;
         }
@@ -632,7 +575,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
             left: 20px;
             right: 56px;
             pointer-events: none;
-            color: #eee;
+            color: var(--card-foreground);
           }
 
           .ds-active-overlay .ds-see-more {
@@ -644,13 +587,13 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           }
 
           .ds-active-overlay .ds-specialty {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
           }
 
           .ds-active-overlay .ds-meta {
             flex-wrap: wrap;
             gap: 10px 16px;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
           }
         }
       `}</style>

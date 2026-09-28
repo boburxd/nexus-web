@@ -7,6 +7,7 @@ import {QUIZ_QUESTIONS} from "@/lib/onboarding/regulations-questions"
 import {ONBOARDING_TABLE_STEP_TYPES, STEP_STATUS_RU, STEP_TYPE_RU} from "../constants"
 import type {RawSpecialist} from "../../../types"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 type OnboardingStepRow = NonNullable<RawSpecialist["specialistProfile"]>["steps"][number]
 
@@ -114,14 +115,14 @@ export function OnboardingStepsTableCard({
                                         <div className="sp-onb-item__title">{STEP_TYPE_RU[t] ?? t}</div>
                                         <div style={{display: "flex", alignItems: "center", gap: 8}}>
                                             {(t === "FORM" || t === "TEST" || t === "REGULATIONS_READ" || t === "REGULATIONS") && (
-                                                <button
+                                                <Button
                                                     type="button"
-                                                    className="sp-btn sp-btn-ghost"
-                                                    style={{padding: "2px 8px", fontSize: "0.68rem"}}
+                                                    variant="outline"
+                                                    size="xs"
                                                     onClick={() => setViewStep(t)}
                                                 >
                                                     Просмотр
-                                                </button>
+                                                </Button>
                                             )}
                                             <span className={`sp-onb-item__status ${statusClass}`}>{statusLabel}</span>
                                         </div>
@@ -136,8 +137,8 @@ export function OnboardingStepsTableCard({
                     })}
                 </div>
             </div>
-            <Modal open={!!viewStep} onClose={() => setViewStep(null)} maxWidth={640}>
-                <div className="sp-modal-body" style={{padding: "16px 18px"}}>
+            <Modal open={!!viewStep} onClose={() => setViewStep(null)} maxWidth={640} className="dialog-surface">
+                <div className="sp-modal-body" style={{padding: "16px 20px"}}>
                     <h5 className="sp-modal-title" style={{marginBottom: 12}}>
                         {viewStep === "FORM"
                             ? "Анкета специалиста"
@@ -154,17 +155,17 @@ export function OnboardingStepsTableCard({
                                 .filter(([, v]) => String(v ?? "").trim() !== "")
                                 .map(([k, v]) => (
                                     <div key={k} style={{
-                                        fontSize: "0.8rem",
+                                        fontSize: "0.75rem",
                                         lineHeight: 1.45,
                                         borderBottom: "1px solid var(--adm-sidebar-border)",
-                                        paddingBottom: 5
+                                        paddingBottom: 4
                                     }}>
                                         <span style={{color: "var(--adm-muted)"}}>{FORM_LABELS[k] ?? k}:</span>{" "}
                                         <span style={{color: "var(--adm-text)"}}>{formatFormValue(k, String(v))}</span>
                                     </div>
                                 ))}
                             {!formData || Object.values(formData).every((v) => !String(v ?? "").trim()) ? (
-                                <div style={{fontSize: "0.8rem", color: "var(--adm-muted)"}}>Анкета не заполнена.</div>
+                                <div style={{fontSize: "0.75rem", color: "var(--adm-muted)"}}>Анкета не заполнена.</div>
                             ) : null}
                         </div>
                     )}
@@ -195,7 +196,7 @@ export function OnboardingStepsTableCard({
                         })()
                         const answersCount = Object.keys(parsed.answers).length
                         return (
-                            <div style={{display: "grid", gap: 8, fontSize: "0.8rem"}}>
+                            <div style={{display: "grid", gap: 8, fontSize: "0.75rem"}}>
                                 <div><span
                                     style={{color: "var(--adm-muted)"}}>Статус:</span> {testStep ? (STEP_STATUS_RU[testStep.status] ?? testStep.status) : "Нет записи"}
                                 </div>
@@ -222,7 +223,7 @@ export function OnboardingStepsTableCard({
                                     }}>
                                         {attempts.map((a, i) => (
                                             <div key={`${a.finishedAt ?? i}-${i}`} style={{
-                                                padding: "5px 0",
+                                                padding: "4px 0",
                                                 borderBottom: i < attempts.length - 1 ? "1px solid var(--adm-sidebar-border)" : "none"
                                             }}>
                                                 #{i + 1} · {a.level ?? "уровень"} · {a.percent ?? 0}%
@@ -236,7 +237,7 @@ export function OnboardingStepsTableCard({
                     })()}
 
                     {viewStep === "REGULATIONS_READ" && (
-                        <div style={{display: "grid", gap: 8, fontSize: "0.8rem"}}>
+                        <div style={{display: "grid", gap: 8, fontSize: "0.75rem"}}>
                             <div>
                                 <span style={{color: "var(--adm-muted)"}}>Статус:</span>{" "}
                                 {regulationsReadStep ? (STEP_STATUS_RU[regulationsReadStep.status] ?? regulationsReadStep.status) : "Нет записи"}
@@ -263,7 +264,7 @@ export function OnboardingStepsTableCard({
                         }
 
                         if (!quizResult) return (
-                            <div style={{display: "grid", gap: 8, fontSize: "0.8rem"}}>
+                            <div style={{display: "grid", gap: 8, fontSize: "0.75rem"}}>
                                 <div><span
                                     style={{color: "var(--adm-muted)"}}>Статус:</span> {regulationsStep ? (STEP_STATUS_RU[regulationsStep.status] ?? regulationsStep.status) : "Нет записи"}
                                 </div>
@@ -273,12 +274,12 @@ export function OnboardingStepsTableCard({
 
                         const {score, total, pct, passed, sectionScores: ss, answers, finishedAt} = quizResult
                         return (
-                            <div style={{display: "grid", gap: 10, fontSize: "0.8rem"}}>
+                            <div style={{display: "grid", gap: 10, fontSize: "0.75rem"}}>
                                 <div style={{display: "flex", gap: 16, flexWrap: "wrap"}}>
                                     <div><span style={{color: "var(--adm-muted)"}}>Результат:</span>
                                         <strong>{score}/{total} ({pct}%)</strong></div>
                                     <div><span style={{color: "var(--adm-muted)"}}>Итог:</span> <span style={{
-                                        color: passed ? "var(--adm-success, #28c76f)" : "var(--adm-danger, #ea5455)",
+                                        color: passed ? "var(--bs-success)" : "var(--bs-danger)",
                                         fontWeight: 600
                                     }}>{passed ? "Пройдено" : "Не пройдено"}</span></div>
                                     {finishedAt && <div><span
@@ -302,13 +303,13 @@ export function OnboardingStepsTableCard({
                                                 <div key={sec} style={{
                                                     display: "flex",
                                                     justifyContent: "space-between",
-                                                    padding: "3px 0",
+                                                    padding: "4px 0",
                                                     borderBottom: "1px solid var(--adm-sidebar-border)"
                                                 }}>
                                                     <span style={{color: "var(--adm-muted)"}}>{short}</span>
                                                     <span style={{
                                                         fontWeight: 600,
-                                                        color: sp < 50 ? "var(--adm-danger, #ea5455)" : "var(--adm-success, #28c76f)"
+                                                        color: sp < 50 ? "var(--bs-danger)" : "var(--bs-success)"
                                                     }}>{v.correct}/{v.total}</span>
                                                 </div>
                                             )
@@ -343,7 +344,7 @@ export function OnboardingStepsTableCard({
                                                         marginBottom: 2
                                                     }}>{idx + 1}. {q.text}</div>
                                                     <div style={{
-                                                        color: isCorrect ? "var(--adm-success, #28c76f)" : "var(--adm-danger, #ea5455)",
+                                                        color: isCorrect ? "var(--bs-success)" : "var(--bs-danger)",
                                                         fontSize: "0.75rem"
                                                     }}>
                                                         {isCorrect ? "✓" : "✗"} {q.options[picked] ?? "—"}
@@ -362,10 +363,9 @@ export function OnboardingStepsTableCard({
                     })()}
 
                     <div className="sp-modal-footer" style={{marginTop: 14}}>
-                        <button className="sp-btn sp-btn-ghost" onClick={() => setViewStep(null)}
-                                style={{marginLeft: "auto"}}>
+                        <Button type="button" variant="outline" className="ml-auto" onClick={() => setViewStep(null)}>
                             Закрыть
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </Modal>

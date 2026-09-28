@@ -36,7 +36,7 @@ export function LandingUploaderStyles() {
       .landing-up-card__title-row { display: flex; align-items: center; gap: 6px; margin-bottom: 2px; }
       .landing-up-card__title-icon { color: #5b4fcf; font-size: 0.95rem; }
       .landing-up-card__title { font-size: 0.84rem; font-weight: 600; margin: 0; }
-      .landing-up-card__sub { font-size: 0.7rem; color: var(--dash-muted, #888); margin: 0; }
+      .landing-up-card__sub { font-size: 0.7rem; color: var(--dash-muted, var(--muted-foreground)); margin: 0; }
       .landing-up-media-row { display: flex; gap: 10px; align-items: flex-end; }
       .landing-up-media-preview {
         width: 92px; height: 136px; border-radius: 10px; overflow: hidden; cursor: pointer;
@@ -94,7 +94,7 @@ export function LandingUploaderStyles() {
       .landing-up-pos__title { font-size: 0.78rem; font-weight: 600; margin: 0; }
       .landing-up-pos__sub {
         font-size: 0.68rem; line-height: 1.4; margin: 1px 0 0;
-        color: var(--dash-muted, #888);
+        color: var(--dash-muted, var(--muted-foreground));
       }
 
       /* Рамка = вьюпорт браузера на главной (16:9). Фото внутри — 120% размера рамки
@@ -106,7 +106,7 @@ export function LandingUploaderStyles() {
         border: 1px solid rgba(255,255,255,0.18);
         background-color: rgba(91,79,207,0.1);
         background-repeat: no-repeat;
-        color: var(--dash-muted, #888); font-size: 1.4rem;
+        color: var(--dash-muted, var(--muted-foreground)); font-size: 1.4rem;
         cursor: grab;
         touch-action: none;
         user-select: none;

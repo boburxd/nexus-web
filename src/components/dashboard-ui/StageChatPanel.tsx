@@ -191,7 +191,7 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
                 flexDirection: "column",
                 background: "var(--dash-surface)",
                 border: inDrawer ? "none" : "1px solid var(--dash-border)",
-                borderRadius: inDrawer ? 0 : 12,
+                borderRadius: inDrawer ? 0 : 14,
                 overflow: "hidden",
                 ...(inDrawer
                     ? {
@@ -215,7 +215,7 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
                         padding: "10px 14px",
                         borderBottom: "1px solid var(--dash-border)",
                         fontWeight: 600,
-                        fontSize: "0.82rem",
+                        fontSize: "0.875rem",
                         color: "var(--dash-text)",
                         display: "flex",
                         alignItems: "center",
@@ -231,7 +231,7 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
             <p style={{
                 margin: 0,
                 padding: inDrawer ? "10px 14px 0" : "8px 14px 0",
-                fontSize: "0.72rem",
+                fontSize: "0.75rem",
                 color: "var(--dash-muted)",
                 lineHeight: 1.45,
                 flexShrink: 0
@@ -255,9 +255,9 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
                 }}
             >
                 {loading ? (
-                    <span style={{fontSize: "0.78rem", color: "var(--dash-muted)"}}>Загрузка…</span>
+                    <span style={{fontSize: "0.75rem", color: "var(--dash-muted)"}}>Загрузка…</span>
                 ) : messages.length === 0 ? (
-                    <span style={{fontSize: "0.78rem", color: "var(--dash-muted)"}}>Пока нет сообщений — напишите первым.</span>
+                    <span style={{fontSize: "0.75rem", color: "var(--dash-muted)"}}>Пока нет сообщений. Напишите первым.</span>
                 ) : (
                     messages.map(m => {
                         const mine = viewerId != null && m.sender.id === viewerId
@@ -267,13 +267,13 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
                                 style={{
                                     alignSelf: mine ? "flex-end" : "flex-start",
                                     maxWidth: "92%",
-                                    padding: "8px 11px",
+                                    padding: "8px 12px",
                                     borderRadius: 10,
                                     background: mine ? "var(--dash-accent-bg)" : "var(--dash-surface2)",
                                     border: `1px solid ${mine ? "var(--dash-accent-border)" : "var(--dash-border)"}`,
                                 }}
                             >
-                                <div style={{fontSize: "0.65rem", color: "var(--dash-muted)", marginBottom: 4}}>
+                                <div style={{fontSize: "0.75rem", color: "var(--dash-muted)", marginBottom: 4}}>
                                     {labelFor(m)}
                                     <span style={{marginLeft: 8, opacity: 0.85}}>
                     {new Date(m.createdAt).toLocaleString("ru-RU", {
@@ -285,7 +285,7 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
                   </span>
                                 </div>
                                 <div style={{
-                                    fontSize: "0.82rem",
+                                    fontSize: "0.875rem",
                                     color: "var(--dash-text)",
                                     whiteSpace: "pre-wrap",
                                     wordBreak: "break-word"
@@ -300,7 +300,7 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
             </div>
 
             {error && (
-                <div style={{padding: "0 12px", fontSize: "0.72rem", color: "var(--dash-danger)"}}>{error}</div>
+                <div style={{padding: "0 12px", fontSize: "0.75rem", color: "var(--dash-danger)"}}>{error}</div>
             )}
 
             <div
@@ -340,7 +340,7 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
                 background: "var(--dash-bg)",
                 color: "var(--dash-text)",
                 fontFamily: "inherit",
-                fontSize: "0.82rem",
+                fontSize: "0.875rem",
             }}
             onKeyDown={e => {
                 if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
@@ -372,7 +372,7 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
                             justifyContent: "center",
                         }}
                     >
-                        <Icon name={sending ? "loader-alt" : "send"} className={sending ? "bx-spin" : undefined} style={{fontSize: "1.15rem"}} aria-hidden/>
+                        <Icon name={sending ? "loader-alt" : "send"} className={sending ? "bx-spin" : undefined} style={{fontSize: "1.125rem"}} aria-hidden/>
                     </button>
                 </div>
                 {viewerRole === "CLIENT" && aiAssist ? (

@@ -1,5 +1,7 @@
 "use client"
 
+import {Button} from "@/components/ui/button"
+import {Icon} from "@/components/ui/icon"
 import {Modal} from "@/components/ui/modal"
 
 interface WorkViewerModalProps {
@@ -21,26 +23,9 @@ export function WorkViewerModal({
                                     onPrev,
                                     onNext,
                                 }: WorkViewerModalProps) {
-    const navBtnStyle = {
-        position: "absolute" as const,
-        top: "50%",
-        transform: "translateY(-50%)",
-        width: 42,
-        height: 42,
-        borderRadius: "50%",
-        background: "rgba(0,0,0,0.45)",
-        border: "1px solid rgba(255,255,255,0.15)",
-        color: "#fff",
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "1.25rem",
-    }
-
     return (
         <Modal open={open} onClose={onClose} maxWidth={1100} theme="dark">
-            <div style={{position: "relative", background: "#0b0b10"}}>
+            <div style={{position: "relative", background: "var(--card)"}}>
                 <div style={{
                     display: "flex",
                     alignItems: "center",
@@ -48,25 +33,12 @@ export function WorkViewerModal({
                     padding: "12px 14px",
                     borderBottom: "1px solid rgba(255,255,255,0.08)"
                 }}>
-                    <div style={{color: "rgba(255,255,255,0.65)", fontSize: "0.85rem"}}>
+                    <div style={{color: "rgba(255,255,255,0.65)", fontSize: "0.875rem"}}>
                         Работа {activeIndex + 1} / {works.length}
                     </div>
-                    <button
-                        type="button"
-                        onClick={onClose}
-                        style={{
-                            background: "rgba(255,255,255,0.08)",
-                            border: "1px solid rgba(255,255,255,0.12)",
-                            borderRadius: 8,
-                            color: "rgba(255,255,255,0.7)",
-                            cursor: "pointer",
-                            fontSize: "0.9rem",
-                            padding: "0.3em 0.6em",
-                            lineHeight: 1,
-                        }}
-                    >
-                        ✕
-                    </button>
+                    <Button type="button" variant="secondary" size="icon-sm" onClick={onClose} aria-label="Закрыть">
+                        <Icon name="x"/>
+                    </Button>
                 </div>
 
                 <div style={{
@@ -94,14 +66,18 @@ export function WorkViewerModal({
 
                     {works.length > 1 && (
                         <>
-                            <button type="button" aria-label="Предыдущая работа" onClick={onPrev}
-                                    style={{...navBtnStyle, left: 10}}>
-                                ‹
-                            </button>
-                            <button type="button" aria-label="Следующая работа" onClick={onNext}
-                                    style={{...navBtnStyle, right: 10}}>
-                                ›
-                            </button>
+                            <div className="absolute top-1/2 left-2.5 -translate-y-1/2">
+                                <Button type="button" variant="secondary" size="icon-lg" aria-label="Предыдущая работа"
+                                        onClick={onPrev}>
+                                    <Icon name="chevron-left"/>
+                                </Button>
+                            </div>
+                            <div className="absolute top-1/2 right-2.5 -translate-y-1/2">
+                                <Button type="button" variant="secondary" size="icon-lg" aria-label="Следующая работа"
+                                        onClick={onNext}>
+                                    <Icon name="chevron-right"/>
+                                </Button>
+                            </div>
                         </>
                     )}
                 </div>

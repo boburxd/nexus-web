@@ -72,14 +72,14 @@ export function SettingsCol1({
                             </div>
                             <div style={{flex: 1}}>
                                 <span style={{
-                                    color: done ? "var(--dash-text)" : failed ? "var(--dash-danger, #ea5455)" : "var(--dash-muted)",
+                                    color: done ? "var(--dash-text)" : failed ? "var(--dash-danger, var(--destructive))" : "var(--dash-muted)",
                                     fontSize: 13
                                 }}>{step.label}</span>
                                 {failed && stepData?.comment && (
                                     <p style={{
                                         margin: "4px 0 0",
                                         fontSize: "0.75rem",
-                                        color: "var(--dash-danger, #ea5455)",
+                                        color: "var(--dash-danger, var(--destructive))",
                                         lineHeight: 1.4
                                     }}>
                                         <Icon name="error-circle"

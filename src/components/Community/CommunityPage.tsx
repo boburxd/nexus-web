@@ -164,30 +164,27 @@ export default function CommunityPage({
                             {/* Верификация */}
                             <div style={{
                                 padding: "14px 16px",
-                                borderRadius: 12,
-                                background: "rgba(255,255,255,0.03)",
-                                border: "1px solid var(--dash-border2)",
+                                borderRadius: 14,
+                                background: "var(--dash-surface2)",
                                 display: "flex",
                                 flexDirection: "column",
                                 justifyContent: "space-between"
                             }}>
                                 <div style={{
-                                    fontSize: 10,
+                                    fontSize: 12,
                                     fontWeight: 600,
-                                    textTransform: "uppercase",
-                                    letterSpacing: "0.07em",
                                     color: "var(--dash-muted)",
                                     marginBottom: 8
                                 }}>Верификация
                                 </div>
-                                <div style={{display: "flex", gap: 3, marginBottom: 6}}>
+                                <div style={{display: "flex", gap: 4, marginBottom: 6}}>
                                     {ONBOARDING_STEPS.map(step => {
                                         const done = onboardingSteps.some(s => s.type === step.key && s.status === "PASSED")
                                         return <div key={step.key} style={{
                                             flex: 1,
                                             height: 5,
-                                            borderRadius: 3,
-                                            background: done ? "linear-gradient(to right, hsl(247,72%,62%), hsl(282,72%,52%))" : "var(--dash-border)"
+                                            borderRadius: 4,
+                                            background: done ? "var(--dash-accent)" : "var(--dash-border)"
                                         }}/>
                                     })}
                                 </div>
@@ -201,18 +198,15 @@ export default function CommunityPage({
                             {/* Квалификация */}
                             <div style={{
                                 padding: "14px 16px",
-                                borderRadius: 12,
-                                background: specialistLevel ? "rgba(52,211,153,0.05)" : "rgba(255,255,255,0.03)",
-                                border: `1px solid ${specialistLevel ? "rgba(52,211,153,0.2)" : "var(--dash-border2)"}`,
+                                borderRadius: 14,
+                                background: specialistLevel ? "var(--dash-success-bg)" : "var(--dash-surface2)",
                                 display: "flex",
                                 flexDirection: "column",
                                 justifyContent: "space-between"
                             }}>
                                 <div style={{
-                                    fontSize: 10,
+                                    fontSize: 12,
                                     fontWeight: 600,
-                                    textTransform: "uppercase",
-                                    letterSpacing: "0.07em",
                                     color: "var(--dash-muted)",
                                     marginBottom: 8
                                 }}>Квалификация
@@ -220,10 +214,10 @@ export default function CommunityPage({
                                 <div style={{
                                     fontSize: 18,
                                     fontWeight: 700,
-                                    color: specialistLevel ? "#6ee7b7" : "var(--dash-muted)"
+                                    color: specialistLevel ? "var(--dash-success)" : "var(--dash-muted)"
                                 }}>{specialistLevel ?? "—"}</div>
                                 <div style={{
-                                    fontSize: 11,
+                                    fontSize: 12,
                                     color: "var(--dash-muted)",
                                     marginTop: 4
                                 }}>Тест: {testScoreText}</div>
@@ -232,18 +226,15 @@ export default function CommunityPage({
                             {/* Проекты */}
                             <div style={{
                                 padding: "14px 16px",
-                                borderRadius: 12,
-                                background: "rgba(255,255,255,0.03)",
-                                border: "1px solid var(--dash-border2)",
+                                borderRadius: 14,
+                                background: "var(--dash-surface2)",
                                 display: "flex",
                                 flexDirection: "column",
                                 justifyContent: "space-between"
                             }}>
                                 <div style={{
-                                    fontSize: 10,
+                                    fontSize: 12,
                                     fontWeight: 600,
-                                    textTransform: "uppercase",
-                                    letterSpacing: "0.07em",
                                     color: "var(--dash-muted)",
                                     marginBottom: 8
                                 }}>Проекты
@@ -254,7 +245,7 @@ export default function CommunityPage({
                                     color: "var(--dash-text)"
                                 }}>{doneOrdersCount}</div>
                                 <div style={{
-                                    fontSize: 11,
+                                    fontSize: 12,
                                     color: "var(--dash-muted)",
                                     marginTop: 4
                                 }}>завершено{totalEarned > 0 ? ` · ${(totalEarned / 100).toLocaleString("ru-RU")} ₽` : ""}</div>
@@ -263,18 +254,15 @@ export default function CommunityPage({
                             {/* Лендинг */}
                             <div style={{
                                 padding: "14px 16px",
-                                borderRadius: 12,
-                                background: featuredOnLanding ? "rgba(52,211,153,0.05)" : "rgba(255,255,255,0.03)",
-                                border: `1px solid ${featuredOnLanding ? "rgba(52,211,153,0.2)" : "var(--dash-border2)"}`,
+                                borderRadius: 14,
+                                background: featuredOnLanding ? "var(--dash-success-bg)" : "var(--dash-surface2)",
                                 display: "flex",
                                 flexDirection: "column",
                                 justifyContent: "space-between"
                             }}>
                                 <div style={{
-                                    fontSize: 10,
+                                    fontSize: 12,
                                     fontWeight: 600,
-                                    textTransform: "uppercase",
-                                    letterSpacing: "0.07em",
                                     color: "var(--dash-muted)",
                                     marginBottom: 8
                                 }}>Лендинг
@@ -282,9 +270,9 @@ export default function CommunityPage({
                                 <div style={{
                                     fontSize: 18,
                                     fontWeight: 700,
-                                    color: featuredOnLanding ? "#6ee7b7" : "var(--dash-muted)"
+                                    color: featuredOnLanding ? "var(--dash-success)" : "var(--dash-muted)"
                                 }}>{featuredOnLanding ? "Активен" : "Скрыт"}</div>
-                                <div style={{fontSize: 11, color: "var(--dash-muted)", marginTop: 4}}>публичный
+                                <div style={{fontSize: 12, color: "var(--dash-muted)", marginTop: 4}}>публичный
                                     профиль
                                 </div>
                             </div>

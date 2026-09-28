@@ -42,14 +42,12 @@ export function StageSummaryCards({
                 style={{
                     padding: "10px 12px",
                     borderRadius: 8,
-                    border: "1px solid var(--adm-sidebar-border)",
-                    background: "rgba(255,255,255,0.03)",
+                    background: "color-mix(in oklab, var(--adm-text) 4%, transparent)",
                 }}
             >
                 <div style={{
-                    fontSize: "0.65rem",
+                    fontSize: "0.75rem",
                     color: "var(--adm-muted)",
-                    textTransform: "uppercase",
                     marginBottom: 8
                 }}>
                     Сводка по этапу
@@ -59,7 +57,7 @@ export function StageSummaryCards({
                         display: "grid",
                         gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
                         gap: "8px 16px",
-                        fontSize: "0.78rem",
+                        fontSize: "0.75rem",
                         color: "var(--adm-text)",
                     }}
                 >
@@ -144,15 +142,13 @@ export function StageSummaryCards({
                     style={{
                         padding: "8px 10px",
                         borderRadius: 8,
-                        border: "1px solid var(--adm-sidebar-border)",
-                        background: "rgba(255,255,255,0.02)",
+                        background: "color-mix(in oklab, var(--adm-text) 3%, transparent)",
                     }}
                 >
                     <div style={{
-                        fontSize: "0.65rem",
+                        fontSize: "0.75rem",
                         color: "var(--adm-muted)",
-                        textTransform: "uppercase",
-                        marginBottom: 6
+                            marginBottom: 6
                     }}>
                         История решений ({reviewsNewestFirst.length})
                     </div>
@@ -166,7 +162,7 @@ export function StageSummaryCards({
                         }}
                     >
                         {reviewsNewestFirst.map((r) => (
-                            <div key={r.id} style={{fontSize: "0.78rem", color: "var(--adm-text)"}}>
+                            <div key={r.id} style={{fontSize: "0.75rem", color: "var(--adm-text)"}}>
                                 <span style={{fontWeight: 600}}>{formatReviewLabel(r)}</span>
                                 <span style={{color: "var(--adm-muted)"}}> · {formatStageDt(r.createdAt)}</span>
                                 {r.comment ? (

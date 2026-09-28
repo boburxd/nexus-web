@@ -320,7 +320,7 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                 flexDirection: "column",
                 background: "var(--dash-surface)",
                 border: inDrawer ? "none" : "1px solid var(--dash-border)",
-                borderRadius: inDrawer ? 0 : 12,
+                borderRadius: inDrawer ? 0 : 14,
                 overflow: "hidden",
                 ...(inDrawer
                     ? {flex: 1, minHeight: 0, maxHeight: "100%", width: "100%", alignSelf: "stretch", height: "100%"}
@@ -337,7 +337,7 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                         padding: "10px 14px",
                         borderBottom: "1px solid var(--dash-border)",
                         fontWeight: 600,
-                        fontSize: "0.82rem",
+                        fontSize: "0.875rem",
                         color: "var(--dash-text)",
                         display: "flex",
                         alignItems: "center",
@@ -381,12 +381,12 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                                         alignItems: "center",
                                         gap: 8,
                                         padding: "6px 10px",
-                                        borderRadius: 999,
+                                        borderRadius: 14,
                                         border: `1px solid ${active ? "var(--dash-accent-border)" : "var(--dash-border)"}`,
                                         background: active ? "var(--dash-accent-bg)" : "var(--dash-surface2)",
                                         color: active ? "var(--dash-accent)" : "var(--dash-text2)",
                                         cursor: "pointer",
-                                        fontSize: "0.78rem",
+                                        fontSize: "0.75rem",
                                         fontWeight: 700,
                                         fontFamily: "inherit",
                                     }}
@@ -398,10 +398,10 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                                                 minWidth: 18,
                                                 height: 18,
                                                 padding: "0 6px",
-                                                borderRadius: 999,
+                                                borderRadius: 10,
                                                 background: "rgba(239,68,68,0.95)",
                                                 color: "#fff",
-                                                fontSize: "0.68rem",
+                                                fontSize: "0.75rem",
                                                 fontWeight: 800,
                                                 lineHeight: "18px",
                                             }}
@@ -421,7 +421,7 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                 style={{
                     margin: 0,
                     padding: inDrawer ? "10px 14px 0" : "8px 14px 0",
-                    fontSize: "0.72rem",
+                    fontSize: "0.75rem",
                     color: "var(--dash-muted)",
                     lineHeight: 1.45,
                     flexShrink: 0,
@@ -446,9 +446,9 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                 }}
             >
                 {loading ? (
-                    <span style={{fontSize: "0.78rem", color: "var(--dash-muted)"}}>Загрузка…</span>
+                    <span style={{fontSize: "0.75rem", color: "var(--dash-muted)"}}>Загрузка…</span>
                 ) : messages.length === 0 ? (
-                    <span style={{fontSize: "0.78rem", color: "var(--dash-muted)"}}>Пока нет сообщений — напишите первым.</span>
+                    <span style={{fontSize: "0.75rem", color: "var(--dash-muted)"}}>Пока нет сообщений. Напишите первым.</span>
                 ) : (
                     messages.map((m) => {
                         const mine = viewerId != null && m.sender.id === viewerId
@@ -458,13 +458,13 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                                 style={{
                                     alignSelf: mine ? "flex-end" : "flex-start",
                                     maxWidth: "92%",
-                                    padding: "8px 11px",
+                                    padding: "8px 12px",
                                     borderRadius: 10,
                                     background: mine ? "var(--dash-accent-bg)" : "var(--dash-surface2)",
                                     border: `1px solid ${mine ? "var(--dash-accent-border)" : "var(--dash-border)"}`,
                                 }}
                             >
-                                <div style={{fontSize: "0.65rem", color: "var(--dash-muted)", marginBottom: 4}}>
+                                <div style={{fontSize: "0.75rem", color: "var(--dash-muted)", marginBottom: 4}}>
                                     {labelFor(m)}
                                     <span style={{marginLeft: 8, opacity: 0.85}}>
                     {new Date(m.createdAt).toLocaleString("ru-RU", {
@@ -476,7 +476,7 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                   </span>
                                 </div>
                                 <div style={{
-                                    fontSize: "0.82rem",
+                                    fontSize: "0.875rem",
                                     color: "var(--dash-text)",
                                     whiteSpace: "pre-wrap",
                                     wordBreak: "break-word"
@@ -490,7 +490,7 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                 <div ref={bottomRef}/>
             </div>
 
-            {error && <div style={{padding: "0 12px", fontSize: "0.72rem", color: "var(--dash-danger)"}}>{error}</div>}
+            {error && <div style={{padding: "0 12px", fontSize: "0.75rem", color: "var(--dash-danger)"}}>{error}</div>}
 
             <div
                 style={{
@@ -528,7 +528,7 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                 background: "var(--dash-bg)",
                 color: "var(--dash-text)",
                 fontFamily: "inherit",
-                fontSize: "0.82rem",
+                fontSize: "0.875rem",
                 lineHeight: 1.4,
             }}
             onKeyDown={(e) => {
@@ -554,7 +554,7 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                             background: draft.trim() ? "var(--dash-accent)" : "var(--dash-border)",
                             color: "#fff",
                             fontWeight: 600,
-                            fontSize: "0.8rem",
+                            fontSize: "0.75rem",
                             cursor: draft.trim() && !sending ? "pointer" : "default",
                             fontFamily: "inherit",
                             opacity: sending ? 0.75 : 1,
@@ -564,7 +564,7 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                             justifyContent: "center",
                         }}
                     >
-                        <Icon name={sending ? "loader-alt" : "send"} className={sending ? "bx-spin" : undefined} style={{fontSize: "1.15rem"}} aria-hidden/>
+                        <Icon name={sending ? "loader-alt" : "send"} className={sending ? "bx-spin" : undefined} style={{fontSize: "1.125rem"}} aria-hidden/>
                     </button>
                 </div>
             </div>

@@ -11,6 +11,7 @@ import {replaceQueryParams} from "@/lib/client/url-query"
 import type {ClientOrder, RawClient} from "./client-types"
 import {userDisplayName} from "@/lib/user-name"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 type ClientsShellContextValue = {
     clients: RawClient[]
@@ -97,38 +98,24 @@ export function ClientsShell({children}: { children: ReactNode }) {
                         <span className="cl-badge">{filtered.length}</span>
                     </div>
                     <div style={{display: "flex", gap: 8, padding: "0 12px 8px"}}>
-                        <button
+                        <Button
                             type="button"
+                            size="sm"
+                            variant={!showArchived ? "secondary" : "outline"}
+                            aria-pressed={!showArchived}
                             onClick={() => setShowArchived(false)}
-                            style={{
-                                padding: "6px 10px",
-                                borderRadius: 8,
-                                border: !showArchived ? "1px solid var(--adm-active-color)" : "1px solid var(--adm-sidebar-border)",
-                                background: !showArchived ? "var(--adm-active-bg)" : "transparent",
-                                color: !showArchived ? "var(--adm-active-color)" : "var(--adm-muted)",
-                                fontSize: "0.75rem",
-                                fontWeight: 600,
-                                cursor: "pointer"
-                            }}
                         >
                             Активные
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             type="button"
+                            size="sm"
+                            variant={showArchived ? "secondary" : "outline"}
+                            aria-pressed={showArchived}
                             onClick={() => setShowArchived(true)}
-                            style={{
-                                padding: "6px 10px",
-                                borderRadius: 8,
-                                border: showArchived ? "1px solid var(--adm-active-color)" : "1px solid var(--adm-sidebar-border)",
-                                background: showArchived ? "var(--adm-active-bg)" : "transparent",
-                                color: showArchived ? "var(--adm-active-color)" : "var(--adm-muted)",
-                                fontSize: "0.75rem",
-                                fontWeight: 600,
-                                cursor: "pointer"
-                            }}
                         >
                             Архив
-                        </button>
+                        </Button>
                     </div>
                     <div className="cl-search">
                         <Icon name="search" className="cl-search-icon"/>
@@ -154,7 +141,7 @@ export function ClientsShell({children}: { children: ReactNode }) {
                                  }} className={`cl-card${isOn ? " cl-card--on" : ""}`}>
                                 <div className="cl-card__top">
                                     <div className="cl-card__av" style={{
-                                        background: isOn ? "linear-gradient(135deg, var(--adm-active-color), #a78bfa)" : "var(--adm-active-bg)",
+                                        background: isOn ? "var(--adm-active-color)" : "var(--adm-active-bg)",
                                         color: isOn ? "#fff" : "var(--adm-active-color)",
                                     }}>
                                         {displayName[0].toUpperCase()}
@@ -164,7 +151,7 @@ export function ClientsShell({children}: { children: ReactNode }) {
                                 <div className="cl-card__bottom">
                                     <span className="cl-card__orders">{c.orders.length} заказ(ов)</span>
                                     {c.orders.some(o => o.briefHelpRequested) ? (
-                                        <span style={{fontSize: "0.65rem", color: "#ea5455", fontWeight: 600}}><i
+                                        <span style={{fontSize: "0.75rem", color: "var(--bs-danger)", fontWeight: 600}}><i
                                             className="bx bx-support" style={{marginRight: 2}}/>Помощь</span>
                                     ) : (
                                         <span
@@ -189,7 +176,19 @@ export function ClientsShell({children}: { children: ReactNode }) {
             </Modal>
 
             <style>{`
-        .cl-wrap { display: flex; height: 100%; overflow: hidden; }
+        /* Кнопки shadcn (Button) внутри раздела берут цвета из --adm-*, чтобы читаться
+           и в светлой, и в тёмной теме админки. */
+        .cl-wrap {
+          display: flex; height: 100%; overflow: hidden;
+          --background: var(--adm-content-bg);
+          --foreground: var(--adm-text);
+          --muted: var(--adm-hover-bg);
+          --muted-foreground: var(--adm-muted);
+          --secondary: var(--adm-active-bg);
+          --secondary-foreground: var(--adm-active-color);
+          --border: var(--adm-sidebar-border);
+          --input: var(--adm-sidebar-border);
+        }
 
         .cl-list {
           width: 260px; flex-shrink: 0;
@@ -210,41 +209,40 @@ export function ClientsShell({children}: { children: ReactNode }) {
           flex-shrink: 0; background: var(--adm-sidebar);
         }
         .cl-label {
-          font-size: 0.68rem; font-weight: 600;
-          text-transform: uppercase; letter-spacing: 0.06em;
+          font-size: 0.75rem; font-weight: 600;
           color: var(--adm-muted);
         }
         .cl-badge {
           display: inline-flex; align-items: center;
           background: var(--adm-active-bg); color: var(--adm-active-color);
           padding: 2px 8px; border-radius: 10px;
-          font-size: 0.72rem; font-weight: 600;
+          font-size: 0.75rem; font-weight: 600;
         }
         .cl-search { position: relative; padding: 8px 12px; flex-shrink: 0; }
         .cl-search-icon {
           position: absolute; left: 20px; top: 50%;
           transform: translateY(-50%); color: var(--adm-muted);
-          font-size: 0.9rem; pointer-events: none;
+          font-size: 0.875rem; pointer-events: none;
         }
         .cl-search-input {
           width: 100%; height: 32px; padding: 0 8px 0 28px;
           border: 1px solid var(--adm-sidebar-border); border-radius: 6px;
           background: transparent; color: var(--adm-text);
-          font-size: 0.8rem; outline: none; font-family: inherit;
+          font-size: 0.75rem; outline: none; font-family: inherit;
         }
         .cl-search-input:focus { border-color: var(--adm-active-color); }
         .cl-search-input::placeholder { color: var(--adm-muted); }
-        .cl-empty { padding: 24px 16px; font-size: 0.82rem; color: var(--adm-muted); text-align: center; }
+        .cl-empty { padding: 24px 16px; font-size: 0.875rem; color: var(--adm-muted); text-align: center; }
 
         .cl-card {
           margin: 0 10px 8px; padding: 12px 14px;
           background: var(--adm-sidebar); border-radius: 8px;
-          cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+          cursor: pointer;
           transition: box-shadow 0.15s; border: 2px solid transparent;
         }
         .cl-card:first-child { margin-top: 4px; }
         .cl-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
-        .cl-card--on { border-color: var(--adm-active-color); box-shadow: 0 4px 16px rgba(99,102,241,0.2); }
+        .cl-card--on { border-color: var(--adm-active-color); }
         .cl-card__top {
           display: flex; align-items: center; gap: 10px;
           padding-bottom: 10px; margin-bottom: 10px;
@@ -256,26 +254,26 @@ export function ClientsShell({children}: { children: ReactNode }) {
           font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
         }
         .cl-card__name {
-          font-weight: 600; font-size: 0.82rem;
+          font-weight: 600; font-size: 0.875rem;
           overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
         .cl-card__bottom { display: flex; align-items: center; justify-content: space-between; }
         .cl-card__edo {
           margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--adm-sidebar-border);
-          font-size: 0.65rem; color: var(--adm-muted); line-height: 1.25;
+          font-size: 0.75rem; color: var(--adm-muted); line-height: 1.25;
           overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
           display: flex; align-items: center; gap: 4px;
         }
         .cl-card__edo .bx { flex-shrink: 0; font-size: 0.75rem; opacity: 0.85; }
-        .cl-card__orders { font-size: 0.72rem; color: var(--adm-active-color); }
-        .cl-card__date { font-size: 0.68rem; color: var(--adm-muted); }
+        .cl-card__orders { font-size: 0.75rem; color: var(--adm-active-color); }
+        .cl-card__date { font-size: 0.75rem; color: var(--adm-muted); }
 
         .cl-detail { flex: 1; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
         .cl-detail-empty {
           flex: 1; display: flex; flex-direction: column;
           align-items: center; justify-content: center; color: var(--adm-muted);
         }
-        .cl-detail-empty i { font-size: 48px; opacity: 0.3; display: block; }
+        .cl-detail-empty i { font-size: 24px; opacity: 0.3; display: block; }
         .cl-detail-empty p { margin-top: 8px; }
         .cl-detail-scroll { flex: 1; overflow-y: auto; padding: 24px 28px; }
 
@@ -288,18 +286,18 @@ export function ClientsShell({children}: { children: ReactNode }) {
           width: 60px; height: 60px; border-radius: 14px;
           display: flex; align-items: center; justify-content: center;
           font-size: 1.5rem; font-weight: 700; flex-shrink: 0;
-          background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-          color: #fff; box-shadow: 0 4px 12px rgba(14,165,233,0.3);
+          background: var(--adm-active-color);
+          color: #fff;
         }
         .cl-profile-info { flex: 1; min-width: 0; }
-        .cl-profile-name { font-weight: 600; font-size: 1.2rem; margin: 0 0 4px; color: var(--adm-text, #f1f5f9); }
-        .cl-profile-email { color: var(--adm-muted); font-size: 0.82rem; }
+        .cl-profile-name { font-weight: 600; font-size: 1.125rem; margin: 0 0 4px; color: var(--adm-text, #f1f5f9); }
+        .cl-profile-email { color: var(--adm-muted); font-size: 0.875rem; }
         .cl-profile-stats {
           display: flex; gap: 20px; margin-left: auto; flex-shrink: 0;
         }
         .cl-stat { text-align: center; }
-        .cl-stat__value { font-size: 1.2rem; font-weight: 700; }
-        .cl-stat__label { font-size: 0.65rem; color: var(--adm-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+        .cl-stat__value { font-size: 1.125rem; font-weight: 700; }
+        .cl-stat__label { font-size: 0.75rem; color: var(--adm-muted); }
 
         .cl-grid { display: grid; grid-template-columns: 1fr 1fr 220px; gap: 0 20px; align-items: start; }
         @media (max-width: 900px) { .cl-grid { grid-template-columns: 1fr 1fr; } }
@@ -309,20 +307,19 @@ export function ClientsShell({children}: { children: ReactNode }) {
           display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
         }
         .cl-info-card {
-          background: var(--adm-sidebar);
-          border: 1px solid var(--adm-sidebar-border);
+          background: var(--adm-card-bg);
           border-radius: 8px; margin-bottom: 16px;
         }
         .cl-meta-row {
           display: flex; align-items: center; gap: 8px;
           padding: 8px 14px; border-bottom: 1px solid var(--adm-sidebar-border);
-          font-size: 0.82rem;
+          font-size: 0.875rem;
         }
         .cl-meta-row:last-child { border-bottom: none; }
         .cl-meta-icon {
           width: 28px; height: 28px; border-radius: 6px;
           display: flex; align-items: center; justify-content: center;
-          font-size: 0.85rem; flex-shrink: 0;
+          font-size: 0.875rem; flex-shrink: 0;
         }
         .cl-meta-label { color: var(--adm-muted); min-width: 90px; flex-shrink: 0; }
         .cl-meta-value { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

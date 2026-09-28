@@ -125,7 +125,7 @@ export function FrameworkContractSection({
     }
 
     const buttonBase = {
-        padding: "0.45em 1em", borderRadius: 8, fontSize: "0.78rem", fontWeight: 600,
+        padding: "6px 14px", borderRadius: 8, fontSize: "0.75rem", fontWeight: 600,
         cursor: busy ? "not-allowed" : "pointer", fontFamily: "inherit", opacity: busy ? 0.6 : 1,
     } as const
 
@@ -135,20 +135,20 @@ export function FrameworkContractSection({
 
             <div style={{display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, marginBottom: 10}}>
                 <StatusBadge variant={badge.variant} label={badge.label}/>
-                {state.number && <span style={{fontSize: "0.8rem", color: "var(--dash-muted)"}}>№ {state.number}</span>}
+                {state.number && <span style={{fontSize: "0.75rem", color: "var(--dash-muted)"}}>№ {state.number}</span>}
             </div>
 
             {!compact && state.status === "NONE" && !state.hasFile && (
-                <p style={{fontSize: "0.8rem", color: "var(--dash-muted)", margin: 0, lineHeight: 1.45}}>
+                <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", margin: 0, lineHeight: 1.45}}>
                     Администратор разместит договор в вашей карточке. После подписания вы сможете отправлять брифы на
                     рассмотрение.
                 </p>
             )}
 
             {!compact && awaiting && (
-                <p style={{fontSize: "0.82rem", color: "var(--dash-text2)", margin: "0 0 12px", lineHeight: 1.5}}>
+                <p style={{fontSize: "0.875rem", color: "var(--dash-text2)", margin: "0 0 12px", lineHeight: 1.5}}>
                     Договор размещён: скачайте PDF, при необходимости приложите скан с подписью и нажмите «Подписан»
-                    (или «Отказать», если не согласны — с вами свяжется менеджер).
+                    (или «Отказать», если не согласны, с вами свяжется менеджер).
                 </p>
             )}
 
@@ -156,7 +156,7 @@ export function FrameworkContractSection({
                 <div style={{marginBottom: awaiting || responded ? 12 : 0}}>
                     <button type="button" onClick={() => void download()} style={{
                         ...buttonBase, cursor: "pointer", opacity: 1,
-                        border: "1px solid var(--dash-accent)", background: "var(--dash-accent-bg)", color: "var(--dash-accent)",
+                        background: "var(--dash-accent-bg)", color: "var(--dash-accent)",
                     }}>
                         <Icon name="download" style={{marginRight: 4}}/>Скачать PDF
                     </button>
@@ -190,7 +190,7 @@ export function FrameworkContractSection({
             {awaiting && (
                 <div style={{display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12}}>
                     <button type="button" disabled={busy} onClick={() => void respond("sign")} style={{
-                        ...buttonBase, border: "none", background: "var(--dash-success, #2d6a2d)", color: "#fff",
+                        ...buttonBase, background: "var(--dash-success)", color: "#fff",
                     }}>
                         {busy ? "Отправка…" : "Подписан"}
                     </button>
@@ -203,7 +203,7 @@ export function FrameworkContractSection({
             )}
 
             {!compact && state.status === "DECLINED_BY_CLIENT" && (
-                <p style={{fontSize: "0.78rem", color: "var(--dash-warn)", margin: "8px 0 0"}}>
+                <p style={{fontSize: "0.75rem", color: "var(--dash-warn)", margin: "8px 0 0"}}>
                     Свяжитесь с менеджером или дождитесь новой версии договора.
                 </p>
             )}

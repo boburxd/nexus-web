@@ -6,6 +6,7 @@ import {ImageLightbox} from "@/components/ui/ImageLightbox"
 import {DesignerProfileModal, type DesignerSlide} from "@/components/landing/designer-profile-modal"
 import {userDisplayName} from "@/lib/user-name"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 interface BundleItem {
     id: string;
@@ -144,19 +145,21 @@ export default function LandingBundlesClient() {
                 <h5 className="mb-0 fw-semibold">Сборки для лендинга</h5>
                 <div className="d-flex gap-1">
                     {filters.map(f => (
-                        <button key={f.value} onClick={() => {
-                            setFilter(f.value);
-                            setSelected(null)
-                        }}
-                                className={`btn btn-sm ${filter === f.value ? "btn-primary" : "btn-outline-secondary"}`}>
+                        <Button key={f.value} type="button" size="sm"
+                                variant={filter === f.value ? "default" : "outline"}
+                                aria-pressed={filter === f.value}
+                                onClick={() => {
+                                    setFilter(f.value);
+                                    setSelected(null)
+                                }}>
                             {f.label}
-                        </button>
+                        </Button>
                     ))}
                 </div>
             </div>
 
             {loading ? (
-                <div className="text-center py-5 text-muted">Загрузка...</div>
+                <div className="text-center py-5 text-muted">Загрузка…</div>
             ) : bundles.length === 0 ? (
                 <div className="text-center py-5 text-muted">Нет сборок</div>
             ) : (
@@ -168,10 +171,10 @@ export default function LandingBundlesClient() {
                                 <table className="table table-hover mb-0">
                                     <thead>
                                     <tr>
-                                        <th style={{fontSize: "0.78rem"}}>Специалист</th>
-                                        <th style={{fontSize: "0.78rem"}}>Статус</th>
-                                        <th style={{fontSize: "0.78rem"}}>Содержимое</th>
-                                        <th style={{fontSize: "0.78rem"}}>Дата</th>
+                                        <th style={{fontSize: "0.75rem"}}>Специалист</th>
+                                        <th style={{fontSize: "0.75rem"}}>Статус</th>
+                                        <th style={{fontSize: "0.75rem"}}>Содержимое</th>
+                                        <th style={{fontSize: "0.75rem"}}>Дата</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -189,15 +192,15 @@ export default function LandingBundlesClient() {
                                             }}
                                             style={{
                                                 cursor: "pointer",
-                                                background: selected === b.id ? "var(--adm-active-bg, rgba(99,102,241,0.06))" : undefined
+                                                background: selected === b.id ? "var(--adm-active-bg)" : undefined
                                             }}>
                                             <td>
                                                 <div style={{
                                                     fontWeight: 500,
-                                                    fontSize: "0.82rem"
+                                                    fontSize: "0.875rem"
                                                 }}>{userDisplayName(b.user)}</div>
                                                 <div style={{
-                                                    fontSize: "0.72rem",
+                                                    fontSize: "0.75rem",
                                                     color: "var(--adm-muted)"
                                                 }}>{b.user.email}</div>
                                             </td>
@@ -225,18 +228,19 @@ export default function LandingBundlesClient() {
                         <div className="col-md-7">
                             <div className="card">
                                 <div className="card-header d-flex align-items-center justify-content-between gap-2">
-                  <span className="fw-semibold" style={{fontSize: "0.88rem"}}>
+                  <span className="fw-semibold" style={{fontSize: "0.875rem"}}>
                     {userDisplayName(selectedBundle.user)}
                   </span>
                                     <div className="d-flex align-items-center gap-2">
-                                        <button
+                                        <Button
                                             type="button"
-                                            className="btn btn-sm btn-outline-primary"
+                                            variant="outline"
+                                            size="sm"
                                             onClick={() => void openPreview()}
                                             disabled={previewLoading}
                                         >
                                             <Icon name="show"/> {previewLoading ? "Собираем…" : "Предпросмотр карточки"}
-                                        </button>
+                                        </Button>
                                         <span
                                             className={`badge ${STATUS_CLASS[selectedBundle.status]}`}>{STATUS_LABEL[selectedBundle.status]}</span>
                                     </div>
@@ -245,7 +249,7 @@ export default function LandingBundlesClient() {
                                     {/* Reject reason */}
                                     {selectedBundle.status === "REJECTED" && selectedBundle.rejectReason && (
                                         <div className="alert alert-warning py-2 px-3 mb-3"
-                                             style={{fontSize: "0.8rem"}}>
+                                             style={{fontSize: "0.75rem"}}>
                                             <strong>Причина отказа:</strong> {selectedBundle.rejectReason}
                                         </div>
                                     )}
@@ -255,7 +259,7 @@ export default function LandingBundlesClient() {
                                         {/* Avatar */}
                                         <div className="col-4">
                                             <div style={{
-                                                fontSize: "0.68rem",
+                                                fontSize: "0.75rem",
                                                 fontWeight: 600,
                                                 color: "var(--adm-muted)",
                                                 marginBottom: 4
@@ -265,8 +269,7 @@ export default function LandingBundlesClient() {
                                                 aspectRatio: "1/1",
                                                 borderRadius: "22%",
                                                 overflow: "hidden",
-                                                background: "rgba(99,102,241,0.06)",
-                                                border: "1px solid var(--adm-sidebar-border, #e5e7eb)"
+                                                background: "var(--adm-hover-bg)"
                                             }}>
                                                 {selectedBundle.avatarFileId && previews[selectedBundle.avatarFileId]
                                                     ? <ImageLightbox src={previews[selectedBundle.avatarFileId]}
@@ -278,13 +281,13 @@ export default function LandingBundlesClient() {
                                                     }}/></ImageLightbox>
                                                     : <div
                                                         className="d-flex align-items-center justify-content-center h-100 text-muted">
-                                                        <Icon name="user" style={{fontSize: 28}}/></div>}
+                                                        <Icon name="user" size={28}/></div>}
                                             </div>
                                         </div>
                                         {/* Work */}
                                         <div className="col-8">
                                             <div style={{
-                                                fontSize: "0.68rem",
+                                                fontSize: "0.75rem",
                                                 fontWeight: 600,
                                                 color: "var(--adm-muted)",
                                                 marginBottom: 4
@@ -294,8 +297,7 @@ export default function LandingBundlesClient() {
                                                 aspectRatio: "16/9",
                                                 borderRadius: 8,
                                                 overflow: "hidden",
-                                                background: "rgba(99,102,241,0.06)",
-                                                border: "1px solid var(--adm-sidebar-border, #e5e7eb)",
+                                                background: "var(--adm-hover-bg)",
                                                 position: "relative"
                                             }}>
                                                 {selectedBundle.workFileId && previews[selectedBundle.workFileId]
@@ -309,16 +311,16 @@ export default function LandingBundlesClient() {
                                                     }}/></ImageLightbox>
                                                     : <div
                                                         className="d-flex align-items-center justify-content-center h-100 text-muted">
-                                                        <Icon name="image" style={{fontSize: 28}}/></div>}
+                                                        <Icon name="image" size={28}/></div>}
                                                 {selectedBundle.workPos && (
                                                     <span style={{
                                                         position: "absolute",
                                                         bottom: 4,
                                                         right: 4,
-                                                        fontSize: "0.6rem",
+                                                        fontSize: "0.75rem",
                                                         background: "rgba(0,0,0,0.5)",
                                                         color: "#fff",
-                                                        padding: "1px 6px",
+                                                        padding: "2px 6px",
                                                         borderRadius: 4
                                                     }}>
                             {selectedBundle.workPos}
@@ -332,7 +334,7 @@ export default function LandingBundlesClient() {
                                     {selectedBundle.videoFileId && (
                                         <div className="mb-3">
                                             <div style={{
-                                                fontSize: "0.68rem",
+                                                fontSize: "0.75rem",
                                                 fontWeight: 600,
                                                 color: "var(--adm-muted)",
                                                 marginBottom: 4
@@ -343,7 +345,7 @@ export default function LandingBundlesClient() {
                                                          preload="metadata"
                                                          style={{maxWidth: "100%", maxHeight: 200, borderRadius: 8}}/>
                                                 : <span className="text-muted"
-                                                        style={{fontSize: "0.8rem"}}>Загрузка...</span>}
+                                                        style={{fontSize: "0.75rem"}}>Загрузка…</span>}
                                         </div>
                                     )}
 
@@ -351,7 +353,7 @@ export default function LandingBundlesClient() {
                                     {selectedBundle.items.length > 0 && (
                                         <div className="mb-3">
                                             <div style={{
-                                                fontSize: "0.68rem",
+                                                fontSize: "0.75rem",
                                                 fontWeight: 600,
                                                 color: "var(--adm-muted)",
                                                 marginBottom: 4
@@ -364,8 +366,7 @@ export default function LandingBundlesClient() {
                                                         height: 60,
                                                         borderRadius: 6,
                                                         overflow: "hidden",
-                                                        background: "rgba(99,102,241,0.06)",
-                                                        border: "1px solid var(--adm-sidebar-border, #e5e7eb)"
+                                                        background: "var(--adm-hover-bg)"
                                                     }}>
                                                         {previews[item.fileId]
                                                             ? <ImageLightbox src={previews[item.fileId]}
@@ -386,7 +387,7 @@ export default function LandingBundlesClient() {
                                     )}
 
                                     {/* Meta */}
-                                    <div className="mb-3" style={{fontSize: "0.8rem"}}>
+                                    <div className="mb-3" style={{fontSize: "0.75rem"}}>
                                         {selectedBundle.specialty && <div><span
                                             className="text-muted">Специализация:</span> {selectedBundle.specialty}
                                         </div>}
@@ -408,14 +409,14 @@ export default function LandingBundlesClient() {
                         />
                                             </div>
                                             <div className="d-flex gap-2">
-                                                <button className="btn btn-sm btn-success"
+                                                <Button type="button" size="sm"
                                                         onClick={() => review("approve")} disabled={acting}>
                                                     <Icon name="check"/> Одобрить
-                                                </button>
-                                                <button className="btn btn-sm btn-danger"
+                                                </Button>
+                                                <Button type="button" variant="destructive" size="sm"
                                                         onClick={() => review("reject")} disabled={acting}>
                                                     <Icon name="x"/> Отклонить
-                                                </button>
+                                                </Button>
                                             </div>
                                         </div>
                                     )}

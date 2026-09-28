@@ -199,7 +199,7 @@ export default function PortfolioProjects() {
                                     Проект
                                 </div>
                                 <span className="fw-semibold text-truncate d-block"
-                                      style={{fontSize: 14, color: "var(--dash-text, #f4f4f4)"}}>
+                                      style={{fontSize: 14, color: "var(--dash-text, var(--foreground))"}}>
                   {selectedProject.name}
                 </span>
                             </div>
@@ -228,7 +228,7 @@ export default function PortfolioProjects() {
                                     type="button"
                                     className={`btn btn-link btn-sm p-0 text-decoration-none ${!selectedProject ? "fw-semibold text-body" : "text-muted"}`}
                                     onClick={goToProjectsRoot}
-                                    style={{color: !selectedProject ? "var(--dash-text, #f4f4f4)" : undefined}}
+                                    style={{color: !selectedProject ? "var(--dash-text, var(--foreground))" : undefined}}
                                 >
                                     Портфолио
                                 </button>
@@ -241,7 +241,7 @@ export default function PortfolioProjects() {
                                             onClick={goToProjectOnly}
                                             style={{
                                                 maxWidth: "min(280px, 46vw)",
-                                                color: !editingCard ? "var(--dash-text, #f4f4f4)" : undefined
+                                                color: !editingCard ? "var(--dash-text, var(--foreground))" : undefined
                                             }}
                                             title={selectedProject.name}
                                         >
@@ -283,7 +283,7 @@ export default function PortfolioProjects() {
                         </nav>
 
                         <div>
-                            <h6 className="mb-1 fw-semibold" style={{fontSize: 15, color: "var(--dash-text, #f4f4f4)"}}>
+                            <h6 className="mb-1 fw-semibold" style={{fontSize: 15, color: "var(--dash-text, var(--foreground))"}}>
                                 {pageTitle}
                             </h6>
                             <p className="mb-0 small text-muted" style={{lineHeight: 1.45}}>
@@ -327,7 +327,7 @@ export default function PortfolioProjects() {
                 border-color: rgba(115,103,240,0.65);
               }
               .pf-port-grid__add i { font-size: 1.75rem; opacity: 0.9; }
-              .pf-port-grid__add-title { font-size: 0.78rem; font-weight: 600; color: var(--dash-text, #f4f4f4); }
+              .pf-port-grid__add-title { font-size: 0.78rem; font-weight: 600; color: var(--dash-text, var(--foreground)); }
               .pf-port-grid__card { cursor: pointer; }
               .pf-port-grid__cover { position: absolute; inset: 0; }
               .pf-port-grid__shade {

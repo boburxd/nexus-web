@@ -7,6 +7,7 @@ import {getQuizMicroTick, parseQuizProgress, parseStoredTestComment} from "@/lib
 import type {RawSpecialist, TestModalData} from "../../types"
 import {ONBOARDING_STEPS_UI} from "./constants"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 type OnboardingStepRow = NonNullable<RawSpecialist["specialistProfile"]>["steps"][number]
 
@@ -113,25 +114,35 @@ export function SpecialistProfileOnboardingSection({
                             isTest &&
                             !!testStep?.comment &&
                             (testPassed || testStep.status === "FAILED" || testStep.status === "IN_PROGRESS")
-                        return (
-                            <button
-                                type="button"
-                                key={step.key}
-                                className={`sp-onboarding-step${done ? " sp-onboarding-step--done" : ""}${testInProgress ? " sp-onboarding-step--active" : ""}${testReviewable ? " sp-onboarding-step--clickable" : ""}`}
-                                onClick={() => {
-                                    if (!testReviewable || !testStep?.comment) return
-                                    const {answers, meta} = parseStoredTestComment(testStep.comment)
-                                    setTestModal({answers, comment: testStep.comment, meta})
-                                }}
-                            >
+                        const stateClass = `${done ? " sp-onboarding-step--done" : ""}${testInProgress ? " sp-onboarding-step--active" : ""}`
+                        const stepContent = (
+                            <>
                                 <div className="sp-onboarding-step__dot">{done ? <Icon name="check"/> :
                                     <span>{i + 1}</span>}</div>
                                 <span className="sp-onboarding-step__label">
                   {step.label}
                                     {testReviewable &&
-                                        <Icon name="show" style={{marginLeft: 3, fontSize: "0.7rem"}}/>}
+                                        <Icon name="show" style={{marginLeft: 4, fontSize: "0.75rem"}}/>}
                 </span>
-                            </button>
+                            </>
+                        )
+                        if (!testReviewable || !testStep?.comment) {
+                            return <div key={step.key} className={`sp-onboarding-step${stateClass}`}>{stepContent}</div>
+                        }
+                        const testComment = testStep.comment
+                        return (
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                key={step.key}
+                                className={`h-auto flex-1 flex-col gap-1.5 whitespace-normal sp-onboarding-step--clickable${stateClass}`}
+                                onClick={() => {
+                                    const {answers, meta} = parseStoredTestComment(testComment)
+                                    setTestModal({answers, comment: testComment, meta})
+                                }}
+                            >
+                                {stepContent}
+                            </Button>
                         )
                     })}
                 </div>
@@ -143,13 +154,12 @@ export function SpecialistProfileOnboardingSection({
                     alignItems: "center",
                     gap: 12,
                     flexWrap: "wrap",
-                    marginBottom: 18,
+                    marginBottom: 16,
                     padding: "10px 14px",
                     borderRadius: 8,
-                    border: "1px solid var(--adm-sidebar-border)",
-                    background: "var(--adm-sidebar)",
+                    background: "var(--adm-card-bg)",
                 }}>
-                    <span style={{fontSize: "0.78rem", color: "var(--adm-muted)", lineHeight: 1.45}}>
+                    <span style={{fontSize: "0.75rem", color: "var(--adm-muted)", lineHeight: 1.45}}>
                         <Icon name="medal" style={{marginRight: 6, color: "var(--adm-active-color)"}}/>
                         Квалификационный уровень:{" "}
                         <strong style={{color: "var(--adm-text)"}}>
@@ -161,22 +171,23 @@ export function SpecialistProfileOnboardingSection({
                             const meta = levelByCode(code)
                             const active = currentLevel?.code === code
                             return (
-                                <button
+                                <Button
                                     key={code}
                                     type="button"
-                                    className={`sp-btn ${active ? "sp-btn-primary" : "sp-btn-ghost"}`}
+                                    size="sm"
+                                    variant={active ? "default" : "outline"}
                                     title={`Назначить уровень «${meta.title}» без сдачи теста`}
                                     disabled={levelSetting || acting !== null || active}
                                     onClick={() => handleSetLevel(code)}
                                 >
                                     {code}
-                                </button>
+                                </Button>
                             )
                         })}
                     </div>
                     <span style={{
                         flexBasis: "100%",
-                        fontSize: "0.72rem",
+                        fontSize: "0.75rem",
                         color: "var(--adm-muted)",
                         lineHeight: 1.4,
                     }}>
@@ -192,40 +203,38 @@ export function SpecialistProfileOnboardingSection({
                     alignItems: "center",
                     gap: 12,
                     flexWrap: "wrap",
-                    marginBottom: 18,
+                    marginBottom: 16,
                     padding: "10px 14px",
                     borderRadius: 8,
-                    border: "1px solid rgba(245,158,11,0.3)",
                     background: "rgba(245,158,11,0.08)",
                 }}>
-                    <span style={{fontSize: "0.78rem", color: "var(--adm-muted)", lineHeight: 1.45}}>
-                        <Icon name="fast-forward" style={{marginRight: 6, color: "#f59e0b"}}/>
+                    <span style={{fontSize: "0.75rem", color: "var(--adm-muted)", lineHeight: 1.45}}>
+                        <Icon name="fast-forward" style={{marginRight: 6, color: "var(--bs-warning)"}}/>
                         Тест можно закрыть без сдачи: шаг будет отмечен пройденным, откроется этап интервью.
                     </span>
-                    <button
+                    <Button
                         type="button"
-                        className="sp-btn sp-btn-ghost"
-                        style={{marginLeft: "auto"}}
+                        variant="outline"
+                        className="ml-auto"
                         disabled={quizBypassing || acting !== null}
                         onClick={handleQuizBypass}
                     >
                         {quizBypassing ? "Пропуск…" : "Пропустить тест"}
-                    </button>
+                    </Button>
                 </div>
             )}
 
             {adminBypass && (
                 <div style={{
-                    marginBottom: 18,
+                    marginBottom: 16,
                     padding: "10px 14px",
                     borderRadius: 8,
-                    border: "1px solid rgba(245,158,11,0.3)",
                     background: "rgba(245,158,11,0.08)",
-                    fontSize: "0.78rem",
+                    fontSize: "0.75rem",
                     color: "var(--adm-muted)",
                     lineHeight: 1.45,
                 }}>
-                    <Icon name="fast-forward" style={{marginRight: 6, color: "#f59e0b"}}/>
+                    <Icon name="fast-forward" style={{marginRight: 6, color: "var(--bs-warning)"}}/>
                     Квалификационный тест пропущен администратором
                     {" "}({new Date(adminBypass.at).toLocaleString("ru-RU")})
                     {adminBypass.reason ? `. Причина: ${adminBypass.reason}` : ""}
@@ -254,7 +263,7 @@ export function SpecialistProfileOnboardingSection({
                     </div>
                     {testProgressLive && (
                         <div className="sp-quiz-micro-ticks"
-                             aria-label="Прогресс по вопросам: зеленый — верно, красный — неверно">
+                             aria-label="Прогресс по вопросам: верно (зеленый), неверно (красный)">
                             {Array.from({length: testProgressLive.total}, (_, i) => {
                                 const {
                                     state,
@@ -269,24 +278,23 @@ export function SpecialistProfileOnboardingSection({
                     )}
                     {onRefresh && (
                         <div style={{marginTop: 12}}>
-                            <button
+                            <Button
                                 type="button"
-                                className="sp-btn sp-btn-ghost"
+                                variant="outline"
                                 disabled={quizResetting || acting !== null}
                                 onClick={handleQuizDraftReset}
                             >
                                 {quizResetting ? "Сброс…" : "Сбросить черновик теста"}
-                            </button>
+                            </Button>
                             {pendingApprovalLevel && (
-                                <button
+                                <Button
                                     type="button"
-                                    className="sp-btn sp-btn-primary"
-                                    style={{marginLeft: 8}}
+                                    className="ml-2"
                                     disabled={quizApproving || acting !== null}
                                     onClick={handleQuizLevelApprove}
                                 >
                                     {quizApproving ? "Подтверждение…" : `Подтвердить уровень ${pendingApprovalLevel}`}
-                                </button>
+                                </Button>
                             )}
                         </div>
                     )}
@@ -294,23 +302,23 @@ export function SpecialistProfileOnboardingSection({
             )}
 
             {showTestAnswersBeforeAdvance && testStepRecord?.comment && (
-                <div style={{marginBottom: 18}}>
-                    <p style={{fontSize: "0.78rem", color: "var(--adm-muted)", margin: "0 0 8px", lineHeight: 1.45}}>
+                <div style={{marginBottom: 16}}>
+                    <p style={{fontSize: "0.75rem", color: "var(--adm-muted)", margin: "0 0 8px", lineHeight: 1.45}}>
                         {testStepRecord.status === "IN_PROGRESS"
                             ? "Специалист проходит тест. Ниже виден сохраненный прогресс; в модалке — ответы на уже закрытые вопросы."
                             : "Специалист уже отправил тест. Откройте ответы по вопросам перед тем, как нажать «Тест пройден»."}
                     </p>
-                    <button
+                    <Button
                         type="button"
-                        className="sp-btn sp-btn-ghost"
+                        variant="outline"
                         onClick={() => {
                             const {answers, meta} = parseStoredTestComment(testStepRecord.comment)
                             setTestModal({answers, comment: testStepRecord.comment, meta})
                         }}
                     >
-                        <Icon name="show" style={{marginRight: 6}}/>
+                        <Icon name="show"/>
                         {testStepRecord.status === "IN_PROGRESS" ? "Ответы (текущий прогресс)" : "Ответы квалификационного теста"}
-                    </button>
+                    </Button>
                 </div>
             )}
         </>

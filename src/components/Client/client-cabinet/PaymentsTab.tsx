@@ -93,7 +93,7 @@ export function PaymentsTab({
                 {!isComplete ? (
                     <div style={{padding: "0.25rem 0"}}>
                         <p style={{
-                            fontSize: "0.8rem",
+                            fontSize: "0.75rem",
                             color: "var(--dash-danger)",
                             fontWeight: 500,
                             margin: "0 0 8px"
@@ -110,12 +110,11 @@ export function PaymentsTab({
                         <button
                             onClick={onSwitchToSettings}
                             style={{
-                                padding: "0.5em 1.2em",
+                                padding: "6px 14px",
                                 borderRadius: 8,
-                                border: "1.5px solid var(--dash-accent)",
                                 background: "var(--dash-accent-bg)",
                                 color: "var(--dash-accent)",
-                                fontSize: "0.78rem",
+                                fontSize: "0.75rem",
                                 fontWeight: 600,
                                 cursor: "pointer",
                                 fontFamily: "inherit",
@@ -128,7 +127,7 @@ export function PaymentsTab({
                     <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 16px"}}>
                         {reqRows.map(r =>
                             r.value ? (
-                                <div key={r.label} style={{fontSize: "0.78rem"}}>
+                                <div key={r.label} style={{fontSize: "0.75rem"}}>
                                     <span style={{color: "var(--dash-muted)"}}>{r.label}: </span>
                                     <span style={{color: "var(--dash-text)"}}>{r.value}</span>
                                 </div>
@@ -140,7 +139,7 @@ export function PaymentsTab({
 
             <DocSection title="Договоры по проектам" icon="bx-file">
                 {contracts.length === 0 ? (
-                    <p style={{fontSize: "0.8rem", color: "var(--dash-muted)", margin: 0}}>Договоров пока нет</p>
+                    <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", margin: 0}}>Договоров пока нет</p>
                 ) : (
                     <DashDataTable
                         columns={[
@@ -186,7 +185,7 @@ export function PaymentsTab({
 
             <DocSection title="Счета" icon="bx-receipt">
                 {invoices.length === 0 ? (
-                    <p style={{fontSize: "0.8rem", color: "var(--dash-muted)", margin: 0}}>Счетов пока нет</p>
+                    <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", margin: 0}}>Счетов пока нет</p>
                 ) : (
                     <DashDataTable
                         columns={[
@@ -233,7 +232,7 @@ export function PaymentsTab({
 
             <DocSection title="Акты выполненных работ" icon="bx-check-shield">
                 {acts.length === 0 ? (
-                    <p style={{fontSize: "0.8rem", color: "var(--dash-muted)", margin: 0}}>Актов пока нет</p>
+                    <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", margin: 0}}>Актов пока нет</p>
                 ) : (
                     <div className="dash-finance-list">
                         {acts.map(a => (
@@ -259,7 +258,7 @@ export function PaymentsTab({
 
             <DocSection title="История платежей" icon="bx-credit-card">
                 {payments.length === 0 ? (
-                    <p style={{fontSize: "0.8rem", color: "var(--dash-muted)", margin: 0}}>Платежей пока нет</p>
+                    <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", margin: 0}}>Платежей пока нет</p>
                 ) : (
                     <DashDataTable
                         columns={[

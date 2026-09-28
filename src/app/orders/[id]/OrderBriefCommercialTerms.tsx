@@ -10,6 +10,7 @@ import {isStagePaymentsDisabledPublic} from "@/lib/payments/flags"
 import type {OrderData} from "./types"
 import {STAGE_LABEL} from "./types"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 /** Блок под брифом: правила правок, счета по проекту, оплата доп. правок, ссылка в раздел «Оплата». */
 export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
@@ -77,11 +78,11 @@ export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
                 </h2>
             </div>
 
-            <div style={{fontSize: "0.82rem", lineHeight: 1.55, color: "var(--dash-text2)", marginBottom: 14}}>
+            <div style={{fontSize: "0.875rem", lineHeight: 1.55, color: "var(--dash-text2)", marginBottom: 14}}>
                 <p style={{margin: "0 0 8px"}}>
                     По каждому этапу можно запросить до{" "}
                     <strong style={{color: "var(--dash-text)"}}>{MAX_FREE_CLIENT_REVISIONS}</strong> раундов правок{" "}
-                    <strong style={{color: "var(--dash-text)"}}>без доплаты</strong> (каждый раунд — после согласования
+                    <strong style={{color: "var(--dash-text)"}}>без доплаты</strong> (каждый раунд: после согласования
                     вы отправляете замечания,
                     дизайнер дорабатывает материалы).
                 </p>
@@ -91,12 +92,12 @@ export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
                         и при необходимости выставляет
                         счёт. После успешной оплаты этап снова возвращается в работу. Оплатить дополнительные правки
                         можно на этой странице (если есть
-                        начисление) или на карточке этапа; все счета и история платежей — в разделе{" "}
+                        начисление) или на карточке этапа; все счета и история платежей: в разделе{" "}
                         <strong style={{color: "var(--dash-text)"}}>«Оплата»</strong>.
                     </p>
                 ) : (
                     <p style={{margin: 0}}>
-                        Оплата этапов в системе сейчас отключена — после исчерпания лимита процесс согласуется с
+                        Оплата этапов в системе сейчас отключена: после исчерпания лимита процесс согласуется с
                         менеджером отдельно.
                     </p>
                 )}
@@ -107,8 +108,8 @@ export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
                     href="/orders/payments"
                     className="dash-header__btn dash-header__btn--primary"
                     style={{
-                        fontSize: "0.82rem",
-                        padding: "0.5em 1em",
+                        fontSize: "0.875rem",
+                        padding: "8px 16px",
                         textDecoration: "none",
                         display: "inline-flex",
                         alignItems: "center",
@@ -123,10 +124,8 @@ export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
             {openInvoices.length > 0 && (
                 <div style={{marginBottom: pendingExtraLines.length > 0 ? 14 : 0}}>
                     <p style={{
-                        fontSize: "0.72rem",
+                        fontSize: "0.75rem",
                         fontWeight: 700,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.06em",
                         color: "var(--dash-muted)",
                         margin: "0 0 8px"
                     }}>
@@ -146,20 +145,19 @@ export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
                                         justifyContent: "space-between",
                                         padding: "10px 12px",
                                         borderRadius: 8,
-                                        border: "1px solid var(--dash-border)",
                                         background: "var(--dash-surface2)",
                                     }}
                                 >
                                     <div style={{minWidth: 0}}>
-                                        <div style={{fontSize: "0.84rem", fontWeight: 600, color: "var(--dash-text)"}}>
+                                        <div style={{fontSize: "0.875rem", fontWeight: 600, color: "var(--dash-text)"}}>
                                             Счёт № {inv.number}
                                         </div>
                                         <div style={{
-                                            fontSize: "0.76rem",
+                                            fontSize: "0.75rem",
                                             color: "var(--dash-muted)",
                                             marginTop: 2
                                         }}>{inv.purpose}</div>
-                                        <div style={{fontSize: "0.78rem", color: "var(--dash-text)", marginTop: 4}}>
+                                        <div style={{fontSize: "0.75rem", color: "var(--dash-text)", marginTop: 4}}>
                                             {(inv.amount / 100).toLocaleString("ru-RU")} руб. ·{" "}
                                             {new Date(inv.createdAt).toLocaleDateString("ru-RU")}
                                         </div>
@@ -172,7 +170,7 @@ export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
                                                 target="_blank"
                                                 rel="noreferrer"
                                                 style={{
-                                                    fontSize: "0.78rem",
+                                                    fontSize: "0.75rem",
                                                     fontWeight: 600,
                                                     color: "var(--dash-accent)",
                                                     textDecoration: "none",
@@ -196,10 +194,8 @@ export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
             {!skipPayments && pendingExtraLines.length > 0 && (
                 <div>
                     <p style={{
-                        fontSize: "0.72rem",
+                        fontSize: "0.75rem",
                         fontWeight: 700,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.06em",
                         color: "var(--dash-danger)",
                         margin: "0 0 8px"
                     }}>
@@ -217,23 +213,22 @@ export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
                                     justifyContent: "space-between",
                                     padding: "10px 12px",
                                     borderRadius: 8,
-                                    border: "1px solid var(--dash-danger)",
                                     background: "var(--dash-danger-bg)",
                                 }}
                             >
                                 <div style={{minWidth: 0}}>
-                                    <div style={{fontSize: "0.84rem", fontWeight: 600, color: "var(--dash-text)"}}>
+                                    <div style={{fontSize: "0.875rem", fontWeight: 600, color: "var(--dash-text)"}}>
                                         {STAGE_LABEL[stageType]}
                                     </div>
                                     {ep.reason ? (
                                         <div style={{
-                                            fontSize: "0.76rem",
+                                            fontSize: "0.75rem",
                                             color: "var(--dash-muted)",
                                             marginTop: 4
                                         }}>{ep.reason}</div>
                                     ) : null}
                                     <div style={{
-                                        fontSize: "0.82rem",
+                                        fontSize: "0.875rem",
                                         fontWeight: 600,
                                         color: "var(--dash-danger)",
                                         marginTop: 6
@@ -241,25 +236,16 @@ export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
                                         {(ep.amount / 100).toLocaleString("ru-RU")} руб.
                                     </div>
                                 </div>
-                                <button
+                                <Button
                                     type="button"
+                                    variant="destructive"
+                                    size="lg"
                                     disabled={payingStageId !== null}
                                     onClick={() => void payExtra(stageId)}
-                                    style={{
-                                        padding: "0.55em 1.15em",
-                                        borderRadius: 8,
-                                        border: "none",
-                                        background: "var(--dash-danger)",
-                                        color: "#fff",
-                                        fontSize: "0.82rem",
-                                        fontWeight: 600,
-                                        cursor: payingStageId ? "wait" : "pointer",
-                                        fontFamily: "inherit",
-                                        opacity: payingStageId === stageId ? 0.85 : 1,
-                                    }}
+                                    style={{cursor: payingStageId ? "wait" : "pointer"}}
                                 >
                                     {payingStageId === stageId ? "Переход…" : "Оплатить онлайн"}
-                                </button>
+                                </Button>
                             </div>
                         ))}
                     </div>

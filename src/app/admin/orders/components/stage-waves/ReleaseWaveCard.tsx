@@ -39,44 +39,43 @@ export function ReleaseWaveCard({
                 <div>
                     <span style={{
                         fontWeight: 700,
-                        fontSize: "0.82rem",
+                        fontSize: "0.875rem",
                         color: "var(--adm-text)"
                     }}>Выпуск {wave.displayNumber}</span>
-                    <div style={{fontSize: "0.7rem", color: "var(--adm-muted)", marginTop: 4}}>
+                    <div style={{fontSize: "0.75rem", color: "var(--adm-muted)", marginTop: 4}}>
                         К заказчику · {formatStageDt(wave.releasedAt)}
                     </div>
                 </div>
                 <div style={{display: "flex", flexWrap: "wrap", gap: 6, justifyContent: "flex-end"}}>
                     {wave.isFinalAcceptedBundle ? (
-                        <span className="sp-badge sp-badge--success" style={{fontSize: "0.6rem"}}>
+                        <span className="sp-badge sp-badge--success" style={{fontSize: "0.75rem"}}>
               Финальная версия
             </span>
                     ) : null}
                     {wave.isAtClientReview ? (
-                        <span className="sp-badge sp-badge--warn" style={{fontSize: "0.6rem"}}>
+                        <span className="sp-badge sp-badge--warn" style={{fontSize: "0.75rem"}}>
               У заказчика
             </span>
                     ) : null}
                 </div>
             </div>
 
-            <div style={{paddingLeft: 10, borderLeft: "3px solid rgba(245, 158, 11, 0.9)"}}>
+            <div>
                 <div style={{
-                    fontSize: "0.62rem",
+                    fontSize: "0.75rem",
                     fontWeight: 700,
                     color: "var(--adm-muted)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.05em"
                 }}>
+                    <span aria-hidden style={{display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "var(--bs-warning)", marginRight: 6, verticalAlign: "middle"}}/>
                     Модератор (до выпуска)
                 </div>
                 {wave.moderatorRejections.length === 0 ? (
-                    <div style={{fontSize: "0.76rem", color: "var(--adm-text)", marginTop: 4}}>Замечаний не было</div>
+                    <div style={{fontSize: "0.75rem", color: "var(--adm-text)", marginTop: 4}}>Замечаний не было</div>
                 ) : (
                     <ul style={{
                         margin: "6px 0 0",
-                        paddingLeft: 18,
-                        fontSize: "0.76rem",
+                        paddingLeft: 16,
+                        fontSize: "0.75rem",
                         lineHeight: 1.45,
                         color: "var(--adm-text)"
                     }}>
@@ -93,25 +92,24 @@ export function ReleaseWaveCard({
                 )}
             </div>
 
-            <div style={{paddingLeft: 10, borderLeft: "3px solid rgba(56, 189, 248, 0.95)"}}>
+            <div>
                 <div style={{
-                    fontSize: "0.62rem",
+                    fontSize: "0.75rem",
                     fontWeight: 700,
                     color: "var(--adm-muted)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.05em"
                 }}>
+                    <span aria-hidden style={{display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "var(--adm-active-color)", marginRight: 6, verticalAlign: "middle"}}/>
                     Заказчик (до выпуска)
                 </div>
                 {wave.clientRejections.length === 0 ? (
-                    <div style={{fontSize: "0.76rem", color: "var(--adm-text)", marginTop: 4}}>
+                    <div style={{fontSize: "0.75rem", color: "var(--adm-text)", marginTop: 4}}>
                         {wave.displayNumber === 1 ? "Первый выпуск — правок заказчика перед этим не было" : "Правок по этой итерации в журнале нет"}
                     </div>
                 ) : (
                     <ul style={{
                         margin: "6px 0 0",
-                        paddingLeft: 18,
-                        fontSize: "0.76rem",
+                        paddingLeft: 16,
+                        fontSize: "0.75rem",
                         lineHeight: 1.45,
                         color: "var(--adm-text)"
                     }}>
@@ -128,7 +126,7 @@ export function ReleaseWaveCard({
                 )}
             </div>
 
-            <div style={{fontSize: "0.72rem", color: "var(--adm-muted)"}}>
+            <div style={{fontSize: "0.75rem", color: "var(--adm-muted)"}}>
                 Файлов в комплекте этой волны:{" "}
                 <strong style={{color: "var(--adm-text)"}}>{wave.files.length}</strong>
             </div>

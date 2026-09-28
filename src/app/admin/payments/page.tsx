@@ -6,6 +6,7 @@ import {AdminLayout} from "@/components/admin/AdminLayout"
 import {useRegisterAdminRefresh} from "@/components/admin/AdminRefreshContext"
 import {Icon} from "@/components/ui/icon"
 import {stripBx} from "@/lib/icon-map"
+import {Button} from "@/components/ui/button"
 
 type PaymentStatus = "PENDING" | "HELD" | "RELEASED" | "REFUNDED" | "FAILED"
 
@@ -107,14 +108,16 @@ export default function PaymentsAdminPage() {
                             {value: "PENDING", label: "Ожидание"},
                             {value: "REFUNDED", label: "Возврат"},
                         ] as { value: PaymentStatus | "ALL"; label: string }[]).map(f => (
-                            <button
+                            <Button
                                 key={f.value}
-                                className={`btn btn-sm ${filter === f.value ? "btn-primary" : "btn-outline-secondary"}`}
+                                type="button"
+                                size="xs"
+                                variant={filter === f.value ? "default" : "outline"}
+                                aria-pressed={filter === f.value}
                                 onClick={() => setFilter(f.value)}
-                                style={{fontSize: "0.72rem", padding: "2px 10px"}}
                             >
                                 {f.label}
-                            </button>
+                            </Button>
                         ))}
                     </div>
                 </div>
@@ -150,18 +153,19 @@ export default function PaymentsAdminPage() {
                                     </td>
                                     <td><StatusBadge variant={STATUS_VARIANT[p.status]} label={STATUS_LABEL[p.status]}/>
                                     </td>
-                                    <td className="text-muted" style={{fontSize: "0.8rem"}}>
+                                    <td className="text-muted" style={{fontSize: "0.75rem"}}>
                                         {new Date(p.createdAt).toLocaleDateString("ru-RU")}
                                     </td>
                                     <td>
                                         {p.status === "HELD" && (
-                                            <button
+                                            <Button
+                                                type="button"
+                                                size="sm"
                                                 onClick={() => release(p.id)}
                                                 disabled={releasing !== null}
-                                                className="btn btn-sm btn-success"
                                             >
                                                 {releasing === p.id ? "…" : "Выплатить"}
-                                            </button>
+                                            </Button>
                                         )}
                                     </td>
                                 </tr>

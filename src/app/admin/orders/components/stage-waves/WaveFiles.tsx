@@ -71,10 +71,10 @@ export function WaveFiles({
                                     value={(f.audience ?? "SHARED") as string}
                                     onChange={(e) => onSetAudience(f.id, e.target.value as "DESIGNER" | "CLIENT" | "SHARED")}
                                     style={{
-                                        fontSize: "0.65rem",
-                                        padding: "1px 4px",
+                                        fontSize: "0.75rem",
+                                        padding: "2px 4px",
                                         borderRadius: 4,
-                                        border: "1px solid var(--adm-sidebar-border)",
+                                        border: "none",
                                         background: "var(--adm-outer)",
                                         color: "inherit",
                                         fontFamily: "inherit",
@@ -92,7 +92,7 @@ export function WaveFiles({
             ) : null}
 
             {media.length > shownMedia.length ? (
-                <div style={{marginTop: 8, fontSize: "0.7rem", color: "var(--adm-muted)"}}>
+                <div style={{marginTop: 8, fontSize: "0.75rem", color: "var(--adm-muted)"}}>
                     Ещё медиа файлов: {media.length - shownMedia.length}
                 </div>
             ) : null}

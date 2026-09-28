@@ -2,6 +2,8 @@
 
 import {createPortal} from "react-dom"
 import {useEffect, useState} from "react"
+import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
 
 interface Props {
     open: boolean
@@ -39,37 +41,36 @@ export function CreateProjectDialog({open, onCreate, onCancel, error}: Props) {
     }
 
     return createPortal(
-        <div onClick={onCancel} style={{
+        <div onClick={onCancel} role="presentation" style={{
             position: "fixed",
             inset: 0,
             background: "rgba(0,0,0,0.5)",
-            zIndex: 1200,
+            zIndex: "var(--z-dialog)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center"
         }}>
-            <div onClick={e => e.stopPropagation()} style={{
-                background: "var(--dash-surface, #0d1230)",
-                border: "1px solid var(--dash-border, rgba(255,255,255,0.1))",
+            <div onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" style={{
+                background: "var(--dash-surface, var(--card))",
+                border: "1px solid var(--dash-border, var(--border))",
                 borderRadius: 14,
-                padding: "24px 28px",
+                padding: 24,
                 maxWidth: 380,
                 width: "90vw"
             }}>
-                <h3 style={{margin: "0 0 8px", fontSize: "0.95rem", color: "var(--dash-text, #f3f5ff)"}}>
+                <h3 style={{margin: "0 0 8px", fontSize: "1rem", color: "var(--dash-text, var(--foreground))"}}>
                     Новый проект
                 </h3>
                 <p style={{
                     margin: "0 0 14px",
-                    fontSize: "0.82rem",
-                    color: "var(--dash-muted, #8f95b2)",
+                    fontSize: "0.875rem",
+                    color: "var(--dash-muted, var(--muted-foreground))",
                     lineHeight: 1.45
                 }}>
-                    Название папки — например, «Квартира Сокольники».
+                    Название папки: например, «Квартира Сокольники».
                 </p>
-                <input
+                <Input
                     autoFocus
-                    className="form-control form-control-sm"
                     placeholder="Название проекта"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -77,38 +78,11 @@ export function CreateProjectDialog({open, onCreate, onCancel, error}: Props) {
                         if (e.key === "Enter") submit()
                     }}
                     aria-label="Название нового проекта"
-                    style={{
-                        minHeight: 36,
-                        background: "rgba(255,255,255,0.03)",
-                        borderColor: "rgba(255,255,255,0.14)",
-                        color: "var(--dash-text, #f4f4f4)",
-                    }}
                 />
                 {error && <small className="text-danger d-block mt-2">{error}</small>}
                 <div style={{display: "flex", gap: 8, justifyContent: "flex-end", marginTop: 20}}>
-                    <button onClick={onCancel} style={{
-                        padding: "6px 16px",
-                        borderRadius: 8,
-                        border: "1px solid var(--dash-border)",
-                        background: "transparent",
-                        color: "var(--dash-text)",
-                        cursor: "pointer",
-                        fontSize: "0.82rem",
-                        fontFamily: "inherit"
-                    }}>Отмена
-                    </button>
-                    <button onClick={submit} disabled={!trimmed} style={{
-                        padding: "6px 16px",
-                        borderRadius: 8,
-                        border: "none",
-                        background: trimmed ? "#5b4fcf" : "rgba(91,79,207,0.35)",
-                        color: "#fff",
-                        cursor: trimmed ? "pointer" : "not-allowed",
-                        fontSize: "0.82rem",
-                        fontFamily: "inherit",
-                        fontWeight: 600
-                    }}>Добавить проект
-                    </button>
+                    <Button variant="outline" onClick={onCancel}>Отмена</Button>
+                    <Button onClick={submit} disabled={!trimmed}>Добавить проект</Button>
                 </div>
             </div>
         </div>,

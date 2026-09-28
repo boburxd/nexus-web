@@ -63,9 +63,9 @@ export function RejectionHistoryCard({userId}: { userId: string }) {
         <div className="sp-card">
             <div className="sp-card-hd"><span className="sp-label">История отклонений</span></div>
             <div className="sp-card-bd">
-                {loading && <div style={{fontSize: "0.78rem", color: "var(--adm-muted)"}}>Загрузка…</div>}
+                {loading && <div style={{fontSize: "0.75rem", color: "var(--adm-muted)"}}>Загрузка…</div>}
                 {!loading && rejections.length === 0 && (
-                    <div style={{fontSize: "0.8rem", color: "var(--adm-muted)"}}>
+                    <div style={{fontSize: "0.75rem", color: "var(--adm-muted)"}}>
                         Отклонений пока не было.
                     </div>
                 )}
@@ -79,18 +79,17 @@ export function RejectionHistoryCard({userId}: { userId: string }) {
                                 <div
                                     key={entry.id}
                                     style={{
-                                        border: "1px solid var(--adm-sidebar-border, rgba(255,255,255,0.1))",
                                         borderRadius: 8,
                                         padding: "8px 10px",
                                         background: "var(--adm-outer, rgba(255,255,255,0.03))",
                                     }}
                                 >
                                     <div style={{
-                                        fontSize: "0.8rem",
+                                        fontSize: "0.75rem",
                                         color: "var(--adm-text, #fff)",
                                         fontWeight: 600
                                     }}>{reason}</div>
-                                    <div style={{fontSize: "0.72rem", color: "var(--adm-muted)", marginTop: 2}}>
+                                    <div style={{fontSize: "0.75rem", color: "var(--adm-muted)", marginTop: 2}}>
                                         {date.toLocaleDateString("ru-RU")} {date.toLocaleTimeString("ru-RU", {
                                         hour: "2-digit",
                                         minute: "2-digit"

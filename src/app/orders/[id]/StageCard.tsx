@@ -98,8 +98,7 @@ export function StageCard({stage, onAction, onActSigned, embedded, onOpenRevisio
 
     return (
         <div style={{
-            border: `1.5px solid ${isClientReview ? "var(--dash-warn)" : "var(--dash-border)"}`,
-            borderRadius: 12, padding: "1.25rem 1.5rem",
+            borderRadius: 14, padding: "1.25rem 1.5rem",
             background: isClientReview ? "var(--dash-warn-bg)" : "var(--dash-surface)",
             marginBottom: embedded ? 0 : "1rem",
         }}>
@@ -113,16 +112,16 @@ export function StageCard({stage, onAction, onActSigned, embedded, onOpenRevisio
                 <div>
                     <span style={{
                         fontWeight: 600,
-                        fontSize: "0.9rem",
+                        fontSize: "0.875rem",
                         color: "var(--dash-text)"
                     }}>{STAGE_LABEL[stage.type]}</span>
                     {stage.clientRound > 0 && (
-                        <span style={{marginLeft: "0.5rem", fontSize: "0.72rem", color: "var(--dash-muted)"}}>
+                        <span style={{marginLeft: "0.5rem", fontSize: "0.75rem", color: "var(--dash-muted)"}}>
               (правки: {stage.clientRound}/{MAX_FREE_CLIENT_REVISIONS})
             </span>
                     )}
                 </div>
-                <span style={{fontSize: "0.78rem", fontWeight: 500, color: st.color}}>{st.label}</span>
+                <span style={{fontSize: "0.75rem", fontWeight: 500, color: st.color}}>{st.label}</span>
             </div>
 
             {stage.rulesS3Key ? (
@@ -137,11 +136,10 @@ export function StageCard({stage, onAction, onActSigned, embedded, onOpenRevisio
                             gap: 6,
                             padding: "6px 10px",
                             borderRadius: 10,
-                            border: "1px solid var(--dash-border)",
                             background: "var(--dash-surface2)",
                             color: "var(--dash-text)",
                             textDecoration: "none",
-                            fontSize: "0.8rem",
+                            fontSize: "0.75rem",
                             fontWeight: 700,
                         }}
                     >
@@ -194,19 +192,16 @@ export function StageCard({stage, onAction, onActSigned, embedded, onOpenRevisio
                     marginTop: "0.75rem",
                     padding: "0.75rem",
                     borderRadius: 8,
-                    background: "var(--dash-surface2)",
-                    borderLeft: "3px solid var(--dash-border)"
+                    background: "var(--dash-surface2)"
                 }}>
                     <p style={{
-                        fontSize: "0.72rem",
+                        fontSize: "0.75rem",
                         fontWeight: 600,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.06em",
                         color: "var(--dash-muted)",
-                        marginBottom: "0.3rem"
+                        marginBottom: "0.25rem"
                     }}>Комментарий</p>
                     <p style={{
-                        fontSize: "0.85rem",
+                        fontSize: "0.875rem",
                         color: "var(--dash-text)",
                         margin: 0
                     }}>{stage.reviews[0].comment}</p>
@@ -241,7 +236,7 @@ export function StageCard({stage, onAction, onActSigned, embedded, onOpenRevisio
             {/* Free revisions */}
             {(stage.status === "CLIENT_REVIEW" || stage.status === "CLIENT_REVISION") &&
                 stage.clientRound < MAX_FREE_CLIENT_REVISIONS && (
-                    <div style={{marginTop: "0.5rem", fontSize: "0.72rem", color: "var(--dash-muted)"}}>
+                    <div style={{marginTop: "0.5rem", fontSize: "0.75rem", color: "var(--dash-muted)"}}>
                         Осталось бесплатных правок: {MAX_FREE_CLIENT_REVISIONS - stage.clientRound}
                     </div>
                 )}

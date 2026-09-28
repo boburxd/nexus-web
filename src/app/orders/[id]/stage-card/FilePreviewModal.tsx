@@ -1,9 +1,11 @@
 "use client"
 
 import dynamic from "next/dynamic"
+import {useEffect} from "react"
 import {isStageImageFilename} from "@/lib/stage-file-helpers"
 import {isVideoFilename} from "./utils"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 const StageImageMarkup = dynamic(() => import("@/components/stage/StageImageMarkup"), {ssr: false})
 
@@ -28,14 +30,23 @@ export function FilePreviewModal({
     const isImage = isStageImageFilename(filename)
     const showMarkupViewer = isImage && fileId
 
+    useEffect(() => {
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === "Escape") onClose()
+        }
+        document.addEventListener("keydown", onKey)
+        return () => document.removeEventListener("keydown", onKey)
+    }, [onClose])
+
     return (
         <div
             onClick={onClose}
+            role="presentation"
             style={{
                 position: "fixed",
                 inset: 0,
                 background: "rgba(0,0,0,0.85)",
-                zIndex: 1000,
+                zIndex: "var(--z-dropdown)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -52,22 +63,16 @@ export function FilePreviewModal({
                     overflowX: "hidden",
                 }}
             >
-                <button
+                <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
                     onClick={onClose}
-                    style={{
-                        position: "absolute",
-                        top: -36,
-                        right: 0,
-                        background: "none",
-                        border: "none",
-                        color: "#fff",
-                        fontSize: "1.5rem",
-                        cursor: "pointer",
-                        lineHeight: 1,
-                    }}
+                    aria-label="Закрыть"
+                    className="absolute -top-9 right-0"
                 >
-                    ✕
-                </button>
+                    <Icon name="x"/>
+                </Button>
                 {showMarkupViewer ? (
                     <StageImageMarkup
                         stageId={stageId}
@@ -103,7 +108,7 @@ export function FilePreviewModal({
                         {!isImage && !isVideo && (
                             <div
                                 style={{
-                                    background: "#1a1a2e",
+                                    background: "var(--dash-surface)",
                                     borderRadius: 8,
                                     padding: "2rem 3rem",
                                     color: "#fff",
@@ -111,13 +116,13 @@ export function FilePreviewModal({
                                 }}
                             >
                                 <Icon name="file"
-                                   style={{fontSize: "3rem", marginBottom: 12, display: "block"}}/>
+                                   style={{fontSize: "1.5rem", marginBottom: 12, display: "block"}}/>
                                 <p style={{margin: "0 0 16px"}}>{filename}</p>
                                 <a
                                     href={url}
                                     target="_blank"
                                     rel="noreferrer"
-                                    style={{color: "#6ee7b7", textDecoration: "none"}}
+                                    style={{color: "var(--dash-success)", textDecoration: "none"}}
                                 >
                                     Скачать файл
                                 </a>

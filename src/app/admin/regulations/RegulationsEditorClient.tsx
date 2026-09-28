@@ -5,6 +5,7 @@ import {toast} from "sonner"
 import type {RegulationsDocument} from "@/lib/regulations"
 import {RegulationsRichEditor} from "./RegulationsRichEditor"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 export default function RegulationsEditorClient({document}: { document: RegulationsDocument }) {
     const [title, setTitle] = useState(document.title)
@@ -54,18 +55,18 @@ export default function RegulationsEditorClient({document}: { document: Regulati
             <div className="d-flex align-items-center justify-content-between" style={{flexWrap: "wrap", gap: 12}}>
                 <div>
                     <h5 className="mb-0 fw-semibold">Регламент платформы</h5>
-                    <div className="text-muted" style={{fontSize: "0.8rem", marginTop: 4}}>
+                    <div className="text-muted" style={{fontSize: "0.75rem", marginTop: 4}}>
                         Текст шага онбординга «Ознакомление с регламентом».
                     </div>
                 </div>
-                <button
+                <Button
                     type="button"
-                    className="btn btn-sm btn-primary"
+                    size="sm"
                     onClick={save}
                     disabled={saving || !dirty || !content.trim()}
                 >
                     {saving ? "Сохранение…" : dirty ? "Сохранить" : "Сохранено"}
-                </button>
+                </Button>
             </div>
 
             <div style={{
@@ -73,7 +74,7 @@ export default function RegulationsEditorClient({document}: { document: Regulati
                 alignItems: "center",
                 gap: 12,
                 flexWrap: "wrap",
-                fontSize: "0.78rem",
+                fontSize: "0.75rem",
                 color: "var(--adm-muted)",
             }}>
                 <span>
@@ -83,7 +84,7 @@ export default function RegulationsEditorClient({document}: { document: Regulati
                         : `Обновлено: ${updatedAt ? new Date(updatedAt).toLocaleString("ru-RU") : "—"}${document.updatedBy ? ` · ${document.updatedBy}` : ""}`}
                 </span>
                 <span>· {chars.toLocaleString("ru-RU")} символов (~{pages} стр.)</span>
-                {dirty && <span style={{color: "#f59e0b"}}>· есть несохранённые изменения</span>}
+                {dirty && <span style={{color: "var(--bs-warning)"}}>· есть несохранённые изменения</span>}
             </div>
 
             <div className="card">
@@ -94,7 +95,7 @@ export default function RegulationsEditorClient({document}: { document: Regulati
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="Заголовок документа"
                         className="form-control"
-                        style={{fontSize: "0.95rem", fontWeight: 500}}
+                        style={{fontSize: "1rem", fontWeight: 500}}
                     />
                     <RegulationsRichEditor
                         initialMarkdown={document.content}

@@ -7,6 +7,8 @@ import type {RawSpecialist} from "../../../types"
 import {confirmDialog} from "@/lib/dialog-store"
 import {toast} from "sonner"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
 
 const CONTRACT_LOCK_HINT: Record<string, string> = {
     AWAITING_SIGNATURE: "Ожидает подписи специалиста — новую версию можно загрузить после отказа",
@@ -86,7 +88,7 @@ export function PlatformContractCard({
                     Администратор загружает исходный PDF. Специалист скачивает его в онбординге, подписывает и загружает
                     подписанный PDF обратно. После проверки нажмите подтверждение ниже.
                 </p>
-                <div style={{fontSize: "0.78rem", marginBottom: 10}}>
+                <div style={{fontSize: "0.75rem", marginBottom: 10}}>
                     <span style={{color: "var(--adm-muted)"}}>Статус: </span>
                     <strong style={{color: "var(--adm-text)"}}>
                         {SPEC_CONTRACT_STATUS_LABEL[p?.specialistContractStatus ?? "NONE"] ?? (p?.specialistContractStatus ?? "NONE")}
@@ -104,8 +106,8 @@ export function PlatformContractCard({
                             borderRadius: 8,
                             background: "rgba(52,211,153,0.08)",
                             border: "1px solid rgba(52,211,153,0.18)",
-                            color: "#34d399",
-                            fontSize: "0.78rem",
+                            color: "var(--bs-success)",
+                            fontSize: "0.75rem",
                         }}
                     >
                         <strong style={{display: "block", marginBottom: 4}}>Подписанный файл получен</strong>
@@ -117,32 +119,30 @@ export function PlatformContractCard({
 
                 <div style={{display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12}}>
                     {p?.specialistContractS3Key && (
-                        <button
+                        <Button
                             type="button"
-                            className="sp-btn sp-btn-ghost"
-                            style={{fontSize: "0.78rem"}}
+                            variant="outline"
                             onClick={() => void openContract("source")}
                         >
-                            <Icon name="download" style={{marginRight: 4}}/>
+                            <Icon name="download"/>
                             Исходный PDF
-                        </button>
+                        </Button>
                     )}
                     {p?.specialistSignedContractS3Key && (
-                        <button
+                        <Button
                             type="button"
-                            className="sp-btn sp-btn-ghost"
-                            style={{fontSize: "0.78rem"}}
+                            variant="outline"
                             onClick={() => void openContract("signed")}
                         >
-                            <Icon name="file" style={{marginRight: 4}}/>
+                            <Icon name="file"/>
                             Подписанный PDF
-                        </button>
+                        </Button>
                     )}
                 </div>
 
                 {p?.specialistContractStatus === "SIGNED_BY_SPECIALIST" && (
                     <div style={{marginBottom: 12}}>
-                        <button
+                        <Button
                             type="button"
                             onClick={async () => {
                                 if (!(await confirmDialog({
@@ -158,21 +158,11 @@ export function PlatformContractCard({
                                 }
                                 await onRefresh?.()
                             }}
-                            style={{
-                                padding: "8px 14px",
-                                borderRadius: 6,
-                                border: "none",
-                                background: "var(--dash-success, #16a34a)",
-                                color: "#fff",
-                                fontWeight: 600,
-                                fontSize: "0.78rem",
-                                cursor: "pointer",
-                            }}
                         >
                             Подтвердить подписание договора
-                        </button>
+                        </Button>
                         {!p?.specialistSignedContractS3Key && (
-                            <p style={{fontSize: "0.72rem", color: "var(--adm-muted)", margin: "8px 0 0"}}>
+                            <p style={{fontSize: "0.75rem", color: "var(--adm-muted)", margin: "8px 0 0"}}>
                                 Специалист подтвердил подписание без загрузки файла. Для нового сценария попросите
                                 загрузить подписанный PDF.
                             </p>
@@ -202,41 +192,21 @@ export function PlatformContractCard({
                     />
                     {uploadOpen && (
                         <>
-                            <input
+                            <Input
                                 value={number}
                                 onChange={(e) => setNumber(e.target.value)}
                                 disabled={uploading}
                                 placeholder="Номер договора (необязательно)"
-                                style={{
-                                    width: "100%",
-                                    maxWidth: 320,
-                                    padding: "6px 10px",
-                                    borderRadius: 6,
-                                    border: "1px solid var(--adm-sidebar-border)",
-                                    background: "var(--adm-outer)",
-                                    color: "var(--adm-text)",
-                                    fontSize: "0.8rem",
-                                }}
+                                className="max-w-80"
                             />
                             <div>
-                                <button
+                                <Button
                                     type="button"
                                     disabled={!file || uploading}
                                     onClick={() => void uploadSource()}
-                                    style={{
-                                        padding: "6px 14px",
-                                        borderRadius: 6,
-                                        border: "none",
-                                        background: "var(--adm-active-color)",
-                                        color: "#fff",
-                                        fontWeight: 600,
-                                        fontSize: "0.78rem",
-                                        cursor: !file || uploading ? "not-allowed" : "pointer",
-                                        opacity: !file || uploading ? 0.6 : 1,
-                                    }}
                                 >
                                     {uploading ? "Отправка…" : "Отправить договор специалисту"}
-                                </button>
+                                </Button>
                             </div>
                         </>
                     )}

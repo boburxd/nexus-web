@@ -2,6 +2,7 @@
 
 import type {Stage} from "../types"
 import {STAGE_LABEL} from "../types"
+import {Button} from "@/components/ui/button"
 
 export function StageAdminActions({
                                       stage,
@@ -22,20 +23,23 @@ export function StageAdminActions({
     if (isClientRevision) {
         return (
             <div style={{marginTop: 8, display: "flex", gap: 6, flexWrap: "wrap"}}>
-                <button
+                <Button
+                    type="button"
+                    size="sm"
                     onClick={() => onClientRevision?.(stage.id, "accept", STAGE_LABEL[stage.type])}
                     disabled={acting !== null || !onClientRevision}
-                    className="sp-btn sp-btn-primary sp-btn-sm"
                 >
                     Принять правки клиента
-                </button>
-                <button
+                </Button>
+                <Button
+                    type="button"
+                    size="sm"
+                    variant="destructive"
                     onClick={() => onClientRevision?.(stage.id, "reject", STAGE_LABEL[stage.type])}
                     disabled={acting !== null || !onClientRevision}
-                    className="sp-btn sp-btn-danger sp-btn-sm"
                 >
                     Отклонить правки (с причиной)
-                </button>
+                </Button>
             </div>
         )
     }
@@ -44,7 +48,7 @@ export function StageAdminActions({
         // Explicit hint for admins: why there are no approve/reject buttons.
         // This reduces confusion when the stage is UPLOADED/CLIENT_REVIEW/etc.
         return (
-            <div style={{marginTop: 8, fontSize: "0.78rem", color: "var(--adm-muted)"}}>
+            <div style={{marginTop: 8, fontSize: "0.75rem", color: "var(--adm-muted)"}}>
                 Действия модератора (одобрить / вернуть на доработку) доступны только в статусе «MOD_REVIEW».
             </div>
         )
@@ -52,27 +56,31 @@ export function StageAdminActions({
 
     return (
         <div style={{marginTop: 8, display: "flex", gap: 6}}>
-            <button
+            <Button
+                type="button"
+                size="sm"
                 onClick={() => onReviewStage(stage.id, "modApprove", STAGE_LABEL[stage.type])}
                 disabled={acting !== null}
-                className="sp-btn sp-btn-success sp-btn-sm"
             >
                 Одобрить
-            </button>
-            <button
+            </Button>
+            <Button
+                type="button"
+                size="sm"
+                variant="destructive"
                 onClick={() => onReviewStage(stage.id, "modRevision", STAGE_LABEL[stage.type])}
                 disabled={acting !== null}
-                className="sp-btn sp-btn-danger sp-btn-sm"
             >
                 Отклонить (с причиной)
-            </button>
-            <button
+            </Button>
+            <Button
+                type="button"
+                size="sm"
+                variant="outline"
                 onClick={() => onExtraPayment(stage.id, STAGE_LABEL[stage.type])}
-                className="sp-btn sp-btn-ghost sp-btn-sm"
             >
                 Доп. оплата
-            </button>
+            </Button>
         </div>
     )
 }
-

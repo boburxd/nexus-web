@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import {createContext, type ReactNode, useCallback, useContext, useEffect, useState} from "react"
 import {useParams, useRouter, useSearchParams} from "next/navigation"
 import {toast} from "sonner"
@@ -20,6 +21,7 @@ import {adminSpecialistHref, parseTabSegment, ADMIN_SPECIALIST_TABS} from "@/lib
 import {replaceQueryParams} from "@/lib/client/url-query"
 import {userDisplayName} from "@/lib/user-name"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 const STATUS_FILTERS = [
     {value: "ALL", label: "Все"},
@@ -323,44 +325,51 @@ export function SpecialistsShell({children}: { children: ReactNode }) {
                         <span className="sp-badge">{filtered.length}</span>
                     </div>
                     <div style={{display: "flex", gap: 8, padding: "0 12px 8px"}}>
-                        <button
+                        <Button
                             type="button"
-                            className={`sp-filter-btn${!showArchived ? " sp-filter-btn--on" : ""}`}
+                            size="xs"
+                            variant={!showArchived ? "secondary" : "outline"}
+                            aria-pressed={!showArchived}
                             onClick={() => setShowArchived(false)}
                         >
                             Активные
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             type="button"
-                            className={`sp-filter-btn${showArchived ? " sp-filter-btn--on" : ""}`}
+                            size="xs"
+                            variant={showArchived ? "secondary" : "outline"}
+                            aria-pressed={showArchived}
                             onClick={() => setShowArchived(true)}
                         >
                             Архив
-                        </button>
+                        </Button>
                     </div>
                     <div className="sp-search">
                         <Icon name="search" className="sp-search-icon"/>
                         <input
                             type="text"
                             className="sp-search-input"
-                            placeholder="Поиск..."
+                            placeholder="Поиск…"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
                     <div className="sp-filters">
                         {STATUS_FILTERS.map((f) => (
-                            <button
+                            <Button
                                 key={f.value}
-                                className={`sp-filter-btn${filter === f.value ? " sp-filter-btn--on" : ""}`}
+                                type="button"
+                                size="xs"
+                                variant={filter === f.value ? "secondary" : "outline"}
+                                aria-pressed={filter === f.value}
                                 onClick={() => setFilter(f.value)}
                             >
                                 {f.label}
-                            </button>
+                            </Button>
                         ))}
                     </div>
 
-                    {loading && <div className="sp-empty">Загрузка...</div>}
+                    {loading && <div className="sp-empty">Загрузка…</div>}
                     {!loading && filtered.length === 0 && <div className="sp-empty">Нет специалистов</div>}
 
                     {!loading && filtered.map((s) => {
@@ -372,10 +381,11 @@ export function SpecialistsShell({children}: { children: ReactNode }) {
                         const edoLabel = formatEdoProvidersLabel(typeof fd?.edoProviders === "string" ? fd.edoProviders : undefined)
 
                         return (
-                            <button
-                                type="button"
+                            <Link
                                 key={s.id}
-                                onClick={() => router.push(adminSpecialistHref(s.id, undefined, window.location.search), {scroll: false})}
+                                href={adminSpecialistHref(s.id, undefined, searchParams)}
+                                scroll={false}
+                                aria-current={isActive ? "page" : undefined}
                                 className={`sp-user-card${isActive ? " sp-user-card--on" : ""}`}
                             >
                                 <div className="sp-user-card__top">
@@ -385,7 +395,7 @@ export function SpecialistsShell({children}: { children: ReactNode }) {
                                             background: avatarUrls[s.id]
                                                 ? undefined
                                                 : isActive
-                                                    ? "linear-gradient(135deg, var(--adm-active-color), #a78bfa)"
+                                                    ? "var(--adm-active-color)"
                                                     : "var(--adm-active-bg)",
                                             color: isActive ? "#fff" : "var(--adm-active-color)",
                                         }}
@@ -414,7 +424,7 @@ export function SpecialistsShell({children}: { children: ReactNode }) {
                                     <Icon name="transfer-alt"/>
                                     ЭДО: {edoLabel || "—"}
                                 </div>
-                            </button>
+                            </Link>
                         )
                     })}
                 </aside>

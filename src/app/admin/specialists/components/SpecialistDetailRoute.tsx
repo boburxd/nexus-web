@@ -13,7 +13,7 @@ export function SpecialistDetailRoute({id}: { id: string }) {
         return (
             <div className="sp-detail-empty">
                 <Icon name="user-circle"/>
-                <p>{shell.loading ? "Загрузка..." : "Специалист не найден"}</p>
+                <p>{shell.loading ? "Загрузка…" : "Специалист не найден"}</p>
             </div>
         )
     }

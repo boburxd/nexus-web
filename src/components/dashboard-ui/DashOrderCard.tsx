@@ -59,6 +59,7 @@ export function DashOrderCard({
             hue={hue}
             watermark={watermark}
             title=""
+            label={title}
             subtitle=""
             onClick={onClick}
             className={className}

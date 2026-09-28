@@ -7,6 +7,7 @@ import {confirmDialog} from "@/lib/dialog-store"
 import type {ActStatus, Stage, StageAct} from "@/app/admin/orders/types"
 import {ACT_STATUS_LABEL, ACT_STATUS_VARIANT} from "@/app/admin/orders/types"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 function formatDate(dateString: string | null): string {
     if (!dateString) return "—"
@@ -30,8 +31,8 @@ function ActFileLink({stageId, s3Key, label}: { stageId: string; s3Key: string |
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 4,
-                color: "#34d399",
-                fontSize: "0.85rem",
+                color: "var(--success)",
+                fontSize: "0.875rem",
                 textDecoration: "none",
             }}
         >
@@ -104,15 +105,14 @@ export function StageActAdminCard({
         <>
             <div
                 style={{
-                    border: "1px solid var(--adm-border)",
                     borderRadius: 8,
                     padding: "12px",
                     marginTop: 10,
                     background:
                         act.status === "REJECTED"
-                            ? "rgba(234,84,85,0.06)"
+                            ? "color-mix(in oklab, var(--destructive) 6%, transparent)"
                             : act.status === "CONFIRMED"
-                                ? "rgba(46,184,92,0.06)"
+                                ? "color-mix(in oklab, var(--success) 6%, transparent)"
                                 : "rgba(255,255,255,0.02)",
                 }}
             >
@@ -127,8 +127,8 @@ export function StageActAdminCard({
                     }}
                 >
                     <div style={{display: "flex", alignItems: "center", gap: 8}}>
-                        <Icon name="file-blank" style={{fontSize: "1.1rem", color: "var(--adm-muted)"}}/>
-                        <span style={{fontWeight: 600, fontSize: "0.88rem"}}>Акт этапа</span>
+                        <Icon name="file-blank" style={{fontSize: "1.125rem", color: "var(--adm-muted)"}}/>
+                        <span style={{fontWeight: 600, fontSize: "0.875rem"}}>Акт этапа</span>
                     </div>
                     <StatusBadge variant={variant} label={statusLabel}/>
                 </div>
@@ -172,47 +172,46 @@ export function StageActAdminCard({
                     ) : null}
                 </div>
 
-                <div style={{display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 8, fontSize: "0.8rem"}}>
+                <div style={{display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 8, fontSize: "0.75rem"}}>
                     <ActFileLink stageId={stage.id} s3Key={act.specialistActS3Key} label="Акт от дизайнера"/>
                     <ActFileLink stageId={stage.id} s3Key={act.clientActS3Key} label="Акт от заказчика"/>
                 </div>
 
                 <div style={{display: "flex", flexDirection: "column", gap: 8}}>
                     {act.status === "SPECIALIST_UPLOADED" && (
-                        <p style={{fontSize: "0.72rem", color: "var(--adm-muted)", margin: 0, lineHeight: 1.35}}>
+                        <p style={{fontSize: "0.75rem", color: "var(--adm-muted)", margin: 0, lineHeight: 1.35}}>
                             «Одобрить» открывает заказчику скачивание акта и загрузку подписанного PDF. «Подтвердить»
-                            (финально) — только после того, как заказчик загрузит подпись.
+                            (финально): только после того, как заказчик загрузит подпись.
                         </p>
                     )}
                     {act.status === "CLIENT_SIGNED" && (
-                        <p style={{fontSize: "0.72rem", color: "var(--adm-muted)", margin: 0, lineHeight: 1.35}}>
-                            Заказчик загрузил подписанный акт — проверьте и подтвердите.
+                        <p style={{fontSize: "0.75rem", color: "var(--adm-muted)", margin: 0, lineHeight: 1.35}}>
+                            Заказчик загрузил подписанный акт: проверьте и подтвердите.
                         </p>
                     )}
                     <div style={{display: "flex", gap: 6, flexWrap: "wrap"}}>
                         {act.status === "SPECIALIST_UPLOADED" && (
                             <>
-                                <button onClick={() => void handleApprove()} disabled={acting}
-                                        className="sp-btn sp-btn-success sp-btn-sm">
+                                <Button size="sm" onClick={() => void handleApprove()} disabled={acting}>
                                     {acting ? "…" : "Одобрить"}
-                                </button>
-                                <button
+                                </Button>
+                                <Button
+                                    size="sm"
+                                    variant="destructive"
                                     onClick={() => {
                                         setRejecting(true)
                                         setRejectComment("")
                                     }}
                                     disabled={acting}
-                                    className="sp-btn sp-btn-danger sp-btn-sm"
                                 >
                                     На доработку
-                                </button>
+                                </Button>
                             </>
                         )}
                         {act.status === "CLIENT_SIGNED" && (
-                            <button onClick={() => void handleConfirm()} disabled={acting}
-                                    className="sp-btn sp-btn-success sp-btn-sm">
+                            <Button size="sm" onClick={() => void handleConfirm()} disabled={acting}>
                                 {acting ? "…" : "Подтвердить"}
-                            </button>
+                            </Button>
                         )}
                     </div>
                 </div>
@@ -220,6 +219,7 @@ export function StageActAdminCard({
 
             {rejecting && (
                 <div
+                    role="presentation"
                     style={{
                         position: "fixed",
                         top: 0,
@@ -230,18 +230,18 @@ export function StageActAdminCard({
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        zIndex: 1000,
+                        zIndex: "var(--z-dropdown)",
                     }}
                     onClick={() => setRejecting(false)}
                 >
                     <div
                         style={{
-                            background: "#1a1a1a",
-                            borderRadius: 12,
+                            background: "var(--adm-sidebar)",
+                            borderRadius: 14,
                             padding: 24,
                             width: 420,
                             maxWidth: "90vw",
-                            color: "#fff",
+                            color: "var(--adm-text)",
                         }}
                         onClick={(e) => e.stopPropagation()}
                     >
@@ -251,22 +251,18 @@ export function StageActAdminCard({
                             alignItems: "center",
                             marginBottom: 16
                         }}>
-                            <h3 style={{margin: 0, fontSize: "1.1rem"}}>Акт на доработку</h3>
-                            <button
+                            <h3 style={{margin: 0, fontSize: "1.125rem"}}>Акт на доработку</h3>
+                            <Button
                                 type="button"
+                                variant="ghost"
+                                size="icon-sm"
+                                aria-label="Закрыть"
                                 onClick={() => setRejecting(false)}
-                                style={{
-                                    background: "none",
-                                    border: "none",
-                                    color: "#999",
-                                    cursor: "pointer",
-                                    fontSize: "1.2rem",
-                                }}
                             >
                                 ×
-                            </button>
+                            </Button>
                         </div>
-                        <p style={{color: "#999", fontSize: "0.85rem", marginBottom: 16}}>Укажите причину возврата акта
+                        <p style={{color: "var(--adm-muted)", fontSize: "0.875rem", marginBottom: 16}}>Укажите причину возврата акта
                             на доработку</p>
                         <textarea
                             className="sp-textarea"
@@ -278,18 +274,17 @@ export function StageActAdminCard({
                             style={{marginBottom: 16}}
                         />
                         <div style={{display: "flex", gap: 8, justifyContent: "flex-end"}}>
-                            <button type="button" onClick={() => setRejecting(false)} disabled={acting}
-                                    className="sp-btn sp-btn-ghost">
+                            <Button type="button" variant="ghost" onClick={() => setRejecting(false)} disabled={acting}>
                                 Отмена
-                            </button>
-                            <button
+                            </Button>
+                            <Button
                                 type="button"
+                                variant="destructive"
                                 onClick={() => void submitReject()}
                                 disabled={!rejectComment.trim() || acting}
-                                className="sp-btn sp-btn-danger"
                             >
                                 Отправить
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>

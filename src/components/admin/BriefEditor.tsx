@@ -4,6 +4,7 @@ import {useState} from "react"
 import {ADMIN_BRIEF_FIELD_GROUPS} from "@/lib/adminBriefFields"
 import styles from "./BriefEditor.module.css"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 import {stripBx} from "@/lib/icon-map"
 
 export interface BriefEditorOrder {
@@ -15,10 +16,20 @@ export interface BriefEditorOrder {
 const BRIEF_GROUPS = ADMIN_BRIEF_FIELD_GROUPS
 
 const inputStyle: React.CSSProperties = {
-    width: "100%", padding: "5px 8px", borderRadius: 6, fontSize: "0.82rem", fontFamily: "inherit",
-    border: "1px solid var(--adm-sidebar-border, rgba(255,255,255,0.1))",
-    background: "var(--adm-outer, rgba(0,0,0,0.15))", color: "inherit", outline: "none",
+    width: "100%", padding: "4px 8px", borderRadius: 6, fontSize: "0.875rem", fontFamily: "inherit",
+    border: 0,
+    background: "var(--adm-outer, rgba(0,0,0,0.15))", color: "inherit",
 }
+
+/** Редактор рендерится в Modal (портал в body, вне .adm-root): Button берёт цвета из --adm-*,
+ *  а без них — из текста модалки, чтобы читаться и в светлой, и в тёмной теме. */
+const buttonTokens = {
+    "--background": "transparent",
+    "--foreground": "var(--adm-text, currentColor)",
+    "--muted": "var(--adm-hover-bg, color-mix(in oklab, currentColor 8%, transparent))",
+    "--border": "var(--adm-sidebar-border, color-mix(in oklab, currentColor 20%, transparent))",
+    "--input": "var(--adm-sidebar-border, color-mix(in oklab, currentColor 20%, transparent))",
+} as React.CSSProperties
 
 function BriefField({f, value, onChange}: {
     f: import("@/lib/adminBriefFields").AdminBriefField
@@ -62,18 +73,10 @@ function BriefField({f, value, onChange}: {
                 {f.options.map(opt => {
                     const on = active.has(opt)
                     return (
-                        <button key={opt} type="button" onClick={() => toggle(opt)} style={{
-                            padding: "2px 8px",
-                            borderRadius: 100,
-                            fontSize: "0.72rem",
-                            fontFamily: "inherit",
-                            cursor: "pointer",
-                            border: on ? "1px solid var(--adm-active-color, #6366f1)" : "1px solid var(--adm-sidebar-border, rgba(255,255,255,0.15))",
-                            background: on ? "rgba(99,102,241,0.18)" : "transparent",
-                            color: on ? "var(--adm-active-color, #6366f1)" : "var(--adm-muted)",
-                        }}>
+                        <Button key={opt} type="button" size="xs" variant={on ? "default" : "outline"}
+                                aria-pressed={on} onClick={() => toggle(opt)}>
                             {on && "✓ "}{opt}
-                        </button>
+                        </Button>
                     )
                 })}
             </div>
@@ -111,24 +114,17 @@ export function BriefEditor({order, onClose, onSaved}: {
     const total = BRIEF_GROUPS.reduce((s, g) => s + g.fields.length, 0)
 
     return (
-        <div style={{padding: "20px 24px", maxHeight: "80vh", overflowY: "auto"}}>
+        <div style={{padding: "20px 24px", maxHeight: "80vh", overflowY: "auto", ...buttonTokens}}>
             <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16}}>
                 <div>
                     <h5 style={{margin: "0 0 2px", fontWeight: 600, fontSize: "1rem"}}>Бриф
                         #{order.id.slice(-6).toUpperCase()}</h5>
                     <span style={{
-                        fontSize: "0.72rem",
+                        fontSize: "0.75rem",
                         color: "var(--adm-muted)"
                     }}>{filled} из {total} полей заполнено</span>
                 </div>
-                <button onClick={onClose} style={{
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    fontSize: "1.2rem",
-                    color: "var(--adm-muted)",
-                    padding: 0
-                }}><Icon name="x"/></button>
+                <Button variant="ghost" size="icon-sm" aria-label="Закрыть" onClick={onClose}><Icon name="x"/></Button>
             </div>
 
             {order.briefHelpRequested && (
@@ -136,15 +132,15 @@ export function BriefEditor({order, onClose, onSaved}: {
                     marginBottom: 14,
                     padding: "8px 12px",
                     borderRadius: 8,
-                    background: "rgba(234,84,85,0.06)",
-                    border: "1px solid rgba(234,84,85,0.2)",
+                    background: "color-mix(in oklab, var(--destructive) 6%, transparent)",
+                    border: "1px solid color-mix(in oklab, var(--destructive) 20%, transparent)",
                     display: "flex",
                     alignItems: "center",
                     gap: 8,
-                    fontSize: "0.78rem"
+                    fontSize: "0.75rem"
                 }}>
-                    <Icon name="support" style={{color: "#ea5455"}}/>
-                    <span style={{color: "#ea5455", fontWeight: 600}}>Заказчик запросил помощь менеджера</span>
+                    <Icon name="support" style={{color: "var(--destructive)"}}/>
+                    <span style={{color: "var(--destructive)", fontWeight: 600}}>Заказчик запросил помощь менеджера</span>
                 </div>
             )}
 
@@ -152,12 +148,10 @@ export function BriefEditor({order, onClose, onSaved}: {
                 <div key={group.label} style={{marginBottom: 14}}>
                     <div style={{display: "flex", alignItems: "center", gap: 6, marginBottom: 8}}>
                         <Icon name={stripBx(group.icon)}
-                           style={{fontSize: "0.85rem", color: "var(--adm-active-color, #6366f1)"}}/>
+                           style={{fontSize: "0.875rem", color: "var(--adm-active-color, var(--bs-primary))"}}/>
                         <span style={{
-                            fontSize: "0.7rem",
+                            fontSize: "0.75rem",
                             fontWeight: 600,
-                            textTransform: "uppercase",
-                            letterSpacing: "0.05em",
                             color: "var(--adm-muted)"
                         }}>{group.label}</span>
                     </div>
@@ -167,7 +161,7 @@ export function BriefEditor({order, onClose, onSaved}: {
                                  style={{gridColumn: f.type === "chips" || f.type === "textarea" ? "1 / -1" : undefined}}>
                                 <label style={{
                                     display: "block",
-                                    fontSize: "0.65rem",
+                                    fontSize: "0.75rem",
                                     color: "var(--adm-muted)",
                                     marginBottom: 2,
                                     fontWeight: 500
@@ -180,29 +174,10 @@ export function BriefEditor({order, onClose, onSaved}: {
             ))}
 
             <div style={{display: "flex", gap: 8, marginTop: 12}}>
-                <button onClick={handleSave} disabled={saving} style={{
-                    padding: "0.55em 1.5em",
-                    borderRadius: 8,
-                    border: "none",
-                    fontSize: "0.82rem",
-                    fontWeight: 600,
-                    fontFamily: "inherit",
-                    background: saved ? "#22c55e" : "var(--adm-active-color, #6366f1)",
-                    color: "#fff",
-                    cursor: saving ? "default" : "pointer",
-                    opacity: saving ? 0.7 : 1,
-                }}>{saved ? "\u2713 Сохранено" : saving ? "Сохранение\u2026" : "Сохранить бриф"}</button>
-                <button onClick={onClose} style={{
-                    padding: "0.55em 1.5em",
-                    borderRadius: 8,
-                    fontSize: "0.82rem",
-                    fontFamily: "inherit",
-                    border: "1px solid var(--adm-sidebar-border)",
-                    background: "none",
-                    color: "var(--adm-muted)",
-                    cursor: "pointer",
-                }}>Закрыть
-                </button>
+                <Button onClick={handleSave} disabled={saving}>
+                    {saved ? "\u2713 Сохранено" : saving ? "Сохранение\u2026" : "Сохранить бриф"}
+                </Button>
+                <Button variant="outline" onClick={onClose}>Закрыть</Button>
             </div>
         </div>
     )

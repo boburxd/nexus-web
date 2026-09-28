@@ -2,6 +2,7 @@
 
 import type {Stage} from "../types"
 import {STAGE_LABEL} from "../types"
+import {Button} from "@/components/ui/button"
 
 export function StageTabs({
                               orderedStages,
@@ -27,23 +28,24 @@ export function StageTabs({
                     const hasMod = s.status === "MOD_REVIEW"
                     const actNeedsAdmin = s.act?.status === "SPECIALIST_UPLOADED" || s.act?.status === "CLIENT_SIGNED"
                     return (
-                        <button
+                        <Button
                             key={`tab-${s.id}`}
                             type="button"
-                            className={`sp-btn sp-btn-sm ${isOn ? "sp-btn-primary" : "sp-btn-ghost"}`}
+                            size="sm"
+                            variant={isOn ? "default" : "outline"}
+                            aria-pressed={isOn}
                             onClick={() => onSelectStage(s.id)}
-                            style={{display: "inline-flex", alignItems: "center", gap: 6}}
                         >
                             {STAGE_LABEL[s.type]}
                             {hasMod ? <span className="sp-badge sp-badge--danger"
-                                            style={{fontSize: "0.6rem"}}>!</span> : null}
+                                            style={{fontSize: "0.75rem"}}>!</span> : null}
                             {!hasMod && actNeedsAdmin ? (
-                                <span className="sp-badge sp-badge--warn" style={{fontSize: "0.6rem"}}
+                                <span className="sp-badge sp-badge--warn" style={{fontSize: "0.75rem"}}
                                       title="Акт ждёт действия">
                   акт
                 </span>
                             ) : null}
-                        </button>
+                        </Button>
                     )
                 })}
             </div>

@@ -87,7 +87,6 @@ export function DashRightDrawer({
                     border: "none",
                     cursor: open ? "pointer" : "default",
                     background: "rgba(0,0,0,0.35)",
-                    backdropFilter: "blur(2px)",
                     opacity: open ? 1 : 0,
                     transition: "opacity 0.25s ease",
                 }}
@@ -127,10 +126,10 @@ export function DashRightDrawer({
                         background: "var(--dash-surface2, rgba(0,0,0,0.02))",
                     }}
                 >
-                    <div style={{display: "flex", alignItems: "center", gap: "0.4em", flexWrap: "wrap", minWidth: 0}}>
+                    <div style={{display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", minWidth: 0}}>
                         {titleIcon != null ? <span style={{fontSize: "1rem", flexShrink: 0}}>{titleIcon}</span> : null}
                         <span {...(ariaLabelledBy ? {id: ariaLabelledBy} : {})}
-                              style={{color: "var(--dash-text)", fontSize: "0.92rem", fontWeight: 600}}>
+                              style={{color: "var(--dash-text)", fontSize: "0.875rem", fontWeight: 600}}>
               {title}
             </span>
                         {badge}
@@ -145,9 +144,9 @@ export function DashRightDrawer({
                             borderRadius: 8,
                             color: "var(--dash-muted)",
                             cursor: "pointer",
-                            fontSize: "0.85rem",
+                            fontSize: "0.875rem",
                             lineHeight: 1,
-                            padding: "0.35em 0.55em",
+                            padding: "4px 8px",
                         }}
                         aria-label="Закрыть"
                     >

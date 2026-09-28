@@ -14,6 +14,7 @@ import {ImageLightbox} from "@/components/ui/ImageLightbox"
 import type {SpecialistOnboardingAdminAction} from "../SpecialistDetail"
 import {confirmDialog} from "@/lib/dialog-store"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 export function SpecialistDetailHeader({
                                            specialist,
@@ -101,7 +102,7 @@ export function SpecialistDetailHeader({
                         {sp.phone && <span className="sp-profile-email">{sp.phone}</span>}
                         {sp.files.length > 0 && (
                             <span className="sp-badge"><Icon name="paperclip"
-                                                          style={{marginRight: 3}}/>{sp.files.length} файл(ов)</span>
+                                                          style={{marginRight: 4}}/>{sp.files.length} файл(ов)</span>
                         )}
                     </div>
                     {fd?.city && (
@@ -119,65 +120,68 @@ export function SpecialistDetailHeader({
                     <div className="sp-profile-actions">
                         {canAdvance && (
                             <>
-                                <button onClick={() => onAct(sp.id, "advance")} disabled={acting !== null}
-                                        className="sp-btn sp-btn-primary">
-                                    {acting === sp.id + "advance" ? "..." : ADVANCE_LABEL[status]}
-                                </button>
+                                <Button type="button" onClick={() => onAct(sp.id, "advance")} disabled={acting !== null}>
+                                    {acting === sp.id + "advance" ? "…" : ADVANCE_LABEL[status]}
+                                </Button>
                                 {status === "REGULATIONS" && regulationsStepStatus !== "PASSED" && (
                                     <span style={{
                                         fontSize: "0.75rem",
                                         color: "rgba(255,200,100,0.85)",
                                         alignSelf: "center"
                                     }}>
+                    <Icon name="error" style={{marginRight: 4}}/>
                     {regulationsStepStatus === "IN_PROGRESS"
-                        ? "⚠ Специалист проходит тест"
-                        : "⚠ Специалист ещё не прошёл тест регламентов"}
+                        ? "Специалист проходит тест"
+                        : "Специалист ещё не прошёл тест регламентов"}
                   </span>
                                 )}
                             </>
                         )}
                         {canReject && status === "PENDING" && (
                             <div className="sp-reject-dropdown" ref={rejectMenuRef}>
-                                <button
+                                <Button
                                     type="button"
+                                    variant="destructive"
                                     onClick={() => setRejectMenuOpen(v => !v)}
                                     disabled={acting !== null}
-                                    className="sp-btn sp-btn-danger-solid"
                                     aria-haspopup="menu"
                                     aria-expanded={rejectMenuOpen}
                                     title="Отклонить анкету"
                                 >
-                                    {isRejecting ? "..." : "Отклонить"}
-                                    <Icon name="chevron-down" style={{marginLeft: 4}}/>
-                                </button>
+                                    {isRejecting ? "…" : "Отклонить"}
+                                    <Icon name="chevron-down"/>
+                                </Button>
                                 <div className="sp-reject-menu" role="menu" hidden={!rejectMenuOpen}>
-                                    <button
+                                    <Button
                                         type="button"
+                                        variant="ghost"
                                         role="menuitem"
-                                        className="sp-reject-menu__item"
+                                        className="w-full justify-start"
                                         onClick={() => selectRejectReason("reject_no_education")}
                                     >
                                         Нет профильного образования
-                                    </button>
-                                    <button
+                                    </Button>
+                                    <Button
                                         type="button"
+                                        variant="ghost"
                                         role="menuitem"
-                                        className="sp-reject-menu__item"
+                                        className="w-full justify-start"
                                         onClick={() => selectRejectReason("reject_no_experience")}
                                     >
                                         Недостаточно опыта
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                         )}
                         {canReject && status !== "PENDING" && (
-                            <button onClick={() => onAct(sp.id, "reject")} disabled={acting !== null}
-                                    className="sp-btn sp-btn-danger">
-                                {acting === sp.id + "reject" ? "..." : "Отклонить"}
-                            </button>
+                            <Button type="button" variant="destructive" onClick={() => onAct(sp.id, "reject")}
+                                    disabled={acting !== null}>
+                                {acting === sp.id + "reject" ? "…" : "Отклонить"}
+                            </Button>
                         )}
-                        <button
+                        <Button
                             type="button"
+                            variant="ghost"
                             onClick={async () => {
                                 if (!(await confirmDialog({
                                     title: isArchived ? "Восстановить специалиста из архива?" : "Перенести специалиста в архив?",
@@ -186,12 +190,12 @@ export function SpecialistDetailHeader({
                                 onToggleArchive(sp.id, !isArchived)
                             }}
                             disabled={acting !== null}
-                            className="sp-btn"
                         >
                             {isArchived ? "Восстановить" : "В архив"}
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             type="button"
+                            variant="outline"
                             onClick={async () => {
                                 if (!(await confirmDialog({
                                     title: "Отозвать все сессии этого специалиста?",
@@ -201,11 +205,10 @@ export function SpecialistDetailHeader({
                                 onRevokeSession(sp.id)
                             }}
                             disabled={acting !== null}
-                            className="sp-btn sp-btn-ghost"
                             title="Принудительно разлогинить специалиста"
                         >
-                            <Icon name="log-out" style={{marginRight: 4}}/>Отозвать сессии
-                        </button>
+                            <Icon name="log-out"/>Отозвать сессии
+                        </Button>
                     </div>
                     <div className="sp-profile-stat">
                         <div className="sp-profile-stat__label">Онбординг:</div>
@@ -214,49 +217,72 @@ export function SpecialistDetailHeader({
                 </div>
             </div>
             <div className="sp-detail-tabs">
-                <button type="button" className={`sp-detail-tab${detailTab === "main" ? " sp-detail-tab--active" : ""}`}
-                        onClick={() => setDetailTab("main")}>
-                    Основной
-                </button>
-                <button
+                <Button
                     type="button"
-                    className={`sp-detail-tab${detailTab === "contract" ? " sp-detail-tab--active" : ""}`}
+                    size="sm"
+                    variant={detailTab === "main" ? "secondary" : "ghost"}
+                    aria-current={detailTab === "main" ? "page" : undefined}
+                    onClick={() => setDetailTab("main")}
+                >
+                    Основной
+                </Button>
+                <Button
+                    type="button"
+                    size="sm"
+                    variant={detailTab === "contract" ? "secondary" : "ghost"}
+                    aria-current={detailTab === "contract" ? "page" : undefined}
                     onClick={() => setDetailTab("contract")}
                     title="Договор с платформой"
                 >
                     Договор
-                </button>
-                <button
+                </Button>
+                <Button
                     type="button"
-                    className={`sp-detail-tab${detailTab === "onboarding" ? " sp-detail-tab--active" : ""}`}
+                    size="sm"
+                    variant={detailTab === "onboarding" ? "secondary" : "ghost"}
+                    aria-current={detailTab === "onboarding" ? "page" : undefined}
                     onClick={() => setDetailTab("onboarding")}
                     title="Шаги онбординга"
                 >
                     Онбординг
-                </button>
-                <button
+                </Button>
+                <Button
                     type="button"
-                    className={`sp-detail-tab${detailTab === "rating" ? " sp-detail-tab--active" : ""}`}
+                    size="sm"
+                    variant={detailTab === "rating" ? "secondary" : "ghost"}
+                    aria-current={detailTab === "rating" ? "page" : undefined}
                     onClick={() => setDetailTab("rating")}
                     title="Оценка и лендинг"
                 >
                     Оценка
-                </button>
-                <button type="button"
-                        className={`sp-detail-tab${detailTab === "files" ? " sp-detail-tab--active" : ""}`}
-                        onClick={() => setDetailTab("files")}>
+                </Button>
+                <Button
+                    type="button"
+                    size="sm"
+                    variant={detailTab === "files" ? "secondary" : "ghost"}
+                    aria-current={detailTab === "files" ? "page" : undefined}
+                    onClick={() => setDetailTab("files")}
+                >
                     Файлы
-                </button>
-                <button type="button"
-                        className={`sp-detail-tab${detailTab === "portfolio" ? " sp-detail-tab--active" : ""}`}
-                        onClick={() => setDetailTab("portfolio")}>
+                </Button>
+                <Button
+                    type="button"
+                    size="sm"
+                    variant={detailTab === "portfolio" ? "secondary" : "ghost"}
+                    aria-current={detailTab === "portfolio" ? "page" : undefined}
+                    onClick={() => setDetailTab("portfolio")}
+                >
                     Портфолио
-                </button>
-                <button type="button"
-                        className={`sp-detail-tab${detailTab === "orders" ? " sp-detail-tab--active" : ""}`}
-                        onClick={() => setDetailTab("orders")}>
+                </Button>
+                <Button
+                    type="button"
+                    size="sm"
+                    variant={detailTab === "orders" ? "secondary" : "ghost"}
+                    aria-current={detailTab === "orders" ? "page" : undefined}
+                    onClick={() => setDetailTab("orders")}
+                >
                     Заказы
-                </button>
+                </Button>
             </div>
         </div>
     )

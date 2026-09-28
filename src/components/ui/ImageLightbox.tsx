@@ -38,8 +38,8 @@ export function ImageLightbox({src, alt = "", children, fillTrigger}: Props) {
         {children}
       </span>
             {open && (
-                <div onClick={() => setOpen(false)} style={{
-                    position: "fixed", inset: 0, zIndex: 10000,
+                <div role="presentation" onClick={() => setOpen(false)} style={{
+                    position: "fixed", inset: 0, zIndex: "var(--z-lightbox)",
                     background: "rgba(0,0,0,0.85)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     padding: 24, cursor: "zoom-out",
@@ -53,7 +53,7 @@ export function ImageLightbox({src, alt = "", children, fillTrigger}: Props) {
                         position: "absolute", top: 16, right: 16,
                         width: 36, height: 36, borderRadius: "50%",
                         background: "rgba(0,0,0,0.5)", color: "#fff",
-                        fontSize: 20, cursor: "pointer",
+                        fontSize: 18, cursor: "pointer",
                         display: "flex", alignItems: "center", justifyContent: "center",
                     }}>×
                     </button>

@@ -41,7 +41,7 @@ export function DashAiSuggestionsBody({
     return (
         <>
             {loading && (
-                <div style={{display: "flex", flexDirection: "column", gap: "0.65rem"}}>
+                <div style={{display: "flex", flexDirection: "column", gap: "10px"}}>
                     {[1, 2, 3].map(i => (
                         <div
                             key={i}
@@ -79,7 +79,7 @@ export function DashAiSuggestionsBody({
                     ))}
                     <p style={{
                         color: "var(--dash-muted)",
-                        fontSize: "0.78rem",
+                        fontSize: "0.75rem",
                         textAlign: "center",
                         margin: "0.25rem 0 0"
                     }}>
@@ -97,7 +97,7 @@ export function DashAiSuggestionsBody({
                         padding: "1rem",
                     }}
                 >
-                    <p style={{color: "var(--dash-danger)", fontSize: "0.85rem", margin: "0 0 0.5em"}}>{error}</p>
+                    <p style={{color: "var(--dash-danger)", fontSize: "0.875rem", margin: "0 0 8px"}}>{error}</p>
                     <button
                         type="button"
                         onClick={onRetry}
@@ -106,7 +106,7 @@ export function DashAiSuggestionsBody({
                             border: "none",
                             color: "var(--dash-accent)",
                             cursor: "pointer",
-                            fontSize: "0.8rem",
+                            fontSize: "0.75rem",
                             textDecoration: "underline",
                             padding: 0,
                             fontFamily: "inherit",
@@ -127,22 +127,20 @@ export function DashAiSuggestionsBody({
                             key={i}
                             style={{
                                 background: isApplied ? "var(--dash-success-bg, rgba(45,106,45,0.08))" : "var(--dash-surface2)",
-                                border: `1px solid ${isApplied ? "var(--dash-success, #2d6a2d)" : "var(--dash-border)"}`,
+                                border: `1px solid ${isApplied ? "var(--dash-success)" : "var(--dash-border)"}`,
                                 borderRadius: 10,
                                 marginBottom: "0.75rem",
                                 opacity: isApplied ? 0.72 : 1,
-                                padding: "0.95rem 1rem",
+                                padding: "16px 1rem",
                             }}
                         >
                             {label ? (
                                 <div
                                     style={{
                                         color: "var(--dash-muted)",
-                                        fontSize: "0.62rem",
+                                        fontSize: "0.75rem",
                                         fontWeight: 700,
-                                        letterSpacing: "0.07em",
-                                        marginBottom: "0.35em",
-                                        textTransform: "uppercase",
+                                        marginBottom: 4,
                                     }}
                                 >
                                     {label}
@@ -150,17 +148,17 @@ export function DashAiSuggestionsBody({
                             ) : null}
                             <p style={{
                                 color: "var(--dash-text)",
-                                fontSize: "0.86rem",
+                                fontSize: "0.875rem",
                                 fontWeight: 600,
-                                margin: "0 0 0.25em",
+                                margin: "0 0 4px",
                                 lineHeight: 1.35
                             }}>
                                 {s.tip}
                             </p>
                             <p style={{
                                 color: "var(--dash-text2)",
-                                fontSize: "0.8rem",
-                                margin: "0 0 0.65em",
+                                fontSize: "0.75rem",
+                                margin: "0 0 10px",
                                 lineHeight: 1.5
                             }}>
                                 {s.reason}
@@ -171,14 +169,14 @@ export function DashAiSuggestionsBody({
                                         background: "var(--dash-surface)",
                                         border: "1px solid var(--dash-border)",
                                         borderRadius: 8,
-                                        marginBottom: "0.65rem",
-                                        padding: "0.55rem 0.75rem",
+                                        marginBottom: "10px",
+                                        padding: "8px 0.75rem",
                                     }}
                                 >
                                     <p
                                         style={{
                                             color: "var(--dash-text2)",
-                                            fontSize: "0.78rem",
+                                            fontSize: "0.75rem",
                                             fontStyle: "italic",
                                             margin: 0,
                                             lineHeight: 1.5,
@@ -192,8 +190,8 @@ export function DashAiSuggestionsBody({
                             <div style={{display: "flex", justifyContent: "flex-end"}}>
                                 {isApplied ? (
                                     <span style={{
-                                        color: "var(--dash-success, #2d6a2d)",
-                                        fontSize: "0.76rem",
+                                        color: "var(--dash-success)",
+                                        fontSize: "0.75rem",
                                         fontWeight: 600
                                     }}>
                     ✓ {applyMode === "message" ? "Вставлено" : "Применено"}
@@ -208,10 +206,10 @@ export function DashAiSuggestionsBody({
                                             borderRadius: 8,
                                             color: "#fff",
                                             cursor: "pointer",
-                                            fontSize: "0.76rem",
+                                            fontSize: "0.75rem",
                                             fontFamily: "inherit",
                                             fontWeight: 600,
-                                            padding: "0.4em 0.95em",
+                                            padding: "6px 14px",
                                         }}
                                     >
                                         {applyButtonLabel}

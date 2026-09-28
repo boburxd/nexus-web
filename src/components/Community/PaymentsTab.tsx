@@ -5,11 +5,12 @@ import {toast} from "sonner"
 import {StatusBadge} from "@/components/app/AppCard"
 import {DashSurfaceCard} from "@/components/dashboard-ui/DashSurfaceCard"
 import type {PaymentWithRelations, SpecAct, SpecContract} from "./types"
-import {DISCOVER_HUES, PAYMENT_BADGE, STAGE_LABELS} from "./types"
+import {PAYMENT_BADGE, STAGE_LABELS} from "./types"
 import type {StageType} from "@prisma/client"
 import {DocumentUpload} from "@/components/app/DocumentUpload"
 import {uploadWithProgress} from "@/lib/upload-progress"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 import {stripBx} from "@/lib/icon-map"
 
 const CON_BADGE: Record<string, { variant: "done" | "pending" | "current" | "rejected"; label: string }> = {
@@ -96,19 +97,10 @@ function ContractActions({contract: c}: { contract: SpecContract }) {
         <div style={{marginTop: 8, display: "flex", flexDirection: "column", gap: 8}}>
             {canDownload && (
                 <div>
-                    <button onClick={() => void openDownload((d) => d.downloadUrl ?? d.url)} disabled={loading}
-                            data-tour="btn-contract-download" style={{
-                        background: "none",
-                        border: "1px solid var(--dash-border)",
-                        borderRadius: 6,
-                        padding: "3px 10px",
-                        fontSize: "0.72rem",
-                        cursor: "pointer",
-                        color: "var(--dash-accent, #5b4fcf)",
-                        fontFamily: "inherit"
-                    }}>
-                        <Icon name="download" style={{marginRight: 4}}/>{loading ? "..." : "Скачать"}
-                    </button>
+                    <Button variant="outline" size="xs" onClick={() => void openDownload((d) => d.downloadUrl ?? d.url)}
+                            disabled={loading} data-tour="btn-contract-download">
+                        <Icon name="download"/>{loading ? "…" : "Скачать"}
+                    </Button>
                 </div>
             )}
             {(canSign || submitted) && (
@@ -131,22 +123,11 @@ function ContractActions({contract: c}: { contract: SpecContract }) {
             )}
             {canSign && (
                 <div>
-                    <button onClick={() => void uploadSigned()} disabled={loading || !file} data-tour="btn-contract-sign"
-                            style={{
-                                background: "rgba(91,79,207,0.1)",
-                                border: "1px solid rgba(91,79,207,0.3)",
-                                borderRadius: 6,
-                                padding: "4px 12px",
-                                fontSize: "0.72rem",
-                                cursor: loading || !file ? "not-allowed" : "pointer",
-                                opacity: loading || !file ? 0.6 : 1,
-                                color: "#5b4fcf",
-                                fontFamily: "inherit",
-                                fontWeight: 600
-                            }}>
-                        <Icon name="send" style={{marginRight: 4}}/>
+                    <Button size="xs" onClick={() => void uploadSigned()} disabled={loading || !file}
+                            data-tour="btn-contract-sign">
+                        <Icon name="send"/>
                         {loading && progress !== null ? "Отправка…" : "Отправить подписанный"}
-                    </button>
+                    </Button>
                 </div>
             )}
         </div>
@@ -225,7 +206,7 @@ export function PaymentsCol1({payments, formData, contracts, acts}: {
                         ) : null)}
                     </div>
                 ) : (
-                    <p style={{fontSize: "0.8rem", color: "var(--dash-muted)", margin: 0}}>Не заполнены — укажите в
+                    <p style={{fontSize: "0.8rem", color: "var(--dash-muted)", margin: 0}}>Не заполнены: укажите в
                         Настройках</p>
                 )}
             </Section>
@@ -350,7 +331,7 @@ export function PaymentsCol2({payments}: { payments: PaymentWithRelations[] }) {
                             hue: 200,
                             icon: "bx-time-five"
                         },
-                        {label: "Транзакций", value: String(payments.length), hue: 247, icon: "bx-receipt"},
+                        {label: "Транзакций", value: String(payments.length), hue: 215, icon: "bx-receipt"},
                     ].map(s => (
                         <li key={s.label} className="dash-card" style={{"--hue": s.hue} as React.CSSProperties}>
                             <div className="dash-card__img"><Icon name={stripBx(s.icon)}/></div>
@@ -365,13 +346,13 @@ export function PaymentsCol2({payments}: { payments: PaymentWithRelations[] }) {
             <div className="dash-discover">
                 <div className="dash-discover-heading-wrap"><h3 className="dash-section-heading">По статусам</h3></div>
                 <ul className="dash-discover-places">
-                    {statusBreakdown.map((item, i) => (
+                    {statusBreakdown.map(item => (
                         <li key={item.label} className="dash-discover__place">
                             <h4 className="dash-discover__place-heading">{item.label}</h4>
                             <p className="dash-discover__place-sub">{item.count} транзакций</p>
                             <div className="dash-discover__more">
                                 <div className="dash-discover__more-icon"
-                                     style={{background: `linear-gradient(20deg, hsl(${DISCOVER_HUES[i % DISCOVER_HUES.length].h1},72%,52%), hsl(${DISCOVER_HUES[i % DISCOVER_HUES.length].h2},72%,44%))`}}>
+                                     style={{background: "var(--dash-accent-bg)", color: "var(--dash-accent)"}}>
                                     <Icon name={stripBx(item.icon)}/>
                                 </div>
                             </div>

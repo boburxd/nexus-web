@@ -1,7 +1,8 @@
 "use client"
 
 import type {RefObject} from "react"
-import {CLOSE_BTN_STYLE} from "./styles"
+import {Button} from "@/components/ui/button"
+import {Icon} from "@/components/ui/icon"
 import {IntroVideoPlayer} from "./IntroVideoPlayer"
 import {ProfileSheet} from "./ProfileSheet"
 import type {useProfileSheet} from "./hooks/useProfileSheet"
@@ -28,7 +29,7 @@ export function MobileVideoLayout({
                                       children,
                                   }: MobileVideoLayoutProps) {
     return (
-        <div style={{position: "relative", width: "100%", height: "100%", background: "#000"}}>
+        <div style={{position: "relative", width: "100%", height: "100%", background: "var(--card)"}}>
             <div
                 style={{
                     position: "absolute",
@@ -48,7 +49,10 @@ export function MobileVideoLayout({
                 />
             </div>
 
-            <button type="button" onClick={onClose} style={{...CLOSE_BTN_STYLE, zIndex: 20}}>✕</button>
+            <Button type="button" variant="secondary" size="icon-sm" onClick={onClose} aria-label="Закрыть"
+                    className="absolute top-3.5 right-3.5 z-20">
+                <Icon name="x"/>
+            </Button>
 
             <ProfileSheet
                 sheetRef={sheet.sheetRef}

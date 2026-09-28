@@ -21,25 +21,25 @@ export default function PrivacyPage() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    padding: "1.1rem 2rem",
+                    padding: "1rem 2rem",
                     borderBottom: "1px solid rgba(255,255,255,0.07)",
                     background: "rgba(15,21,53,0.92)",
                     backdropFilter: "blur(8px)",
                     WebkitBackdropFilter: "blur(8px)",
                 }}
             >
-                <Link href="/" style={{color: "#f4f4f4", fontSize: "1.2rem", fontWeight: 500, textDecoration: "none"}}>
+                <Link href="/" style={{color: "var(--foreground)", fontSize: "1.125rem", fontWeight: 500, textDecoration: "none"}}>
                     NEXUS
                 </Link>
                 <Link
                     href="/login"
                     style={{
                         color: "rgba(255,255,255,0.4)",
-                        fontSize: "0.85rem",
+                        fontSize: "0.875rem",
                         textDecoration: "none",
                         display: "flex",
                         alignItems: "center",
-                        gap: "0.4em",
+                        gap: "6px",
                     }}
                 >
                     ← Войти
@@ -48,13 +48,13 @@ export default function PrivacyPage() {
 
             <div style={{maxWidth: 600, margin: "0 auto", padding: "2.5rem 1.5rem 4rem"}}>
                 <div style={{marginBottom: "2rem"}}>
-                    <h1 style={{color: "#f4f4f4", fontSize: "clamp(1.4rem,3vw,1.8rem)", fontWeight: 500, margin: 0}}>
+                    <h1 style={{color: "var(--foreground)", fontSize: "clamp(1.4rem,3vw,1.8rem)", fontWeight: 500, margin: 0}}>
                         Политика конфиденциальности и персональные данные
                     </h1>
                     <p style={{
                         color: "rgba(255,255,255,0.4)",
-                        marginTop: "0.5em",
-                        fontSize: "0.9rem",
+                        marginTop: "8px",
+                        fontSize: "0.875rem",
                         lineHeight: 1.5
                     }}>
                         Условия обработки данных на платформе NEXUS. Полный юридический текст можно заменить при
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
                         <section>
                             <h2 style={{
                                 color: "rgba(255,255,255,0.5)",
-                                fontSize: "0.8rem",
+                                fontSize: "0.75rem",
                                 fontWeight: 500,
                                 margin: "0 0 0.5rem"
                             }}>
@@ -76,19 +76,19 @@ export default function PrivacyPage() {
                             <p style={{
                                 margin: 0,
                                 color: "rgba(255,255,255,0.45)",
-                                fontSize: "0.9rem",
+                                fontSize: "0.875rem",
                                 lineHeight: 1.65
                             }}>
                                 При регистрации и использовании сервиса вы подтверждаете ознакомление с принципами
                                 обработки персональных
-                                данных. Ниже — краткая структура; итоговый документ утверждается оператором платформы.
+                                данных. Ниже: краткая структура; итоговый документ утверждается оператором платформы.
                             </p>
                         </section>
 
                         <section>
                             <h2 style={{
                                 color: "rgba(255,255,255,0.5)",
-                                fontSize: "0.8rem",
+                                fontSize: "0.75rem",
                                 fontWeight: 500,
                                 margin: "0 0 0.5rem"
                             }}>
@@ -97,7 +97,7 @@ export default function PrivacyPage() {
                             <p style={{
                                 margin: 0,
                                 color: "rgba(255,255,255,0.45)",
-                                fontSize: "0.9rem",
+                                fontSize: "0.875rem",
                                 lineHeight: 1.65
                             }}>
                                 К ним могут относиться: адрес электронной почты, ФИО, номер телефона, сведения из анкет,
@@ -111,7 +111,7 @@ export default function PrivacyPage() {
                         <section>
                             <h2 style={{
                                 color: "rgba(255,255,255,0.5)",
-                                fontSize: "0.8rem",
+                                fontSize: "0.75rem",
                                 fontWeight: 500,
                                 margin: "0 0 0.5rem"
                             }}>
@@ -120,7 +120,7 @@ export default function PrivacyPage() {
                             <p style={{
                                 margin: 0,
                                 color: "rgba(255,255,255,0.45)",
-                                fontSize: "0.9rem",
+                                fontSize: "0.875rem",
                                 lineHeight: 1.65
                             }}>
                                 Отмечая соответствующий пункт в форме регистрации или заказа, вы даете согласие на
@@ -134,7 +134,7 @@ export default function PrivacyPage() {
                             margin: 0,
                             paddingTop: "0.25rem",
                             color: "rgba(255,255,255,0.3)",
-                            fontSize: "0.8rem",
+                            fontSize: "0.75rem",
                             textAlign: "center"
                         }}>
                             <Link href="/login" style={{color: "rgba(255,255,255,0.6)", textDecoration: "none"}}>

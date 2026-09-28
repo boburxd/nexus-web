@@ -7,10 +7,11 @@ import {orderListRowHint} from "./order-list-hint"
 import type {Order, OrderStatus} from "./types"
 import {ORDER_LABEL, ORDER_VARIANT} from "./types"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 function hintStyle(kind: ReturnType<typeof orderListRowHint>["kind"]): CSSProperties {
     const base: CSSProperties = {
-        fontSize: "0.68rem",
+        fontSize: "0.75rem",
         lineHeight: 1.35,
         marginTop: 4,
         overflow: "hidden",
@@ -19,11 +20,11 @@ function hintStyle(kind: ReturnType<typeof orderListRowHint>["kind"]): CSSProper
     }
     switch (kind) {
         case "admin":
-            return {...base, color: "#fbbf24", fontWeight: 500}
+            return {...base, color: "var(--bs-warning)", fontWeight: 500}
         case "designer":
-            return {...base, color: "color-mix(in srgb, #38bdf8 85%, var(--adm-text))"}
+            return {...base, color: "color-mix(in srgb, var(--adm-active-color) 85%, var(--adm-text))"}
         case "client":
-            return {...base, color: "color-mix(in srgb, #c4b5fd 88%, var(--adm-text))"}
+            return {...base, color: "var(--adm-name-color)"}
         default:
             return {...base, color: "var(--adm-muted)"}
     }
@@ -78,8 +79,10 @@ export function OrderList({filtered, loading, selected, search, filter, onSelect
             </div>
             <div className="sp-filters">
                 {FILTERS.map(f => (
-                    <button key={f.value} className={`sp-filter-btn${filter === f.value ? " sp-filter-btn--on" : ""}`}
-                            onClick={() => onFilter(f.value)}>{f.label}</button>
+                    <Button key={f.value} type="button" size="xs"
+                            variant={filter === f.value ? "secondary" : "outline"}
+                            aria-pressed={filter === f.value}
+                            onClick={() => onFilter(f.value)}>{f.label}</Button>
                 ))}
             </div>
 
@@ -119,13 +122,13 @@ export function OrderList({filtered, loading, selected, search, filter, onSelect
                             <div style={{minWidth: 0}}>
                                 <div style={{
                                     fontWeight: 600,
-                                    fontSize: "0.82rem",
+                                    fontSize: "0.875rem",
                                     overflow: "hidden",
                                     textOverflow: "ellipsis",
                                     whiteSpace: "nowrap"
                                 }}>{title}</div>
                                 <div style={{
-                                    fontSize: "0.72rem",
+                                    fontSize: "0.75rem",
                                     color: "var(--adm-muted)",
                                     overflow: "hidden",
                                     textOverflow: "ellipsis",
@@ -145,23 +148,22 @@ export function OrderList({filtered, loading, selected, search, filter, onSelect
                                     <span
                                         className="sp-badge"
                                         style={{
-                                            fontSize: "0.6rem",
+                                            fontSize: "0.75rem",
                                             background: "color-mix(in srgb, var(--adm-active-color) 16%, transparent)",
                                             color: "var(--adm-active-color)",
-                                            border: "1px solid color-mix(in srgb, var(--adm-active-color) 35%, transparent)",
                                         }}
                                         title={`Этап брифа: ${briefWizardStepLabel(o.briefStep)}`}
                                     >
-                    <Icon name="edit-alt" style={{marginRight: 3}}/>
+                    <Icon name="edit-alt" style={{marginRight: 4}}/>
                     бриф {Math.min(o.briefStep + 1, BRIEF_WIZARD_STEP_COUNT)}/{BRIEF_WIZARD_STEP_COUNT}
                   </span>
                                 )}
                                 {o.briefHelpRequested &&
-                                    <span className="sp-badge sp-badge--danger" style={{fontSize: "0.6rem"}}><Icon name="support" style={{marginRight: 3}}/>помощь</span>}
+                                    <span className="sp-badge sp-badge--danger" style={{fontSize: "0.75rem"}}><Icon name="support" style={{marginRight: 4}}/>помощь</span>}
                                 {modStages.length > 0 &&
-                                    <span className="sp-badge sp-badge--danger" style={{fontSize: "0.6rem"}}><Icon name="time" style={{marginRight: 3}}/>модерация</span>}
+                                    <span className="sp-badge sp-badge--danger" style={{fontSize: "0.75rem"}}><Icon name="time" style={{marginRight: 4}}/>модерация</span>}
                                 {needsAssign &&
-                                    <span className="sp-badge sp-badge--warn" style={{fontSize: "0.6rem"}}><Icon name="user-plus" style={{marginRight: 3}}/>специалист</span>}
+                                    <span className="sp-badge sp-badge--warn" style={{fontSize: "0.75rem"}}><Icon name="user-plus" style={{marginRight: 4}}/>специалист</span>}
                             </div>
                         )}
                     </div>

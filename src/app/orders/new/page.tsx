@@ -50,8 +50,8 @@ function normalizeBriefData(raw: unknown): D {
 }
 
 const inputStyle: React.CSSProperties = {
-    width: "100%", padding: "0.65em 0.875em", borderRadius: 8,
-    fontSize: "0.85rem", color: "var(--dash-text)", background: "var(--dash-surface2)", fontFamily: "inherit",
+    width: "100%", padding: "10px 14px", borderRadius: 8,
+    fontSize: "0.875rem", color: "var(--dash-text)", background: "var(--dash-surface2)", fontFamily: "inherit",
     outline: "none", boxSizing: "border-box",
 }
 const taStyle: React.CSSProperties = {...inputStyle, resize: "vertical", minHeight: 80}
@@ -59,9 +59,9 @@ const taStyle: React.CSSProperties = {...inputStyle, resize: "vertical", minHeig
 function Chip({label, active, onClick}: { label: string; active: boolean; onClick: () => void }) {
     return (
         <button type="button" onClick={onClick} style={{
-            padding: "0.4em 0.9em",
-            borderRadius: 100,
-            fontSize: "0.8rem",
+            padding: "6px 14px",
+            borderRadius: 14,
+            fontSize: "0.75rem",
             fontWeight: 500,
             cursor: "pointer",
             fontFamily: "inherit",
@@ -70,7 +70,7 @@ function Chip({label, active, onClick}: { label: string; active: boolean; onClic
             background: active ? "var(--dash-accent-bg)" : "transparent",
             color: active ? "var(--dash-accent)" : "var(--dash-text2)",
         }}>
-            {active && <span style={{marginRight: "0.3em"}}>✓</span>}{label}
+            {active && <span style={{marginRight: "4px"}}>✓</span>}{label}
         </button>
     )
 }
@@ -85,18 +85,18 @@ function Field({label, hint, required, children}: {
         <div style={{marginBottom: "1.5rem"}}>
             <label style={{
                 display: "block",
-                fontSize: "0.68rem",
+                fontSize: "0.75rem",
                 fontWeight: 600,
                 textTransform: "uppercase",
                 letterSpacing: "0.06em",
                 color: "var(--dash-muted)",
                 marginBottom: 6
             }}>
-                {label}{required && <span style={{color: "var(--dash-danger, #c00)", marginLeft: 4}}>*</span>}
+                {label}{required && <span style={{color: "var(--dash-danger)", marginLeft: 4}}>*</span>}
             </label>
             {children}
             {hint &&
-                <p style={{fontSize: "0.73rem", color: "var(--dash-muted)", marginTop: 4, marginBottom: 0}}>{hint}</p>}
+                <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", marginTop: 4, marginBottom: 0}}>{hint}</p>}
         </div>
     )
 }
@@ -119,7 +119,7 @@ function StepObject({d, set}: { d: D; set: (k: string, v: string) => void }) {
             <div style={{display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8}}>
                 {OBJECT_TYPES.map(t => (
                     <button key={t.label} type="button" onClick={() => set("objectType", t.label)} style={{
-                        padding: "0.8em 0.5em",
+                        padding: "12px 8px",
                         borderRadius: 10,
                         cursor: "pointer",
                         fontFamily: "inherit",
@@ -127,9 +127,9 @@ function StepObject({d, set}: { d: D; set: (k: string, v: string) => void }) {
                         border: d.objectType === t.label ? "2px solid var(--dash-accent)" : "1.5px solid var(--dash-border)",
                         background: d.objectType === t.label ? "var(--dash-accent-bg)" : "transparent",
                         color: d.objectType === t.label ? "var(--dash-accent)" : "var(--dash-text2)",
-                        fontSize: "0.8rem",
+                        fontSize: "0.75rem",
                     }}>
-                        <div style={{fontSize: "1.4rem", marginBottom: 4}}><Icon name={stripBx(t.icon)}/></div>
+                        <div style={{fontSize: "1.5rem", marginBottom: 4}}><Icon name={stripBx(t.icon)}/></div>
                         {t.label}
                     </button>
                 ))}
@@ -173,7 +173,7 @@ function StepTasks({d, set, toggle}: {
     const active = new Set((d.tasks ?? "").split(",").map(s => s.trim()).filter(Boolean))
     return <>
         <Field label="Задачи проекта" hint="Выберите все подходящие">
-            <div style={{display: "flex", flexWrap: "wrap", gap: "0.4rem"}}>
+            <div style={{display: "flex", flexWrap: "wrap", gap: "0.375rem"}}>
                 {TASKS.map(t => <Chip key={t} label={t} active={active.has(t)} onClick={() => toggle("tasks", t)}/>)}
             </div>
         </Field>
@@ -204,7 +204,7 @@ function StepStyle({d, set, toggle}: {
     const active = new Set((d.styleDir ?? "").split(",").map(s => s.trim()).filter(Boolean))
     return <>
         <Field label="Стилевое направление" hint="Выберите одно или несколько">
-            <div style={{display: "flex", flexWrap: "wrap", gap: "0.4rem"}}>
+            <div style={{display: "flex", flexWrap: "wrap", gap: "0.375rem"}}>
                 {STYLES.map(s => <Chip key={s} label={s} active={active.has(s)}
                                        onClick={() => toggle("styleDir", s)}/>)}
             </div>
@@ -317,7 +317,7 @@ function StepFiles({
     }
 
     return <>
-        <p style={{fontSize: "0.85rem", color: "var(--dash-muted)", marginBottom: "1.5rem"}}>
+        <p style={{fontSize: "0.875rem", color: "var(--dash-muted)", marginBottom: "1.5rem"}}>
             Загрузите имеющиеся документы. Чем больше контекста — тем точнее первая встреча.
         </p>
 
@@ -356,7 +356,7 @@ function StepFiles({
                     border: "1.5px dashed var(--dash-border)",
                     borderColor: dragOver ? "var(--dash-accent)" : "var(--dash-border)",
                     background: dragOver ? "var(--dash-accent-bg)" : "transparent",
-                    borderRadius: 12,
+                    borderRadius: 14,
                     padding: "16px 14px",
                     userSelect: "none",
                     opacity: uploading ? 0.75 : 1,
@@ -364,12 +364,12 @@ function StepFiles({
                 aria-disabled={uploading}
             >
                 <div style={{display: "flex", alignItems: "center", gap: 10}}>
-                    <Icon name="cloud-upload" style={{fontSize: "1.4rem", color: "var(--dash-muted)"}}/>
+                    <Icon name="cloud-upload" style={{fontSize: "1.5rem", color: "var(--dash-muted)"}}/>
                     <div style={{minWidth: 0}}>
-                        <div style={{fontSize: "0.85rem", fontWeight: 600, color: "var(--dash-text)"}}>
+                        <div style={{fontSize: "0.875rem", fontWeight: 600, color: "var(--dash-text)"}}>
                             Нажмите или перетащите файлы сюда
                         </div>
-                        <div style={{fontSize: "0.74rem", color: "var(--dash-muted)", marginTop: 2}}>
+                        <div style={{fontSize: "0.75rem", color: "var(--dash-muted)", marginTop: 2}}>
                             {uploading ? "Идет загрузка…" : "Можно выбрать сразу несколько файлов"}
                         </div>
                     </div>
@@ -402,7 +402,7 @@ function StepFiles({
                                 <Icon name="file" style={{color: "var(--dash-accent)"}}/>
                                 <div style={{minWidth: 0}}>
                                     <div style={{
-                                        fontSize: "0.82rem",
+                                        fontSize: "0.875rem",
                                         fontWeight: 600,
                                         overflow: "hidden",
                                         textOverflow: "ellipsis",
@@ -410,7 +410,7 @@ function StepFiles({
                                     }}>
                                         {f.filename}
                                     </div>
-                                    <div style={{fontSize: "0.72rem", color: "var(--dash-muted)"}}>
+                                    <div style={{fontSize: "0.75rem", color: "var(--dash-muted)"}}>
                                         {formatSize(f.size)}
                                     </div>
                                 </div>
@@ -420,7 +420,7 @@ function StepFiles({
                                     href={`/api/files/download?key=${encodeURIComponent(f.s3Key)}`}
                                     target="_blank"
                                     rel="noreferrer"
-                                    style={{color: "var(--dash-accent)", textDecoration: "none", fontSize: "0.78rem"}}
+                                    style={{color: "var(--dash-accent)", textDecoration: "none", fontSize: "0.75rem"}}
                                 >
                                     Скачать
                                 </a>
@@ -451,7 +451,7 @@ function StepFiles({
                     </Button>
                 </div>
             ) : (
-                <div style={{marginTop: 10, fontSize: "0.78rem", color: "var(--dash-muted)"}}>
+                <div style={{marginTop: 10, fontSize: "0.75rem", color: "var(--dash-muted)"}}>
                     Пока нет прикрепленных файлов.
                 </div>
             )}
@@ -500,7 +500,7 @@ function StepFiles({
                             <div style={{display: "flex", alignItems: "center", gap: 8}}>
                                 <Icon name="video" style={{color: "var(--dash-accent)"}}/>
                                 <div>
-                                    <div style={{fontSize: "0.82rem", fontWeight: 600}}>Прикреплено</div>
+                                    <div style={{fontSize: "0.875rem", fontWeight: 600}}>Прикреплено</div>
                                     <div style={{
                                         fontSize: "0.75rem",
                                         color: "var(--dash-muted)"
@@ -511,7 +511,7 @@ function StepFiles({
                                 href={`/api/files/download?key=${encodeURIComponent(briefVideo.s3Key)}`}
                                 target="_blank"
                                 rel="noreferrer"
-                                style={{color: "var(--dash-accent)", textDecoration: "none", fontSize: "0.78rem"}}
+                                style={{color: "var(--dash-accent)", textDecoration: "none", fontSize: "0.75rem"}}
                             >
                                 Скачать
                             </a>
@@ -550,7 +550,7 @@ function StepReview({d}: { d: D }) {
                 gap: 12,
                 padding: "6px 0",
                 borderBottom: "1px solid var(--dash-border)",
-                fontSize: "0.82rem"
+                fontSize: "0.875rem"
             }}
         >
             <span style={{color: "var(--dash-muted)", flexShrink: 0}}>{label}</span>
@@ -565,7 +565,7 @@ function StepReview({d}: { d: D }) {
             return (
                 <div key={group.label} style={{marginBottom: 16}}>
                     <h3 style={{
-                        fontSize: "0.82rem",
+                        fontSize: "0.875rem",
                         fontWeight: 600,
                         color: "var(--dash-muted)",
                         textTransform: "uppercase",
@@ -575,14 +575,14 @@ function StepReview({d}: { d: D }) {
                         alignItems: "center",
                         gap: 6
                     }}>
-                        <Icon name={stripBx(group.icon)} style={{fontSize: "0.9rem"}}/>{group.label}
+                        <Icon name={stripBx(group.icon)} style={{fontSize: "0.875rem"}}/>{group.label}
                     </h3>
                     {filled.map(f => row(f.key, f.label, d[f.key]))}
                 </div>
             )
         })}
         {!ADMIN_BRIEF_FIELD_GROUPS.flatMap(g => g.fields).some(f => d[f.key]?.trim()) && (
-            <p style={{color: "var(--dash-muted)", fontSize: "0.85rem"}}>Ни одно поле не заполнено.</p>
+            <p style={{color: "var(--dash-muted)", fontSize: "0.875rem"}}>Ни одно поле не заполнено.</p>
         )}
     </>
 }
@@ -630,11 +630,11 @@ function AiInteriorPreview({orderId}: { orderId: string }) {
             paddingTop: 20,
             borderTop: "1px solid var(--dash-border)",
         }}>
-            <h3 style={{fontSize: "0.9rem", fontWeight: 600, color: "var(--dash-text)", margin: "0 0 6px"}}>
+            <h3 style={{fontSize: "0.875rem", fontWeight: 600, color: "var(--dash-text)", margin: "0 0 6px"}}>
                 <Icon name="planet" style={{marginRight: 6, color: "var(--dash-accent)"}}/>
                 Предсказанный дизайн от ИИ
             </h3>
-            <p style={{fontSize: "0.78rem", lineHeight: 1.5, color: "var(--dash-warn, #ff9f43)", margin: "0 0 12px"}}>
+            <p style={{fontSize: "0.75rem", lineHeight: 1.5, color: "var(--dash-warn)", margin: "0 0 12px"}}>
                 Это не готовый продукт, а лишь иллюстративный пример по вашему брифу. Финальный результат
                 специалиста может отличаться.
             </p>
@@ -644,12 +644,12 @@ function AiInteriorPreview({orderId}: { orderId: string }) {
                 onClick={() => void generate()}
                 disabled={loading}
                 style={{
-                    padding: "0.55em 1.2em",
+                    padding: "8px 20px",
                     borderRadius: 8,
                     border: "1px solid var(--dash-accent-border, rgba(121,40,202,0.35))",
                     background: "var(--dash-accent-bg, rgba(121,40,202,0.08))",
                     color: "var(--dash-accent)",
-                    fontSize: "0.82rem",
+                    fontSize: "0.875rem",
                     fontWeight: 600,
                     fontFamily: "inherit",
                     cursor: loading ? "default" : "pointer",
@@ -661,7 +661,7 @@ function AiInteriorPreview({orderId}: { orderId: string }) {
             </button>
 
             {error && (
-                <p style={{marginTop: 10, fontSize: "0.8rem", color: "var(--dash-danger)"}}>{error}</p>
+                <p style={{marginTop: 10, fontSize: "0.75rem", color: "var(--dash-danger)"}}>{error}</p>
             )}
 
             {images.length > 0 && (
@@ -1064,7 +1064,7 @@ export default function NewOrderPage() {
                                 <p style={{
                                     margin: 0,
                                     color: "var(--dash-danger)",
-                                    fontSize: "0.88rem",
+                                    fontSize: "0.875rem",
                                     lineHeight: 1.5
                                 }}>{bootError}</p>
                                 <Link href="/orders/payments" style={{
@@ -1100,8 +1100,8 @@ export default function NewOrderPage() {
                                             display: "flex",
                                             alignItems: "center",
                                             gap: 6,
-                                            padding: "0.85rem 1rem",
-                                            fontSize: "0.82rem",
+                                            padding: "0.875rem 1rem",
+                                            fontSize: "0.875rem",
                                             fontFamily: "inherit",
                                             cursor: "pointer",
                                             whiteSpace: "nowrap",
@@ -1109,7 +1109,7 @@ export default function NewOrderPage() {
                                             borderBottomWidth: 2,
                                             borderBottomStyle: "solid",
                                             borderBottomColor: i === step ? "var(--dash-accent)" : "transparent",
-                                            color: i === step ? "var(--dash-accent)" : i < step ? "var(--dash-success, #2d6a2d)" : "var(--dash-muted)",
+                                            color: i === step ? "var(--dash-accent)" : i < step ? "var(--dash-success)" : "var(--dash-muted)",
                                             fontWeight: i === step ? 600 : 400,
                                             background: "none",
                                         }}>
@@ -1120,10 +1120,10 @@ export default function NewOrderPage() {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      fontSize: "0.65rem",
+                      fontSize: "0.75rem",
                       fontWeight: 700,
                       flexShrink: 0,
-                      background: i < step ? "var(--dash-success, #2d6a2d)" : "var(--dash-surface2)",
+                      background: i < step ? "var(--dash-success)" : "var(--dash-surface2)",
                       color: i < step ? "#fff" : "var(--dash-muted)",
                   }}>{i < step ? "✓" : i + 1}</span>
                                             {s.label}
@@ -1169,13 +1169,13 @@ export default function NewOrderPage() {
                                                     alignItems: "flex-start",
                                                     gap: 8,
                                                     marginTop: 20,
-                                                    fontSize: "0.82rem",
+                                                    fontSize: "0.875rem",
                                                     color: "var(--dash-text2)",
                                                     cursor: "pointer"
                                                 }}>
                                                     <input type="checkbox" checked={agreed}
                                                            onChange={e => setAgreed(e.target.checked)}
-                                                           style={{marginTop: 3}}/>
+                                                           style={{marginTop: 4}}/>
                                                     <span>
                         Я согласен с{" "}
                                                         <Link href="/privacy" target="_blank" rel="noopener noreferrer"
@@ -1199,7 +1199,7 @@ export default function NewOrderPage() {
                                             padding: "0.75rem 1rem",
                                             marginBottom: "1rem",
                                             color: "var(--dash-danger)",
-                                            fontSize: "0.82rem"
+                                            fontSize: "0.875rem"
                                         }}>{bootError}</div>
                                     )}
 
@@ -1211,7 +1211,7 @@ export default function NewOrderPage() {
                                             padding: "0.75rem 1rem",
                                             marginBottom: "1rem",
                                             color: "var(--dash-danger)",
-                                            fontSize: "0.82rem"
+                                            fontSize: "0.875rem"
                                         }}>{error}</div>
                                     )}
 
@@ -1223,12 +1223,12 @@ export default function NewOrderPage() {
                                         <button type="button" onClick={() => {
                                             void flushSave().then(() => setStep(s => s - 1))
                                         }} disabled={step === 0} style={{
-                                            padding: "0.65em 1.5em",
+                                            padding: "10px 24px",
                                             border: "1px solid var(--dash-border)",
                                             borderRadius: 8,
                                             background: "transparent",
                                             color: step === 0 ? "var(--dash-muted)" : "var(--dash-text)",
-                                            fontSize: "0.85rem",
+                                            fontSize: "0.875rem",
                                             fontWeight: 500,
                                             cursor: step === 0 ? "default" : "pointer",
                                             fontFamily: "inherit",
@@ -1260,12 +1260,12 @@ export default function NewOrderPage() {
                                                 }
                                             }}
                                             style={{
-                                                padding: "0.5em 1em",
+                                                padding: "8px 16px",
                                                 borderRadius: 8,
                                                 border: helpRequested ? "1px solid var(--dash-success)" : "1px solid var(--dash-accent-border)",
                                                 background: helpRequested ? "var(--dash-success-bg)" : "transparent",
                                                 color: helpRequested ? "var(--dash-success)" : "var(--dash-accent)",
-                                                fontSize: "0.78rem",
+                                                fontSize: "0.75rem",
                                                 fontWeight: 500,
                                                 cursor: !orderId || helpRequested ? "default" : "pointer",
                                                 fontFamily: "inherit",
@@ -1281,10 +1281,10 @@ export default function NewOrderPage() {
                                                 if (!orderId || !isStepValid(step)) return;
                                                 void flushSave().then(() => setStep(s => s + 1))
                                             }} style={{
-                                                padding: "0.65em 2em",
+                                                padding: "10px 32px",
                                                 borderRadius: 8,
                                                 border: "none",
-                                                fontSize: "0.85rem",
+                                                fontSize: "0.875rem",
                                                 fontWeight: 600,
                                                 fontFamily: "inherit",
                                                 background: orderId && isStepValid(step) ? "var(--dash-accent)" : "var(--dash-border)",
@@ -1294,10 +1294,10 @@ export default function NewOrderPage() {
                                         ) : (
                                             <button type="button" onClick={handleSubmit}
                                                     disabled={submitting || !agreed || !orderId} style={{
-                                                padding: "0.65em 2em",
+                                                padding: "10px 32px",
                                                 borderRadius: 8,
                                                 border: "none",
-                                                fontSize: "0.85rem",
+                                                fontSize: "0.875rem",
                                                 fontWeight: 600,
                                                 fontFamily: "inherit",
                                                 background: agreed && orderId ? "var(--dash-accent)" : "var(--dash-border)",
@@ -1328,7 +1328,7 @@ export default function NewOrderPage() {
                         background: "rgba(20, 25, 40, 0.92)",
                         borderRadius: 10,
                         padding: "8px 12px",
-                        fontSize: "0.78rem",
+                        fontSize: "0.75rem",
                         lineHeight: 1.3,
                         maxWidth: 230,
                         opacity: showHelpHint ? 1 : 0,
@@ -1409,7 +1409,7 @@ export default function NewOrderPage() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    fontSize: "1.4rem",
+                    fontSize: "1.5rem",
                     transition: "transform 0.2s",
                     opacity: !orderId ? 0.85 : 1,
                 }}
@@ -1433,11 +1433,11 @@ export default function NewOrderPage() {
                     position: "fixed", top: 72, right: 24, zIndex: 60,
                     background: "rgba(40,199,111,0.14)",
                     borderRadius: 10, padding: "0.75rem 1.25rem",
-                    display: "flex", alignItems: "center", gap: 10, fontSize: "0.84rem", color: "var(--dash-text)",
+                    display: "flex", alignItems: "center", gap: 10, fontSize: "0.875rem", color: "var(--dash-text)",
                     animation: "toast-in 0.3s ease",
                 }}>
                     <Icon name="check-circle"
-                       style={{color: "var(--dash-success, #2d6a2d)", fontSize: "1.2rem"}}/>
+                       style={{color: "var(--dash-success)", fontSize: "1.125rem"}}/>
                     {toast}
                 </div>
             )}

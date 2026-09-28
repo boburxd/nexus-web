@@ -9,14 +9,12 @@ import {LEGAL_FORMS, POSITION_CHIPS} from "./constants"
 
 const settingsInputStyle: React.CSSProperties = {
     width: "100%",
-    padding: "0.55em 0.875em",
-    border: "1px solid var(--dash-border)",
+    padding: "8px 12px",
     borderRadius: 8,
-    fontSize: "0.85rem",
+    fontSize: "0.875rem",
     color: "var(--dash-text)",
     background: "var(--dash-surface2)",
     fontFamily: "inherit",
-    outline: "none",
     boxSizing: "border-box",
 }
 
@@ -26,9 +24,9 @@ function SettingsChip({label, active, onClick}: { label: string; active: boolean
             type="button"
             onClick={onClick}
             style={{
-                padding: "0.35em 0.85em",
-                borderRadius: 100,
-                fontSize: "0.78rem",
+                padding: "4px 10px",
+                borderRadius: 14,
+                fontSize: "0.75rem",
                 fontWeight: 500,
                 cursor: "pointer",
                 fontFamily: "inherit",
@@ -37,7 +35,7 @@ function SettingsChip({label, active, onClick}: { label: string; active: boolean
                 color: active ? "var(--dash-accent)" : "var(--dash-text2)",
             }}
         >
-            {active && <span style={{marginRight: "0.3em"}}>✓</span>}
+            {active && <span style={{marginRight: "4px"}}>✓</span>}
             {label}
         </button>
     )
@@ -147,12 +145,10 @@ export function SettingsTab({name, email, formData}: {
             <label
                 style={{
                     display: "block",
-                    fontSize: "0.68rem",
+                    fontSize: "0.75rem",
                     fontWeight: 600,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.06em",
                     color: "var(--dash-muted)",
-                    marginBottom: 5,
+                    marginBottom: 6,
                 }}
             >
                 {label}
@@ -173,12 +169,12 @@ export function SettingsTab({name, email, formData}: {
                         width: 48,
                         height: 48,
                         borderRadius: "50%",
-                        background: "linear-gradient(135deg, hsl(247,60%,58%), hsl(282,60%,48%))",
+                        background: "color-mix(in oklab, var(--dash-accent) 45%, var(--dash-surface3))",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         fontWeight: 700,
-                        fontSize: "1.1rem",
+                        fontSize: "1.125rem",
                         color: "#fff",
                         flexShrink: 0,
                     }}
@@ -188,18 +184,18 @@ export function SettingsTab({name, email, formData}: {
                 <div style={{flex: 1}}>
                     <p style={{
                         fontWeight: 600,
-                        fontSize: "0.95rem",
+                        fontSize: "1rem",
                         color: "var(--dash-text)",
                         margin: "0 0 2px"
                     }}>{name || "—"}</p>
-                    <p style={{fontSize: "0.78rem", color: "var(--dash-muted)", margin: 0}}>{email}</p>
+                    <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", margin: 0}}>{email}</p>
                     {(form.phone ?? "").trim() && (
-                        <p style={{fontSize: "0.78rem", color: "var(--dash-muted)", margin: "2px 0 0"}}>
+                        <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", margin: "2px 0 0"}}>
                             {form.phone}
                         </p>
                     )}
                 </div>
-                <span style={{fontSize: "0.72rem", color: saved ? "var(--dash-success)" : "transparent"}}>
+                <span style={{fontSize: "0.75rem", color: saved ? "var(--dash-success)" : "transparent"}}>
           {saved ? "✓ Сохранено" : "·"}
         </span>
             </DashSettingsSection>
@@ -255,15 +251,15 @@ export function SettingsTab({name, email, formData}: {
                         </F>
                         <F label="ЭДО">
                             <p style={{
-                                fontSize: "0.72rem",
+                                fontSize: "0.75rem",
                                 color: "var(--dash-muted)",
                                 margin: "0 0 8px",
                                 lineHeight: 1.4
                             }}>
-                                Электронный документооборот: Контур.Диадок, Такском, СБИС, 1С-ЭДО — отметьте, чем
+                                Электронный документооборот: Контур.Диадок, Такском, СБИС, 1С-ЭДО. Отметьте, чем
                                 пользуетесь
                             </p>
-                            <div style={{display: "flex", flexWrap: "wrap", gap: "0.4rem"}}>
+                            <div style={{display: "flex", flexWrap: "wrap", gap: "6px"}}>
                                 {EDO_PROVIDER_OPTIONS.map(o => {
                                     const set = parseEdoProviders(form.edoProviders)
                                     const on = set.has(o.id)
@@ -284,7 +280,7 @@ export function SettingsTab({name, email, formData}: {
                             </div>
                         </F>
                         <F label="Должность">
-                            <div style={{display: "flex", flexWrap: "wrap", gap: "0.4rem"}}>
+                            <div style={{display: "flex", flexWrap: "wrap", gap: "6px"}}>
                                 {POSITION_CHIPS.map(c => (
                                     <SettingsChip
                                         key={c}
@@ -306,13 +302,13 @@ export function SettingsTab({name, email, formData}: {
                     <DashSettingsSection title="Реквизиты" iconClass="bx bx-building"
                                          className="dash-surface-card--pad-md">
                         <F label="Правовая форма" required>
-                            <div style={{display: "flex", gap: "0.4rem", flexWrap: "wrap"}}>
+                            <div style={{display: "flex", gap: "6px", flexWrap: "wrap"}}>
                                 {LEGAL_FORMS.map(c => (
                                     <SettingsChip key={c} label={c} active={form.legalForm === c}
                                                   onClick={() => setForm(f => ({...f, legalForm: c}))}/>
                                 ))}
                             </div>
-                            <p style={{fontSize: "0.68rem", color: "var(--dash-muted)", margin: "6px 0 0"}}>
+                            <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", margin: "6px 0 0"}}>
                                 ИНН и БИК при вводе можно подставить через DaData.
                             </p>
                         </F>
@@ -437,10 +433,10 @@ export function SettingsTab({name, email, formData}: {
                             background: "var(--dash-danger-bg)",
                             border: "1px solid var(--dash-danger)",
                             borderRadius: 8,
-                            padding: "0.6rem 1rem",
+                            padding: "10px 1rem",
                             marginTop: 12,
                             color: "var(--dash-danger)",
-                            fontSize: "0.82rem",
+                            fontSize: "0.875rem",
                         }}
                     >
                         {error}
@@ -453,14 +449,13 @@ export function SettingsTab({name, email, formData}: {
                     disabled={saving || saved}
                     style={{
                         marginTop: 16,
-                        padding: "0.65em 2em",
+                        padding: "10px 32px",
                         borderRadius: 8,
-                        border: "none",
-                        fontSize: "0.85rem",
+                        fontSize: "0.875rem",
                         fontWeight: 600,
                         fontFamily: "inherit",
                         background: saved ? "var(--dash-success)" : "var(--dash-accent)",
-                        color: "#fff",
+                        color: "var(--dash-bg)",
                         cursor: saving || saved ? "default" : "pointer",
                         opacity: saving ? 0.7 : 1,
                     }}

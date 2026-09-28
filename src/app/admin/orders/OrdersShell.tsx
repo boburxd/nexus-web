@@ -13,6 +13,7 @@ import {adminOrderHref} from "@/lib/admin-routes"
 import {replaceQueryParams} from "@/lib/client/url-query"
 import "./orders.css"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 const STATUS_FILTERS = ["ALL", "DRAFT", "BRIEFING", "BRIEF_REVIEW", "ACTIVE", "DONE", "CANCELLED"] as const
 
@@ -419,14 +420,14 @@ export function OrdersShell({children}: { children: ReactNode }) {
                                 borderRadius: 10,
                                 border: "1px solid var(--adm-border)",
                                 background: "var(--adm-surface-2)",
-                                fontSize: "0.82rem",
+                                fontSize: "0.875rem",
                             }}>
                                 <span style={{color: "var(--adm-muted)"}}>
                                     {changePrompt.kind === "order"
                                         ? ORDER_LABEL[changePrompt.from]
                                         : STAGE_STATUS_LABEL[changePrompt.kind === "stageApprove" ? "MOD_REVIEW" : "CLIENT_REVISION"]}
                                 </span>
-                                <Icon name="right-arrow-alt" aria-hidden style={{fontSize: "1.2rem"}}/>
+                                <Icon name="right-arrow-alt" aria-hidden style={{fontSize: "1.125rem"}}/>
                                 <strong style={{color: "var(--adm-text)"}}>
                                     {changePrompt.kind === "order"
                                         ? ORDER_LABEL[changePrompt.to]
@@ -435,7 +436,7 @@ export function OrdersShell({children}: { children: ReactNode }) {
                                             : "Правки приняты администратором"}
                                 </strong>
                             </div>
-                            <p style={{color: "var(--adm-muted)", fontSize: "0.84rem", lineHeight: 1.5, margin: "0 0 18px"}}>
+                            <p style={{color: "var(--adm-muted)", fontSize: "0.875rem", lineHeight: 1.5, margin: "0 0 16px"}}>
                                 {changePrompt.kind === "order"
                                     ? ORDER_STATUS_EFFECT[changePrompt.to]
                                     : changePrompt.kind === "stageApprove"
@@ -445,15 +446,16 @@ export function OrdersShell({children}: { children: ReactNode }) {
                         </>
                     ) : null}
                     <div style={{display: "flex", gap: 8, justifyContent: "flex-end"}}>
-                        <button className="sp-btn sp-btn-ghost" onClick={() => setChangePrompt(null)}>Отмена</button>
-                        <button
-                            className={changePrompt?.kind === "order" && changePrompt.to === "CANCELLED"
-                                ? "sp-btn sp-btn-danger"
-                                : "sp-btn sp-btn-primary"}
+                        <Button type="button" variant="outline" onClick={() => setChangePrompt(null)}>Отмена</Button>
+                        <Button
+                            type="button"
+                            variant={changePrompt?.kind === "order" && changePrompt.to === "CANCELLED"
+                                ? "destructive"
+                                : "default"}
                             onClick={() => void confirmChange()}
                         >
                             Подтвердить изменение
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </Modal>
@@ -470,8 +472,8 @@ export function OrdersShell({children}: { children: ReactNode }) {
                     <textarea className="sp-textarea" rows={4} placeholder="Замечания…" value={revisionComment}
                               onChange={e => setRevisionComment(e.target.value)} autoFocus/>
                     <div style={{display: "flex", gap: 8, justifyContent: "flex-end"}}>
-                        <button className="sp-btn sp-btn-ghost" onClick={() => setRevisionModal(null)}>Отмена</button>
-                        <button className="sp-btn sp-btn-danger" onClick={submitRevision}>Отправить</button>
+                        <Button type="button" variant="outline" onClick={() => setRevisionModal(null)}>Отмена</Button>
+                        <Button type="button" variant="destructive" onClick={submitRevision}>Отправить</Button>
                     </div>
                 </div>
             </Modal>
@@ -494,12 +496,12 @@ export function OrdersShell({children}: { children: ReactNode }) {
                         autoFocus
                     />
                     <div style={{display: "flex", gap: 8, justifyContent: "flex-end"}}>
-                        <button className="sp-btn sp-btn-ghost" onClick={() => setClientRevModal(null)}>
+                        <Button type="button" variant="outline" onClick={() => setClientRevModal(null)}>
                             Отмена
-                        </button>
-                        <button className="sp-btn sp-btn-danger" onClick={submitClientRevReject}>
+                        </Button>
+                        <Button type="button" variant="destructive" onClick={submitClientRevReject}>
                             Отклонить
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </Modal>
@@ -514,11 +516,11 @@ export function OrdersShell({children}: { children: ReactNode }) {
                               value={briefRejectComment} onChange={e => setBriefRejectComment(e.target.value)}
                               autoFocus/>
                     <div style={{display: "flex", gap: 8, justifyContent: "flex-end"}}>
-                        <button className="sp-btn sp-btn-ghost" onClick={() => setBriefRejectModal(null)}>Отмена
-                        </button>
-                        <button className="sp-btn sp-btn-danger" onClick={submitBriefReject}
+                        <Button type="button" variant="outline" onClick={() => setBriefRejectModal(null)}>Отмена
+                        </Button>
+                        <Button type="button" variant="destructive" onClick={submitBriefReject}
                                 disabled={!briefRejectComment.trim()}>Вернуть
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </Modal>
@@ -550,10 +552,10 @@ export function OrdersShell({children}: { children: ReactNode }) {
                                onChange={e => setExtraReason(e.target.value)} placeholder="Дополнительные правки"/>
                     </div>
                     <div style={{display: "flex", gap: 8, justifyContent: "flex-end"}}>
-                        <button className="sp-btn sp-btn-ghost" onClick={() => setExtraForm(null)}>Отмена</button>
-                        <button className="sp-btn sp-btn-primary" onClick={submitExtra}
+                        <Button type="button" variant="outline" onClick={() => setExtraForm(null)}>Отмена</Button>
+                        <Button type="button" onClick={submitExtra}
                                 disabled={!extraAmount}>Выставить счет
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </Modal>

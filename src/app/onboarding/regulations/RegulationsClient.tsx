@@ -4,6 +4,7 @@ import {useCallback, useEffect, useRef, useState} from "react"
 import {useRouter} from "next/navigation"
 import {OnboardingShell} from "@/components/app/OnboardingShell"
 import {AppCard} from "@/components/app/AppCard"
+import {Button} from "@/components/ui/button"
 import {logQuizAnswerHint} from "@/lib/dev-quiz-hint"
 
 const LETTERS = ["А", "Б", "В", "Г"] as const
@@ -263,18 +264,17 @@ export default function RegulationsClient({
 
                 {/* ── LOADING ── */}
                 {phase === "loading" && (
-                    <p style={{color: "rgba(255,255,255,0.45)", fontSize: "0.9rem"}}>Загрузка…</p>
+                    <p style={{color: "rgba(255,255,255,0.45)", fontSize: "0.875rem"}}>Загрузка…</p>
                 )}
 
                 {error && phase !== "loading" && (
                     <div style={{
                         marginBottom: "1rem",
-                        padding: "0.7em 1em",
-                        borderRadius: 12,
-                        border: "1px solid rgba(248,113,113,0.35)",
+                        padding: "12px 16px",
+                        borderRadius: 14,
                         background: "rgba(248,113,113,0.08)",
-                        color: "#fca5a5",
-                        fontSize: "0.82rem",
+                        color: "var(--destructive)",
+                        fontSize: "0.875rem",
                     }}>
                         {error}
                     </div>
@@ -285,21 +285,21 @@ export default function RegulationsClient({
                     <>
                         <div className="mb-8">
                             <h1 style={{
-                                color: "#f4f4f4",
+                                color: "var(--foreground)",
                                 fontSize: "clamp(1.4rem,3vw,1.8rem)",
                                 fontWeight: 500,
                                 margin: 0
                             }}>
-                                Шаг 4 — Регламенты платформы
+                                Шаг 4. Регламенты платформы
                             </h1>
-                            <p style={{color: "rgba(255,255,255,0.45)", marginTop: "0.5em", fontSize: "0.9rem"}}>
+                            <p style={{color: "rgba(255,255,255,0.45)", marginTop: "8px", fontSize: "0.875rem"}}>
                                 Тест на знание NEXUS Designer Code. Вопросы и варианты ответов перемешиваются на
                                 каждой попытке, на каждый вопрос даётся {timeLimitSec} секунд.
                             </p>
                         </div>
 
                         <div className="flex flex-wrap gap-8 mb-8"
-                             style={{color: "rgba(255,255,255,0.5)", fontSize: "0.85rem"}}>
+                             style={{color: "rgba(255,255,255,0.5)", fontSize: "0.875rem"}}>
                             {[
                                 [String(totalQuestions), "вопросов"],
                                 [`${timeLimitSec} сек`, "на вопрос"],
@@ -307,8 +307,8 @@ export default function RegulationsClient({
                             ].map(([num, label]) => (
                                 <div key={label}>
                                     <div style={{
-                                        color: "#f4f4f4",
-                                        fontSize: "1.75rem",
+                                        color: "var(--foreground)",
+                                        fontSize: "1.5rem",
                                         fontWeight: 600,
                                         lineHeight: 1
                                     }}>{num}</div>
@@ -318,43 +318,35 @@ export default function RegulationsClient({
                         </div>
 
                         {lastResult && (
-                            <p style={{color: "rgba(255,255,255,0.45)", fontSize: "0.82rem", marginBottom: "1rem"}}>
+                            <p style={{color: "rgba(255,255,255,0.45)", fontSize: "0.875rem", marginBottom: "1rem"}}>
                                 Прошлая попытка: {lastResult.score} из {lastResult.total} ({lastResult.pct}%).
                             </p>
                         )}
 
-                        <button
+                        <Button
                             type="button"
+                            variant="secondary"
+                            size="lg"
                             onClick={startAttempt}
                             disabled={submitting}
-                            style={{
-                                width: "100%",
-                                padding: "0.85em 1.5em",
-                                borderRadius: 999,
-                                border: "1px solid rgba(255,255,255,0.25)",
-                                background: "rgba(255,255,255,0.1)",
-                                color: "#f4f4f4",
-                                fontWeight: 600,
-                                fontSize: "0.9rem",
-                                cursor: submitting ? "wait" : "pointer"
-                            }}
+                            className="w-full"
                         >
                             {submitting ? "Готовим вопросы…" : "Начать тест →"}
-                        </button>
+                        </Button>
                     </>
                 )}
 
                 {/* ── QUIZ ── */}
                 {phase === "quiz" && q && (
                     <>
-                        <div className="mb-2 flex justify-between items-center" style={{fontSize: "0.82rem"}}>
+                        <div className="mb-2 flex justify-between items-center" style={{fontSize: "0.875rem"}}>
                             <span style={{color: "rgba(255,255,255,0.45)"}}>Вопрос {pos + 1} из {total}</span>
                             <span style={{color: "rgba(255,255,255,0.65)", fontWeight: 600}}>{score} верных</span>
                         </div>
 
                         <div style={{
-                            color: !isAnswered && timeLeft <= 5 ? "#fca5a5" : "rgba(255,255,255,0.55)",
-                            fontSize: "0.8rem",
+                            color: !isAnswered && timeLeft <= 5 ? "var(--destructive)" : "rgba(255,255,255,0.55)",
+                            fontSize: "0.75rem",
                             marginBottom: "0.5rem",
                             fontWeight: !isAnswered && timeLeft <= 5 ? 700 : 500,
                             letterSpacing: !isAnswered && timeLeft <= 5 ? "0.03em" : "normal",
@@ -365,63 +357,64 @@ export default function RegulationsClient({
                         </div>
                         <div style={{
                             height: 4,
-                            borderRadius: 999,
+                            borderRadius: 14,
                             background: "rgba(255,255,255,0.08)",
                             overflow: "hidden",
-                            marginBottom: "0.65rem"
+                            marginBottom: "0.625rem"
                         }}>
                             <div style={{
                                 height: "100%",
-                                width: `${isAnswered ? 0 : Math.round((timeLeft / timeLimit) * 100)}%`,
-                                borderRadius: 999,
-                                background: timeLeft <= 5
-                                    ? "linear-gradient(90deg, rgba(248,113,113,0.9), rgba(252,165,165,0.85))"
-                                    : "linear-gradient(90deg, rgba(96,165,250,0.9), rgba(129,140,248,0.85))",
-                                transition: "width 0.5s linear"
+                                width: "100%",
+                                transform: `scaleX(${isAnswered ? 0 : timeLeft / timeLimit})`,
+                                transformOrigin: "left",
+                                borderRadius: 14,
+                                background: timeLeft <= 5 ? "var(--destructive)" : "var(--primary)",
+                                transition: "transform 0.3s linear"
                             }}/>
                         </div>
 
                         <div style={{
                             height: 6,
-                            borderRadius: 999,
+                            borderRadius: 14,
                             background: "rgba(255,255,255,0.08)",
                             overflow: "hidden",
                             marginBottom: "1.5rem"
                         }}>
                             <div style={{
                                 height: "100%",
-                                width: `${progressPct}%`,
-                                borderRadius: 999,
-                                background: "linear-gradient(90deg, rgba(52,211,153,0.9), rgba(45,212,191,0.85))",
-                                transition: "width 0.35s cubic-bezier(0.16,1,0.3,1)"
+                                width: "100%",
+                                transform: `scaleX(${progressPct / 100})`,
+                                transformOrigin: "left",
+                                borderRadius: 14,
+                                background: "var(--success)",
+                                transition: "transform 0.3s cubic-bezier(0.16,1,0.3,1)"
                             }}/>
                         </div>
 
                         <AppCard glass key={q.index}>
                             <div style={{
                                 display: "inline-block",
-                                fontSize: "0.72rem",
+                                fontSize: "0.75rem",
                                 fontWeight: 500,
                                 color: "rgba(255,255,255,0.4)",
                                 background: "rgba(255,255,255,0.06)",
-                                padding: "0.25em 0.75em",
-                                borderRadius: 999,
+                                padding: "4px 12px",
+                                borderRadius: 14,
                                 marginBottom: "0.75rem"
                             }}>
                                 {q.section}
                             </div>
                             <p style={{
                                 color: "rgba(255,255,255,0.35)",
-                                fontSize: "0.7rem",
+                                fontSize: "0.75rem",
                                 fontWeight: 600,
-                                letterSpacing: "0.08em",
                                 margin: "0 0 0.5rem"
                             }}>
-                                ВОПРОС {pos + 1}
+                                Вопрос {pos + 1}
                             </p>
                             <p style={{
-                                color: "#f4f4f4",
-                                fontSize: "0.95rem",
+                                color: "var(--foreground)",
+                                fontSize: "1rem",
                                 fontWeight: 500,
                                 lineHeight: 1.5,
                                 margin: "0 0 1.25rem"
@@ -433,52 +426,36 @@ export default function RegulationsClient({
                                 {q.options.map((opt, i) => {
                                     const isCorrect = isAnswered && revealFb && i === revealFb.correctIndex
                                     const isWrong = isAnswered && i === picked && !revealFb?.isCorrect
-                                    let border = "1px solid rgba(255,255,255,0.1)"
-                                    let background = "transparent"
-                                    if (isCorrect) {
-                                        border = "1px solid rgba(52,211,153,0.45)";
-                                        background = "rgba(52,211,153,0.12)"
-                                    }
-                                    if (isWrong) {
-                                        border = "1px solid rgba(248,113,113,0.45)";
-                                        background = "rgba(248,113,113,0.1)"
-                                    }
+                                    const stateStyle = isCorrect
+                                        ? {borderColor: "var(--success)", background: "color-mix(in oklab, var(--success) 12%, transparent)"}
+                                        : isWrong
+                                            ? {borderColor: "var(--destructive)", background: "color-mix(in oklab, var(--destructive) 10%, transparent)"}
+                                            : undefined
                                     return (
-                                        <button key={i} type="button" disabled={isAnswered || submitting}
+                                        <Button key={i} type="button" variant="outline"
+                                                disabled={isAnswered || submitting}
                                                 onClick={() => submitAnswer(i)}
-                                                style={{
-                                                    display: "flex",
-                                                    alignItems: "flex-start",
-                                                    gap: 12,
-                                                    textAlign: "left",
-                                                    width: "100%",
-                                                    padding: "0.75em 1em",
-                                                    borderRadius: 12,
-                                                    border,
-                                                    background,
-                                                    color: "rgba(255,255,255,0.82)",
-                                                    fontSize: "0.85rem",
-                                                    lineHeight: 1.45,
-                                                    cursor: isAnswered || submitting ? "default" : "pointer"
-                                                }}>
+                                                className="h-auto w-full items-start justify-start gap-3 whitespace-normal text-left disabled:opacity-100"
+                                                style={{...stateStyle, cursor: isAnswered || submitting ? "default" : "pointer"}}>
                       <span style={{
                           flexShrink: 0,
                           width: 28,
                           height: 28,
+                          marginTop: 10,
+                          marginBottom: 10,
                           borderRadius: 8,
-                          border: isCorrect ? "1px solid #34d399" : isWrong ? "1px solid #f87171" : "1px solid rgba(255,255,255,0.2)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          fontSize: "0.7rem",
+                          fontSize: "0.75rem",
                           fontWeight: 700,
                           background: isCorrect ? "rgba(52,211,153,0.25)" : isWrong ? "rgba(248,113,113,0.2)" : "rgba(255,255,255,0.04)",
-                          color: "#f4f4f4"
+                          color: "var(--foreground)"
                       }}>
                         {LETTERS[i]}
                       </span>
-                                            <span>{opt}</span>
-                                        </button>
+                                            <span style={{padding: "12px 0", lineHeight: 1.45}}>{opt}</span>
+                                        </Button>
                                     )
                                 })}
                             </div>
@@ -486,15 +463,14 @@ export default function RegulationsClient({
                             {revealFb && (
                                 <div style={{
                                     marginTop: "1rem",
-                                    padding: "0.85em 1em",
-                                    borderRadius: 12,
-                                    fontSize: "0.82rem",
+                                    padding: "14px 16px",
+                                    borderRadius: 14,
+                                    fontSize: "0.875rem",
                                     lineHeight: 1.55,
-                                    border: revealFb.isCorrect ? "1px solid rgba(52,211,153,0.35)" : "1px solid rgba(248,113,113,0.35)",
                                     background: revealFb.isCorrect ? "rgba(52,211,153,0.08)" : "rgba(248,113,113,0.06)",
                                     color: "rgba(255,255,255,0.75)"
                                 }}>
-                                    <strong style={{color: revealFb.isCorrect ? "#6ee7b7" : "#fca5a5"}}>
+                                    <strong style={{color: revealFb.isCorrect ? "var(--success)" : "var(--destructive)"}}>
                                         {revealFb.isCorrect
                                             ? "✓ Верно."
                                             : revealFb.timedOut ? "⏱ Время вышло." : "✗ Неверно."}
@@ -504,19 +480,9 @@ export default function RegulationsClient({
 
                             {isAnswered && (
                                 <div className="flex justify-end mt-5">
-                                    <button type="button" disabled={submitting} onClick={goNext}
-                                            style={{
-                                                padding: "0.55em 1.25em",
-                                                borderRadius: 999,
-                                                border: "1px solid rgba(52,211,153,0.4)",
-                                                background: "rgba(52,211,153,0.15)",
-                                                color: "#6ee7b7",
-                                                fontWeight: 600,
-                                                fontSize: "0.85rem",
-                                                cursor: submitting ? "wait" : "pointer"
-                                            }}>
+                                    <Button type="button" size="lg" disabled={submitting} onClick={goNext}>
                                         {submitting ? "Сохранение…" : !isLast ? "Следующий вопрос →" : "Завершить тест →"}
-                                    </button>
+                                    </Button>
                                 </div>
                             )}
                         </AppCard>
@@ -527,19 +493,18 @@ export default function RegulationsClient({
                 {phase === "result" && shown && (
                     <>
                         <AppCard glass style={{
-                            border: shown.passed ? "1px solid rgba(52,211,153,0.25)" : "1px solid rgba(248,113,113,0.25)",
                             background: shown.passed ? "rgba(52,211,153,0.06)" : "rgba(248,113,113,0.06)"
                         }}>
                             <h2 style={{
-                                color: shown.passed ? "#6ee7b7" : "#fca5a5",
-                                fontSize: "1.1rem",
+                                color: shown.passed ? "var(--success)" : "var(--destructive)",
+                                fontSize: "1.125rem",
                                 margin: "0 0 0.5rem"
                             }}>
-                                {shown.passed ? "Тест пройден!" : "Тест не пройден"}
+                                {shown.passed ? "Тест пройден." : "Тест не пройден"}
                             </h2>
-                            <p style={{color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", margin: "0 0 1rem"}}>
+                            <p style={{color: "rgba(255,255,255,0.55)", fontSize: "0.875rem", margin: "0 0 1rem"}}>
                                 Результат: <strong
-                                style={{color: "#f4f4f4"}}>{shown.score}</strong> из {shown.total} ({shown.pct}%).
+                                style={{color: "var(--foreground)"}}>{shown.score}</strong> из {shown.total} ({shown.pct}%).
                                 {shown.passed ? " Регламент принят." : " Рекомендуем повторно изучить NEXUS Designer Code."}
                             </p>
 
@@ -557,12 +522,12 @@ export default function RegulationsClient({
                                         <div key={sec} style={{
                                             display: "flex",
                                             justifyContent: "space-between",
-                                            fontSize: "0.8rem"
+                                            fontSize: "0.75rem"
                                         }}>
                                             <span style={{color: "rgba(255,255,255,0.45)"}}>{shortSec}</span>
                                             <span style={{
                                                 fontWeight: 600,
-                                                color: sp < 50 ? "#fca5a5" : "#6ee7b7"
+                                                color: sp < 50 ? "var(--destructive)" : "var(--success)"
                                             }}>{v.correct}/{v.total}</span>
                                         </div>
                                     )
@@ -572,36 +537,16 @@ export default function RegulationsClient({
 
                         <div className="flex flex-col gap-3 mt-2">
                             {!shown.passed && (
-                                <button type="button" onClick={startAttempt} disabled={submitting}
-                                        style={{
-                                            width: "100%",
-                                            padding: "0.85em 1.5em",
-                                            borderRadius: 999,
-                                            border: "1px solid rgba(255,255,255,0.2)",
-                                            background: "rgba(255,255,255,0.06)",
-                                            color: "#f4f4f4",
-                                            fontWeight: 500,
-                                            fontSize: "0.85rem",
-                                            cursor: submitting ? "wait" : "pointer"
-                                        }}>
+                                <Button type="button" variant="secondary" size="lg" onClick={startAttempt}
+                                        disabled={submitting} className="w-full">
                                     {submitting ? "Готовим вопросы…" : "Пройти заново"}
-                                </button>
+                                </Button>
                             )}
                             {shown.passed && (
-                                <button type="button" onClick={() => router.push("/onboarding")}
-                                        style={{
-                                            width: "100%",
-                                            padding: "0.85em 1.5em",
-                                            borderRadius: 999,
-                                            border: "1px solid rgba(52,211,153,0.4)",
-                                            background: "rgba(52,211,153,0.15)",
-                                            color: "#6ee7b7",
-                                            fontWeight: 600,
-                                            fontSize: "0.9rem",
-                                            cursor: "pointer"
-                                        }}>
+                                <Button type="button" size="lg" onClick={() => router.push("/onboarding")}
+                                        className="w-full">
                                     Следующий шаг →
-                                </button>
+                                </Button>
                             )}
                         </div>
                     </>

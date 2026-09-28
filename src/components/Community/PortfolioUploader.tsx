@@ -835,7 +835,7 @@ export default function PortfolioUploader() {
 
             <div className="pf-upload-block">
                 <div className="d-flex align-items-center gap-2 mb-3">
-          <span className="fw-semibold small" style={{color: "var(--dash-text, #201d1d)"}}>
+          <span className="fw-semibold small" style={{color: "var(--dash-text, var(--foreground))"}}>
             Загрузка
           </span>
                 </div>
@@ -952,7 +952,7 @@ export default function PortfolioUploader() {
                                         <Icon name="cloud-upload" className={dragging ? "text-primary" : "text-muted"}
                                            style={{fontSize: 30}}/>
                                         <p className="mb-0 fw-medium small"
-                                           style={{color: dragging ? "var(--dash-accent, var(--bs-primary))" : "var(--dash-text, #201d1d)"}}>
+                                           style={{color: dragging ? "var(--dash-accent, var(--bs-primary))" : "var(--dash-text, var(--foreground))"}}>
                                             {dragging ? "Отпустите для выбора" : "Перетащите файл или нажмите"}
                                         </p>
                                         <small className="text-muted">{currentTab.hint}</small>
@@ -1028,7 +1028,7 @@ export default function PortfolioUploader() {
             <div className="pf-gallery-block">
                 <div className="pf-gallery-block__inner">
                     <div className="d-flex align-items-center justify-content-between gap-2 mb-3">
-            <span className="fw-semibold small" style={{color: "var(--dash-text, #201d1d)"}}>
+            <span className="fw-semibold small" style={{color: "var(--dash-text, var(--foreground))"}}>
               {tab === "PORTFOLIO" ? "Загруженные работы" : "Загруженные материалы"}
             </span>
                         <div className="d-flex align-items-center gap-2">

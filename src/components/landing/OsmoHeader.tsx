@@ -28,7 +28,7 @@ export function OsmoHeader({visible, lightBg}: OsmoHeaderProps) {
 
     if (!visible) return null
 
-    const color = lightBg ? "#201d1d" : "#f4f4f4"
+    const color = lightBg ? "var(--background)" : "var(--card-foreground)"
 
     return (
         <nav
@@ -41,14 +41,14 @@ export function OsmoHeader({visible, lightBg}: OsmoHeaderProps) {
             }}
         >
             <Link
-                href="#"
+                href="/"
                 className="no-underline"
                 style={{
                     color,
-                    fontSize: "2.6em",
+                    fontSize: "clamp(1.5rem, 3vw, 2.6rem)",
                     lineHeight: 1.2,
                     fontWeight: 600,
-                    transition: "color 0.6s ease",
+                    transition: "color 0.3s ease",
                     textShadow: lightBg ? "none" : "0 2px 12px rgba(0,0,0,0.4)",
                 }}
             >
@@ -59,16 +59,14 @@ export function OsmoHeader({visible, lightBg}: OsmoHeaderProps) {
                 href={entryHref}
                 className="no-underline"
                 style={{
-                    color: lightBg ? "#fff" : "#201d1d",
-                    fontSize: "1.05rem",
+                    color: lightBg ? "#fff" : "var(--background)",
+                    fontSize: "1rem",
                     fontWeight: 600,
-                    padding: "0.65em 2em",
-                    borderRadius: "100px",
-                    border: "none",
-                    background: lightBg ? "#201d1d" : "#f4f4f4",
-                    backdropFilter: "blur(8px)",
+                    padding: "10px 32px",
+                    borderRadius: 10,
+                    background: lightBg ? "var(--background)" : "var(--card-foreground)",
                     boxShadow: "0 4px 20px rgba(0,0,0,0.25)",
-                    transition: "color 0.6s ease, background 0.6s ease, box-shadow 0.3s ease, transform 0.2s ease",
+                    transition: "color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease",
                     letterSpacing: "0.02em",
                 }}
                 onMouseEnter={e => {

@@ -8,6 +8,7 @@ import {MultiSelectField} from "@/components/ui/MultiSelectField"
 import {Switch} from "@/components/ui/switch"
 import {INTERIOR_STYLE_OPTIONS, METHOD_OPTIONS, SPECIALTY_OPTIONS} from "@/lib/specialist-options"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 const FIELDS = [
     {name: "firstName", label: "Имя", placeholder: "Иван"},
@@ -37,10 +38,9 @@ const TAX_STATUSES = [
 
 const inputStyle: React.CSSProperties = {
     width: "100%",
-    padding: "0.55em 0.875em",
-    border: "1px solid var(--dash-border)",
+    padding: "8px 12px",
     borderRadius: 8,
-    fontSize: "0.85rem",
+    fontSize: "0.875rem",
     color: "var(--dash-text)",
     background: "var(--dash-surface2)",
     fontFamily: "inherit",
@@ -175,10 +175,10 @@ export default function ProfileForm({
                     padding: "10px 14px",
                     marginBottom: 12,
                     borderRadius: 8,
-                    background: "rgba(255,193,7,0.12)",
+                    background: "var(--dash-warn-bg)",
                     border: "1px solid rgba(255,193,7,0.3)",
-                    fontSize: "0.82rem",
-                    color: "#856404"
+                    fontSize: "0.875rem",
+                    color: "var(--dash-warn)"
                 }}>
                     <Icon name="time" style={{marginRight: 6}}/>{reqPending}
                 </div>
@@ -188,10 +188,8 @@ export default function ProfileForm({
                     <div key={f.name} style={f.name === "portfolio" ? {gridColumn: "1 / -1"} : undefined}>
                         <label style={{
                             display: "block",
-                            fontSize: "0.68rem",
+                            fontSize: "0.75rem",
                             fontWeight: 600,
-                            textTransform: "uppercase",
-                            letterSpacing: "0.06em",
                             color: "var(--dash-muted)",
                             marginBottom: 6
                         }}>{f.label}</label>
@@ -203,12 +201,12 @@ export default function ProfileForm({
                                 placeholder={f.placeholder}
                                 addButtonStyle={{
                                     alignSelf: "flex-start",
-                                    padding: "0.4em 0.9em",
+                                    padding: "6px 12px",
                                     borderRadius: 8,
                                     border: "1px dashed var(--dash-border)",
                                     background: "transparent",
                                     color: "var(--dash-muted)",
-                                    fontSize: "0.82rem",
+                                    fontSize: "0.875rem",
                                     cursor: "pointer",
                                     fontFamily: "inherit",
                                 }}
@@ -259,7 +257,7 @@ export default function ProfileForm({
                             checked={form[f.name] === "true"}
                             onChange={() => setForm((p) => ({...p, [f.name]: p[f.name] === "true" ? "false" : "true"}))}
                         />
-                        <span style={{fontSize: "0.85rem", fontFamily: "inherit", color: "var(--dash-text)"}}>
+                        <span style={{fontSize: "0.875rem", fontFamily: "inherit", color: "var(--dash-text)"}}>
                             {f.label}
                         </span>
                     </label>
@@ -269,25 +267,23 @@ export default function ProfileForm({
             <div style={{marginBottom: "1rem"}}>
                 <label style={{
                     display: "block",
-                    fontSize: "0.68rem",
+                    fontSize: "0.75rem",
                     fontWeight: 600,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.06em",
                     color: "var(--dash-muted)",
                     marginBottom: 6
                 }}>О себе</label>
-                <textarea rows={3} placeholder="Расскажите о специализации..." value={form.about || ""}
+                <textarea rows={3} placeholder="Расскажите о специализации…" value={form.about || ""}
                           onChange={(e) => setForm((p) => ({...p, about: e.target.value}))}
                           style={{...inputStyle, resize: "vertical", minHeight: 80}}/>
             </div>
 
             {hideTaxAndRequisites ? (
                 <p style={{
-                    fontSize: "0.78rem",
+                    fontSize: "0.75rem",
                     color: "var(--dash-muted)",
                     margin: "0 0 1rem",
                     lineHeight: 1.45,
-                    padding: "0.65rem 0.85rem",
+                    padding: "10px 14px",
                     background: "var(--dash-surface2)",
                     borderRadius: 8,
                     border: "1px solid var(--dash-border)"
@@ -300,10 +296,8 @@ export default function ProfileForm({
                 <div style={{marginBottom: "1rem"}}>
                     <label style={{
                         display: "block",
-                        fontSize: "0.72rem",
+                        fontSize: "0.75rem",
                         fontWeight: 600,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.06em",
                         color: "var(--dash-muted)",
                         marginBottom: 8
                     }}>
@@ -311,23 +305,15 @@ export default function ProfileForm({
                     </label>
                     <div style={{display: "flex", gap: "0.5rem", marginBottom: "0.75rem", flexWrap: "wrap"}}>
                         {TAX_STATUSES.map((s) => (
-                            <button
+                            <Button
                                 key={s.value}
                                 type="button"
+                                variant={form.taxStatus === s.value ? "default" : "outline"}
+                                size="sm"
                                 onClick={() => setForm((p) => ({...p, taxStatus: s.value}))}
-                                style={{
-                                    padding: "0.4em 1em",
-                                    borderRadius: 6,
-                                    fontSize: "0.82rem",
-                                    cursor: "pointer",
-                                    fontFamily: "inherit",
-                                    border: form.taxStatus === s.value ? "1.5px solid var(--dash-success)" : "1.5px solid var(--dash-border)",
-                                    background: form.taxStatus === s.value ? "var(--dash-success-bg)" : "transparent",
-                                    color: form.taxStatus === s.value ? "var(--dash-success)" : "var(--dash-muted)",
-                                }}
                             >
                                 {form.taxStatus === s.value ? "✓ " : ""}{s.label}
-                            </button>
+                            </Button>
                         ))}
                     </div>
                     {(form.taxStatus === "IP" || form.taxStatus === "SZ" || form.taxStatus === "OOO") && (
@@ -335,7 +321,7 @@ export default function ProfileForm({
                             <div>
                                 <label style={{
                                     display: "block",
-                                    fontSize: "0.65rem",
+                                    fontSize: "0.75rem",
                                     fontWeight: 600,
                                     color: "var(--dash-muted)",
                                     marginBottom: 4
@@ -351,12 +337,12 @@ export default function ProfileForm({
                                     maxLength={form.taxStatus === "OOO" ? 10 : 12}
                                 />
                                 {form.taxStatus === "IP" && form.ipName && <div style={{
-                                    fontSize: "0.72rem",
+                                    fontSize: "0.75rem",
                                     color: "var(--dash-success)",
                                     marginTop: 2
                                 }}>{form.ipName}</div>}
                                 {form.taxStatus === "OOO" && form.companyName && <div style={{
-                                    fontSize: "0.72rem",
+                                    fontSize: "0.75rem",
                                     color: "var(--dash-success)",
                                     marginTop: 2
                                 }}>{form.companyName}</div>}
@@ -365,7 +351,7 @@ export default function ProfileForm({
                                 <div>
                                     <label style={{
                                         display: "block",
-                                        fontSize: "0.65rem",
+                                        fontSize: "0.75rem",
                                         fontWeight: 600,
                                         color: "var(--dash-muted)",
                                         marginBottom: 4
@@ -380,7 +366,7 @@ export default function ProfileForm({
                                     <div>
                                         <label style={{
                                             display: "block",
-                                            fontSize: "0.65rem",
+                                            fontSize: "0.75rem",
                                             fontWeight: 600,
                                             color: "var(--dash-muted)",
                                             marginBottom: 4
@@ -393,7 +379,7 @@ export default function ProfileForm({
                                     <div>
                                         <label style={{
                                             display: "block",
-                                            fontSize: "0.65rem",
+                                            fontSize: "0.75rem",
                                             fontWeight: 600,
                                             color: "var(--dash-muted)",
                                             marginBottom: 4
@@ -405,7 +391,7 @@ export default function ProfileForm({
                                     <div>
                                         <label style={{
                                             display: "block",
-                                            fontSize: "0.65rem",
+                                            fontSize: "0.75rem",
                                             fontWeight: 600,
                                             color: "var(--dash-muted)",
                                             marginBottom: 4
@@ -417,7 +403,7 @@ export default function ProfileForm({
                                     <div style={{gridColumn: "1 / -1"}}>
                                         <label style={{
                                             display: "block",
-                                            fontSize: "0.65rem",
+                                            fontSize: "0.75rem",
                                             fontWeight: 600,
                                             color: "var(--dash-muted)",
                                             marginBottom: 4
@@ -432,7 +418,7 @@ export default function ProfileForm({
                             <div>
                                 <label style={{
                                     display: "block",
-                                    fontSize: "0.65rem",
+                                    fontSize: "0.75rem",
                                     fontWeight: 600,
                                     color: "var(--dash-muted)",
                                     marginBottom: 4
@@ -444,7 +430,7 @@ export default function ProfileForm({
                             <div>
                                 <label style={{
                                     display: "block",
-                                    fontSize: "0.65rem",
+                                    fontSize: "0.75rem",
                                     fontWeight: 600,
                                     color: "var(--dash-muted)",
                                     marginBottom: 4
@@ -456,7 +442,7 @@ export default function ProfileForm({
                             <div>
                                 <label style={{
                                     display: "block",
-                                    fontSize: "0.65rem",
+                                    fontSize: "0.75rem",
                                     fontWeight: 600,
                                     color: "var(--dash-muted)",
                                     marginBottom: 4
@@ -468,7 +454,7 @@ export default function ProfileForm({
                                 <div>
                                     <label style={{
                                         display: "block",
-                                        fontSize: "0.65rem",
+                                        fontSize: "0.75rem",
                                         fontWeight: 600,
                                         color: "var(--dash-muted)",
                                         marginBottom: 4
@@ -486,44 +472,33 @@ export default function ProfileForm({
             <div style={{marginBottom: "1rem"}}>
                 <label style={{
                     display: "block",
-                    fontSize: "0.72rem",
+                    fontSize: "0.75rem",
                     fontWeight: 600,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.06em",
                     color: "var(--dash-muted)",
                     marginBottom: 8
                 }}>
                     <Icon name="transfer-alt" style={{marginRight: 4}}/>ЭДО
                 </label>
-                <div style={{display: "flex", flexWrap: "wrap", gap: "0.4rem"}}>
+                <div style={{display: "flex", flexWrap: "wrap", gap: 6}}>
                     {EDO_PROVIDER_OPTIONS.map((o) => {
                         const set = parseEdoProviders(form.edoProviders)
                         const on = set.has(o.id)
                         return (
-                            <button
+                            <Button
                                 key={o.id}
                                 type="button"
+                                variant={on ? "default" : "outline"}
+                                size="sm"
                                 onClick={() => {
                                     const next = new Set(set)
                                     if (on) next.delete(o.id)
                                     else next.add(o.id)
                                     setForm((p) => ({...p, edoProviders: [...next].join(",")}))
                                 }}
-                                style={{
-                                    padding: "0.35em 0.85em",
-                                    borderRadius: 100,
-                                    fontSize: "0.78rem",
-                                    fontWeight: 500,
-                                    cursor: "pointer",
-                                    fontFamily: "inherit",
-                                    border: on ? "1.5px solid var(--dash-accent)" : "1.5px solid var(--dash-border)",
-                                    background: on ? "var(--dash-accent-bg)" : "transparent",
-                                    color: on ? "var(--dash-accent)" : "var(--dash-muted)",
-                                }}
                             >
-                                {on && <span style={{marginRight: "0.3em"}}>✓</span>}
+                                {on && <span>✓</span>}
                                 {o.label}
-                            </button>
+                            </Button>
                         )
                     })}
                 </div>
@@ -533,31 +508,20 @@ export default function ProfileForm({
                 background: "var(--dash-danger-bg)",
                 border: "1px solid var(--dash-danger)",
                 borderRadius: 8,
-                padding: "0.6rem 1rem",
+                padding: "10px 16px",
                 marginBottom: "1rem",
                 color: "var(--dash-danger)",
-                fontSize: "0.82rem"
+                fontSize: "0.875rem"
             }}>{error}</div>}
 
-            <button
+            <Button
                 type="submit"
+                size="lg"
                 data-tour="btn-save-profile"
                 disabled={loading || saved}
-                style={{
-                    padding: "0.6em 1.5em",
-                    borderRadius: 8,
-                    border: "none",
-                    fontSize: "0.85rem",
-                    fontWeight: 600,
-                    fontFamily: "inherit",
-                    background: saved ? "var(--dash-success)" : "var(--dash-accent)",
-                    color: "#fff",
-                    cursor: loading || saved ? "default" : "pointer",
-                    opacity: loading ? 0.7 : 1,
-                }}
             >
-                {saved ? savedLabel : loading ? "Сохранение..." : submitLabel}
-            </button>
+                {saved ? savedLabel : loading ? "Сохранение…" : submitLabel}
+            </Button>
         </form>
     )
 }

@@ -4,6 +4,7 @@ import {useState} from "react"
 import {DesignerProfileModal} from "@/components/landing/designer-profile-modal/DesignerProfileModal"
 import type {OrderData} from "./types"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 export function OrderSpecialist({specialist}: {
     specialist: NonNullable<OrderData["specialist"]>
@@ -17,7 +18,6 @@ export function OrderSpecialist({specialist}: {
             borderRadius: 14,
             padding: "1.25rem 1.5rem",
             marginBottom: "1.5rem",
-            border: "1px solid var(--dash-border)",
             display: "flex",
             flexWrap: "wrap",
             alignItems: "center",
@@ -31,23 +31,23 @@ export function OrderSpecialist({specialist}: {
                     width: 48,
                     height: 48,
                     borderRadius: "50%",
-                    background: "linear-gradient(135deg, hsl(247,60%,58%), hsl(282,60%,48%))",
+                    background: "var(--dash-accent)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     fontWeight: 700,
-                    fontSize: "1.1rem",
-                    color: "#fff",
+                    fontSize: "1.125rem",
+                    color: "var(--dash-bg)",
                     flexShrink: 0
                 }}>
                     {displayName[0].toUpperCase()}
                 </div>
             )}
             <div style={{flex: 1}}>
-                <p style={{fontSize: "0.78rem", color: "var(--dash-muted)", margin: "0 0 2px"}}>Ваш дизайнер</p>
+                <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", margin: "0 0 2px"}}>Ваш дизайнер</p>
                 <p style={{
                     fontWeight: 600,
-                    fontSize: "0.95rem",
+                    fontSize: "1rem",
                     color: "var(--dash-text)",
                     margin: 0
                 }}>{displayName}</p>
@@ -60,7 +60,7 @@ export function OrderSpecialist({specialist}: {
                 borderRadius: 8,
                 background: "var(--dash-success-bg)",
                 color: "var(--dash-success)",
-                fontSize: "0.78rem",
+                fontSize: "0.75rem",
                 fontWeight: 500
             }}>
                 <Icon name="check-circle"/>Назначен
@@ -75,39 +75,30 @@ export function OrderSpecialist({specialist}: {
                         gap: 8,
                     }}>
                         {(specialist.profile.levelTitle || specialist.profile.specialty) && (
-                            <p style={{margin: 0, color: "var(--dash-text2)", fontSize: "0.8rem", lineHeight: 1.45}}>
+                            <p style={{margin: 0, color: "var(--dash-text2)", fontSize: "0.75rem", lineHeight: 1.45}}>
                                 {[specialist.profile.levelTitle, specialist.profile.specialty].filter(Boolean).join(" · ")}
                             </p>
                         )}
                         <div style={{display: "flex", flexWrap: "wrap", gap: "6px 14px"}}>
-                            <span style={{fontSize: "0.76rem", color: "var(--dash-muted)"}}>
-                                <Icon name="briefcase" style={{marginRight: 5}}/>
+                            <span style={{fontSize: "0.75rem", color: "var(--dash-muted)"}}>
+                                <Icon name="briefcase" style={{marginRight: 4}}/>
                                 {specialist.profile.experience} лет опыта
                             </span>
-                            <span style={{fontSize: "0.76rem", color: "var(--dash-muted)"}}>
-                                <Icon name="area" style={{marginRight: 5}}/>
+                            <span style={{fontSize: "0.75rem", color: "var(--dash-muted)"}}>
+                                <Icon name="area" style={{marginRight: 4}}/>
                                 {specialist.profile.sqm} м² реализовано
                             </span>
                         </div>
                     </div>
-                    <button
+                    <Button
                         type="button"
+                        variant="outline"
+                        size="sm"
                         onClick={() => setShowProfile(true)}
-                        style={{
-                            border: "1px solid var(--dash-border)",
-                            borderRadius: 8,
-                            padding: "7px 12px",
-                            background: "transparent",
-                            color: "var(--dash-text)",
-                            font: "inherit",
-                            fontSize: "0.78rem",
-                            fontWeight: 600,
-                            cursor: "pointer",
-                            width: "100%",
-                        }}
+                        className="w-full"
                     >
                         Профиль и портфолио
-                    </button>
+                    </Button>
                 </>
             )}
         </div>

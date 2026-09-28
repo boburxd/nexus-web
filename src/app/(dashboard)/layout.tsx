@@ -37,18 +37,18 @@ export default async function DashboardRootLayout({children}: { children: ReactN
           --bs-body-font-family: 'PP Neue Montreal', var(--font-inter), 'Inter', -apple-system, sans-serif;
 
           /* NEXUS brand */
-          --nexus-accent: #201d1d;
-          --nexus-accent-light: rgba(32, 29, 29, 0.07);
-          --nexus-accent-border: rgba(32, 29, 29, 0.18);
+          --nexus-accent: hsl(220, 22%, 12%);
+          --nexus-accent-light: rgba(24, 29, 37, 0.07);
+          --nexus-accent-border: rgba(24, 29, 37, 0.18);
 
           /* Bootstrap primary → NEXUS dark */
-          --bs-primary: #201d1d;
-          --bs-primary-rgb: 32, 29, 29;
-          --bs-primary-text-emphasis: #201d1d;
-          --bs-primary-bg-subtle: #f0efee;
-          --bs-primary-border-subtle: rgba(32,29,29,0.2);
-          --bs-link-color: #201d1d;
-          --bs-link-hover-color: #403a3a;
+          --bs-primary: var(--nexus-accent);
+          --bs-primary-rgb: 24, 29, 37;
+          --bs-primary-text-emphasis: var(--nexus-accent);
+          --bs-primary-bg-subtle: hsl(220, 14%, 94%);
+          --bs-primary-border-subtle: rgba(24, 29, 37, 0.2);
+          --bs-link-color: var(--nexus-accent);
+          --bs-link-hover-color: hsl(220, 16%, 24%);
         }
         body { font-family: 'PP Neue Montreal', var(--font-inter), 'Inter', -apple-system, sans-serif; }
 

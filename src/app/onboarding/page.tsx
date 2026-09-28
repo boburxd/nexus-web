@@ -2,6 +2,7 @@ import Link from "next/link"
 import {redirect} from "next/navigation"
 import {OnboardingShell} from "@/components/app/OnboardingShell"
 import {AppCard, StatusBadge} from "@/components/app/AppCard"
+import {Button} from "@/components/ui/button"
 import {OnboardingStatusPoller} from "@/components/app/OnboardingStatusPoller"
 import {prisma} from "@/lib/db/prisma"
 import {parseQuizLevelState} from "@/lib/onboarding/levels/state"
@@ -113,14 +114,14 @@ export default async function OnboardingPage() {
             {onboardingStatus === "REGULATIONS" && <OnboardingStatusPoller currentStatus={onboardingStatus}/>}
             <div className="mx-auto max-w-2xl px-6 py-12">
                 <div className="mb-10">
-                    <h1 style={{color: "#f4f4f4", fontSize: "clamp(1.5rem,3vw,2rem)", fontWeight: 500, margin: 0}}>
+                    <h1 style={{color: "var(--foreground)", fontSize: "clamp(1.5rem,3vw,2rem)", fontWeight: 500, margin: 0}}>
                         Верификация специалиста
                     </h1>
-                    <p style={{color: "rgba(255,255,255,0.45)", marginTop: "0.5em", fontSize: "0.95rem"}}>
+                    <p style={{color: "rgba(255,255,255,0.45)", marginTop: "8px", fontSize: "1rem"}}>
                         Пройдите все этапы для начала работы на платформе
                     </p>
                     {highestPassedLevel && (
-                        <p style={{color: "rgba(255,255,255,0.65)", marginTop: "0.35em", fontSize: "0.85rem"}}>
+                        <p style={{color: "rgba(255,255,255,0.65)", marginTop: "6px", fontSize: "0.875rem"}}>
                             Подтвержденный уровень: {levelLabels[highestPassedLevel] ?? highestPassedLevel}
                         </p>
                     )}
@@ -140,10 +141,9 @@ export default async function OnboardingPage() {
                                     <div
                                         className="flex items-center justify-center rounded-full shrink-0 font-semibold"
                                         style={{
-                                            width: 36, height: 36, fontSize: "0.85rem",
+                                            width: 36, height: 36, fontSize: "0.875rem",
                                             background: isDone ? "rgba(52,211,153,0.15)" : isCurrent ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.04)",
-                                            color: isDone ? "#34d399" : isCurrent ? "#f4f4f4" : "rgba(255,255,255,0.25)",
-                                            border: isDone ? "1px solid rgba(52,211,153,0.3)" : isCurrent ? "1px solid rgba(255,255,255,0.25)" : "1px solid rgba(255,255,255,0.08)",
+                                            color: isDone ? "var(--success)" : isCurrent ? "var(--foreground)" : "rgba(255,255,255,0.25)",
                                         }}
                                     >
                                         {isDone ? "✓" : i + 1}
@@ -152,8 +152,8 @@ export default async function OnboardingPage() {
                                     <div className="flex-1">
                                         <div className="flex items-center justify-between gap-3">
                                             <span style={{
-                                                color: "#f4f4f4",
-                                                fontSize: "0.95rem",
+                                                color: "var(--foreground)",
+                                                fontSize: "1rem",
                                                 fontWeight: 500
                                             }}>{step.label}</span>
                                             <StatusBadge
@@ -163,37 +163,27 @@ export default async function OnboardingPage() {
                                         </div>
                                         <p style={{
                                             color: "rgba(255,255,255,0.4)",
-                                            fontSize: "0.82rem",
-                                            marginTop: "0.35em"
+                                            fontSize: "0.875rem",
+                                            marginTop: "6px"
                                         }}>{step.desc}</p>
 
                                         {isCurrent && step.href && !awaitingReview && (step.key !== "TEST" || testUnlocked) && (
-                                            <a
-                                                href={step.href}
-                                                style={{
-                                                    display: "inline-flex",
-                                                    alignItems: "center",
-                                                    gap: 6,
-                                                    marginTop: "0.75em",
-                                                    background: "rgba(255,255,255,0.07)",
-                                                    border: "1px solid rgba(255,255,255,0.18)",
-                                                    borderRadius: 8,
-                                                    color: "#f4f4f4",
-                                                    fontSize: "0.82rem",
-                                                    fontWeight: 500,
-                                                    padding: "0.45em 1em",
-                                                    textDecoration: "none",
-                                                }}
+                                            <Button
+                                                variant="secondary"
+                                                size="lg"
+                                                nativeButton={false}
+                                                render={<a href={step.href}/>}
+                                                className="mt-3"
                                             >
                                                 {step.action}
-                                            </a>
+                                            </Button>
                                         )}
 
                                         {awaitingReview && (
                                             <p style={{
                                                 color: "rgba(255,255,255,0.5)",
-                                                fontSize: "0.8rem",
-                                                marginTop: "0.5em",
+                                                fontSize: "0.75rem",
+                                                marginTop: "8px",
                                                 fontStyle: "italic"
                                             }}>
                                                 Отправлено на проверку, ждите ответа администратора.
@@ -203,8 +193,8 @@ export default async function OnboardingPage() {
                                         {isCurrent && (step.key === "TEST" && !testUnlocked) && (
                                             <p style={{
                                                 color: "rgba(255,255,255,0.3)",
-                                                fontSize: "0.8rem",
-                                                marginTop: "0.5em",
+                                                fontSize: "0.75rem",
+                                                marginTop: "8px",
                                                 fontStyle: "italic"
                                             }}>
                                                 Ожидайте подтверждения анкеты администратором. После этого откроется
@@ -215,8 +205,8 @@ export default async function OnboardingPage() {
                                         {isCurrent && !step.href && step.key !== "TEST" && (
                                             <p style={{
                                                 color: "rgba(255,255,255,0.3)",
-                                                fontSize: "0.8rem",
-                                                marginTop: "0.5em",
+                                                fontSize: "0.75rem",
+                                                marginTop: "8px",
                                                 fontStyle: "italic"
                                             }}>
                                                 Ожидайте приглашения от администратора
@@ -232,14 +222,13 @@ export default async function OnboardingPage() {
                 {allDone && (
                     <div style={{marginTop: "2rem", display: "flex", flexDirection: "column", gap: 12}}>
                         <AppCard glass
-                            style={{background: "rgba(52,211,153,0.07)", border: "1px solid rgba(52,211,153,0.2)"}}>
+                            style={{background: "rgba(52,211,153,0.07)"}}>
                             <div style={{display: "flex", alignItems: "center", gap: 12}}>
                                 <div style={{
                                     width: 36,
                                     height: 36,
                                     borderRadius: "50%",
                                     background: "rgba(52,211,153,0.15)",
-                                    border: "1px solid rgba(52,211,153,0.3)",
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
@@ -248,31 +237,24 @@ export default async function OnboardingPage() {
                                 }}>✓
                                 </div>
                                 <div>
-                                    <div style={{color: "#34d399", fontWeight: 500, fontSize: "0.95rem"}}>Верификация
+                                    <div style={{color: "var(--success)", fontWeight: 500, fontSize: "1rem"}}>Верификация
                                         пройдена
                                     </div>
-                                    <div style={{color: "rgba(255,255,255,0.4)", fontSize: "0.82rem", marginTop: 2}}>Все
+                                    <div style={{color: "rgba(255,255,255,0.4)", fontSize: "0.875rem", marginTop: 2}}>Все
                                         этапы успешно завершены. Вы можете приступать к работе.
                                     </div>
                                 </div>
                             </div>
                         </AppCard>
-                        <Link
-                            href="/work"
-                            style={{
-                                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                                padding: "0.9em 1.5em",
-                                background: "rgba(255,255,255,0.08)",
-                                border: "1px solid rgba(255,255,255,0.2)",
-                                borderRadius: 10,
-                                color: "#f4f4f4",
-                                fontSize: "0.9rem",
-                                fontWeight: 500,
-                                textDecoration: "none",
-                            }}
+                        <Button
+                            variant="secondary"
+                            size="lg"
+                            nativeButton={false}
+                            render={<Link href="/work"/>}
+                            className="w-full"
                         >
                             Перейти в личный кабинет →
-                        </Link>
+                        </Button>
                     </div>
                 )}
             </div>

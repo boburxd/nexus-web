@@ -4,6 +4,8 @@ import {MAX_FREE_CLIENT_REVISIONS} from "@/lib/stage-constants"
 import {confirmDialog} from "@/lib/dialog-store"
 import type {OrderStage} from "../types"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
+import {Textarea} from "@/components/ui/textarea"
 
 export function StageClientActionsSection({
                                               stage,
@@ -35,25 +37,13 @@ export function StageClientActionsSection({
         <div style={{marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid var(--dash-border)"}}>
             {!showRevision ? (
                 <div style={{display: "flex", gap: "0.75rem"}}>
-                    <button
-                        onClick={onApprove}
-                        disabled={acting}
-                        style={{
-                            padding: "0.6em 1.5em",
-                            borderRadius: 8,
-                            border: "none",
-                            background: "var(--dash-success)",
-                            color: "#fff",
-                            fontSize: "0.875rem",
-                            fontWeight: 600,
-                            cursor: acting ? "default" : "pointer",
-                            fontFamily: "inherit",
-                            opacity: acting ? 0.7 : 1,
-                        }}
-                    >
+                    <Button type="button" size="lg" onClick={onApprove} disabled={acting}>
                         {acting ? "…" : "✓ Принять этап"}
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        size="lg"
                         onClick={async () => {
                             if (stage.clientRound >= MAX_FREE_CLIENT_REVISIONS - 1) {
                                 const ok = await confirmDialog({
@@ -67,25 +57,14 @@ export function StageClientActionsSection({
                             setShowRevision(true)
                         }}
                         disabled={acting}
-                        style={{
-                            padding: "0.6em 1.25em",
-                            borderRadius: 8,
-                            border: "1.5px solid var(--dash-warn)",
-                            background: "transparent",
-                            color: "var(--dash-warn)",
-                            fontSize: "0.875rem",
-                            fontWeight: 500,
-                            cursor: acting ? "default" : "pointer",
-                            fontFamily: "inherit",
-                        }}
                     >
                         На доработку
-                    </button>
+                    </Button>
                 </div>
             ) : revisionViaChatOnly ? (
                 <div>
                     <p style={{
-                        fontSize: "0.82rem",
+                        fontSize: "0.875rem",
                         fontWeight: 600,
                         color: "var(--dash-text)",
                         marginBottom: "0.5rem"
@@ -93,149 +72,73 @@ export function StageClientActionsSection({
                         Что нужно доработать?
                     </p>
                     <p style={{
-                        fontSize: "0.72rem",
+                        fontSize: "0.75rem",
                         color: "var(--dash-muted)",
                         margin: "0 0 0.75rem",
                         lineHeight: 1.45
                     }}>
-                        Опишите замечания в чате — дизайнер получит уведомление. Когда закончите, отправьте этап на
+                        Опишите замечания в чате, дизайнер получит уведомление. Когда закончите, отправьте этап на
                         доработку.
                     </p>
-                    <button
-                        type="button"
-                        onClick={() => onOpenRevisionChat?.()}
-                        style={{
-                            padding: "0.55em 1.1em",
-                            borderRadius: 8,
-                            border: "1px solid var(--dash-accent)",
-                            background: "var(--dash-accent-bg)",
-                            color: "var(--dash-accent)",
-                            fontSize: "0.82rem",
-                            fontWeight: 600,
-                            cursor: "pointer",
-                            fontFamily: "inherit",
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: 6,
-                        }}
-                    >
+                    <Button type="button" variant="secondary" size="lg" onClick={() => onOpenRevisionChat?.()}>
                         <Icon name="message-dots" aria-hidden/>
                         Открыть чат
-                    </button>
-                    <div style={{display: "flex", gap: "0.5rem", marginTop: "0.85rem", flexWrap: "wrap"}}>
-                        <button
-                            onClick={onRevision}
-                            disabled={acting}
-                            style={{
-                                padding: "0.55em 1.25em",
-                                borderRadius: 8,
-                                border: "none",
-                                background: "var(--dash-warn)",
-                                color: "#fff",
-                                fontSize: "0.875rem",
-                                fontWeight: 600,
-                                cursor: acting ? "default" : "pointer",
-                                fontFamily: "inherit",
-                                opacity: acting ? 0.7 : 1,
-                            }}
-                        >
+                    </Button>
+                    <div style={{display: "flex", gap: "0.5rem", marginTop: "0.875rem", flexWrap: "wrap"}}>
+                        <Button type="button" size="lg" onClick={onRevision} disabled={acting}>
                             {acting ? "…" : "Отправить на доработку"}
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             type="button"
+                            variant="ghost"
+                            size="lg"
                             onClick={() => {
                                 setShowRevision(false)
                                 setComment("")
                             }}
-                            style={{
-                                padding: "0.55em 1em",
-                                borderRadius: 8,
-                                border: "1.5px solid var(--dash-border)",
-                                background: "transparent",
-                                color: "var(--dash-muted)",
-                                fontSize: "0.875rem",
-                                cursor: "pointer",
-                                fontFamily: "inherit",
-                            }}
                         >
                             Отмена
-                        </button>
+                        </Button>
                     </div>
                 </div>
             ) : (
                 <div>
                     <p style={{
-                        fontSize: "0.82rem",
+                        fontSize: "0.875rem",
                         fontWeight: 600,
                         color: "var(--dash-text)",
                         marginBottom: "0.5rem"
                     }}>
                         Что нужно доработать?
                     </p>
-                    <textarea
+                    <Textarea
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                         placeholder="Опишите замечания…"
                         rows={3}
-                        style={{
-                            width: "100%",
-                            padding: "0.65em 0.875em",
-                            border: "1.5px solid var(--dash-border)",
-                            borderRadius: 8,
-                            fontSize: "0.875rem",
-                            fontFamily: "inherit",
-                            resize: "vertical",
-                            outline: "none",
-                            boxSizing: "border-box",
-                            marginBottom: "0.75rem",
-                            background: "var(--dash-surface2)",
-                            color: "var(--dash-text)",
-                        }}
+                        className="mb-3"
                     />
                     <div style={{display: "flex", gap: "0.5rem"}}>
-                        <button
-                            onClick={onRevision}
-                            disabled={acting}
-                            style={{
-                                padding: "0.55em 1.25em",
-                                borderRadius: 8,
-                                border: "none",
-                                background: "var(--dash-warn)",
-                                color: "#fff",
-                                fontSize: "0.875rem",
-                                fontWeight: 600,
-                                cursor: acting ? "default" : "pointer",
-                                fontFamily: "inherit",
-                                opacity: acting ? 0.7 : 1,
-                            }}
-                        >
+                        <Button type="button" size="lg" onClick={onRevision} disabled={acting}>
                             {acting ? "…" : "Отправить замечания"}
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             type="button"
+                            variant="ghost"
+                            size="lg"
                             onClick={() => {
                                 setShowRevision(false)
                                 setComment("")
                             }}
-                            style={{
-                                padding: "0.55em 1em",
-                                borderRadius: 8,
-                                border: "1.5px solid var(--dash-border)",
-                                background: "transparent",
-                                color: "var(--dash-muted)",
-                                fontSize: "0.875rem",
-                                cursor: "pointer",
-                                fontFamily: "inherit",
-                            }}
                         >
                             Отмена
-                        </button>
+                        </Button>
                     </div>
                 </div>
             )}
             {stage.clientRound >= MAX_FREE_CLIENT_REVISIONS - 1 && (
                 <p style={{fontSize: "0.75rem", color: "var(--dash-danger)", marginTop: "0.5rem", marginBottom: 0}}>
-                    ⚠ Последний бесплатный раунд правок.
+                    <Icon name="error-circle" aria-hidden/> Последний бесплатный раунд правок.
                 </p>
             )}
         </div>

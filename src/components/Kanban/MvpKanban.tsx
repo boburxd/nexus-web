@@ -16,6 +16,7 @@ import {arrayMove, SortableContext, useSortable, verticalListSortingStrategy} fr
 import {CSS} from "@dnd-kit/utilities"
 import "./KanbanBoard.css"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 interface Card {
     id: string
@@ -44,7 +45,7 @@ const initialData = {
     columnOrder: ["todo", "in-progress", "review", "done"],
     cards: {
         "c1": {
-            id: "c1", title: "Инфраструктура и DevOps", tag: "DevOps", tagColor: "#7367f0", hours: 24, avatars: ["А"],
+            id: "c1", title: "Инфраструктура и DevOps", tag: "DevOps", tagColor: "var(--bs-primary)", hours: 24, avatars: ["А"],
             description: "Развертывание всех сервисов платформы и настройка окружений.",
             tasks: ["Zitadel (OIDC/IAM)", "PostgreSQL + Redis", "S3-хранилище (MinIO)", "Nginx reverse proxy", "Docker Compose для всех сервисов", "CI/CD pipeline", "Окружения: dev / staging / prod"],
             reuse: "docker-compose структура, конфиг Nginx, CI-шаблоны из AdQuest",
@@ -53,7 +54,7 @@ const initialData = {
             id: "c2",
             title: "Аутентификация и роли (Zitadel)",
             tag: "Auth",
-            tagColor: "#00cfe8",
+            tagColor: "var(--bs-info)",
             hours: 28,
             avatars: ["Б"],
             description: "Интеграция Next.js с Zitadel через OIDC. Middleware для трех ролей.",
@@ -61,12 +62,12 @@ const initialData = {
             reuse: "JWKS/JWT flow, service account клиент, компоненты управления пользователями из AdQuest CRM",
         },
         "c3": {
-            id: "c3", title: "Схема БД и миграции (Prisma)", tag: "БД", tagColor: "#28c76f", hours: 12, avatars: ["А"],
+            id: "c3", title: "Схема БД и миграции (Prisma)", tag: "БД", tagColor: "var(--bs-success)", hours: 12, avatars: ["А"],
             description: "Полная Prisma-схема и миграционные скрипты.",
             tasks: ["User, SpecialistProfile, OnboardingStep", "Order, Brief, ProjectStage", "StageFile, StageReview", "Payment, ExtraPayment", "Seed-данные для тестирования", "Миграционные скрипты"],
         },
         "c4": {
-            id: "c4", title: "Онбординг специалиста", tag: "Онбординг", tagColor: "#ff9f43", hours: 32, avatars: ["В"],
+            id: "c4", title: "Онбординг специалиста", tag: "Онбординг", tagColor: "var(--bs-warning)", hours: 32, avatars: ["В"],
             description: "Форма анкеты и статусная машина онбординга специалиста.",
             tasks: ["Форма анкеты кандидата", "Статусная машина: PENDING → TEST_INVITED → INTERVIEW_INVITED → REGULATIONS → CONTRACT → ACTIVE | REJECTED", "Интерфейс администратора: просмотр анкеты, перевод по статусам", "Комментарий при отказе", "Email-уведомления при каждой смене статуса"],
             reuse: "UI-компоненты из AdQuest CRM, паттерны email-уведомлений",
@@ -76,7 +77,7 @@ const initialData = {
             id: "c5",
             title: "Регистрация заказчика и бриф",
             tag: "Клиент",
-            tagColor: "#ea5455",
+            tagColor: "var(--bs-danger)",
             hours: 24,
             avatars: ["Б"],
             description: "Регистрация заказчика, заполнение брифа и назначение специалиста.",
@@ -88,7 +89,7 @@ const initialData = {
             id: "c6",
             title: "Стейт-машина проекта (3 этапа)",
             tag: "Ядро",
-            tagColor: "#ea5455",
+            tagColor: "var(--bs-danger)",
             hours: 40,
             avatars: ["А", "Б"],
             description: "Три последовательных этапа проекта с модерацией и согласованием. Ядро продукта.",
@@ -99,21 +100,21 @@ const initialData = {
             id: "c7",
             title: "Загрузка и хранение файлов (S3)",
             tag: "S3",
-            tagColor: "#00cfe8",
+            tagColor: "var(--bs-info)",
             hours: 16,
             avatars: ["А"],
             description: "Интеграция с S3 для хранения тяжелых файлов дизайн-проектов.",
             tasks: ["Интеграция с S3 (MinIO self-hosted или AWS S3)", "Загрузка файлов по этапам", "Версионирование файлов внутри этапа", "Просмотр в браузере (изображения)", "Скачивание (PDF и др.)"],
         },
         "c8": {
-            id: "c8", title: "Оплата (T-Bank)", tag: "Оплата", tagColor: "#28c76f", hours: 20, avatars: ["В"],
+            id: "c8", title: "Оплата (T-Bank)", tag: "Оплата", tagColor: "var(--bs-success)", hours: 20, avatars: ["В"],
             description: "Адаптация готового Rust-модуля T-Bank под сценарий платформы.",
             tasks: ["Удержание 100% суммы при подтверждении заказа", "Выплата специалисту после подписания акта", "Webhook-обработчик статусов", "Выставление счета на дополнительные правки", "Кнопка инициации выплаты в админке"],
             reuse: "Rust-модуль T-Bank из AdQuest — адаптация под новый сценарий",
             warning: "Нужны merchant credentials T-Bank от заказчика. Автоматические сплит-выплаты — этап 2.",
         },
         "c9": {
-            id: "c9", title: "Email-уведомления", tag: "Email", tagColor: "#7367f0", hours: 12, avatars: ["Б"],
+            id: "c9", title: "Email-уведомления", tag: "Email", tagColor: "var(--bs-primary)", hours: 12, avatars: ["Б"],
             description: "Уведомления через Resend (или SMTP заказчика) по всем триггерам.",
             tasks: ["Смена статуса онбординга", "Новый заказ назначен специалисту", "Загрузка файла на этап", "Результат модерации", "Решение заказчика по этапу", "Оплата и доплата", "HTML-шаблоны писем"],
             reuse: "Паттерны из AdQuest",
@@ -123,7 +124,7 @@ const initialData = {
             id: "c10",
             title: "Административная панель",
             tag: "Админ",
-            tagColor: "#ff9f43",
+            tagColor: "var(--bs-warning)",
             hours: 32,
             avatars: ["А", "В"],
             description: "Полный интерфейс администратора для управления платформой.",
@@ -134,7 +135,7 @@ const initialData = {
             id: "c11",
             title: "Личный кабинет специалиста",
             tag: "Специалист",
-            tagColor: "#7367f0",
+            tagColor: "var(--bs-primary)",
             hours: 20,
             avatars: ["Б"],
             description: "Интерфейс специалиста для работы с назначенными проектами.",
@@ -145,7 +146,7 @@ const initialData = {
             id: "c12",
             title: "Личный кабинет заказчика",
             tag: "Заказчик",
-            tagColor: "#00cfe8",
+            tagColor: "var(--bs-info)",
             hours: 16,
             avatars: ["В"],
             description: "Интерфейс заказчика для отслеживания проекта и согласования.",
@@ -153,30 +154,33 @@ const initialData = {
             reuse: "UI-компоненты из AdQuest CRM",
         },
         "c13": {
-            id: "c13", title: "Тестирование и запуск", tag: "QA", tagColor: "#28c76f", hours: 20, avatars: ["А", "Б"],
+            id: "c13", title: "Тестирование и запуск", tag: "QA", tagColor: "var(--bs-success)", hours: 20, avatars: ["А", "Б"],
             description: "Финальное тестирование всех сценариев и деплой на production.",
             tasks: ["Функциональное тестирование всех бизнес-сценариев", "Нагрузочное тестирование загрузки файлов", "Исправление критических багов", "Деплой на production", "Передача документации и инструкции по эксплуатации"],
         },
     } as Record<string, Card>,
 }
 
-const AVATAR_COLORS = ["#7367f0", "#28c76f", "#ea5455", "#ff9f43", "#00cfe8"]
+const AVATAR_COLORS = ["var(--bs-primary)", "var(--bs-success)", "var(--bs-danger)", "var(--bs-warning)", "var(--bs-info)"]
 
 function CardModal({card, onClose}: { card: Card; onClose: () => void }) {
     return (
         <>
-            <div className="modal fade show d-block" tabIndex={-1} onClick={onClose}>
-                <div className="modal-dialog modal-dialog-centered modal-lg" onClick={e => e.stopPropagation()}>
+            <div className="modal fade show d-block" tabIndex={-1} onClick={onClose} role="presentation">
+                <div className="modal-dialog modal-dialog-centered modal-lg" onClick={e => e.stopPropagation()}
+                     role="dialog" aria-modal="true">
                     <div className="modal-content">
                         <div className="modal-header">
                             <div>
                                 <span className="kanban-tag me-2" style={{
-                                    backgroundColor: card.tagColor + "22",
+                                    backgroundColor: `color-mix(in oklab, ${card.tagColor} 13%, transparent)`,
                                     color: card.tagColor
                                 }}>{card.tag}</span>
                                 <h5 className="modal-title d-inline">{card.title}</h5>
                             </div>
-                            <button type="button" className="btn-close" onClick={onClose}/>
+                            <Button type="button" variant="ghost" size="icon-sm" onClick={onClose} aria-label="Закрыть">
+                                <Icon name="x"/>
+                            </Button>
                         </div>
                         <div className="modal-body">
                             <p className="text-muted mb-3">{card.description}</p>
@@ -239,10 +243,18 @@ function KanbanCard({card, isDragging, onClick}: { card: Card; isDragging?: bool
             className={`kanban-card${isDragging ? " dragging" : ""}`}
             {...attributes}
             {...listeners}
+            role="button"
+            tabIndex={0}
             onClick={onClick}
+            onKeyDown={e => {
+                if (onClick && (e.key === "Enter" || e.key === " ")) {
+                    e.preventDefault()
+                    onClick()
+                }
+            }}
         >
             <span className="kanban-tag"
-                  style={{backgroundColor: card.tagColor + "22", color: card.tagColor}}>{card.tag}</span>
+                  style={{backgroundColor: `color-mix(in oklab, ${card.tagColor} 13%, transparent)`, color: card.tagColor}}>{card.tag}</span>
             <p className="kanban-card-title">{card.title}</p>
             <div className="kanban-card-footer">
                 <div className="kanban-card-meta">
@@ -270,10 +282,10 @@ function KanbanColumn({column, cards, onCardClick}: {
     return (
         <div className="kanban-column">
             <div className="kanban-column-header">
-                <h3>{column.title} <span style={{fontSize: 12, color: "#999", fontWeight: 400}}>({cards.length})</span>
+                <h3>{column.title} <span style={{fontSize: 12, color: "var(--bs-secondary-color)", fontWeight: 400}}>({cards.length})</span>
                 </h3>
                 {totalHours > 0 &&
-                    <span style={{fontSize: 11, color: "#7367f0", fontWeight: 600}}>{totalHours} ч</span>}
+                    <span style={{fontSize: 12, color: "var(--bs-primary)", fontWeight: 600}}>{totalHours} ч</span>}
             </div>
             <SortableContext items={cards.map(c => c.id)} strategy={verticalListSortingStrategy}>
                 <div className="kanban-cards-list" ref={setNodeRef}>

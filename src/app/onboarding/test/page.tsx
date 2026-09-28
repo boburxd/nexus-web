@@ -4,6 +4,7 @@ import {type CSSProperties, useCallback, useEffect, useMemo, useRef, useState} f
 import {useRouter} from "next/navigation"
 import {OnboardingShell} from "@/components/app/OnboardingShell"
 import {AppCard} from "@/components/app/AppCard"
+import {Button} from "@/components/ui/button"
 import {confirmDialog} from "@/lib/dialog-store"
 import {type DecodedQuizQuestion, decodeQuizQuestionWire, type NexusQuizQuestionWire,} from "@/lib/onboarding/quiz-wire"
 import {logQuizAnswerHint} from "@/lib/dev-quiz-hint"
@@ -283,7 +284,7 @@ export default function OnboardingTestPage() {
         stopQuestionTimer()
         await confirmDialog({
             title: "Тест уже не пройти",
-            description: "Слишком много неверных ответов — минимальный проходной балл больше недостижим. Попробуйте снова.",
+            description: "Слишком много неверных ответов: минимальный проходной балл больше недостижим. Попробуйте снова.",
             confirmLabel: "Понятно",
             cancelLabel: "Понятно",
             variant: "destructive",
@@ -482,13 +483,13 @@ export default function OnboardingTestPage() {
         <OnboardingShell title="Квалификационный тест" backHref="/onboarding" backLabel="Онбординг" withBg>
             <div className="mx-auto max-w-xl px-6 py-12">
                 {gate === "loading" && (
-                    <p style={{color: "rgba(255,255,255,0.45)", fontSize: "0.9rem"}}>Загрузка теста…</p>
+                    <p style={{color: "rgba(255,255,255,0.45)", fontSize: "0.875rem"}}>Загрузка теста…</p>
                 )}
 
                 {gate === "error" && (
                     <AppCard glass>
-                        <p style={{color: "#fca5a5", fontSize: "0.9rem", margin: 0}}>{gateMessage}</p>
-                        <p style={{color: "rgba(255,255,255,0.4)", fontSize: "0.82rem", marginTop: "0.75em"}}>
+                        <p style={{color: "var(--destructive)", fontSize: "0.875rem", margin: 0}}>{gateMessage}</p>
+                        <p style={{color: "rgba(255,255,255,0.4)", fontSize: "0.875rem", marginTop: "12px"}}>
                             {gateCode === "AWAITING_ADMIN"
                                 ? "Следующий этап теста откроется после подтверждения администратором. Обновите страницу позже или вернитесь в онбординг."
                                 : "После приглашения администратора обновите страницу. В демо-режиме доступ открывается автоматически после отправки анкеты."}
@@ -501,7 +502,7 @@ export default function OnboardingTestPage() {
                         <div className="mb-8">
                             <h1
                                 style={{
-                                    color: "#f4f4f4",
+                                    color: "var(--foreground)",
                                     fontSize: "clamp(1.4rem,3vw,1.85rem)",
                                     fontWeight: 500,
                                     margin: 0,
@@ -517,34 +518,31 @@ export default function OnboardingTestPage() {
                                 const attempts = payload.attemptsByLevel[lvl.code] ?? 0
                                 const available = payload.availableLevels.includes(lvl.code)
                                 return (
-                                    <button
+                                    <Button
                                         key={lvl.code}
                                         type="button"
+                                        variant="outline"
                                         disabled={!available}
                                         onClick={() => setSelectedLevel(lvl.code)}
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "left",
-                                            borderRadius: 10,
-                                            border: selected ? "1px solid rgba(52,211,153,0.45)" : "1px solid rgba(255,255,255,0.15)",
-                                            background: selected ? "rgba(52,211,153,0.12)" : "rgba(255,255,255,0.04)",
-                                            color: available ? "#f4f4f4" : "rgba(255,255,255,0.4)",
-                                            padding: "0.6em 0.85em",
-                                            fontSize: "0.82rem",
-                                            cursor: available ? "pointer" : "not-allowed",
-                                        }}
+                                        className="h-auto w-full justify-start whitespace-normal text-left"
+                                        style={selected ? {
+                                            borderColor: "var(--success)",
+                                            background: "color-mix(in oklab, var(--success) 12%, transparent)",
+                                        } : undefined}
                                     >
-                                        {lvl.title} · {lvl.questionsCount} вопросов · попыток: {attempts}
-                                    </button>
+                                        <span style={{padding: "10px 4px"}}>
+                                            {lvl.title} · {lvl.questionsCount} вопросов · попыток: {attempts}
+                                        </span>
+                                    </Button>
                                 )
                             })}
                         </div>
                         <div className="flex flex-wrap gap-8 mb-8"
-                             style={{color: "rgba(255,255,255,0.5)", fontSize: "0.85rem"}}>
+                             style={{color: "rgba(255,255,255,0.5)", fontSize: "0.875rem"}}>
                             <div>
                                 <div style={{
-                                    color: "#f4f4f4",
-                                    fontSize: "1.75rem",
+                                    color: "var(--foreground)",
+                                    fontSize: "1.5rem",
                                     fontWeight: 600,
                                     lineHeight: 1
                                 }}>{total}</div>
@@ -552,8 +550,8 @@ export default function OnboardingTestPage() {
                             </div>
                             <div>
                                 <div style={{
-                                    color: "#f4f4f4",
-                                    fontSize: "1.75rem",
+                                    color: "var(--foreground)",
+                                    fontSize: "1.5rem",
                                     fontWeight: 600,
                                     lineHeight: 1
                                 }}>{passPercent}%
@@ -562,8 +560,8 @@ export default function OnboardingTestPage() {
                             </div>
                             <div>
                                 <div style={{
-                                    color: "#f4f4f4",
-                                    fontSize: "1.75rem",
+                                    color: "var(--foreground)",
+                                    fontSize: "1.5rem",
                                     fontWeight: 600,
                                     lineHeight: 1
                                 }}>{payload.level}</div>
@@ -575,69 +573,52 @@ export default function OnboardingTestPage() {
                                 <AppCard glass>
                                     <p style={{
                                         color: "rgba(255,255,255,0.75)",
-                                        fontSize: "0.88rem",
+                                        fontSize: "0.875rem",
                                         margin: 0,
                                         lineHeight: 1.5
                                     }}>
                                         Сохранен прогресс: отвечено <strong
-                                        style={{color: "#f4f4f4"}}>{payload.resume.answeredCount}</strong> из{" "}
+                                        style={{color: "var(--foreground)"}}>{payload.resume.answeredCount}</strong> из{" "}
                                         {total}. Верных на данный момент (по сохраненным ответам):{" "}
-                                        <strong style={{color: "#f4f4f4"}}>{payload.resume.liveCorrect}</strong>.
+                                        <strong style={{color: "var(--foreground)"}}>{payload.resume.liveCorrect}</strong>.
                                     </p>
                                     <p style={{
                                         color: "rgba(255,255,255,0.35)",
-                                        fontSize: "0.78rem",
-                                        margin: "0.75em 0 0",
+                                        fontSize: "0.75rem",
+                                        margin: "12px 0 0",
                                         lineHeight: 1.45
                                     }}>
                                         Сбросить незавершенный тест и начать с чистого листа может только администратор.
                                     </p>
                                 </AppCard>
-                                <button
+                                <Button
                                     type="button"
+                                    size="lg"
                                     onClick={() => applyResume(payload, {freshTimer: false})}
-                                    style={{
-                                        width: "100%",
-                                        padding: "0.85em 1.5em",
-                                        borderRadius: 999,
-                                        border: "1px solid rgba(52,211,153,0.35)",
-                                        background: "rgba(52,211,153,0.12)",
-                                        color: "#6ee7b7",
-                                        fontWeight: 600,
-                                        fontSize: "0.9rem",
-                                        cursor: "pointer",
-                                    }}
+                                    className="w-full"
                                 >
                                     Продолжить тест →
-                                </button>
+                                </Button>
                             </div>
                         ) : (
-                            <button
+                            <Button
                                 type="button"
+                                variant="secondary"
+                                size="lg"
                                 onClick={() => {
                                     if (payload) applyResume(payload, {freshTimer: true})
                                 }}
-                                style={{
-                                    width: "100%",
-                                    padding: "0.85em 1.5em",
-                                    borderRadius: 999,
-                                    border: "1px solid rgba(255,255,255,0.25)",
-                                    background: "rgba(255,255,255,0.1)",
-                                    color: "#f4f4f4",
-                                    fontWeight: 600,
-                                    fontSize: "0.9rem",
-                                    cursor: "pointer",
-                                }}
+                                className="w-full"
                             >
                                 Начать тест →
-                            </button>
+                            </Button>
                         )}
                     </>
                 )}
 
                 {gate === "ok" && phase === "quiz" && current && (
                     <>
-                        <div className="mb-4 flex justify-between items-center" style={{fontSize: "0.82rem"}}>
+                        <div className="mb-4 flex justify-between items-center" style={{fontSize: "0.875rem"}}>
               <span style={{color: "rgba(255,255,255,0.45)"}}>
                 Вопрос {qIndex + 1} из {total}
               </span>
@@ -647,8 +628,8 @@ export default function OnboardingTestPage() {
                         </div>
                         <div
                             style={{
-                                color: timeLeft <= 5 ? "#fca5a5" : "rgba(255,255,255,0.55)",
-                                fontSize: "0.8rem",
+                                color: timeLeft <= 5 ? "var(--destructive)" : "rgba(255,255,255,0.55)",
+                                fontSize: "0.75rem",
                                 marginBottom: "0.5rem",
                                 fontWeight: timeLeft <= 5 ? 700 : 500,
                                 letterSpacing: timeLeft <= 5 ? "0.03em" : "normal",
@@ -660,19 +641,21 @@ export default function OnboardingTestPage() {
                         <div
                             style={{
                                 height: 6,
-                                borderRadius: 999,
+                                borderRadius: 14,
                                 background: "rgba(255,255,255,0.08)",
                                 overflow: "hidden",
-                                marginBottom: "0.65rem",
+                                marginBottom: "0.625rem",
                             }}
                         >
                             <div
                                 style={{
                                     height: "100%",
-                                    width: `${progressPct}%`,
-                                    borderRadius: 999,
-                                    background: "linear-gradient(90deg, rgba(52,211,153,0.9), rgba(45,212,191,0.85))",
-                                    transition: "width 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
+                                    width: "100%",
+                                    transform: `scaleX(${progressPct / 100})`,
+                                    transformOrigin: "left",
+                                    borderRadius: 14,
+                                    background: "var(--success)",
+                                    transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
                                 }}
                             />
                         </div>
@@ -680,12 +663,12 @@ export default function OnboardingTestPage() {
                         <div
                             style={{
                                 display: "flex",
-                                gap: 3,
+                                gap: 4,
                                 flexWrap: "wrap",
-                                marginBottom: "1.1rem",
+                                marginBottom: "1rem",
                                 justifyContent: "space-between",
                             }}
-                            aria-label="Прогресс: зеленый — верно, красный — неверно; наведите на сегмент — какой ответ выбран"
+                            aria-label="Прогресс: зеленый (верно), красный (неверно); наведите на сегмент, чтобы увидеть выбранный ответ"
                         >
                             {Array.from({length: total}, (_, i) => {
                                 const q = questions[i]
@@ -707,9 +690,9 @@ export default function OnboardingTestPage() {
                                                 : `Вопрос ${i + 1}: неверно`
                                 const bg =
                                     state === "correct"
-                                        ? "linear-gradient(90deg, rgba(52,211,153,0.9), rgba(74,222,128,0.85))"
+                                        ? "var(--success)"
                                         : state === "wrong"
-                                            ? "linear-gradient(90deg, rgba(220,38,38,0.9), rgba(248,113,113,0.85))"
+                                            ? "var(--destructive)"
                                             : state === "answered"
                                                 ? "rgba(255,255,255,0.35)"
                                                 : "rgba(255,255,255,0.12)"
@@ -722,7 +705,7 @@ export default function OnboardingTestPage() {
                                             minWidth: 3,
                                             maxWidth: 14,
                                             height: 5,
-                                            borderRadius: 2,
+                                            borderRadius: 4,
                                             background: bg,
                                             transition: "background 0.2s, transform 0.15s",
                                             cursor: state === "pending" ? "default" : "help",
@@ -756,12 +739,12 @@ export default function OnboardingTestPage() {
                                 <div
                                     style={{
                                         display: "inline-block",
-                                        fontSize: "0.72rem",
+                                        fontSize: "0.75rem",
                                         fontWeight: 500,
                                         color: "rgba(255,255,255,0.4)",
                                         background: "rgba(255,255,255,0.06)",
-                                        padding: "0.25em 0.75em",
-                                        borderRadius: 999,
+                                        padding: "4px 12px",
+                                        borderRadius: 14,
                                         marginBottom: "0.75rem",
                                     }}
                                 >
@@ -769,16 +752,15 @@ export default function OnboardingTestPage() {
                                 </div>
                                 <p style={{
                                     color: "rgba(255,255,255,0.35)",
-                                    fontSize: "0.7rem",
+                                    fontSize: "0.75rem",
                                     fontWeight: 600,
-                                    letterSpacing: "0.08em",
                                     margin: "0 0 0.5rem"
                                 }}>
-                                    ВОПРОС {qIndex + 1}
+                                    Вопрос {qIndex + 1}
                                 </p>
                                 <p style={{
-                                    color: "#f4f4f4",
-                                    fontSize: "0.95rem",
+                                    color: "var(--foreground)",
+                                    fontSize: "1rem",
                                     fontWeight: 500,
                                     lineHeight: 1.5,
                                     margin: "0 0 1.25rem"
@@ -790,40 +772,25 @@ export default function OnboardingTestPage() {
                                         const picked = answers[current.id] === oi
                                         const showCorrect = revealed && revealFb && oi === revealFb.correctIndex
                                         const showWrong = revealed && picked && !revealFb?.isCorrect
-                                        let border = "1px solid rgba(255,255,255,0.1)"
-                                        let background = "transparent"
-                                        if (showCorrect) {
-                                            border = "1px solid rgba(52,211,153,0.45)"
-                                            background = "rgba(52,211,153,0.12)"
-                                        } else if (showWrong) {
-                                            border = "1px solid rgba(248,113,113,0.45)"
-                                            background = "rgba(248,113,113,0.1)"
-                                        } else if (picked && revealed) {
-                                            border = "1px solid rgba(52,211,153,0.35)"
-                                            background = "rgba(52,211,153,0.08)"
-                                        }
+                                        const stateStyle = showCorrect
+                                            ? {borderColor: "var(--success)", background: "color-mix(in oklab, var(--success) 12%, transparent)"}
+                                            : showWrong
+                                                ? {borderColor: "var(--destructive)", background: "color-mix(in oklab, var(--destructive) 10%, transparent)"}
+                                                : picked && revealed
+                                                    ? {borderColor: "color-mix(in oklab, var(--success) 60%, transparent)", background: "color-mix(in oklab, var(--success) 8%, transparent)"}
+                                                    : undefined
                                         return (
-                                            <button
+                                            <Button
                                                 key={oi}
                                                 type="button"
+                                                variant="outline"
                                                 disabled={revealed || submitting}
                                                 onClick={() => handleOptionPick(oi)}
                                                 {...(currentWire?.o64[oi] ? {"data-quiz-option-b64": currentWire.o64[oi]} : {})}
+                                                className="h-auto w-full items-start justify-start gap-3 whitespace-normal text-left disabled:opacity-100"
                                                 style={{
-                                                    display: "flex",
-                                                    alignItems: "flex-start",
-                                                    gap: 12,
-                                                    textAlign: "left",
-                                                    width: "100%",
-                                                    padding: "0.75em 1em",
-                                                    borderRadius: 12,
-                                                    border,
-                                                    background,
-                                                    color: "rgba(255,255,255,0.82)",
-                                                    fontSize: "0.85rem",
-                                                    lineHeight: 1.45,
+                                                    ...stateStyle,
                                                     cursor: revealed || submitting ? "default" : "pointer",
-                                                    transition: "background 0.15s, border-color 0.15s",
                                                     ...protectQuizSurface,
                                                 }}
                                                 onCopy={(e) => e.preventDefault()}
@@ -834,25 +801,22 @@ export default function OnboardingTestPage() {
                                 flexShrink: 0,
                                 width: 28,
                                 height: 28,
+                                marginTop: 10,
+                                marginBottom: 10,
                                 borderRadius: 8,
-                                border: showCorrect
-                                    ? "1px solid #34d399"
-                                    : showWrong
-                                        ? "1px solid #f87171"
-                                        : "1px solid rgba(255,255,255,0.2)",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                fontSize: "0.7rem",
+                                fontSize: "0.75rem",
                                 fontWeight: 700,
                                 background: showCorrect ? "rgba(52,211,153,0.25)" : showWrong ? "rgba(248,113,113,0.2)" : "rgba(255,255,255,0.04)",
-                                color: "#f4f4f4",
+                                color: "var(--foreground)",
                             }}
                         >
                           {LETTERS[oi]}
                         </span>
-                                                <span>{opt}</span>
-                                            </button>
+                                                <span style={{padding: "12px 0", lineHeight: 1.45}}>{opt}</span>
+                                            </Button>
                                         )
                                     })}
                                 </div>
@@ -862,16 +826,15 @@ export default function OnboardingTestPage() {
                                 <div
                                     style={{
                                         marginTop: "1rem",
-                                        padding: "0.85em 1em",
-                                        borderRadius: 12,
-                                        fontSize: "0.82rem",
+                                        padding: "14px 16px",
+                                        borderRadius: 14,
+                                        fontSize: "0.875rem",
                                         lineHeight: 1.55,
-                                        border: revealFb.isCorrect ? "1px solid rgba(52,211,153,0.35)" : "1px solid rgba(248,113,113,0.35)",
                                         background: revealFb.isCorrect ? "rgba(52,211,153,0.08)" : "rgba(248,113,113,0.06)",
                                         color: "rgba(255,255,255,0.75)",
                                     }}
                                 >
-                                    <strong style={{color: revealFb.isCorrect ? "#6ee7b7" : "#fca5a5"}}>
+                                    <strong style={{color: revealFb.isCorrect ? "var(--success)" : "var(--destructive)"}}>
                                         {revealFb.isCorrect
                                             ? "✓ Верно."
                                             : answers[current.id] === -1
@@ -886,49 +849,22 @@ export default function OnboardingTestPage() {
 
                             {serverError && (
                                 <p style={{
-                                    color: "#fca5a5",
-                                    fontSize: "0.82rem",
+                                    color: "var(--destructive)",
+                                    fontSize: "0.875rem",
                                     marginTop: "0.75rem"
                                 }}>{serverError}</p>
                             )}
 
                             <div className="flex justify-end mt-5">
                                 {revealed && qIndex < total - 1 && (
-                                    <button
-                                        type="button"
-                                        onClick={goNext}
-                                        style={{
-                                            padding: "0.55em 1.25em",
-                                            borderRadius: 999,
-                                            border: "1px solid rgba(255,255,255,0.25)",
-                                            background: "rgba(255,255,255,0.1)",
-                                            color: "#f4f4f4",
-                                            fontWeight: 600,
-                                            fontSize: "0.85rem",
-                                            cursor: "pointer",
-                                        }}
-                                    >
+                                    <Button type="button" variant="secondary" size="lg" onClick={goNext}>
                                         Следующий вопрос →
-                                    </button>
+                                    </Button>
                                 )}
                                 {revealed && qIndex >= total - 1 && (
-                                    <button
-                                        type="button"
-                                        disabled={submitting}
-                                        onClick={finishQuiz}
-                                        style={{
-                                            padding: "0.55em 1.25em",
-                                            borderRadius: 999,
-                                            border: "1px solid rgba(52,211,153,0.4)",
-                                            background: "rgba(52,211,153,0.15)",
-                                            color: "#6ee7b7",
-                                            fontWeight: 600,
-                                            fontSize: "0.85rem",
-                                            cursor: submitting ? "wait" : "pointer",
-                                        }}
-                                    >
+                                    <Button type="button" size="lg" disabled={submitting} onClick={finishQuiz}>
                                         {submitting ? "Отправка…" : "Завершить и отправить"}
-                                    </button>
+                                    </Button>
                                 )}
                             </div>
                         </AppCard>
@@ -937,8 +873,8 @@ export default function OnboardingTestPage() {
 
                 {phase === "result" && resultFail && (
                     <AppCard glass>
-                        <h2 style={{color: "#fca5a5", fontSize: "1.1rem", margin: "0 0 0.5rem"}}>Тест не пройден</h2>
-                        <p style={{color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.5, margin: 0}}>
+                        <h2 style={{color: "var(--destructive)", fontSize: "1.125rem", margin: "0 0 0.5rem"}}>Тест не пройден</h2>
+                        <p style={{color: "rgba(255,255,255,0.55)", fontSize: "0.875rem", lineHeight: 1.5, margin: 0}}>
                             Набрано {resultFail.correctCount} из {resultFail.total} ({resultFail.percent}%). Необходимо
                             минимум {resultFail.passPercent}%.
                             {resultFail.attemptsLeft > 0 ? (
@@ -949,53 +885,38 @@ export default function OnboardingTestPage() {
                             Изучите NEXUS Designer Code и попробуйте снова.
                         </p>
                         {resultFail.attemptsLeft > 0 && (
-                            <button
+                            <Button
                                 type="button"
+                                variant="secondary"
+                                size="lg"
                                 onClick={resetRun}
                                 disabled={cooldownLeft > 0}
-                                style={{
-                                    marginTop: "1.25rem",
-                                    padding: "0.65em 1.25em",
-                                    borderRadius: 999,
-                                    border: cooldownLeft > 0
-                                        ? "1px solid rgba(255,255,255,0.15)"
-                                        : "1px solid rgba(255,255,255,0.2)",
-                                    background: cooldownLeft > 0
-                                        ? "rgba(255,255,255,0.04)"
-                                        : "rgba(255,255,255,0.06)",
-                                    color: cooldownLeft > 0 ? "rgba(255,255,255,0.5)" : "#f4f4f4",
-                                    fontWeight: 500,
-                                    fontSize: "0.85rem",
-                                    cursor: cooldownLeft > 0 ? "not-allowed" : "pointer",
-                                }}
+                                className="mt-5"
                             >
                                 {cooldownLeft > 0
                                     ? `Подождите ${cooldownLeft}с`
                                     : "Пройти снова"}
-                            </button>
+                            </Button>
                         )}
                     </AppCard>
                 )}
 
                 {phase === "result" && resultExhausted && (
                     <AppCard glass style={{
-                        border: resultExhausted.onboardingStatus === "INTERVIEW_INVITED"
-                            ? "1px solid rgba(52,211,153,0.25)"
-                            : "1px solid rgba(248,113,113,0.25)",
                         background: resultExhausted.onboardingStatus === "INTERVIEW_INVITED"
                             ? "rgba(52,211,153,0.06)"
                             : "rgba(248,113,113,0.06)"
                     }}>
                         <h2 style={{
-                            color: resultExhausted.onboardingStatus === "INTERVIEW_INVITED" ? "#6ee7b7" : "#fca5a5",
-                            fontSize: "1.1rem",
+                            color: resultExhausted.onboardingStatus === "INTERVIEW_INVITED" ? "var(--success)" : "var(--destructive)",
+                            fontSize: "1.125rem",
                             margin: "0 0 0.5rem"
                         }}>
                             {resultExhausted.onboardingStatus === "INTERVIEW_INVITED"
                                 ? "Попытки на уровне ELITE исчерпаны"
                                 : "Попытки по тесту исчерпаны"}
                         </h2>
-                        <p style={{color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.5, margin: 0}}>
+                        <p style={{color: "rgba(255,255,255,0.55)", fontSize: "0.875rem", lineHeight: 1.5, margin: 0}}>
                             {resultExhausted.comment || (
                                 resultExhausted.onboardingStatus === "INTERVIEW_INVITED"
                                     ? "Мы сохранили для вас доступ к интервью и приглашаем перейти к следующему этапу."
@@ -1003,52 +924,35 @@ export default function OnboardingTestPage() {
                             )}
                         </p>
                         {resultExhausted.onboardingStatus === "INTERVIEW_INVITED" && (
-                            <button
+                            <Button
                                 type="button"
+                                size="lg"
                                 onClick={() => router.push("/onboarding/interview")}
-                                style={{
-                                    marginTop: "1.25rem",
-                                    padding: "0.65em 1.25em",
-                                    borderRadius: 999,
-                                    border: "1px solid rgba(52,211,153,0.4)",
-                                    background: "rgba(52,211,153,0.15)",
-                                    color: "#6ee7b7",
-                                    fontWeight: 600,
-                                    fontSize: "0.85rem",
-                                    cursor: "pointer",
-                                }}
+                                className="mt-5"
                             >
                                 Перейти к интервью →
-                            </button>
+                            </Button>
                         )}
                         {resultExhausted.onboardingStatus === "REJECTED" && (
-                            <button
+                            <Button
                                 type="button"
+                                variant="destructive"
+                                size="lg"
                                 onClick={() => router.push("/onboarding")}
-                                style={{
-                                    marginTop: "1.25rem",
-                                    padding: "0.65em 1.25em",
-                                    borderRadius: 999,
-                                    border: "1px solid rgba(248,113,113,0.4)",
-                                    background: "rgba(248,113,113,0.15)",
-                                    color: "#fca5a5",
-                                    fontWeight: 600,
-                                    fontSize: "0.85rem",
-                                    cursor: "pointer",
-                                }}
+                                className="mt-5"
                             >
                                 Вернуться в онбординг
-                            </button>
+                            </Button>
                         )}
                     </AppCard>
                 )}
 
                 {phase === "result" && resultOk && (
-                    <AppCard glass style={{border: "1px solid rgba(52,211,153,0.25)", background: "rgba(52,211,153,0.06)"}}>
-                        <h2 style={{color: "#6ee7b7", fontSize: "1.1rem", margin: "0 0 0.5rem"}}>
-                            {payload ? `${payload.levelTitle} пройден!` : "Тест пройден"}
+                    <AppCard glass style={{background: "rgba(52,211,153,0.06)"}}>
+                        <h2 style={{color: "var(--success)", fontSize: "1.125rem", margin: "0 0 0.5rem"}}>
+                            {payload ? `${payload.levelTitle} пройден.` : "Тест пройден"}
                         </h2>
-                        <p style={{color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", margin: 0}}>
+                        <p style={{color: "rgba(255,255,255,0.55)", fontSize: "0.875rem", margin: 0}}>
                             Результат: {resultOk.percent}% верных ответов.
                             {resultOk.transitionText
                                 ? ` ${resultOk.transitionText}`

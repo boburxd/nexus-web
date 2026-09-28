@@ -9,6 +9,7 @@ import type {OrderStage} from "../types"
 import {FileThumbnail} from "./FileThumbnail"
 import {clientFileTimeIso, formatWaveDt, isVideoFilename} from "./utils"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 export function StageMaterialsSection({
                                           stage,
@@ -67,7 +68,7 @@ export function StageMaterialsSection({
                     const heading = waveMulti ? `Выпуск ${w.displayNumber} из ${waves.length}` : `Материалы (${vf.length})`
 
                     const archivedNotice =
-                        isPastRound && "Ранее отправленный комплект — только просмотр. По этой версии решение уже принято."
+                        isPastRound && "Ранее отправленный комплект: только просмотр. По этой версии решение уже принято."
 
                     return (
                         <div
@@ -76,15 +77,6 @@ export function StageMaterialsSection({
                                 marginBottom: wIdx < lastWIdx ? "1rem" : stage.status === "CLIENT_REVIEW" ? "1rem" : 0,
                                 padding: waveMulti ? "1rem" : 0,
                                 borderRadius: waveMulti ? 10 : 0,
-                                border: waveMulti
-                                    ? `1.5px ${isPastRound ? "dashed" : "solid"} ${
-                                        isPastRound
-                                            ? "var(--dash-border)"
-                                            : stage.status === "APPROVED" && isLastWave && w.isFinalAcceptedBundle
-                                                ? "var(--dash-success)"
-                                                : "var(--dash-accent-border)"
-                                    }`
-                                    : "none",
                                 background: waveMulti
                                     ? isPastRound
                                         ? "var(--dash-surface2)"
@@ -102,16 +94,14 @@ export function StageMaterialsSection({
                                     justifyContent: "space-between",
                                     gap: 10,
                                     flexWrap: "wrap",
-                                    marginBottom: "0.45rem",
+                                    marginBottom: "0.5rem",
                                 }}
                             >
                                 <div style={{minWidth: 0}}>
                                     <p
                                         style={{
-                                            fontSize: "0.72rem",
+                                            fontSize: "0.75rem",
                                             fontWeight: 700,
-                                            textTransform: "uppercase",
-                                            letterSpacing: "0.07em",
                                             color: "var(--dash-muted)",
                                             margin: 0,
                                         }}
@@ -119,7 +109,7 @@ export function StageMaterialsSection({
                                         {heading}
                                     </p>
                                     <p style={{
-                                        fontSize: "0.7rem",
+                                        fontSize: "0.75rem",
                                         color: "var(--dash-muted)",
                                         margin: "4px 0 0",
                                         fontWeight: 500
@@ -131,28 +121,26 @@ export function StageMaterialsSection({
                                     {waveMulti && isLastWave && w.isFinalAcceptedBundle && stage.status === "APPROVED" && (
                                         <span
                                             style={{
-                                                fontSize: "0.72rem",
+                                                fontSize: "0.75rem",
                                                 fontWeight: 700,
                                                 color: "var(--dash-success)",
-                                                padding: "3px 10px",
-                                                borderRadius: 999,
-                                                background: "rgba(46,184,92,0.12)",
-                                                border: "1px solid var(--dash-success)",
+                                                padding: "4px 10px",
+                                                borderRadius: 14,
+                                                background: "var(--dash-success-bg)",
                                             }}
                                         >
-                        Принято — финальная версия
+                        Принято: финальная версия
                       </span>
                                     )}
                                     {waveMulti && isLastWave && w.isAtClientReview && stage.status === "CLIENT_REVIEW" && (
                                         <span
                                             style={{
-                                                fontSize: "0.72rem",
+                                                fontSize: "0.75rem",
                                                 fontWeight: 700,
                                                 color: "var(--dash-warn)",
-                                                padding: "3px 10px",
-                                                borderRadius: 999,
+                                                padding: "4px 10px",
+                                                borderRadius: 14,
                                                 background: "var(--dash-warn-bg)",
-                                                border: "1px solid var(--dash-warn)",
                                             }}
                                         >
                         На согласовании
@@ -161,13 +149,12 @@ export function StageMaterialsSection({
                                     {waveMulti && isLastWave && stage.status === "CLIENT_REVISION" && (
                                         <span
                                             style={{
-                                                fontSize: "0.72rem",
+                                                fontSize: "0.75rem",
                                                 fontWeight: 700,
                                                 color: "var(--dash-muted)",
-                                                padding: "3px 10px",
-                                                borderRadius: 999,
+                                                padding: "4px 10px",
+                                                borderRadius: 14,
                                                 background: "var(--dash-surface2)",
-                                                border: "1px solid var(--dash-border)",
                                             }}
                                         >
                         Доработка у дизайнера
@@ -180,7 +167,7 @@ export function StageMaterialsSection({
                                 <p style={{
                                     fontSize: "0.75rem",
                                     color: "var(--dash-muted)",
-                                    margin: "0 0 0.65rem",
+                                    margin: "0 0 0.625rem",
                                     lineHeight: 1.45
                                 }}>
                                     {archivedNotice}
@@ -189,22 +176,23 @@ export function StageMaterialsSection({
 
                             {w.moderatorRejections.length > 0 ? (
                                 <div style={{
-                                    marginBottom: "0.65rem",
-                                    paddingLeft: 10,
-                                    borderLeft: "3px solid rgba(245, 158, 11, 0.9)"
+                                    marginBottom: "0.625rem",
+                                    padding: "8px 10px",
+                                    borderRadius: 8,
+                                    background: "var(--dash-warn-bg)"
                                 }}>
                                     <p style={{
-                                        fontSize: "0.68rem",
+                                        fontSize: "0.75rem",
                                         fontWeight: 600,
                                         color: "var(--dash-muted)",
-                                        margin: "0 0 0.35rem"
+                                        margin: "0 0 0.375rem"
                                     }}>
                                         Комментарий модератора до выпуска
                                     </p>
                                     <ul style={{
                                         margin: 0,
-                                        paddingLeft: 18,
-                                        fontSize: "0.78rem",
+                                        paddingLeft: 16,
+                                        fontSize: "0.75rem",
                                         lineHeight: 1.45,
                                         color: "var(--dash-text)"
                                     }}>
@@ -223,22 +211,23 @@ export function StageMaterialsSection({
 
                             {w.clientRejections.length > 0 ? (
                                 <div style={{
-                                    marginBottom: "0.65rem",
-                                    paddingLeft: 10,
-                                    borderLeft: "3px solid rgba(56, 189, 248, 0.95)"
+                                    marginBottom: "0.625rem",
+                                    padding: "8px 10px",
+                                    borderRadius: 8,
+                                    background: "var(--dash-accent-bg)"
                                 }}>
                                     <p style={{
-                                        fontSize: "0.68rem",
+                                        fontSize: "0.75rem",
                                         fontWeight: 600,
                                         color: "var(--dash-muted)",
-                                        margin: "0 0 0.35rem"
+                                        margin: "0 0 0.375rem"
                                     }}>
                                         Ваши замечания до этого выпуска
                                     </p>
                                     <ul style={{
                                         margin: 0,
-                                        paddingLeft: 18,
-                                        fontSize: "0.78rem",
+                                        paddingLeft: 16,
+                                        fontSize: "0.75rem",
                                         lineHeight: 1.45,
                                         color: "var(--dash-text)"
                                     }}>
@@ -284,48 +273,39 @@ export function StageMaterialsSection({
                                         ))}
                                     </div>
                                     {vMedia.length > 12 && (
-                                        <button
+                                        <Button
                                             type="button"
+                                            variant="outline"
+                                            size="sm"
+                                            className="mt-2.5"
                                             onClick={() => setExpandWaveMedia((prev) => ({
                                                 ...prev,
                                                 [wIdx]: !mediaExpanded
                                             }))}
-                                            style={{
-                                                marginTop: 10,
-                                                background: "transparent",
-                                                border: "1px solid var(--dash-border)",
-                                                color: "var(--dash-muted)",
-                                                borderRadius: 8,
-                                                padding: "6px 10px",
-                                                fontSize: "0.8rem",
-                                                cursor: "pointer",
-                                                fontFamily: "inherit",
-                                            }}
                                         >
                                             {mediaExpanded ? "Свернуть" : `Показать ещё (${vMedia.length - 12})`}
-                                        </button>
+                                        </Button>
                                     )}
                                 </div>
                             )}
 
-                            <div style={{display: "flex", flexDirection: "column", gap: "0.35rem"}}>
+                            <div style={{display: "flex", flexDirection: "column", gap: "0.375rem"}}>
                                 {vf.map((f, idx) => (
                                     <div key={f.id}>
                                         <div
                                             style={{
                                                 display: "inline-flex",
                                                 alignItems: "center",
-                                                gap: "0.4rem",
-                                                fontSize: "0.82rem",
+                                                gap: "0.375rem",
+                                                fontSize: "0.875rem",
                                                 color: isPastRound ? "var(--dash-muted)" : "var(--dash-accent)",
-                                                padding: "0.3em 0.7em",
+                                                padding: "4px 12px",
                                                 borderRadius: 6,
-                                                border: `1px solid ${isPastRound ? "var(--dash-border)" : "var(--dash-accent-border)"}`,
                                                 background: isPastRound ? "var(--dash-surface)" : "var(--dash-accent-bg)",
                                                 width: "fit-content",
                                             }}
                                         >
-                        <span style={{fontSize: "0.68rem", color: "var(--dash-muted)", fontWeight: 600, minWidth: 18}}>
+                        <span style={{fontSize: "0.75rem", color: "var(--dash-muted)", fontWeight: 600, minWidth: 18}}>
                           #{vf.length - idx}
                         </span>
                                             <a
@@ -335,7 +315,7 @@ export function StageMaterialsSection({
                                                 style={{
                                                     display: "inline-flex",
                                                     alignItems: "center",
-                                                    gap: "0.3rem",
+                                                    gap: "0.25rem",
                                                     color: isPastRound ? "var(--dash-muted)" : "var(--dash-accent)",
                                                     textDecoration: "none",
                                                 }}
@@ -351,7 +331,7 @@ export function StageMaterialsSection({
                           </span>
                                             </a>
                                             <span style={{
-                                                fontSize: "0.65rem",
+                                                fontSize: "0.75rem",
                                                 color: "var(--dash-muted)",
                                                 marginLeft: 4,
                                                 whiteSpace: "nowrap"
@@ -382,26 +362,16 @@ export function StageMaterialsSection({
                                     gap: "0.75rem",
                                     alignItems: "center"
                                 }}>
-                                    <button
+                                    <Button
                                         type="button"
+                                        variant="outline"
+                                        size="lg"
                                         disabled
                                         title="Этот выпуск уже архивный"
                                         aria-disabled
-                                        style={{
-                                            padding: "0.6em 1.25em",
-                                            borderRadius: 8,
-                                            border: "1.5px solid var(--dash-border)",
-                                            background: "transparent",
-                                            color: "var(--dash-muted)",
-                                            fontSize: "0.875rem",
-                                            fontWeight: 500,
-                                            cursor: "not-allowed",
-                                            fontFamily: "inherit",
-                                            opacity: 0.55,
-                                        }}
                                     >
                                         На доработку
-                                    </button>
+                                    </Button>
                                 </div>
                             ) : null}
                         </div>
@@ -422,7 +392,7 @@ export function StageMaterialsSection({
 
                     const archivedNotice =
                         isPastRound &&
-                        "Ранее отправленные материалы — только просмотр. По этой версии замечания уже переданы дизайнеру."
+                        "Ранее отправленные материалы: только просмотр. По этой версии замечания уже переданы дизайнеру."
 
                     return (
                         <div
@@ -431,15 +401,6 @@ export function StageMaterialsSection({
                                 marginBottom: vIdx < lastVariantIdx ? "1rem" : stage.status === "CLIENT_REVIEW" ? "1rem" : 0,
                                 padding: multiRound ? "1rem" : 0,
                                 borderRadius: multiRound ? 10 : 0,
-                                border: multiRound
-                                    ? `1.5px ${isPastRound ? "dashed" : "solid"} ${
-                                        isPastRound
-                                            ? "var(--dash-border)"
-                                            : stage.status === "APPROVED" && isLastVariant
-                                                ? "var(--dash-success)"
-                                                : "var(--dash-accent-border)"
-                                    }`
-                                    : "none",
                                 background: multiRound
                                     ? isPastRound
                                         ? "var(--dash-surface2)"
@@ -456,13 +417,11 @@ export function StageMaterialsSection({
                                 justifyContent: "space-between",
                                 gap: 10,
                                 flexWrap: "wrap",
-                                marginBottom: "0.45rem"
+                                marginBottom: "0.5rem"
                             }}>
                                 <p style={{
-                                    fontSize: "0.72rem",
+                                    fontSize: "0.75rem",
                                     fontWeight: 700,
-                                    textTransform: "uppercase",
-                                    letterSpacing: "0.07em",
                                     color: "var(--dash-muted)",
                                     margin: 0
                                 }}>
@@ -471,39 +430,36 @@ export function StageMaterialsSection({
                                 <div style={{display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap"}}>
                                     {multiRound && isLastVariant && stage.status === "APPROVED" && (
                                         <span style={{
-                                            fontSize: "0.72rem",
+                                            fontSize: "0.75rem",
                                             fontWeight: 700,
                                             color: "var(--dash-success)",
-                                            padding: "3px 10px",
-                                            borderRadius: 999,
-                                            background: "rgba(46,184,92,0.12)",
-                                            border: "1px solid var(--dash-success)"
+                                            padding: "4px 10px",
+                                            borderRadius: 14,
+                                            background: "var(--dash-success-bg)",
                                         }}>
-                        Принято — финальная версия
+                        Принято: финальная версия
                       </span>
                                     )}
                                     {multiRound && isLastVariant && stage.status === "CLIENT_REVIEW" && (
                                         <span style={{
-                                            fontSize: "0.72rem",
+                                            fontSize: "0.75rem",
                                             fontWeight: 700,
                                             color: "var(--dash-warn)",
-                                            padding: "3px 10px",
-                                            borderRadius: 999,
+                                            padding: "4px 10px",
+                                            borderRadius: 14,
                                             background: "var(--dash-warn-bg)",
-                                            border: "1px solid var(--dash-warn)"
                                         }}>
                         На согласовании
                       </span>
                                     )}
                                     {multiRound && isLastVariant && stage.status === "CLIENT_REVISION" && (
                                         <span style={{
-                                            fontSize: "0.72rem",
+                                            fontSize: "0.75rem",
                                             fontWeight: 700,
                                             color: "var(--dash-muted)",
-                                            padding: "3px 10px",
-                                            borderRadius: 999,
+                                            padding: "4px 10px",
+                                            borderRadius: 14,
                                             background: "var(--dash-surface2)",
-                                            border: "1px solid var(--dash-border)"
                                         }}>
                         Доработка у дизайнера
                       </span>
@@ -515,7 +471,7 @@ export function StageMaterialsSection({
                                 <p style={{
                                     fontSize: "0.75rem",
                                     color: "var(--dash-muted)",
-                                    margin: "0 0 0.65rem",
+                                    margin: "0 0 0.625rem",
                                     lineHeight: 1.45
                                 }}>
                                     {archivedNotice}
@@ -524,14 +480,13 @@ export function StageMaterialsSection({
 
                             {variant.revisionFeedback ? (
                                 <div style={{
-                                    marginBottom: "0.65rem",
-                                    padding: "0.55rem 0.65rem",
+                                    marginBottom: "0.625rem",
+                                    padding: "0.5rem 0.625rem",
                                     borderRadius: 8,
-                                    background: "var(--dash-surface2)",
-                                    borderLeft: "3px solid var(--dash-warn)"
+                                    background: "var(--dash-warn-bg)"
                                 }}>
                                     <p style={{
-                                        fontSize: "0.68rem",
+                                        fontSize: "0.75rem",
                                         fontWeight: 600,
                                         color: "var(--dash-muted)",
                                         margin: "0 0 0.25rem"
@@ -539,7 +494,7 @@ export function StageMaterialsSection({
                                         Замечания к этой версии
                                     </p>
                                     <p style={{
-                                        fontSize: "0.82rem",
+                                        fontSize: "0.875rem",
                                         color: "var(--dash-text)",
                                         margin: 0,
                                         whiteSpace: "pre-wrap"
@@ -576,48 +531,39 @@ export function StageMaterialsSection({
                                         ))}
                                     </div>
                                     {vMedia.length > 12 && (
-                                        <button
+                                        <Button
                                             type="button"
+                                            variant="outline"
+                                            size="sm"
+                                            className="mt-2.5"
                                             onClick={() => setExpandVariantMedia((prev) => ({
                                                 ...prev,
                                                 [vIdx]: !mediaExpanded
                                             }))}
-                                            style={{
-                                                marginTop: 10,
-                                                background: "transparent",
-                                                border: "1px solid var(--dash-border)",
-                                                color: "var(--dash-muted)",
-                                                borderRadius: 8,
-                                                padding: "6px 10px",
-                                                fontSize: "0.8rem",
-                                                cursor: "pointer",
-                                                fontFamily: "inherit",
-                                            }}
                                         >
                                             {mediaExpanded ? "Свернуть" : `Показать ещё (${vMedia.length - 12})`}
-                                        </button>
+                                        </Button>
                                     )}
                                 </div>
                             )}
 
-                            <div style={{display: "flex", flexDirection: "column", gap: "0.35rem"}}>
+                            <div style={{display: "flex", flexDirection: "column", gap: "0.375rem"}}>
                                 {vf.map((f, idx) => (
                                     <div key={f.id}>
                                         <div
                                             style={{
                                                 display: "inline-flex",
                                                 alignItems: "center",
-                                                gap: "0.4rem",
-                                                fontSize: "0.82rem",
+                                                gap: "0.375rem",
+                                                fontSize: "0.875rem",
                                                 color: isPastRound ? "var(--dash-muted)" : "var(--dash-accent)",
-                                                padding: "0.3em 0.7em",
+                                                padding: "4px 12px",
                                                 borderRadius: 6,
-                                                border: `1px solid ${isPastRound ? "var(--dash-border)" : "var(--dash-accent-border)"}`,
                                                 background: isPastRound ? "var(--dash-surface)" : "var(--dash-accent-bg)",
                                                 width: "fit-content",
                                             }}
                                         >
-                        <span style={{fontSize: "0.68rem", color: "var(--dash-muted)", fontWeight: 600, minWidth: 18}}>
+                        <span style={{fontSize: "0.75rem", color: "var(--dash-muted)", fontWeight: 600, minWidth: 18}}>
                           #{vf.length - idx}
                         </span>
                                             <a
@@ -627,7 +573,7 @@ export function StageMaterialsSection({
                                                 style={{
                                                     display: "inline-flex",
                                                     alignItems: "center",
-                                                    gap: "0.3rem",
+                                                    gap: "0.25rem",
                                                     color: isPastRound ? "var(--dash-muted)" : "var(--dash-accent)",
                                                     textDecoration: "none",
                                                 }}
@@ -641,7 +587,7 @@ export function StageMaterialsSection({
                                                 }}>{f.filename}</span>
                                             </a>
                                             <span style={{
-                                                fontSize: "0.65rem",
+                                                fontSize: "0.75rem",
                                                 color: "var(--dash-muted)",
                                                 marginLeft: 4,
                                                 whiteSpace: "nowrap"
@@ -672,26 +618,16 @@ export function StageMaterialsSection({
                                     gap: "0.75rem",
                                     alignItems: "center"
                                 }}>
-                                    <button
+                                    <Button
                                         type="button"
+                                        variant="outline"
+                                        size="lg"
                                         disabled
                                         title="Замечания по этой версии уже отправлены дизайнеру"
                                         aria-disabled
-                                        style={{
-                                            padding: "0.6em 1.25em",
-                                            borderRadius: 8,
-                                            border: "1.5px solid var(--dash-border)",
-                                            background: "transparent",
-                                            color: "var(--dash-muted)",
-                                            fontSize: "0.875rem",
-                                            fontWeight: 500,
-                                            cursor: "not-allowed",
-                                            fontFamily: "inherit",
-                                            opacity: 0.55,
-                                        }}
                                     >
                                         На доработку
-                                    </button>
+                                    </Button>
                                 </div>
                             ) : null}
                         </div>

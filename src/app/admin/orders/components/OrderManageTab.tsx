@@ -3,6 +3,7 @@
 import type {Order, OrderStatus, SpecialistForAssignment} from "../types"
 import {ORDER_LABEL} from "../types"
 import {SpecialistPicker} from "./SpecialistPicker"
+import {Button} from "@/components/ui/button"
 
 export function OrderManageTab({
                                    order,
@@ -42,13 +43,14 @@ export function OrderManageTab({
                                 value={assignMap[order.id] ?? ""}
                                 onChange={(specId) => onAssignMapChange(order.id, specId)}
                             />
-                            <button
+                            <Button
+                                type="button"
+                                size="sm"
                                 onClick={() => onAssign(order.id)}
                                 disabled={!assignMap[order.id] || assigning === order.id}
-                                className="sp-btn sp-btn-primary"
                             >
                                 {assigning === order.id ? "…" : "Назначить"}
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -64,7 +66,7 @@ export function OrderManageTab({
                     <div className="sp-card-bd">
                         {order.status === "DRAFT" && (
                             <p style={{
-                                fontSize: "0.8rem",
+                                fontSize: "0.75rem",
                                 color: "var(--adm-muted)",
                                 margin: "0 0 12px",
                                 lineHeight: 1.45
@@ -75,7 +77,7 @@ export function OrderManageTab({
                         )}
                         {order.status === "ACTIVE" && (
                             <p style={{
-                                fontSize: "0.8rem",
+                                fontSize: "0.75rem",
                                 color: "var(--adm-muted)",
                                 margin: "0 0 12px",
                                 lineHeight: 1.45
@@ -86,7 +88,7 @@ export function OrderManageTab({
                         )}
                         {order.status === "BRIEFING" && (
                             <p style={{
-                                fontSize: "0.8rem",
+                                fontSize: "0.75rem",
                                 color: "var(--adm-muted)",
                                 margin: "0 0 12px",
                                 lineHeight: 1.45
@@ -97,7 +99,7 @@ export function OrderManageTab({
                         )}
                         {order.status === "BRIEF_REVIEW" && (
                             <p style={{
-                                fontSize: "0.8rem",
+                                fontSize: "0.75rem",
                                 color: "var(--adm-muted)",
                                 margin: "0 0 12px",
                                 lineHeight: 1.45
@@ -107,18 +109,15 @@ export function OrderManageTab({
                         )}
                         <div style={{display: "flex", gap: 6, flexWrap: "wrap"}}>
                             {statusTargets.map((s) => (
-                                <button
+                                <Button
                                     key={s}
                                     type="button"
+                                    size="sm"
+                                    variant={s === "CANCELLED" ? "destructive" : "default"}
                                     onClick={() => onChangeStatus(order.id, s)}
-                                    className={`sp-btn ${s === "CANCELLED" ? "sp-btn-ghost" : "sp-btn-primary"}`}
-                                    style={s === "CANCELLED" ? {
-                                        borderColor: "rgba(239,68,68,0.45)",
-                                        color: "#ef4444"
-                                    } : undefined}
                                 >
                                     {ORDER_LABEL[s]}
-                                </button>
+                                </Button>
                             ))}
                         </div>
                     </div>

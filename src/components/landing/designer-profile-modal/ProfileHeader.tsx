@@ -40,12 +40,11 @@ export function ProfileHeader({designer: d, compact}: ProfileHeaderProps) {
                         width: avatarSize,
                         height: avatarSize,
                         borderRadius: "50%",
-                        border: compact ? "2px solid rgba(255,255,255,0.35)" : "3px solid rgba(255,255,255,0.5)",
-                        background: "linear-gradient(135deg, #6366f1, #a855f7)",
+                        background: "var(--primary)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        color: "#fff",
+                        color: "var(--primary-foreground)",
                         fontSize: compact ? "1.1rem" : "1.35rem",
                         fontWeight: 700,
                         flexShrink: 0,
@@ -61,7 +60,6 @@ export function ProfileHeader({designer: d, compact}: ProfileHeaderProps) {
                         fontSize: nameSize,
                         fontWeight: 700,
                         margin: "0 0 2px",
-                        textTransform: "uppercase",
                         fontFamily: "'PP Neue Montreal', Inter, sans-serif",
                     }}
                 >
@@ -72,13 +70,14 @@ export function ProfileHeader({designer: d, compact}: ProfileHeaderProps) {
                         <span
                             style={{
                                 display: "inline-block",
-                                marginRight: "0.5em",
-                                padding: "0.15em 0.6em",
-                                borderRadius: 999,
-                                border: d.level === "L4" ? "1px solid rgba(212,175,55,0.75)" : "1px solid rgba(255,255,255,0.35)",
-                                background: d.level === "L4" ? "rgba(212,175,55,0.18)" : "rgba(255,255,255,0.12)",
-                                color: d.level === "L4" ? "#f0d98c" : "rgba(255,255,255,0.85)",
-                                fontSize: "0.85em",
+                                marginRight: 8,
+                                padding: "2px 8px",
+                                borderRadius: 10,
+                                background: d.level === "L4"
+                                    ? "color-mix(in oklab, var(--warning) 18%, transparent)"
+                                    : "rgba(255,255,255,0.12)",
+                                color: d.level === "L4" ? "var(--warning)" : "rgba(255,255,255,0.85)",
+                                fontSize: "0.75rem",
                                 fontWeight: 600,
                                 verticalAlign: "middle",
                                 whiteSpace: "nowrap",

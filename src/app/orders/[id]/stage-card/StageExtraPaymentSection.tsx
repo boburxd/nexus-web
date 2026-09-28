@@ -3,6 +3,7 @@
 import {MAX_FREE_CLIENT_REVISIONS} from "@/lib/stage-constants"
 import type {OrderStage} from "../types"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 export function StageExtraPaymentSection({
                                              stage,
@@ -20,16 +21,15 @@ export function StageExtraPaymentSection({
                 padding: "1rem",
                 borderRadius: 8,
                 background: "var(--dash-danger-bg)",
-                border: "1.5px solid var(--dash-danger)",
             }}
         >
             <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 6}}>
-                <Icon name="credit-card" style={{fontSize: "1.1rem", color: "var(--dash-danger)"}}/>
+                <Icon name="credit-card" style={{fontSize: "1.125rem", color: "var(--dash-danger)"}}/>
                 <span style={{fontWeight: 600, fontSize: "0.875rem", color: "var(--dash-danger)"}}>
           Требуется доплата за правки
         </span>
             </div>
-            <p style={{fontSize: "0.82rem", color: "var(--dash-muted)", margin: "0 0 8px"}}>
+            <p style={{fontSize: "0.875rem", color: "var(--dash-muted)", margin: "0 0 8px"}}>
                 Использовано {stage.clientRound} из {MAX_FREE_CLIENT_REVISIONS} бесплатных раундов. Для продолжения
                 работы необходимо оплатить дополнительные правки.
             </p>
@@ -48,35 +48,21 @@ export function StageExtraPaymentSection({
                             alignItems: "center",
                             marginBottom: 4
                         }}>
-              <span style={{fontSize: "0.82rem", fontWeight: 600, color: "var(--dash-text)"}}>
+              <span style={{fontSize: "0.875rem", fontWeight: 600, color: "var(--dash-text)"}}>
                 {(ep.amount / 100).toLocaleString("ru-RU")} руб.
               </span>
-                            <span style={{fontSize: "0.72rem", color: "var(--dash-warn)", fontWeight: 500}}>Ожидает оплаты</span>
+                            <span style={{fontSize: "0.75rem", color: "var(--dash-warn)", fontWeight: 500}}>Ожидает оплаты</span>
                         </div>
                         {ep.reason ? <p style={{
-                            fontSize: "0.78rem",
+                            fontSize: "0.75rem",
                             color: "var(--dash-muted)",
                             margin: 0
                         }}>{ep.reason}</p> : null}
                     </div>
                 ))}
-            <button
-                onClick={onPay}
-                disabled={acting}
-                style={{
-                    padding: "0.55em 1.25em",
-                    borderRadius: 8,
-                    border: "none",
-                    background: "var(--dash-danger)",
-                    color: "#fff",
-                    fontSize: "0.875rem",
-                    fontWeight: 600,
-                    cursor: acting ? "default" : "pointer",
-                    fontFamily: "inherit",
-                }}
-            >
-                {acting ? "..." : "Оплатить правки"}
-            </button>
+            <Button type="button" variant="destructive" size="lg" onClick={onPay} disabled={acting}>
+                {acting ? "…" : "Оплатить правки"}
+            </Button>
         </div>
     )
 }

@@ -26,29 +26,28 @@ export function PendingDraftCard({
 }) {
     return (
         <div className="sp-stage-wave-card sp-stage-wave-card--draft">
-            <div style={{fontWeight: 700, fontSize: "0.82rem"}}>Черновик</div>
-            <div style={{fontSize: "0.72rem", color: "var(--adm-muted)"}}>
+            <div style={{fontWeight: 700, fontSize: "0.875rem"}}>Черновик</div>
+            <div style={{fontSize: "0.75rem", color: "var(--adm-muted)"}}>
                 После последнего выпуска — ещё не одобрено для показа заказчику
             </div>
 
-            <div style={{paddingLeft: 10, borderLeft: "3px solid rgba(245, 158, 11, 0.9)"}}>
+            <div>
                 <div style={{
-                    fontSize: "0.62rem",
+                    fontSize: "0.75rem",
                     fontWeight: 700,
                     color: "var(--adm-muted)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.05em"
                 }}>
+                    <span aria-hidden style={{display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "var(--bs-warning)", marginRight: 6, verticalAlign: "middle"}}/>
                     Модератор (текущая доработка)
                 </div>
                 {pendingDraft.moderatorRejections.length === 0 ? (
-                    <div style={{fontSize: "0.76rem", marginTop: 4, color: "var(--adm-text)"}}>Замечаний модератора пока
+                    <div style={{fontSize: "0.75rem", marginTop: 4, color: "var(--adm-text)"}}>Замечаний модератора пока
                         нет</div>
                 ) : (
                     <ul style={{
                         margin: "6px 0 0",
-                        paddingLeft: 18,
-                        fontSize: "0.76rem",
+                        paddingLeft: 16,
+                        fontSize: "0.75rem",
                         lineHeight: 1.45,
                         color: "var(--adm-text)"
                     }}>
@@ -66,20 +65,19 @@ export function PendingDraftCard({
             </div>
 
             {pendingDraft.clientRejections.length > 0 ? (
-                <div style={{paddingLeft: 10, borderLeft: "3px solid rgba(56, 189, 248, 0.95)", marginTop: 10}}>
+                <div style={{marginTop: 10}}>
                     <div style={{
-                        fontSize: "0.62rem",
+                        fontSize: "0.75rem",
                         fontWeight: 700,
                         color: "var(--adm-muted)",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.05em"
                     }}>
+                        <span aria-hidden style={{display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "var(--adm-active-color)", marginRight: 6, verticalAlign: "middle"}}/>
                         Заказчик (после выпуска)
                     </div>
                     <ul style={{
                         margin: "6px 0 0",
-                        paddingLeft: 18,
-                        fontSize: "0.76rem",
+                        paddingLeft: 16,
+                        fontSize: "0.75rem",
                         lineHeight: 1.45,
                         color: "var(--adm-text)"
                     }}>
@@ -96,7 +94,7 @@ export function PendingDraftCard({
                 </div>
             ) : null}
 
-            <div style={{fontSize: "0.72rem", color: "var(--adm-muted)"}}>
+            <div style={{fontSize: "0.75rem", color: "var(--adm-muted)"}}>
                 Новых файлов после выпуска:{" "}
                 <strong style={{color: "var(--adm-text)"}}>{pendingDraft.files.length}</strong>
             </div>
@@ -106,7 +104,7 @@ export function PendingDraftCard({
                 : pendingDraft.files.length > 0
                     ? [{bundleIndex: 0, label: "Файлы", files: pendingDraft.files, moderatorRejection: null}]
                     : []).map((b) => {
-                const mediaCount = b.files.filter((f) => /\.(png|jpe?g|webp|gif|mp4|webm|mov)$/i.test(f.filename.replace(/^🎬\s*/, ""))).length
+                const mediaCount = b.files.filter((f) => /\.(png|jpe?g|webp|gif|mp4|webm|mov)$/i.test(f.filename)).length
                 const docsCount = b.files.length - mediaCount
                 const isRejected = Boolean(b.moderatorRejectedAt || (b as {
                     moderatorRejection?: unknown
@@ -135,23 +133,23 @@ export function PendingDraftCard({
                             flexWrap: "wrap",
                             marginBottom: 6
                         }}>
-                            <div style={{fontSize: "0.7rem", fontWeight: 700, color: "var(--adm-text)"}}>
+                            <div style={{fontSize: "0.75rem", fontWeight: 700, color: "var(--adm-text)"}}>
                                 {b.label} <span
                                 style={{color: "var(--adm-muted)", fontWeight: 600}}>· {b.files.length}</span>
                             </div>
                             {isRejected ? (
-                                <span className="sp-badge sp-badge--danger" style={{fontSize: "0.62rem"}}>
+                                <span className="sp-badge sp-badge--danger" style={{fontSize: "0.75rem"}}>
                   Отклонено
                 </span>
                             ) : isCurrent ? (
-                                <span className="sp-badge sp-badge--warn" style={{fontSize: "0.62rem"}}>
+                                <span className="sp-badge sp-badge--warn" style={{fontSize: "0.75rem"}}>
                   Ожидает проверки
                 </span>
                             ) : null}
                         </div>
 
                         {isRejected ? (
-                            <div style={{fontSize: "0.72rem", color: "var(--adm-muted)", marginBottom: 8}}>
+                            <div style={{fontSize: "0.75rem", color: "var(--adm-muted)", marginBottom: 8}}>
                                 {whatRejected}
                             </div>
                         ) : null}
@@ -160,19 +158,18 @@ export function PendingDraftCard({
                                    onSetAudience={onSetAudience}/>
 
                         {isRejected ? (
-                            <div style={{marginTop: 10, paddingLeft: 10, borderLeft: "3px solid rgba(239,68,68,0.95)"}}>
+                            <div style={{marginTop: 10}}>
                                 <div style={{
-                                    fontSize: "0.62rem",
+                                    fontSize: "0.75rem",
                                     fontWeight: 800,
                                     color: "var(--adm-muted)",
-                                    textTransform: "uppercase",
-                                    letterSpacing: "0.05em"
                                 }}>
+                                    <span aria-hidden style={{display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "var(--bs-danger)", marginRight: 6, verticalAlign: "middle"}}/>
                                     Причина
                                 </div>
                                 <div style={{
                                     marginTop: 6,
-                                    fontSize: "0.78rem",
+                                    fontSize: "0.75rem",
                                     color: "var(--adm-text)",
                                     lineHeight: 1.45
                                 }}>

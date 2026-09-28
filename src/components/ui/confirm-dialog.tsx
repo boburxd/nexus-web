@@ -135,24 +135,24 @@ type Accent = {
 const ACCENTS: Record<DialogVariant, Accent | null> = {
     default: null,
     warning: {
-        band: "bg-amber-500/10 border-amber-500/30 dark:bg-amber-500/15",
-        icon: "text-amber-500",
-        title: "text-amber-600 dark:text-amber-400",
-        solidButton: "border-transparent bg-amber-500 text-white hover:bg-amber-600",
+        band: "bg-warning/10 border-warning/30 dark:bg-warning/15",
+        icon: "text-warning",
+        title: "text-warning",
+        solidButton: "border-transparent bg-warning text-white hover:bg-warning/85",
         iconName: "error",
     },
     success: {
-        band: "bg-emerald-500/10 border-emerald-500/30 dark:bg-emerald-500/15",
-        icon: "text-emerald-500",
-        title: "text-emerald-600 dark:text-emerald-400",
-        solidButton: "border-transparent bg-emerald-500 text-white hover:bg-emerald-600",
+        band: "bg-success/10 border-success/30 dark:bg-success/15",
+        icon: "text-success",
+        title: "text-success",
+        solidButton: "border-transparent bg-success text-white hover:bg-success/85",
         iconName: "check-circle",
     },
     destructive: {
-        band: "bg-red-500/10 border-red-500/30 dark:bg-red-500/15",
-        icon: "text-red-500",
-        title: "text-red-600 dark:text-red-400",
-        solidButton: "border-transparent bg-red-500 text-white hover:bg-red-600",
+        band: "bg-destructive/10 border-destructive/30 dark:bg-destructive/15",
+        icon: "text-destructive",
+        title: "text-destructive",
+        solidButton: "border-transparent bg-destructive text-white hover:bg-destructive/85",
         iconName: "error",
     },
 }
@@ -170,9 +170,9 @@ function DialogAccentHead({accent, title, description}: { accent: Accent | null;
         <div className={cn("flex items-start gap-3 border-b p-4", accent.band)}>
             <Icon name={accent.iconName} className={cn("mt-0.5 size-5 shrink-0", accent.icon)}/>
             <div>
-                <DialogTitle className={cn("text-[0.95rem] font-semibold", accent.title)}>{title}</DialogTitle>
+                <DialogTitle className={cn("text-base font-semibold", accent.title)}>{title}</DialogTitle>
                 {description && (
-                    <DialogDescription className="mt-1 text-[0.8rem]">{description}</DialogDescription>
+                    <DialogDescription className="mt-1 text-xs">{description}</DialogDescription>
                 )}
             </div>
         </div>

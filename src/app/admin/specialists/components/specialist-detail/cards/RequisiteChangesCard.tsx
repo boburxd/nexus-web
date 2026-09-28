@@ -11,6 +11,8 @@ import {
     AdminTableWrapper,
 } from "@/components/admin/AdminTable"
 import {promptDialog} from "@/lib/dialog-store"
+import {Button} from "@/components/ui/button"
+import {Icon} from "@/components/ui/icon"
 
 type ReqChange = {
     id: string
@@ -58,9 +60,9 @@ export function RequisiteChangesCard({userId}: { userId: string }) {
     if (loading || items.length === 0) return null
 
     return (
-        <div className="sp-card" style={{borderColor: "#ffc107"}}>
+        <div className="sp-card" style={{borderColor: "var(--bs-warning)"}}>
             <div className="sp-card-hd" style={{display: "flex", alignItems: "center", gap: 6}}>
-                <span className="sp-badge sp-badge--warn">⏳</span>
+                <span className="sp-badge sp-badge--warn"><Icon name="hourglass"/></span>
                 <span className="sp-label">Запрос на смену реквизитов</span>
             </div>
             {items.map(r => {
@@ -85,21 +87,21 @@ export function RequisiteChangesCard({userId}: { userId: string }) {
                                             <AdminTableCell
                                                 style={{fontWeight: 500}}>{FIELD_LABELS[k] ?? k}</AdminTableCell>
                                             <AdminTableCell
-                                                style={{color: "#ef4444"}}>{r.oldData[k] || "—"}</AdminTableCell>
+                                                style={{color: "var(--bs-danger)"}}>{r.oldData[k] || "—"}</AdminTableCell>
                                             <AdminTableCell
-                                                style={{color: "#16a34a"}}>{r.newData[k] || "—"}</AdminTableCell>
+                                                style={{color: "var(--bs-success)"}}>{r.newData[k] || "—"}</AdminTableCell>
                                         </AdminTableRow>
                                     ))}
                                 </AdminTableBody>
                             </AdminTable>
                         </AdminTableWrapper>
                         <div style={{display: "flex", gap: 6, marginTop: 10}}>
-                            <button className="sp-btn sp-btn-success sp-btn-sm"
+                            <Button type="button" size="sm"
                                     onClick={() => handleAction(r.id, "approve")}>Одобрить
-                            </button>
-                            <button className="sp-btn sp-btn-danger sp-btn-sm"
+                            </Button>
+                            <Button type="button" variant="destructive" size="sm"
                                     onClick={() => handleAction(r.id, "reject")}>Отклонить
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 )

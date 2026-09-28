@@ -112,7 +112,7 @@ export default function OrderWorkStageClient({
             <div style={{display: "flex", flexDirection: "column", gap: 12}}>
                 <div>
                     <div style={{
-                        fontSize: "0.72rem",
+                        fontSize: "0.75rem",
                         fontWeight: 600,
                         color: "var(--dash-text2)",
                         marginBottom: 6,
@@ -121,14 +121,14 @@ export default function OrderWorkStageClient({
                         Зачем этот этап
                     </div>
                     <div style={{
-                        fontSize: "0.82rem",
+                        fontSize: "0.875rem",
                         lineHeight: 1.55,
                         color: "var(--dash-text)"
                     }}>{stagePurpose(stage.type)}</div>
                 </div>
                 <div>
                     <div style={{
-                        fontSize: "0.72rem",
+                        fontSize: "0.75rem",
                         fontWeight: 600,
                         color: "var(--dash-text2)",
                         marginBottom: 6,
@@ -136,7 +136,7 @@ export default function OrderWorkStageClient({
                     }}>
                         В этом статусе
                     </div>
-                    <div style={{fontSize: "0.82rem", lineHeight: 1.55, color: "var(--dash-text)"}}>
+                    <div style={{fontSize: "0.875rem", lineHeight: 1.55, color: "var(--dash-text)"}}>
                         {stageStatusGuidance(stage.type, stage.status)}
                     </div>
                 </div>
@@ -228,11 +228,11 @@ export default function OrderWorkStageClient({
                             display: "inline-flex",
                             alignItems: "center",
                             gap: 8,
-                            fontSize: "0.82rem",
+                            fontSize: "0.875rem",
                             fontWeight: 700,
                             color: "var(--dash-text)"
                         }}>
-                          <Icon name="book-open" style={{color: "var(--dash-accent)", fontSize: "1.05rem"}}/>
+                          <Icon name="book-open" style={{color: "var(--dash-accent)", fontSize: "1rem"}}/>
                           Инструкции по этапу
                         </span>
                                                 <Icon name="chevron-down" style={{color: "var(--dash-muted)"}}/>
@@ -248,7 +248,7 @@ export default function OrderWorkStageClient({
                                                         gap: 6,
                                                         textDecoration: "none",
                                                         color: "var(--dash-accent)",
-                                                        fontSize: "0.82rem",
+                                                        fontSize: "0.875rem",
                                                         fontWeight: 600
                                                     }}
                                                 >
@@ -257,7 +257,7 @@ export default function OrderWorkStageClient({
                                                 </a>
                                                 <div style={{
                                                     marginTop: 6,
-                                                    fontSize: "0.74rem",
+                                                    fontSize: "0.75rem",
                                                     color: "var(--dash-muted)",
                                                     lineHeight: 1.45
                                                 }}>
@@ -318,17 +318,17 @@ export default function OrderWorkStageClient({
                                                         <div style={{display: "flex", alignItems: "center", gap: 10}}>
                                                             <Icon name="check-circle" style={{
                                                                 color: "var(--dash-success)",
-                                                                fontSize: "1.15rem"
+                                                                fontSize: "1.125rem"
                                                             }} aria-hidden/>
                                                             <div style={{minWidth: 0}}>
                                                                 <div style={{
                                                                     fontWeight: 700,
-                                                                    fontSize: "0.86rem",
+                                                                    fontSize: "0.875rem",
                                                                     color: "var(--dash-success)"
                                                                 }}>Этап принят
                                                                 </div>
                                                                 <div style={{
-                                                                    fontSize: "0.76rem",
+                                                                    fontSize: "0.75rem",
                                                                     color: "var(--dash-muted)"
                                                                 }}>
                                                                     {nextStage ? `Далее — «${STAGE_LABEL[nextStage.type]}».` : "Все этапы завершены — можно вернуться к проекту."}
@@ -373,10 +373,10 @@ export default function OrderWorkStageClient({
                                         style={{
                                             background: "var(--dash-surface)",
                                             border: "1px solid var(--dash-border)",
-                                            borderRadius: 12,
+                                            borderRadius: 14,
                                             padding: 16,
                                             color: "var(--dash-muted)",
-                                            fontSize: "0.9rem",
+                                            fontSize: "0.875rem",
                                         }}
                                     >
                                         Этап не найден.

@@ -20,6 +20,7 @@ import {STAGE_ORDER} from "@/lib/stage-constants"
 import {normalizeStagesFromOrdersApiPayload} from "@/lib/normalize-order-stages-from-api"
 import {ProjectWorkflowInstructions} from "@/components/app/ProjectWorkflowInstructions"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 import {stripBx} from "@/lib/icon-map"
 
 export default function OrderDetailClient({
@@ -242,7 +243,7 @@ export default function OrderDetailClient({
                         {/* Title */}
                         <div style={{marginBottom: 20}}>
                             <h1 style={{
-                                fontSize: "1.3rem",
+                                fontSize: "1.125rem",
                                 fontWeight: 600,
                                 color: "var(--dash-text)",
                                 margin: "0 0 4px"
@@ -262,41 +263,39 @@ export default function OrderDetailClient({
                         {!order.specialist && (order.status === "BRIEFING" || order.status === "BRIEF_REVIEW") && (
                             <div style={{
                                 background: "var(--dash-accent-bg)",
-                                border: "1px solid var(--dash-accent-border)",
                                 borderRadius: 10,
                                 padding: "12px 16px",
                                 marginBottom: 16,
                                 display: "flex",
                                 gap: 12,
                                 alignItems: "flex-start",
-                                fontSize: "0.85rem",
+                                fontSize: "0.875rem",
                                 lineHeight: 1.45
                             }}>
                                 <Icon name="mail-send" style={{
                                     color: "var(--dash-accent)",
-                                    fontSize: "1.15rem",
+                                    fontSize: "1.125rem",
                                     flexShrink: 0,
                                     marginTop: 2
                                 }}/>
-                                <span style={{color: "var(--dash-text2)", overflowWrap: "anywhere"}}>Заявка отправлена — подбираем специалиста</span>
+                                <span style={{color: "var(--dash-text2)", overflowWrap: "anywhere"}}>Заявка отправлена, подбираем специалиста</span>
                             </div>
                         )}
                         {clientReviewCount > 0 && (
                             <div style={{
                                 background: "var(--dash-warn-bg)",
-                                border: "1px solid var(--dash-warn)",
                                 borderRadius: 10,
                                 padding: "12px 16px",
                                 marginBottom: 16,
                                 display: "flex",
                                 gap: 12,
                                 alignItems: "flex-start",
-                                fontSize: "0.85rem",
+                                fontSize: "0.875rem",
                                 lineHeight: 1.45
                             }}>
                                 <Icon name="bell" style={{
                                     color: "var(--dash-warn)",
-                                    fontSize: "1.15rem",
+                                    fontSize: "1.125rem",
                                     flexShrink: 0,
                                     marginTop: 2
                                 }}/>
@@ -344,8 +343,7 @@ export default function OrderDetailClient({
                                         background: "var(--dash-surface)",
                                         borderRadius: 10,
                                         padding: "14px 16px",
-                                        marginBottom: 16,
-                                        border: "1px solid var(--dash-border)"
+                                        marginBottom: 16
                                     }}>
                                         <div className="dash-list-heading-wrap" style={{marginBottom: 10}}>
                                             <h2 className="dash-list-heading">Платежи</h2>
@@ -356,7 +354,7 @@ export default function OrderDetailClient({
                                                 justifyContent: "space-between",
                                                 padding: "6px 0",
                                                 borderBottom: "1px solid var(--dash-border)",
-                                                fontSize: "0.82rem"
+                                                fontSize: "0.875rem"
                                             }}>
                                                 <span
                                                     style={{color: "var(--dash-text2)"}}>{(p.amount / 100).toLocaleString("ru-RU")} руб.</span>
@@ -384,7 +382,7 @@ export default function OrderDetailClient({
                                         onChange={(key, value) => setBriefData(prev => ({...prev, [key]: value}))}
                                         headingRight={isEditable ? (
                                             <span style={{
-                                                fontSize: "0.72rem",
+                                                fontSize: "0.75rem",
                                                 color: briefSaving ? "var(--dash-muted)" : briefSaved ? "var(--dash-success)" : "transparent"
                                             }}>
                         {briefSaving ? "Сохранение…" : briefSaved ? "✓ Сохранено" : "·"}
@@ -398,7 +396,6 @@ export default function OrderDetailClient({
                                             {submitDone ? (
                                                 <div style={{
                                                     background: "var(--dash-success-bg)",
-                                                    border: "1px solid var(--dash-success)",
                                                     borderRadius: 10,
                                                     padding: "10px 14px",
                                                     display: "flex",
@@ -408,52 +405,27 @@ export default function OrderDetailClient({
                                                     <Icon name="check-circle"
                                                        style={{color: "var(--dash-success)"}}/>
                                                     <span style={{
-                                                        fontSize: "0.82rem",
+                                                        fontSize: "0.875rem",
                                                         color: "var(--dash-success)",
                                                         fontWeight: 500
-                                                    }}>Заявка отправлена!</span>
+                                                    }}>Заявка отправлена.</span>
                                                 </div>
                                             ) : (
-                                                <button onClick={submitBrief} disabled={submitting || !canSubmit}
-                                                        style={{
-                                                            width: "100%",
-                                                            padding: "0.65em",
-                                                            borderRadius: 8,
-                                                            border: "none",
-                                                            background: canSubmit ? "var(--dash-accent)" : "var(--dash-border)",
-                                                            color: canSubmit ? "#fff" : "var(--dash-muted)",
-                                                            fontSize: "0.85rem",
-                                                            fontWeight: 600,
-                                                            cursor: canSubmit && !submitting ? "pointer" : "default",
-                                                            fontFamily: "inherit",
-                                                            opacity: submitting ? 0.7 : 1
-                                                        }}>
+                                                <Button type="button" size="lg" onClick={submitBrief}
+                                                        disabled={submitting || !canSubmit} className="w-full">
                                                     {submitting ? "Отправляем…" : "Отправить заявку →"}
-                                                </button>
+                                                </Button>
                                             )}
                                         </div>
                                     )}
 
                                     {/* Help */}
                                     {(order.status === "DRAFT" || order.status === "BRIEFING") && !submitDone && (
-                                        <button onClick={requestHelp} disabled={helpRequested}
-                                                style={{
-                                                    width: "100%",
-                                                    marginTop: 8,
-                                                    padding: "0.6em",
-                                                    borderRadius: 8,
-                                                    border: "1px solid var(--dash-accent-border)",
-                                                    background: helpRequested ? "var(--dash-accent-bg)" : "transparent",
-                                                    color: helpRequested ? "var(--dash-success)" : "var(--dash-accent)",
-                                                    fontSize: "0.82rem",
-                                                    fontWeight: 500,
-                                                    cursor: helpRequested ? "default" : "pointer",
-                                                    fontFamily: "inherit"
-                                                }}>
-                                            <Icon name={stripBx(helpRequested ? "bx-check" : "bx-support")}
-                                               style={{marginRight: 6, verticalAlign: "middle"}}/>
+                                        <Button type="button" variant="outline" size="lg" onClick={requestHelp}
+                                                disabled={helpRequested} className="mt-2 w-full">
+                                            <Icon name={stripBx(helpRequested ? "bx-check" : "bx-support")}/>
                                             {helpRequested ? "Менеджер уведомлен" : "Помощь менеджера"}
-                                        </button>
+                                        </Button>
                                     )}
                                 </div>
 
@@ -484,14 +456,13 @@ export default function OrderDetailClient({
                                         borderRadius: 10,
                                         padding: 20,
                                         textAlign: "center",
-                                        border: "1px solid var(--dash-border)",
                                         marginBottom: 16
                                     }}>
                                         <Icon name="user-plus"
-                                           style={{fontSize: 32, color: "var(--dash-muted)", opacity: 0.4}}/>
+                                           style={{fontSize: 24, color: "var(--dash-muted)", opacity: 0.4}}/>
                                         <p style={{
                                             color: "var(--dash-muted)",
-                                            fontSize: "0.82rem",
+                                            fontSize: "0.875rem",
                                             margin: "8px 0 0"
                                         }}>Специалист еще не назначен</p>
                                     </div>

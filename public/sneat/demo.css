@@ -14,14 +14,14 @@
 }
 
 .app-brand-text.demo {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   letter-spacing: -0.5px;
 }
 
 /* ! For .layout-navbar-fixed added fix padding top to .layout-page */
 /* Detached navbar */
 .layout-navbar-fixed .layout-wrapper:not(.layout-horizontal):not(.layout-without-menu) .layout-page {
-  padding-top: 74px !important;
+  padding-top: 64px !important;
 }
 /* Default navbar */
 .layout-navbar-fixed .layout-wrapper:not(.layout-without-menu) .layout-page {
@@ -29,7 +29,7 @@
 }
 .docs-page .layout-navbar-fixed.layout-wrapper:not(.layout-without-menu) .layout-page,
 .docs-page .layout-menu-fixed.layout-wrapper:not(.layout-without-menu) .layout-page {
-  padding-top: 62px !important;
+  padding-top: 64px !important;
 }
 
 /* Navbar page z-index issue solution */
@@ -59,7 +59,7 @@
 }
 
 .demo-vertical-spacing-lg > * {
-  margin-top: 1.875rem !important;
+  margin-top: 2rem !important;
   margin-bottom: 0 !important;
 }
 .demo-vertical-spacing-lg.demo-only-element > :first-child {

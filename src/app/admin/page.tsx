@@ -61,13 +61,13 @@ export default async function AdminPage() {
         <AdminLayout>
             {/* Срочные действия */}
             {urgentCount > 0 && (
-                <div className="card border-warning mb-4" style={{borderLeft: "4px solid var(--bs-warning)"}}>
+                <div className="card border-warning mb-4">
                     <div className="card-body py-3">
                         <div className="d-flex align-items-center gap-2 mb-2">
                             <Icon name="error-circle" className="text-warning fs-5"/>
                             <strong>Требует внимания — {urgentCount}</strong>
                         </div>
-                        <div className="d-flex flex-wrap gap-3" style={{fontSize: "0.85rem"}}>
+                        <div className="d-flex flex-wrap gap-3" style={{fontSize: "0.875rem"}}>
                             {newBriefs > 0 && (
                                 <a href="/admin/orders" className="text-decoration-none">
                                     <span className="badge bg-label-warning me-1">{newBriefs}</span>
@@ -147,12 +147,12 @@ export default async function AdminPage() {
                         <div className="card h-100">
                             <div className="card-body">
                                 <div className="d-flex align-items-center justify-content-between mb-2">
-                                    <span className="text-muted" style={{fontSize: "0.78rem"}}>{s.label}</span>
+                                    <span className="text-muted" style={{fontSize: "0.75rem"}}>{s.label}</span>
                                     <span className={`badge bg-label-${s.color} rounded-pill`}>
                     <Icon name={stripBx(s.icon)}/>
                   </span>
                                 </div>
-                                <h3 className="mb-1 fw-semibold" style={{fontSize: "1.25rem"}}>{s.value}</h3>
+                                <h3 className="mb-1 fw-semibold" style={{fontSize: "1.125rem"}}>{s.value}</h3>
                                 <small className="text-muted">{s.sub}</small>
                             </div>
                         </div>
@@ -179,8 +179,8 @@ export default async function AdminPage() {
                            style={{transition: "box-shadow 0.15s"}}>
                             <div className="card-body py-3">
                                 <Icon name={stripBx(item.icon)} className="fs-3 mb-2 text-primary d-block"/>
-                                <h6 className="card-title mb-1">{item.label}</h6>
-                                <p className="text-muted mb-0" style={{fontSize: "0.78rem"}}>{item.desc}</p>
+                                <h4 className="card-title h6 mb-1">{item.label}</h4>
+                                <p className="text-muted mb-0" style={{fontSize: "0.75rem"}}>{item.desc}</p>
                             </div>
                         </a>
                     </div>
@@ -218,22 +218,22 @@ export default async function AdminPage() {
                                             #{row.id.slice(-6)}
                                         </a>
                                         {row.title && <span className="text-muted ms-1"
-                                                            style={{fontSize: "0.78rem"}}>{row.title}</span>}
+                                                            style={{fontSize: "0.75rem"}}>{row.title}</span>}
                                     </td>
-                                    <td style={{fontSize: "0.85rem"}}>
+                                    <td style={{fontSize: "0.875rem"}}>
                                         <a href={`/admin/clients/${row.clientId}`} className="text-muted"
                                            style={{textDecoration: "none"}}>
                                             {userDisplayName(row.client)}
                                         </a>
                                     </td>
-                                    <td style={{fontSize: "0.85rem"}}>
+                                    <td style={{fontSize: "0.875rem"}}>
                                         {row.specialist ? (
                                             <a href={`/admin/specialists/${row.specialistId}`}
                                                className="text-muted" style={{textDecoration: "none"}}>
                                                 {userDisplayName(row.specialist)}
                                             </a>
                                         ) : (
-                                            <span className="text-danger" style={{fontSize: "0.78rem"}}>
+                                            <span className="text-danger" style={{fontSize: "0.75rem"}}>
                           <Icon name="user-plus" className="me-1"/>не назначен
                         </span>
                                         )}
@@ -244,7 +244,7 @@ export default async function AdminPage() {
                                             label={ORDER_STATUS_LABEL[row.status as keyof typeof ORDER_STATUS_LABEL] ?? row.status}
                                         />
                                     </td>
-                                    <td className="text-muted" style={{fontSize: "0.78rem"}}>
+                                    <td className="text-muted" style={{fontSize: "0.75rem"}}>
                                         {new Date(row.updatedAt).toLocaleDateString("ru-RU", {
                                             day: "numeric",
                                             month: "short",

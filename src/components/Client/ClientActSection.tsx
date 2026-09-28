@@ -70,33 +70,19 @@ export function ClientActSection({stage, onUploadSigned}: Props) {
         }
     }
 
-    // Цвет границы в зависимости от статуса
-    const getBorderColor = () => {
-        switch (act.status) {
-            case "REJECTED":
-                return "rgba(234,84,85,0.2)"
-            case "CONFIRMED":
-                return "rgba(46,184,92,0.2)"
-            default:
-                return "var(--dash-border)"
-        }
-    }
-
     return (
         <div
             className="dash-surface-card--mb"
             style={{
                 borderRadius: 10,
                 padding: "14px 16px",
-                border: "1px solid var(--dash-border)",
                 background: getBgColor(),
-                borderColor: getBorderColor(),
                 marginTop: 8,
             }}
         >
             <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 8}}>
-                <Icon name="file-blank" style={{fontSize: "1.1rem", color: "var(--dash-muted)"}}/>
-                <span style={{fontWeight: 600, fontSize: "0.88rem", color: "var(--dash-text)"}}>
+                <Icon name="file-blank" style={{fontSize: "1.125rem", color: "var(--dash-muted)"}}/>
+                <span style={{fontWeight: 600, fontSize: "0.875rem", color: "var(--dash-text)"}}>
           Акт · {STAGE_LABEL[stage.type]}
         </span>
                 <span style={{
@@ -109,8 +95,8 @@ export function ClientActSection({stage, onUploadSigned}: Props) {
             </div>
 
             {canUpload && (
-                <p style={{fontSize: "0.8rem", color: "var(--dash-text2)", margin: "0 0 10px", lineHeight: 1.45}}>
-                    Администратор проверил акт — скачайте PDF, подпишите и загрузите скан ниже.
+                <p style={{fontSize: "0.75rem", color: "var(--dash-text2)", margin: "0 0 10px", lineHeight: 1.45}}>
+                    Администратор проверил акт: скачайте PDF, подпишите и загрузите скан ниже.
                 </p>
             )}
 
@@ -132,16 +118,15 @@ export function ClientActSection({stage, onUploadSigned}: Props) {
                             gap: 6,
                             padding: "6px 12px",
                             borderRadius: 6,
-                            border: "1px solid var(--dash-border)",
                             background: "var(--dash-surface)",
                             color: "var(--dash-text)",
-                            fontSize: "0.82rem",
+                            fontSize: "0.875rem",
                             cursor: uploading ? "not-allowed" : "pointer",
                             fontFamily: "inherit",
                         }}
                     >
                         <Icon name="upload"/>
-                        {uploading ? "Загрузка..." : "Загрузить подписанный акт (PDF)"}
+                        {uploading ? "Загрузка…" : "Загрузить подписанный акт (PDF)"}
                     </label>
                 </div>
             )}
@@ -152,7 +137,7 @@ export function ClientActSection({stage, onUploadSigned}: Props) {
                     padding: "6px 10px",
                     borderRadius: 6,
                     background: "rgba(234,84,85,0.1)",
-                    fontSize: "0.78rem",
+                    fontSize: "0.75rem",
                     color: "var(--dash-danger)"
                 }}>
                     <Icon name="error-circle" style={{marginRight: 4}}/>
@@ -161,10 +146,10 @@ export function ClientActSection({stage, onUploadSigned}: Props) {
             )}
 
             {/* Стандартные поля акта */}
-            <div style={{fontSize: "0.78rem", color: "var(--dash-muted)", marginTop: 8}}>
+            <div style={{fontSize: "0.75rem", color: "var(--dash-muted)", marginTop: 8}}>
                 {act.specialistActS3Key && (
                     <div style={{display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexWrap: "wrap"}}>
-                        <Icon name="file-pdf" style={{color: "#e74c3c", fontSize: "0.9rem"}}/>
+                        <Icon name="file-pdf" style={{color: "var(--dash-danger)", fontSize: "0.875rem"}}/>
                         <span>Акт от дизайнера</span>
                         <a
                             href={`/api/stages/${stage.id}/act/download`}
@@ -182,14 +167,14 @@ export function ClientActSection({stage, onUploadSigned}: Props) {
                             <Icon name="download"/>
                             Скачать
                         </a>
-                        <span style={{color: "var(--dash-muted)", fontSize: "0.7rem"}}>
+                        <span style={{color: "var(--dash-muted)", fontSize: "0.75rem"}}>
               {formatDate(act.specialistUploadedAt)}
             </span>
                     </div>
                 )}
                 {act.clientActS3Key && (
                     <div style={{display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexWrap: "wrap"}}>
-                        <Icon name="file-pdf" style={{color: "#27ae60", fontSize: "0.9rem"}}/>
+                        <Icon name="file-pdf" style={{color: "var(--dash-success)", fontSize: "0.875rem"}}/>
                         <span>Акт от заказчика</span>
                         <a
                             href={`/api/stages/${stage.id}/act/download`}
@@ -207,7 +192,7 @@ export function ClientActSection({stage, onUploadSigned}: Props) {
                             <Icon name="download"/>
                             Скачать
                         </a>
-                        <span style={{color: "var(--dash-muted)", fontSize: "0.7rem"}}>
+                        <span style={{color: "var(--dash-muted)", fontSize: "0.75rem"}}>
               {formatDate(act.clientSignedAt)}
             </span>
                     </div>

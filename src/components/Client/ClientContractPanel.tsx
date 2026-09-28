@@ -5,6 +5,7 @@ import type {Contract, ContractStatus} from "@/app/orders/[id]/types"
 import {DocumentUpload} from "@/components/app/DocumentUpload"
 import {confirmDialog} from "@/lib/dialog-store"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 import {stripBx} from "@/lib/icon-map"
 
 interface Props {
@@ -74,6 +75,7 @@ function UploadModal({
 
     return (
         <div
+            role="presentation"
             style={{
                 position: "fixed",
                 top: 0,
@@ -84,33 +86,30 @@ function UploadModal({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                zIndex: 1000,
+                zIndex: "var(--z-dropdown)",
             }}
-            onClick={onClose}
+            onClick={(e) => {
+                if (e.target === e.currentTarget) onClose()
+            }}
         >
             <div
+                role="dialog"
+                aria-modal="true"
+                aria-label={title}
                 style={{
-                    background: "#1a1a1a",
-                    borderRadius: 12,
+                    background: "var(--dash-surface)",
+                    borderRadius: 14,
                     padding: 24,
                     width: 420,
                     maxWidth: "90vw",
                     color: "#fff",
                 }}
-                onClick={(e) => e.stopPropagation()}
             >
                 <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16}}>
-                    <h3 style={{margin: 0, fontSize: "1.1rem"}}>{title}</h3>
-                    <button onClick={onClose} style={{
-                        background: "none",
-                        border: "none",
-                        color: "#999",
-                        cursor: "pointer",
-                        fontSize: "1.2rem"
-                    }}>×
-                    </button>
+                    <h3 style={{margin: 0, fontSize: "1.125rem"}}>{title}</h3>
+                    <Button variant="ghost" size="icon-sm" aria-label="Закрыть" onClick={onClose}>×</Button>
                 </div>
-                <p style={{color: "#999", fontSize: "0.85rem", marginBottom: 16}}>{description}</p>
+                <p style={{color: "var(--dash-muted)", fontSize: "0.875rem", marginBottom: 16}}>{description}</p>
                 <div style={{marginBottom: 16}}>
                     <DocumentUpload
                         file={file}
@@ -123,36 +122,16 @@ function UploadModal({
                     />
                 </div>
                 <div style={{display: "flex", gap: 8, justifyContent: "flex-end"}}>
-                    <button onClick={() => {
+                    <Button variant="outline" disabled={loading} onClick={() => {
                         setFile(null)
                         setError(null)
                         onClose()
-                    }} disabled={loading}
-                            style={{
-                                padding: "8px 16px",
-                                borderRadius: 6,
-                                border: "1px solid #444",
-                                background: "#222",
-                                color: "#999",
-                                cursor: "pointer",
-                                fontSize: "0.85rem"
-                            }}>
+                    }}>
                         Отмена
-                    </button>
-                    <button onClick={handleSubmit} disabled={!file || loading}
-                            style={{
-                                padding: "8px 16px",
-                                borderRadius: 6,
-                                border: "none",
-                                background: "#34d399",
-                                color: "#fff",
-                                cursor: !file || loading ? "not-allowed" : "pointer",
-                                opacity: !file || loading ? 0.6 : 1,
-                                fontSize: "0.85rem",
-                                fontWeight: 600
-                            }}>
+                    </Button>
+                    <Button onClick={handleSubmit} disabled={!file || loading}>
                         {loading ? "Отправка…" : "Отправить"}
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>
@@ -170,8 +149,8 @@ function ContractFileLink({contractId, s3Key, label}: { contractId: string; s3Ke
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 4,
-                color: "#34d399",
-                fontSize: "0.85rem",
+                color: "var(--dash-success)",
+                fontSize: "0.875rem",
                 textDecoration: "none"
             }}
         >
@@ -201,7 +180,7 @@ export function ClientContractPanel({contract, orderId, userRole, onUploadSigned
                     marginBottom: 8
                 }}>{title}
                 </div>
-                <p style={{margin: 0, color: "var(--dash-text2)", fontSize: "0.85rem"}}>
+                <p style={{margin: 0, color: "var(--dash-text2)", fontSize: "0.875rem"}}>
                     {userRole === "CLIENT" ? "Дождитесь, пока администратор сгенерирует договор." : "Дождитесь, пока администратор отправит вам договор."}
                 </p>
             </div>
@@ -241,12 +220,12 @@ export function ClientContractPanel({contract, orderId, userRole, onUploadSigned
                 <span style={{fontWeight: 500, color: "var(--dash-text2)"}}>{contract.number}</span>
             </div>
 
-            <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 12, fontSize: "0.85rem"}}>
+            <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 12, fontSize: "0.875rem"}}>
                 <Icon name={stripBx(icon)} style={{color: "var(--dash-accent)"}}/>
                 <span style={{color: "var(--dash-text2)"}}>{label}</span>
             </div>
 
-            <div style={{display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12, fontSize: "0.8rem"}}>
+            <div style={{display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12, fontSize: "0.75rem"}}>
                 {contract.s3Key && (
                     <ContractFileLink contractId={contract.id} s3Key={contract.s3Key} label="Скачать"/>
                 )}
@@ -267,23 +246,9 @@ export function ClientContractPanel({contract, orderId, userRole, onUploadSigned
 
             {canUpload && onUploadSigned && (
                 <div style={{marginTop: 8}}>
-                    <button
-                        onClick={() => setUploadModalOpen(true)}
-                        style={{
-                            width: "100%",
-                            padding: "0.55em 1em",
-                            borderRadius: 8,
-                            border: "1px solid var(--dash-accent-border)",
-                            background: "var(--dash-accent-bg)",
-                            color: "var(--dash-accent)",
-                            fontWeight: 600,
-                            fontSize: "0.85rem",
-                            cursor: "pointer",
-                            fontFamily: "inherit",
-                        }}
-                    >
+                    <Button variant="outline" className="w-full" onClick={() => setUploadModalOpen(true)}>
                         Загрузить подписанный договор
-                    </button>
+                    </Button>
                 </div>
             )}
 

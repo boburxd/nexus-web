@@ -9,6 +9,7 @@ import styles from "./regulations-rich-editor.module.css"
 import {promptDialog} from "@/lib/dialog-store"
 import {Icon} from "@/components/ui/icon"
 import {stripBx} from "@/lib/icon-map"
+import {Button} from "@/components/ui/button"
 
 // Вне компонента: новые экземпляры на каждом рендере заставляли бы useEditor вызывать setOptions при каждом нажатии.
 const EXTENSIONS = [
@@ -126,18 +127,19 @@ function ToolButton({label, icon, active, disabled, onClick, children}: {
     children?: ReactNode
 }) {
     return (
-        <button
+        <Button
             type="button"
+            variant={active ? "secondary" : "ghost"}
+            size="icon-sm"
             title={label}
             aria-label={label}
             aria-pressed={active}
             disabled={disabled}
-            className={`${styles.tool} ${active ? styles.toolActive : ""}`}
             // Не уводим фокус из редактора, иначе команда применится к потерянному выделению.
             onMouseDown={(e) => e.preventDefault()}
             onClick={onClick}
         >
             {icon ? <Icon name={stripBx(icon)}/> : children}
-        </button>
+        </Button>
     )
 }

@@ -178,7 +178,7 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
           padding: 0 16px; height: 36px;
           text-decoration: none; color: var(--adm-muted);
           border-bottom: 2px solid transparent;
-          font-size: 0.85rem; font-weight: 500;
+          font-size: 0.875rem; font-weight: 500;
           transition: color 0.15s, border-color 0.15s;
           white-space: nowrap;
         }
@@ -203,7 +203,7 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
           width: 36px; height: 36px; padding: 0; border-radius: 50%;
           border: 1px solid transparent;
           display: flex; align-items: center; justify-content: center;
-          font-size: 1.15rem; line-height: 1; cursor: pointer;
+          font-size: 1.125rem; line-height: 1; cursor: pointer;
           transition: color 0.15s, border-color 0.15s, box-shadow 0.15s, background 0.15s;
         }
         .adm-header-icon-btn i { line-height: 1; }
@@ -227,7 +227,7 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
           color: var(--adm-active-color);
         }
         .adm-profile-menu {
-          position: absolute; top: calc(100% + 8px); right: 0; z-index: 1100;
+          position: absolute; top: calc(100% + 8px); right: 0; z-index: var(--z-overlay);
           min-width: 180px; padding: 6px;
           display: flex; flex-direction: column;
           background: var(--adm-card-bg);
@@ -246,16 +246,16 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
         .adm-profile-menu__email { font-size: 0.75rem; color: var(--adm-muted); }
         .adm-profile-menu__item {
           display: flex; align-items: center; gap: 10px;
-          width: 100%; padding: 8px 10px; border-radius: 7px;
+          width: 100%; padding: 8px 10px; border-radius: 8px;
           background: transparent; color: var(--adm-text);
-          font-size: 0.85rem; text-align: left;
+          font-size: 0.875rem; text-align: left;
           transition: background 0.15s, color 0.15s;
         }
-        .adm-profile-menu__item i { font-size: 1.05rem; }
-        .adm-profile-menu__item--danger { color: var(--adm-danger, #ea5455); }
+        .adm-profile-menu__item i { font-size: 1rem; }
+        .adm-profile-menu__item--danger { color: var(--adm-danger, var(--destructive)); }
         .adm-profile-menu__item--danger:hover,
         .adm-profile-menu__item--danger:focus-visible {
-          background: rgba(234,84,85,0.12);
+          background: color-mix(in oklab, var(--adm-danger, var(--destructive)) 12%, transparent);
           outline: none;
         }
 

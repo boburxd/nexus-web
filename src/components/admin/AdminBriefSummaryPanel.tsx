@@ -83,7 +83,7 @@ export function AdminBriefSummaryPanel({
             }}>
                 <span className="sp-label">Бриф заказчика</span>
                 <button type="button" className="sp-btn sp-btn-primary" onClick={onOpenFullEditor}
-                        style={{padding: "0.4em 1em", fontSize: "0.78rem"}}>
+                        style={{padding: "4px 12px", fontSize: "0.75rem"}}>
                     <Icon name="expand-alt" style={{marginRight: 4}}/>
                     Полный бриф
                 </button>
@@ -95,13 +95,13 @@ export function AdminBriefSummaryPanel({
                     alignItems: "center",
                     gap: 10,
                     marginBottom: 12,
-                    fontSize: "0.8rem"
+                    fontSize: "0.75rem"
                 }}>
-          <span style={{fontWeight: 600, color: filled === total ? "#22c55e" : "var(--adm-text, #111)"}}>
+          <span style={{fontWeight: 600, color: filled === total ? "var(--success)" : "var(--adm-text, currentColor)"}}>
             Заполнено: {filled}/{total}
           </span>
                     {missing > 0 && (
-                        <span style={{color: "#f59e0b", fontWeight: 500}}>Пустых полей: {missing}</span>
+                        <span style={{color: "var(--warning)", fontWeight: 500}}>Пустых полей: {missing}</span>
                     )}
                     {showWizardStep && (
                         <span style={{color: "var(--adm-muted)"}}>
@@ -110,7 +110,7 @@ export function AdminBriefSummaryPanel({
                     )}
                 </div>
                 <p style={{fontSize: "0.75rem", color: "var(--adm-muted)", margin: "0 0 12px", lineHeight: 1.45}}>
-                    Блоки брифа по умолчанию свернуты — разверните нужный раздел.
+                    Блоки брифа по умолчанию свернуты. Разверните нужный раздел.
                 </p>
 
                 {briefVideoFile?.s3Key && (
@@ -130,9 +130,9 @@ export function AdminBriefSummaryPanel({
                             <div style={{display: "flex", alignItems: "center", gap: 8}}>
                                 <Icon name="video" style={{color: "var(--adm-active-color)"}}/>
                                 <div>
-                                    <div style={{fontSize: "0.78rem", fontWeight: 600}}>Видео к брифу</div>
+                                    <div style={{fontSize: "0.75rem", fontWeight: 600}}>Видео к брифу</div>
                                     <div style={{
-                                        fontSize: "0.72rem",
+                                        fontSize: "0.75rem",
                                         color: "var(--adm-muted)"
                                     }}>{briefVideoFile.filename}</div>
                                 </div>
@@ -142,7 +142,7 @@ export function AdminBriefSummaryPanel({
                                 target="_blank"
                                 rel="noreferrer"
                                 className="sp-btn sp-btn-ghost"
-                                style={{fontSize: "0.72rem", padding: "0.35em 0.7em"}}
+                                style={{fontSize: "0.75rem", padding: "4px 8px"}}
                             >
                                 <Icon name="download" style={{marginRight: 4}}/>
                                 Скачать
@@ -172,8 +172,8 @@ export function AdminBriefSummaryPanel({
                         <div style={{display: "flex", alignItems: "center", gap: 8}}>
                             <Icon name="paperclip" style={{color: "var(--adm-active-color)"}}/>
                             <div>
-                                <div style={{fontSize: "0.78rem", fontWeight: 600}}>Документы к брифу</div>
-                                <div style={{fontSize: "0.72rem", color: "var(--adm-muted)"}}>
+                                <div style={{fontSize: "0.75rem", fontWeight: 600}}>Документы к брифу</div>
+                                <div style={{fontSize: "0.75rem", color: "var(--adm-muted)"}}>
                                     {filesLoaded ? `Файлов: ${briefFiles.length}` : "Нажмите «Показать»"}
                                 </div>
                             </div>
@@ -181,7 +181,7 @@ export function AdminBriefSummaryPanel({
                         <button
                             type="button"
                             className="sp-btn sp-btn-ghost"
-                            style={{fontSize: "0.72rem", padding: "0.35em 0.7em"}}
+                            style={{fontSize: "0.75rem", padding: "4px 8px"}}
                             onClick={() => void loadBriefFiles()}
                         >
                             <Icon name="refresh" style={{marginRight: 4}}/>
@@ -198,7 +198,7 @@ export function AdminBriefSummaryPanel({
                                     gap: 12
                                 }}>
                   <span style={{
-                      fontSize: "0.78rem",
+                      fontSize: "0.75rem",
                       color: "var(--adm-text)",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
@@ -211,7 +211,7 @@ export function AdminBriefSummaryPanel({
                                         target="_blank"
                                         rel="noreferrer"
                                         className="sp-btn sp-btn-ghost"
-                                        style={{fontSize: "0.72rem", padding: "0.25em 0.6em", flexShrink: 0}}
+                                        style={{fontSize: "0.75rem", padding: "2px 6px", flexShrink: 0}}
                                     >
                                         <Icon name="download" style={{marginRight: 4}}/>
                                         Скачать
@@ -220,7 +220,7 @@ export function AdminBriefSummaryPanel({
                             ))}
                         </div>
                     ) : filesLoaded ? (
-                        <div style={{fontSize: "0.74rem", color: "var(--adm-muted)"}}>Нет прикрепленных файлов.</div>
+                        <div style={{fontSize: "0.75rem", color: "var(--adm-muted)"}}>Нет прикрепленных файлов.</div>
                     ) : null}
                 </div>
 
@@ -230,18 +230,18 @@ export function AdminBriefSummaryPanel({
                             marginBottom: 12,
                             padding: "8px 12px",
                             borderRadius: 8,
-                            background: "rgba(234,84,85,0.08)",
-                            border: "1px solid rgba(234,84,85,0.25)",
-                            fontSize: "0.78rem",
-                            color: "#ea5455",
+                            background: "color-mix(in oklab, var(--destructive) 8%, transparent)",
+                            border: "1px solid color-mix(in oklab, var(--destructive) 25%, transparent)",
+                            fontSize: "0.75rem",
+                            color: "var(--destructive)",
                             display: "flex",
                             alignItems: "center",
                             gap: 8,
                         }}
                     >
-                        <Icon name="support" style={{fontSize: "1.1rem"}}/>
+                        <Icon name="support" style={{fontSize: "1.125rem"}}/>
                         <span>
-              <strong>Запрошена помощь менеджера.</strong> Ниже видно, что уже введено и что осталось пустым — так проще понять, чем помочь.
+              <strong>Запрошена помощь менеджера.</strong> Ниже видно, что уже введено и что осталось пустым: так проще понять, чем помочь.
             </span>
                     </div>
                 )}
@@ -271,10 +271,8 @@ export function AdminBriefSummaryPanel({
                                     border: "none",
                                     cursor: "pointer",
                                     fontFamily: "inherit",
-                                    fontSize: "0.72rem",
+                                    fontSize: "0.75rem",
                                     fontWeight: 600,
-                                    textTransform: "uppercase",
-                                    letterSpacing: "0.04em",
                                     color: "var(--adm-muted)",
                                 }}
                             >
@@ -297,13 +295,13 @@ export function AdminBriefSummaryPanel({
                                                 gridTemplateColumns: "22px 140px 1fr",
                                                 gap: 8,
                                                 alignItems: "start",
-                                                padding: "5px 0",
+                                                padding: "4px 0",
                                                 borderBottom: ri === groupRows.length - 1 ? "none" : "1px solid var(--adm-sidebar-border, rgba(0,0,0,0.06))",
-                                                fontSize: "0.78rem",
+                                                fontSize: "0.75rem",
                                             }}
                                         >
                       <span style={{
-                          color: r.filled ? "#22c55e" : "var(--adm-muted)",
+                          color: r.filled ? "var(--success)" : "var(--adm-muted)",
                           fontWeight: 700,
                           textAlign: "center"
                       }}>
@@ -311,7 +309,7 @@ export function AdminBriefSummaryPanel({
                       </span>
                                             <span style={{color: "var(--adm-muted)", fontWeight: 500}}>{r.label}</span>
                                             <span style={{
-                                                color: r.filled ? "var(--adm-text)" : "#94a3b8",
+                                                color: r.filled ? "var(--adm-text)" : "var(--muted-foreground)",
                                                 wordBreak: "break-word"
                                             }}>
                         {r.filled ? trunc(r.preview, 120) : "не заполнено"}

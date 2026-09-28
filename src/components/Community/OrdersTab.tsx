@@ -13,6 +13,7 @@ import type {ActItem, OrderWithRelations, UrgentItem} from "./types"
 import {DISCOVER_HUES, ORDER_HUE, ORDER_STATUS_MAP, STAGE_LABELS} from "./types"
 import {userDisplayName} from "@/lib/user-name"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 const QUICK_LINKS = [
     {href: "/work/portfolio", label: "Портфолио", sub: "Фото и рендеры", icon: "bx-image-alt"},
@@ -73,10 +74,10 @@ function ActsBlock({items, onSign}: { items: ActItem[]; onSign: (stageId: string
                             <p className="dash-acts__title">{STAGE_LABELS[stage.type]}</p>
                             <p className="dash-acts__sub">Заказ #{order.id.slice(-6).toUpperCase()}</p>
                         </div>
-                        <button className="dash-acts__action" data-tour="btn-sign-act" onClick={() => onSign(stage.id)}
-                                style={{background: "none", border: "none", cursor: "pointer", fontFamily: "inherit"}}>
+                        <Button variant="ghost" size="sm" className="dash-acts__action" data-tour="btn-sign-act"
+                                onClick={() => onSign(stage.id)}>
                             Подписать <Icon name="pen"/>
-                        </button>
+                        </Button>
                     </li>
                 ))}
             </ul>
@@ -117,12 +118,10 @@ export function OrdersCol1({orders}: { orders: OrderWithRelations[] }) {
             ) : (
                 <ul className="dash-list">
                     {orders.slice(0, 6).map(order => {
-                        const hue = ORDER_HUE[order.status] ?? 247
                         const st = ORDER_STATUS_MAP[order.status] ?? {variant: "pending" as const, label: order.status}
                         return (
                             <li key={order.id} className="dash-list__item">
-                                <div className="dash-list__thumb"
-                                     style={{background: `linear-gradient(135deg, hsl(${hue},60%,58%), hsl(${hue + 35},60%,48%))`}}>
+                                <div className="dash-list__thumb" style={{background: "var(--dash-surface3)"}}>
                                     {order.id.slice(-3).toUpperCase()}
                                 </div>
                                 <div className="dash-list__wrap">
@@ -180,7 +179,7 @@ export function OrdersCol2({orders, urgentItems, actItems, onSignAct}: {
                             <div className="dash-card__body"><h3 className="dash-card__heading">Нет проектов</h3></div>
                         </li>
                     ) : activeOrders.map(order => {
-                        const hue = ORDER_HUE[order.status] ?? 247
+                        const hue = ORDER_HUE[order.status] ?? 212
                         const st = ORDER_STATUS_MAP[order.status] ?? {variant: "pending" as const, label: order.status}
                         const statusStripClass =
                             order.status === "DONE"

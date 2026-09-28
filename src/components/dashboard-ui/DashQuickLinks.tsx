@@ -34,7 +34,7 @@ export function DashQuickLinks({
                             <div className="dash-discover__more">
                                 <div
                                     className="dash-discover__more-icon"
-                                    style={{background: `linear-gradient(20deg, hsl(${link.h1},72%,52%), hsl(${link.h2},72%,44%))`}}
+                                    style={{background: "color-mix(in oklab, var(--dash-accent) 45%, var(--dash-surface3))"}}
                                 >
                                     <Icon name={stripBx(link.icon)}/>
                                 </div>

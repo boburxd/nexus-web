@@ -8,8 +8,8 @@
 .spec-dashboard__hero {
     margin-bottom: 32px;
     padding: 24px;
-    background: linear-gradient(135deg, var(--dash-accent) 0%, var(--dash-accent-bg) 100%);
-    border-radius: 12px;
+    background: color-mix(in oklab, var(--dash-accent) 45%, var(--dash-surface3));
+    border-radius: 14px;
     color: white;
 }
 
@@ -28,7 +28,7 @@
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 18px;
     flex-shrink: 0;
 }
 
@@ -61,11 +61,11 @@
     padding: 20px;
     background: var(--dash-bg);
     border-radius: 8px;
-    transition: all 0.2s ease;
+    transition: box-shadow 0.2s ease;
 }
 
 .spec-dashboard__stat-card:hover {
-    box-shadow: 0 2px 8px rgba(115, 103, 240, 0.1);
+    box-shadow: var(--dash-shadow);
 }
 
 .spec-dashboard__stat-icon {
@@ -127,11 +127,11 @@
 }
 
 .spec-dashboard__section-title i {
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .spec-dashboard__link {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--dash-accent);
     text-decoration: none;
     font-weight: 600;
@@ -172,7 +172,7 @@
     border-left: 3px solid var(--dash-warn);
     border-radius: 6px;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease;
     cursor: pointer;
 }
 
@@ -232,7 +232,7 @@
 }
 
 .spec-dashboard__empty i {
-    font-size: 48px;
+    font-size: 24px;
     opacity: 0.3;
     display: block;
     margin-bottom: 12px;
@@ -251,7 +251,7 @@
 .spec-dashboard__orders-table table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .spec-dashboard__orders-table thead {
@@ -296,10 +296,8 @@
     display: inline-block;
     padding: 4px 8px;
     border-radius: 4px;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
 .spec-dashboard__status--active {
@@ -328,19 +326,18 @@
     flex: 1;
     height: 4px;
     background: var(--dash-border);
-    border-radius: 2px;
+    border-radius: 4px;
     overflow: hidden;
     min-width: 60px;
 }
 
 .spec-dashboard__progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--dash-accent), var(--dash-success));
-    transition: width 0.3s ease;
+    background: var(--dash-accent);
 }
 
 .spec-dashboard__progress-text {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     color: var(--dash-muted);
     min-width: 30px;
@@ -367,7 +364,7 @@
     color: var(--dash-text);
     font-size: 12px;
     font-weight: 600;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
     cursor: pointer;
 }
 
@@ -393,13 +390,13 @@
 
 .spec-completeness__subtitle {
     margin: 4px 0 0;
-    font-size: 13px;
+    font-size: 14px;
     color: var(--dash-muted);
 }
 
 .spec-completeness__count {
     flex-shrink: 0;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--dash-accent);
     white-space: nowrap;
@@ -409,14 +406,13 @@
     height: 6px;
     margin-bottom: 20px;
     background: var(--dash-border);
-    border-radius: 3px;
+    border-radius: 4px;
     overflow: hidden;
 }
 
 .spec-completeness__fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--dash-accent), var(--dash-success));
-    transition: width 0.3s ease;
+    background: var(--dash-accent);
 }
 
 .spec-completeness__steps {
@@ -446,7 +442,7 @@
     justify-content: center;
     flex-shrink: 0;
     font-size: 18px;
-    background: rgba(115, 103, 240, 0.1);
+    background: var(--dash-accent-bg);
     color: var(--dash-accent);
 }
 
@@ -502,10 +498,8 @@
 
 .spec-completeness__tag {
     flex-shrink: 0;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
     color: var(--dash-success);
 }
 
@@ -552,7 +546,7 @@
     }
 
     .spec-completeness__action {
-        margin-left: 44px;
+        margin-left: 48px;
     }
 
     .spec-dashboard__quick-links {

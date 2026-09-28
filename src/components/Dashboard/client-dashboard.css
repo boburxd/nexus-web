@@ -8,8 +8,8 @@
 .client-dashboard__hero {
     margin-bottom: 32px;
     padding: 24px;
-    background: linear-gradient(135deg, #7928ca 0%, #5e1ba9 100%);
-    border-radius: 12px;
+    background: color-mix(in oklab, var(--dash-accent) 45%, var(--dash-surface3));
+    border-radius: 14px;
     color: white;
 }
 
@@ -28,7 +28,7 @@
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 18px;
     flex-shrink: 0;
 }
 
@@ -66,11 +66,11 @@
     padding: 20px;
     background: var(--dash-bg);
     border-radius: 8px;
-    transition: all 0.2s ease;
+    transition: box-shadow 0.2s ease;
 }
 
 .client-dashboard__stat-card:hover {
-    box-shadow: 0 2px 8px rgba(121, 40, 202, 0.1);
+    box-shadow: var(--dash-shadow);
 }
 
 .client-dashboard__stat-icon {
@@ -132,12 +132,12 @@
 }
 
 .client-dashboard__section-title i {
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .client-dashboard__link {
-    font-size: 13px;
-    color: #7928ca;
+    font-size: 14px;
+    color: var(--dash-accent);
     text-decoration: none;
     font-weight: 600;
     transition: color 0.2s ease;
@@ -167,24 +167,23 @@
     color: var(--dash-text);
     font-size: 12px;
     font-weight: 600;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
     cursor: pointer;
 }
 
 .client-dashboard__action-btn:hover {
     background: var(--dash-border);
-    transform: translateY(-2px);
 }
 
 .client-dashboard__action-btn--primary {
-    background: #7928ca;
-    border-color: #7928ca;
+    background: color-mix(in oklab, var(--dash-accent) 45%, var(--dash-surface3));
+    border-color: color-mix(in oklab, var(--dash-accent) 45%, var(--dash-surface3));
     color: white;
 }
 
 .client-dashboard__action-btn--primary:hover {
-    background: #5e1ba9;
-    border-color: #5e1ba9;
+    background: color-mix(in oklab, var(--dash-accent) 60%, var(--dash-surface3));
+    border-color: color-mix(in oklab, var(--dash-accent) 60%, var(--dash-surface3));
 }
 
 .client-dashboard__action-btn i {
@@ -199,7 +198,7 @@
 }
 
 .client-dashboard__empty i {
-    font-size: 48px;
+    font-size: 24px;
     opacity: 0.3;
     display: block;
     margin-bottom: 12px;
@@ -213,7 +212,7 @@
 .client-dashboard__empty-link {
     display: inline-block;
     padding: 8px 16px;
-    background: #7928ca;
+    background: color-mix(in oklab, var(--dash-accent) 45%, var(--dash-surface3));
     color: white;
     border-radius: 6px;
     text-decoration: none;
@@ -223,7 +222,7 @@
 }
 
 .client-dashboard__empty-link:hover {
-    background: #5e1ba9;
+    background: color-mix(in oklab, var(--dash-accent) 60%, var(--dash-surface3));
 }
 
 /* Orders List */
@@ -241,12 +240,11 @@
     background: var(--dash-bg-alt);
     border-radius: 8px;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: box-shadow 0.2s ease;
 }
 
 .client-dashboard__order-card:hover {
-    box-shadow: 0 4px 12px rgba(121, 40, 202, 0.1);
-    transform: translateY(-2px);
+    box-shadow: var(--dash-shadow);
 }
 
 .client-dashboard__order-header {
@@ -264,7 +262,7 @@
 }
 
 .client-dashboard__order-status {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     white-space: nowrap;
 }
@@ -291,18 +289,17 @@
     flex: 1;
     height: 4px;
     background: var(--dash-border);
-    border-radius: 2px;
+    border-radius: 4px;
     overflow: hidden;
 }
 
 .client-dashboard__progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #7928ca, #5e1ba9);
-    transition: width 0.3s ease;
+    background: var(--dash-accent);
 }
 
 .client-dashboard__progress-text {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     color: var(--dash-muted);
     min-width: 30px;
@@ -317,7 +314,7 @@
 .client-dashboard__payments-table table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .client-dashboard__payments-table thead {
@@ -354,7 +351,7 @@
 
 .client-dashboard__payment-status {
     font-weight: 600;
-    font-size: 11px;
+    font-size: 12px;
 }
 
 .client-dashboard__payment-date {

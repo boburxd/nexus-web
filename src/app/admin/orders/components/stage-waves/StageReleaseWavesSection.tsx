@@ -22,16 +22,14 @@ export function StageReleaseWavesSection({
         <section>
             <div
                 style={{
-                    fontSize: "0.65rem",
+                    fontSize: "0.75rem",
                     color: "var(--adm-muted)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.07em",
                     marginBottom: 6,
                 }}
             >
                 Волны выпуска к заказчику
             </div>
-            <p style={{fontSize: "0.74rem", color: "var(--adm-muted)", margin: "0 0 10px", lineHeight: 1.45}}>
+            <p style={{fontSize: "0.75rem", color: "var(--adm-muted)", margin: "0 0 10px", lineHeight: 1.45}}>
                 Каждая карточка — момент одобрения модератором и показ комплекта заказчику. Оранжевая колонка — цикл с
                 модератором;
                 голубая — замечания заказчика перед этим выпуском. Зелёная рамка — итоговый принятый комплект.

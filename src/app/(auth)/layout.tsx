@@ -32,12 +32,12 @@ export default function AuthLayout({children}: { children: React.ReactNode }) {
             <div
                 ref={navRef}
                 className="auth-nav-shell absolute top-0 left-0 right-0 flex items-center justify-between z-20"
-                style={{padding: "2em 3em"}}
+                style={{padding: "32px 48px"}}
             >
                 <Link
                     href="/"
                     className="no-underline hover:opacity-70 transition-opacity"
-                    style={{color: "#f4f4f4", fontSize: "1.3125em", fontWeight: 500, lineHeight: 1.3}}
+                    style={{color: "var(--foreground)", fontSize: "1.5rem", fontWeight: 500, lineHeight: 1.3}}
                 >
                     NEXUS
                 </Link>
@@ -55,11 +55,11 @@ export default function AuthLayout({children}: { children: React.ReactNode }) {
           .auth-page-root {
             align-items: flex-start;
             justify-content: flex-start;
-            padding-top: 4.5rem;
+            padding-top: 4rem;
             padding-bottom: 2rem;
           }
           .auth-nav-shell {
-            padding: 1.25rem 1.1rem !important;
+            padding: 1.25rem 1rem !important;
           }
           .auth-form-shell {
             max-width: 100% !important;

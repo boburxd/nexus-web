@@ -24,11 +24,11 @@ function ErrorContent() {
     const code = params.get("error")
     return (
         <div style={{textAlign: "center", maxWidth: 420, padding: "0 1rem"}}>
-            <p style={{color: "#f4f4f4", fontSize: "1rem", lineHeight: 1.5, margin: "0 0 1.25rem"}}>
+            <p style={{color: "var(--foreground)", fontSize: "1rem", lineHeight: 1.5, margin: "0 0 1.25rem"}}>
                 {friendlyAuthError(code)}
             </p>
             <Link href="/login"
-                  style={{color: "rgba(255,255,255,0.85)", textDecoration: "underline", fontSize: "0.95rem"}}>
+                  style={{color: "rgba(255,255,255,0.85)", textDecoration: "underline", fontSize: "1rem"}}>
                 Перейти ко входу
             </Link>
         </div>

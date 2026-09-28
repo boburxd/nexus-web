@@ -133,8 +133,8 @@ export function DeleteButton({
             className={["dash-inline-action", "dash-inline-action--delete", confirming ? "is-confirming" : "", className ?? ""].join(" ").trim()}
         >
             <Icon name={stripBx(deleting ? "bx-loader-circle bx-spin" : confirming ? "bx-check" : "bx-trash")}
-               style={{marginRight: 3}}/>
-            {deleting ? "Удаление..." : confirming ? "Точно?" : "Удалить"}
+               style={{marginRight: 4}}/>
+            {deleting ? "Удаление…" : confirming ? "Точно?" : "Удалить"}
         </button>
     )
 }

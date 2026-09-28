@@ -18,15 +18,13 @@ export function DashDataTable({
         // Обёртка со скроллом: на телефоне 4–5 колонок платежей не влезают, и без неё
         // таблица растягивала по горизонтали всю страницу, а не только себя.
         <div style={{overflowX: "auto", maxWidth: "100%"}}>
-            <table style={{width: "100%", borderCollapse: "collapse", fontSize: "0.82rem", minWidth: 420}}>
+            <table style={{width: "100%", borderCollapse: "collapse", fontSize: "0.875rem", minWidth: 420}}>
                 <thead>
                 <tr
                     style={{
                         borderBottom: "1px solid var(--dash-border)",
                         color: "var(--dash-muted)",
-                        fontSize: "0.7rem",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.05em",
+                        fontSize: "0.75rem",
                     }}
                 >
                     {columns.map(col => (

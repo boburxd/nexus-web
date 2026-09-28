@@ -32,7 +32,7 @@ export function OrderTabs({
                     >
                         {tab.label}
                         {tab.id === "stages" && modStagesCount > 0 ? (
-                            <span className="sp-badge sp-badge--danger" style={{fontSize: "0.65rem", marginLeft: 8}}>
+                            <span className="sp-badge sp-badge--danger" style={{fontSize: "0.75rem", marginLeft: 8}}>
                                 {modStagesCount}
                             </span>
                         ) : null}

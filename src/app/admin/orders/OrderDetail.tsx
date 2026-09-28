@@ -118,21 +118,23 @@ export function OrderDetail({
         })
     }, [orderId, fetchUnreadChatCount])
 
+    // Ящик чата порталится в body, вне .adm-root, поэтому --adm-* там не определены и работают
+    // запасные значения — светлые значения тех же --adm-* токенов из AdminLayout.
     const dashVarsForAdmin: React.CSSProperties = {
         // Drawer panel background: match admin page outer background.
-        ["--dash-surface" as never]: "var(--adm-outer, #f3f4f6)",
+        ["--dash-surface" as never]: "var(--adm-outer, hsl(214, 32%, 95%))",
         // Secondary surfaces inside the drawer (header + message bubbles).
-        ["--dash-surface2" as never]: "var(--adm-content-bg, #ffffff)",
-        ["--dash-border" as never]: "var(--adm-sidebar-border, #e5e7eb)",
-        ["--dash-text" as never]: "var(--adm-text, #111827)",
-        ["--dash-text2" as never]: "var(--adm-text, #111827)",
-        ["--dash-muted" as never]: "var(--adm-muted, #6b7280)",
+        ["--dash-surface2" as never]: "var(--adm-content-bg, hsl(0, 0%, 100%))",
+        ["--dash-border" as never]: "var(--adm-sidebar-border, hsl(214, 28%, 88%))",
+        ["--dash-text" as never]: "var(--adm-text, hsl(218, 40%, 12%))",
+        ["--dash-text2" as never]: "var(--adm-text, hsl(218, 40%, 12%))",
+        ["--dash-muted" as never]: "var(--adm-muted, hsl(215, 16%, 40%))",
         // Inputs/backgrounds inside the chat panel.
-        ["--dash-bg" as never]: "var(--adm-content-bg, #ffffff)",
-        ["--dash-accent" as never]: "var(--adm-active-color, #6366f1)",
-        ["--dash-accent-bg" as never]: "var(--adm-active-bg, rgba(99,102,241,0.10))",
-        ["--dash-accent-border" as never]: "var(--adm-active-color, #6366f1)",
-        ["--dash-danger" as never]: "#dc2626",
+        ["--dash-bg" as never]: "var(--adm-content-bg, hsl(0, 0%, 100%))",
+        ["--dash-accent" as never]: "var(--adm-active-color, hsl(212, 70%, 42%))",
+        ["--dash-accent-bg" as never]: "var(--adm-active-bg, hsla(212, 70%, 45%, 0.10))",
+        ["--dash-accent-border" as never]: "var(--adm-active-color, hsl(212, 70%, 42%))",
+        ["--dash-danger" as never]: "var(--destructive)",
     }
 
     const bd = order.briefData

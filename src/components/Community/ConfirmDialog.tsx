@@ -2,6 +2,7 @@
 
 import {createPortal} from "react-dom"
 import {useEffect, useState} from "react"
+import {Button} from "@/components/ui/button"
 
 interface Props {
     open: boolean
@@ -30,53 +31,33 @@ export function ConfirmDialog({open, title, message, confirmLabel = "Удали�
     if (!mounted || !open) return null
 
     return createPortal(
-        <div onClick={onCancel} style={{
+        <div onClick={onCancel} role="presentation" style={{
             position: "fixed",
             inset: 0,
             background: "rgba(0,0,0,0.5)",
-            zIndex: 1200,
+            zIndex: "var(--z-dialog)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center"
         }}>
-            <div onClick={e => e.stopPropagation()} style={{
-                background: "var(--dash-surface, #0d1230)",
-                border: "1px solid var(--dash-border, rgba(255,255,255,0.1))",
+            <div onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" style={{
+                background: "var(--dash-surface, var(--card))",
+                border: "1px solid var(--dash-border, var(--border))",
                 borderRadius: 14,
-                padding: "24px 28px",
+                padding: 24,
                 maxWidth: 380,
                 width: "90vw"
             }}>
-                <h3 style={{margin: "0 0 8px", fontSize: "0.95rem", color: "var(--dash-text, #f3f5ff)"}}>{title}</h3>
+                <h3 style={{margin: "0 0 8px", fontSize: "1rem", color: "var(--dash-text, var(--foreground))"}}>{title}</h3>
                 {message && <p style={{
                     margin: "0 0 20px",
-                    fontSize: "0.82rem",
-                    color: "var(--dash-muted, #8f95b2)",
+                    fontSize: "0.875rem",
+                    color: "var(--dash-muted, var(--muted-foreground))",
                     lineHeight: 1.45
                 }}>{message}</p>}
                 <div style={{display: "flex", gap: 8, justifyContent: "flex-end"}}>
-                    <button onClick={onCancel} style={{
-                        padding: "6px 16px",
-                        borderRadius: 8,
-                        border: "1px solid var(--dash-border)",
-                        background: "transparent",
-                        color: "var(--dash-text)",
-                        cursor: "pointer",
-                        fontSize: "0.82rem",
-                        fontFamily: "inherit"
-                    }}>Отмена
-                    </button>
-                    <button onClick={onConfirm} style={{
-                        padding: "6px 16px",
-                        borderRadius: 8,
-                        border: "none",
-                        background: "#ea5455",
-                        color: "#fff",
-                        cursor: "pointer",
-                        fontSize: "0.82rem",
-                        fontFamily: "inherit",
-                        fontWeight: 600
-                    }}>{confirmLabel}</button>
+                    <Button variant="outline" onClick={onCancel}>Отмена</Button>
+                    <Button variant="destructive" onClick={onConfirm}>{confirmLabel}</Button>
                 </div>
             </div>
         </div>,

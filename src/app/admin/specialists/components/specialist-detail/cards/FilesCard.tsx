@@ -2,6 +2,7 @@ import {FILE_CATEGORY_LABEL} from "../constants"
 import {openAdminFileDownload} from "../utils"
 import type {RawSpecialist} from "../../../types"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 export function FilesCard({files}: { files: RawSpecialist["files"] }) {
     if (files.length === 0) return null
@@ -24,22 +25,23 @@ export function FilesCard({files}: { files: RawSpecialist["files"] }) {
                         }}
                     >
                         <div style={{minWidth: 0}}>
-              <span style={{fontSize: "0.72rem", color: "var(--adm-active-color)", fontWeight: 600}}>
+              <span style={{fontSize: "0.75rem", color: "var(--adm-active-color)", fontWeight: 600}}>
                 {FILE_CATEGORY_LABEL[f.category] ?? f.category}
               </span>
-                            <div style={{fontSize: "0.8rem", marginTop: 2}}>
+                            <div style={{fontSize: "0.75rem", marginTop: 2}}>
                                 <Icon name="file" style={{marginRight: 6, color: "var(--adm-muted)"}}/>
                                 {f.filename ?? "Файл"}
                             </div>
                         </div>
-                        <button
+                        <Button
                             type="button"
-                            className="sp-btn sp-btn-ghost"
-                            style={{flexShrink: 0, fontSize: "0.72rem"}}
+                            variant="outline"
+                            size="xs"
+                            className="shrink-0"
                             onClick={() => void openAdminFileDownload(f.id)}
                         >
                             <Icon name="download"/> Скачать
-                        </button>
+                        </Button>
                     </div>
                 ))}
             </div>

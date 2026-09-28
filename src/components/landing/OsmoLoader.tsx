@@ -98,7 +98,7 @@ export function OsmoLoader({images, onAnimationEnd, canExit = false, onComplete}
         <div
             ref={loaderRef}
             className="fixed inset-0 z-[200] flex items-center justify-center overflow-hidden"
-            style={{background: "#f4f4f4"}}
+            style={{background: "var(--card-foreground)"}}
         >
             {/* Outer clip — hides letters when they slide out */}
             <div className="overflow-hidden flex items-center justify-center select-none"
@@ -107,7 +107,7 @@ export function OsmoLoader({images, onAnimationEnd, canExit = false, onComplete}
                      fontSize: "clamp(5rem, 12.5vw, 12.5rem)",
                      fontWeight: 500,
                      lineHeight: 0.75,
-                     color: "#201d1d",
+                     color: "var(--background)",
                      whiteSpace: "nowrap",
                  }}
             >

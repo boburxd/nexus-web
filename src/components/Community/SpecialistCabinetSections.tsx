@@ -96,8 +96,8 @@ export function SpecialistLandingSection({portfolioProjectsCount}: { portfolioPr
                             <span key={item.key}>
                                 <span style={{
                                     color: item.done
-                                        ? "var(--dash-success, #28c76f)"
-                                        : "var(--dash-muted, #8f95b2)",
+                                        ? "var(--dash-success, var(--success))"
+                                        : "var(--dash-muted, var(--muted-foreground))",
                                 }}>
                                     {item.done ? "✓" : "○"} {item.label}
                                     {item.optional && (

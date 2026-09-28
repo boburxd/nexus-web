@@ -20,7 +20,7 @@ type UnifiedCard =
     | { kind: "released"; wave: AdminStageReleaseWave }
 
 function isVideoFilename(name: string) {
-    return /\.(mp4|webm|mov)$/i.test(name.replace(/^🎬\s*/, ""))
+    return /\.(mp4|webm|mov)$/i.test(name)
 }
 
 function isImageFilename(name: string) {
@@ -62,33 +62,33 @@ export function WaveCardUnified({
                 gap: 10,
                 flexWrap: "wrap"
             }}>
-                <div style={{fontWeight: 700, fontSize: "0.82rem"}}>
+                <div style={{fontWeight: 700, fontSize: "0.875rem"}}>
                     {title}
                     {releasedAt ? (
-                        <span style={{fontWeight: 600, fontSize: "0.7rem", color: "var(--adm-muted)", marginLeft: 8}}>
+                        <span style={{fontWeight: 600, fontSize: "0.75rem", color: "var(--adm-muted)", marginLeft: 8}}>
               · {formatStageDt(releasedAt)}
             </span>
                     ) : null}
                 </div>
                 <div style={{display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap"}}>
                     {isReleased && card.wave.isFinalAcceptedBundle ? (
-                        <span className="sp-badge sp-badge--success" style={{fontSize: "0.62rem"}}>
+                        <span className="sp-badge sp-badge--success" style={{fontSize: "0.75rem"}}>
               Принято заказчиком
             </span>
                     ) : null}
                     {isReleased && card.wave.isAtClientReview ? (
-                        <span className="sp-badge sp-badge--warn" style={{fontSize: "0.62rem"}}>
+                        <span className="sp-badge sp-badge--warn" style={{fontSize: "0.75rem"}}>
               На согласовании
             </span>
                     ) : null}
                     <span className={`sp-badge ${isReleased ? "sp-badge--info" : "sp-badge--warn"}`}
-                          style={{fontSize: "0.62rem"}}>
+                          style={{fontSize: "0.75rem"}}>
             {badge}
           </span>
                 </div>
             </div>
 
-            <div style={{fontSize: "0.72rem", color: "var(--adm-muted)", marginTop: 4}}>
+            <div style={{fontSize: "0.75rem", color: "var(--adm-muted)", marginTop: 4}}>
                 {isReleased ? "Эта версия показана заказчику (после одобрения администратором)" : "После последнего выпуска — ещё не одобрено для показа заказчику"}
             </div>
 
@@ -104,17 +104,16 @@ export function WaveCardUnified({
                         gap: 10,
                         padding: "8px 10px",
                         borderRadius: 8,
-                        border: "1px solid var(--adm-sidebar-border)",
                         background: "var(--adm-outer)",
                         color: "var(--adm-text)",
-                        fontSize: "0.74rem",
+                        fontSize: "0.75rem",
                         fontWeight: 700,
                     }}
                 >
           <span style={{display: "inline-flex", alignItems: "center", gap: 8, minWidth: 0}}>
             <Icon name="message-square-dots" style={{color: "var(--adm-muted)"}}/>
             Замечания и решения
-            <span style={{color: "var(--adm-muted)", fontWeight: 600, fontSize: "0.7rem"}}>
+            <span style={{color: "var(--adm-muted)", fontWeight: 600, fontSize: "0.75rem"}}>
               · модератор {moderatorRejections.length} · заказчик {clientRejections.length}
             </span>
           </span>
@@ -122,24 +121,23 @@ export function WaveCardUnified({
                 </summary>
 
                 <div style={{marginTop: 10}}>
-                    <div style={{paddingLeft: 10, borderLeft: "3px solid rgba(245, 158, 11, 0.9)"}}>
+                    <div>
                         <div style={{
-                            fontSize: "0.62rem",
+                            fontSize: "0.75rem",
                             fontWeight: 800,
                             color: "var(--adm-muted)",
-                            textTransform: "uppercase",
-                            letterSpacing: "0.05em"
                         }}>
+                            <span aria-hidden style={{display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "var(--bs-warning)", marginRight: 6, verticalAlign: "middle"}}/>
                             Модератор
                         </div>
                         {moderatorRejections.length === 0 ? (
-                            <div style={{fontSize: "0.76rem", marginTop: 4, color: "var(--adm-text)"}}>Замечаний
+                            <div style={{fontSize: "0.75rem", marginTop: 4, color: "var(--adm-text)"}}>Замечаний
                                 нет</div>
                         ) : (
                             <ul style={{
                                 margin: "6px 0 0",
-                                paddingLeft: 18,
-                                fontSize: "0.76rem",
+                                paddingLeft: 16,
+                                fontSize: "0.75rem",
                                 lineHeight: 1.45,
                                 color: "var(--adm-text)"
                             }}>
@@ -156,24 +154,23 @@ export function WaveCardUnified({
                         )}
                     </div>
 
-                    <div style={{paddingLeft: 10, borderLeft: "3px solid rgba(56, 189, 248, 0.95)", marginTop: 10}}>
+                    <div style={{marginTop: 10}}>
                         <div style={{
-                            fontSize: "0.62rem",
+                            fontSize: "0.75rem",
                             fontWeight: 800,
                             color: "var(--adm-muted)",
-                            textTransform: "uppercase",
-                            letterSpacing: "0.05em"
                         }}>
+                            <span aria-hidden style={{display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "var(--adm-active-color)", marginRight: 6, verticalAlign: "middle"}}/>
                             {isReleased ? "Заказчик (до выпуска)" : "Заказчик"}
                         </div>
                         {clientRejections.length === 0 ? (
-                            <div style={{fontSize: "0.76rem", marginTop: 4, color: "var(--adm-text)"}}>Замечаний
+                            <div style={{fontSize: "0.75rem", marginTop: 4, color: "var(--adm-text)"}}>Замечаний
                                 нет</div>
                         ) : (
                             <ul style={{
                                 margin: "6px 0 0",
-                                paddingLeft: 18,
-                                fontSize: "0.76rem",
+                                paddingLeft: 16,
+                                fontSize: "0.75rem",
                                 lineHeight: 1.45,
                                 color: "var(--adm-text)"
                             }}>
@@ -192,7 +189,7 @@ export function WaveCardUnified({
                 </div>
             </details>
 
-            <div style={{fontSize: "0.72rem", color: "var(--adm-muted)", marginTop: 10}}>
+            <div style={{fontSize: "0.75rem", color: "var(--adm-muted)", marginTop: 10}}>
                 Файлов в комплекте:{" "}
                 <strong style={{color: "var(--adm-text)"}}>{files.length}</strong>
             </div>
@@ -235,30 +232,30 @@ export function WaveCardUnified({
                                             border: "1px solid var(--adm-sidebar-border)",
                                             background: "transparent",
                                             color: "var(--adm-text)",
-                                            fontSize: "0.74rem",
+                                            fontSize: "0.75rem",
                                             fontWeight: 800,
                                             marginBottom: 6,
                                         }}
                                     >
                     <span style={{display: "inline-flex", alignItems: "center", gap: 8, minWidth: 0}}>
                       <Icon name={stripBx(isRejected ? "bx-x-circle" : "bx-layer-plus")}
-                         style={{color: isRejected ? "#ef4444" : "var(--adm-muted)"}}/>
+                         style={{color: isRejected ? "var(--bs-danger)" : "var(--adm-muted)"}}/>
                         {b.label}
                         <span style={{
                             color: "var(--adm-muted)",
                             fontWeight: 700,
-                            fontSize: "0.7rem"
+                            fontSize: "0.75rem"
                         }}>· файлов {b.files.length}</span>
                     </span>
                                         <span
                                             className={`sp-badge ${isRejected ? "sp-badge--danger" : "sp-badge--warn"}`}
-                                            style={{fontSize: "0.62rem"}}>
+                                            style={{fontSize: "0.75rem"}}>
                       {isRejected ? "Отклонено" : "Ожидает проверки"}
                     </span>
                                     </summary>
 
                                     {isRejected ? (
-                                        <div style={{fontSize: "0.72rem", color: "var(--adm-muted)", marginBottom: 8}}>
+                                        <div style={{fontSize: "0.75rem", color: "var(--adm-muted)", marginBottom: 8}}>
                                             {whatRejected}
                                         </div>
                                     ) : null}
@@ -267,23 +264,18 @@ export function WaveCardUnified({
                                                onSetAudience={onSetAudience}/>
 
                                     {isRejected ? (
-                                        <div style={{
-                                            marginTop: 10,
-                                            paddingLeft: 10,
-                                            borderLeft: "3px solid rgba(239,68,68,0.95)"
-                                        }}>
+                                        <div style={{marginTop: 10}}>
                                             <div style={{
-                                                fontSize: "0.62rem",
+                                                fontSize: "0.75rem",
                                                 fontWeight: 800,
                                                 color: "var(--adm-muted)",
-                                                textTransform: "uppercase",
-                                                letterSpacing: "0.05em"
                                             }}>
+                                                <span aria-hidden style={{display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "var(--bs-danger)", marginRight: 6, verticalAlign: "middle"}}/>
                                                 Причина
                                             </div>
                                             <div style={{
                                                 marginTop: 6,
-                                                fontSize: "0.78rem",
+                                                fontSize: "0.75rem",
                                                 color: "var(--adm-text)",
                                                 lineHeight: 1.45
                                             }}>

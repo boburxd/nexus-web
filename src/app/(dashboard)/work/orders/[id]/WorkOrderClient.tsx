@@ -26,12 +26,13 @@ import {getOrderBriefDisplayLabels} from "@/lib/order-brief-display"
 import {SpecialistStageWorkBody} from "./SpecialistStageWorkBody"
 import {stageStatusLabelForViewer} from "@/lib/stage-status-ui"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 const StageImageMarkup = dynamic(() => import("@/components/stage/StageImageMarkup"), {ssr: false})
 
 const SPECIALIST_ORDER_BRIEF_LABELS = getOrderBriefDisplayLabels()
 
-const isVideoFilename = (name: string) => /\.(mp4|webm|mov)$/i.test(name.replace(/^🎬\s*/, ""))
+const isVideoFilename = (name: string) => /\.(mp4|webm|mov)$/i.test(name)
 
 function FilePreviewModal({
                               url,
@@ -54,11 +55,11 @@ function FilePreviewModal({
     const isImage = isStageImageFilename(filename)
     const showMarkupViewer = isImage && fileId
     return (
-        <div onClick={onClose} style={{
+        <div onClick={onClose} role="presentation" style={{
             position: "fixed",
             inset: 0,
             background: "rgba(0,0,0,0.85)",
-            zIndex: 1000,
+            zIndex: "var(--z-dropdown)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -74,18 +75,10 @@ function FilePreviewModal({
                     overflowX: "hidden",
                 }}
             >
-                <button onClick={onClose} style={{
-                    position: "absolute",
-                    top: -36,
-                    right: 0,
-                    background: "none",
-                    border: "none",
-                    color: "#fff",
-                    fontSize: "1.5rem",
-                    cursor: "pointer",
-                    lineHeight: 1
-                }}>✕
-                </button>
+                <Button type="button" variant="ghost" size="icon" aria-label="Закрыть" onClick={onClose}
+                        className="absolute right-0 -top-9">
+                    <Icon name="x" aria-hidden/>
+                </Button>
                 {showMarkupViewer ? (
                     <StageImageMarkup stageId={stageId} fileId={fileId} filename={filename} editable={editable}
                                       readonlyReason={readonlyReason} onClose={onClose}/>
@@ -106,17 +99,17 @@ function FilePreviewModal({
                         }}/>}
                         {!isImage && !isVideo && (
                             <div style={{
-                                background: "#1a1a2e",
+                                background: "var(--dash-surface)",
                                 borderRadius: 8,
                                 padding: "2rem 3rem",
                                 color: "#fff",
                                 textAlign: "center"
                             }}>
                                 <Icon name="file"
-                                   style={{fontSize: "3rem", marginBottom: 12, display: "block"}}/>
+                                   style={{fontSize: "1.5rem", marginBottom: 12, display: "block"}}/>
                                 <p style={{margin: "0 0 16px"}}>{filename}</p>
                                 <a href={url} target="_blank" rel="noreferrer"
-                                   style={{color: "#6ee7b7", textDecoration: "none"}}>Скачать файл</a>
+                                   style={{color: "var(--dash-success)", textDecoration: "none"}}>Скачать файл</a>
                             </div>
                         )}
                     </>
@@ -195,7 +188,7 @@ type WorkOrder = {
 const ORDER_STATUS: Record<string, { label: string; color: string; bg: string }> = {
     DRAFT: {label: "Черновик", color: "var(--dash-warn)", bg: "var(--dash-warn-bg)"},
     BRIEFING: {label: "Заполнение брифа", color: "var(--dash-accent)", bg: "var(--dash-accent-bg)"},
-    BRIEF_REVIEW: {label: "Бриф на проверке", color: "hsl(270,60%,65%)", bg: "hsla(270,60%,65%,0.12)"},
+    BRIEF_REVIEW: {label: "Бриф на проверке", color: "var(--dash-accent)", bg: "var(--dash-accent-bg)"},
     ACTIVE: {label: "В работе", color: "var(--dash-success)", bg: "var(--dash-success-bg)"},
     DONE: {label: "Завершен", color: "var(--dash-muted)", bg: "var(--dash-border)"},
     CANCELLED: {label: "Отменен", color: "var(--dash-danger)", bg: "var(--dash-danger-bg)"},
@@ -333,7 +326,7 @@ export default function WorkOrderClient({
             <div style={{display: "flex", flexDirection: "column", gap: 12}}>
                 <div>
                     <div style={{
-                        fontSize: "0.72rem",
+                        fontSize: "0.75rem",
                         fontWeight: 600,
                         color: "var(--dash-text2)",
                         marginBottom: 6,
@@ -341,13 +334,13 @@ export default function WorkOrderClient({
                     }}>
                         Зачем этот этап
                     </div>
-                    <div style={{fontSize: "0.82rem", lineHeight: 1.55, color: "var(--dash-text)"}}>
+                    <div style={{fontSize: "0.875rem", lineHeight: 1.55, color: "var(--dash-text)"}}>
                         {stagePurpose(focusedStage.type as ClientStageType)}
                     </div>
                 </div>
                 <div>
                     <div style={{
-                        fontSize: "0.72rem",
+                        fontSize: "0.75rem",
                         fontWeight: 600,
                         color: "var(--dash-text2)",
                         marginBottom: 6,
@@ -355,7 +348,7 @@ export default function WorkOrderClient({
                     }}>
                         В этом статусе
                     </div>
-                    <div style={{fontSize: "0.82rem", lineHeight: 1.55, color: "var(--dash-text)"}}>
+                    <div style={{fontSize: "0.875rem", lineHeight: 1.55, color: "var(--dash-text)"}}>
                         {stageStatusGuidance(focusedStage.type as ClientStageType, focusedStage.status as StageStatus)}
                     </div>
                 </div>
@@ -409,26 +402,26 @@ export default function WorkOrderClient({
                                         width: 40,
                                         height: 40,
                                         borderRadius: "50%",
-                                        background: "linear-gradient(135deg, hsl(200,60%,58%), hsl(230,60%,48%))",
+                                        background: "var(--primary)",
                                         display: "flex",
                                         alignItems: "center",
                                         justifyContent: "center",
                                         fontWeight: 700,
-                                        fontSize: "0.95rem",
-                                        color: "#fff",
+                                        fontSize: "1rem",
+                                        color: "var(--primary-foreground)",
                                         flexShrink: 0
                                     }}>
                                         {(order.client.name ?? order.client.email)[0].toUpperCase()}
                                     </div>
                                     <div>
                                         <p style={{
-                                            fontSize: "0.78rem",
+                                            fontSize: "0.75rem",
                                             color: "var(--dash-muted)",
                                             margin: "0 0 1px"
                                         }}>Заказчик</p>
                                         <p style={{
                                             fontWeight: 600,
-                                            fontSize: "0.88rem",
+                                            fontSize: "0.875rem",
                                             color: "var(--dash-text)",
                                             margin: 0
                                         }}>{order.client.name ?? order.client.email}</p>
@@ -444,18 +437,18 @@ export default function WorkOrderClient({
                                             display: "flex",
                                             gap: 12,
                                             alignItems: "flex-start",
-                                            fontSize: "0.82rem",
+                                            fontSize: "0.875rem",
                                             lineHeight: 1.45,
                                             color: "var(--dash-text2)"
                                         }}>
                                             <Icon name="support" style={{
                                                 color: "var(--dash-warn)",
-                                                fontSize: "1.15rem",
+                                                fontSize: "1.125rem",
                                                 flexShrink: 0,
                                                 marginTop: 2
                                             }} aria-hidden/>
                                             <span style={{overflowWrap: "anywhere"}}>
-                        Заказчик запросил помощь менеджера по брифу — учтите это при изучении материалов и уточняющих вопросах.
+                        Заказчик запросил помощь менеджера по брифу. Учтите это при изучении материалов и уточняющих вопросах.
                       </span>
                                         </div>
                                     </DashSurfaceCard>
@@ -470,16 +463,15 @@ export default function WorkOrderClient({
                                         marginBottom: 8
                                     }}>
                                         <span
-                                            style={{fontSize: "0.78rem", fontWeight: 700, color: "var(--dash-text2)"}}>Документы к брифу</span>
-                                        <button
+                                            style={{fontSize: "0.75rem", fontWeight: 700, color: "var(--dash-text2)"}}>Документы к брифу</span>
+                                        <Button
                                             type="button"
-                                            className="dash-header__btn dash-header__btn--accent"
-                                            style={{padding: "0.45em 0.8em", fontSize: "0.78rem"}}
+                                            size="sm"
                                             onClick={() => void loadBriefFiles()}
                                         >
                                             <Icon name="paperclip" aria-hidden/>
                                             {briefFilesLoaded ? "Обновить" : "Показать"}
-                                        </button>
+                                        </Button>
                                     </div>
                                     {briefFilesLoaded && briefFiles.length > 0 ? (
                                         <div style={{display: "grid", gap: 6}}>
@@ -496,11 +488,10 @@ export default function WorkOrderClient({
                                                         gap: 10,
                                                         padding: "8px 10px",
                                                         borderRadius: 10,
-                                                        border: "1px solid var(--dash-border)",
                                                         background: "var(--dash-surface2)",
                                                         color: "var(--dash-text)",
                                                         textDecoration: "none",
-                                                        fontSize: "0.82rem",
+                                                        fontSize: "0.875rem",
                                                     }}
                                                     title="Скачать"
                                                 >
@@ -515,10 +506,10 @@ export default function WorkOrderClient({
                                             ))}
                                         </div>
                                     ) : briefFilesLoaded ? (
-                                        <div style={{fontSize: "0.78rem", color: "var(--dash-muted)"}}>Нет прикрепленных
+                                        <div style={{fontSize: "0.75rem", color: "var(--dash-muted)"}}>Нет прикрепленных
                                             файлов.</div>
                                     ) : (
-                                        <div style={{fontSize: "0.78rem", color: "var(--dash-muted)"}}>Нажмите
+                                        <div style={{fontSize: "0.75rem", color: "var(--dash-muted)"}}>Нажмите
                                             «Показать», чтобы загрузить список.</div>
                                     )}
                                 </DashSurfaceCard>
@@ -547,7 +538,7 @@ export default function WorkOrderClient({
                                 {order.payments.length > 0 && (
                                     <DashSurfaceCard padding="md">
                                         <span style={{
-                                            fontSize: "0.78rem",
+                                            fontSize: "0.75rem",
                                             fontWeight: 600,
                                             color: "var(--dash-text2)",
                                             display: "block",
@@ -558,7 +549,7 @@ export default function WorkOrderClient({
                                                 display: "flex",
                                                 justifyContent: "space-between",
                                                 padding: "4px 0",
-                                                fontSize: "0.82rem"
+                                                fontSize: "0.875rem"
                                             }}>
                                                 <span
                                                     style={{color: "var(--dash-text)"}}>{(p.amount / 100).toLocaleString("ru-RU")} руб.</span>
@@ -653,18 +644,18 @@ export default function WorkOrderClient({
                                                     gap: 8,
                                                     textDecoration: "none",
                                                     color: "var(--dash-text)",
-                                                    fontSize: "0.85rem",
+                                                    fontSize: "0.875rem",
                                                     fontWeight: 700,
                                                 }}
                                             >
                                                 <Icon name="book-open"
-                                                   style={{color: "var(--dash-accent)", fontSize: "1.05rem"}}
+                                                   style={{color: "var(--dash-accent)", fontSize: "1rem"}}
                                                    aria-hidden/>
                                                 Правила этапа (скачать)
                                             </a>
                                             <div style={{
                                                 marginTop: 6,
-                                                fontSize: "0.74rem",
+                                                fontSize: "0.75rem",
                                                 color: "var(--dash-muted)",
                                                 lineHeight: 1.45
                                             }}>
@@ -678,17 +669,17 @@ export default function WorkOrderClient({
                                                 alignItems: "center",
                                                 gap: 8,
                                                 color: "var(--dash-text)",
-                                                fontSize: "0.85rem",
+                                                fontSize: "0.875rem",
                                                 fontWeight: 700
                                             }}>
                                                 <Icon name="book-open"
-                                                   style={{color: "var(--dash-muted)", fontSize: "1.05rem"}}
+                                                   style={{color: "var(--dash-muted)", fontSize: "1rem"}}
                                                    aria-hidden/>
                                                 Правила этапа
                                             </div>
                                             <div style={{
                                                 marginTop: 6,
-                                                fontSize: "0.74rem",
+                                                fontSize: "0.75rem",
                                                 color: "var(--dash-muted)",
                                                 lineHeight: 1.45
                                             }}>
@@ -740,16 +731,15 @@ export default function WorkOrderClient({
                                                     {focusedStage.status === "APPROVED" ? (
                                                         <span
                                                             style={{
-                                                                fontSize: "0.72rem",
+                                                                fontSize: "0.75rem",
                                                                 fontWeight: 700,
                                                                 color: "var(--dash-success)",
-                                                                padding: "5px 12px",
-                                                                borderRadius: 999,
-                                                                border: "1px solid var(--dash-success)",
+                                                                padding: "4px 12px",
+                                                                borderRadius: 10,
                                                                 display: "inline-flex",
                                                                 alignItems: "center",
                                                                 gap: 8,
-                                                                background: "rgba(46,184,92,0.08)",
+                                                                background: "var(--dash-success-bg)",
                                                             }}
                                                         >
                               <span style={{
@@ -790,10 +780,10 @@ export default function WorkOrderClient({
                                         style={{
                                             background: "var(--dash-surface)",
                                             border: "1px solid var(--dash-border)",
-                                            borderRadius: 12,
+                                            borderRadius: 14,
                                             padding: 16,
                                             color: "var(--dash-muted)",
-                                            fontSize: "0.9rem",
+                                            fontSize: "0.875rem",
                                         }}
                                     >
                                         Этап не найден.

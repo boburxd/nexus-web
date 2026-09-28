@@ -10,9 +10,10 @@ import {buildClientRevisionVariants} from "@/lib/stage-client-revision-variants"
 import {buildAdminStageReleaseWaves} from "@/lib/stage-admin-release-waves"
 import {isStageImageFilename} from "@/lib/stage-file-helpers"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 import {stripBx} from "@/lib/icon-map"
 
-const isVideoFilename = (name: string) => /\.(mp4|webm|mov)$/i.test(name.replace(/^🎬\s*/, ""))
+const isVideoFilename = (name: string) => /\.(mp4|webm|mov)$/i.test(name)
 
 function formatWaveDt(iso: string) {
     return new Date(iso).toLocaleString("ru-RU", {
@@ -49,7 +50,6 @@ function FileThumbnail({stageId, file, onClick}: {
             borderRadius: 8,
             overflow: "hidden",
             cursor: "pointer",
-            border: "1px solid var(--dash-border)",
             flexShrink: 0,
             position: "relative",
             background: "var(--dash-surface2)"
@@ -67,7 +67,7 @@ function FileThumbnail({stageId, file, onClick}: {
                     justifyContent: "center",
                     background: "rgba(0,0,0,0.4)"
                 }}>
-                    <Icon name="play-circle" style={{fontSize: "2rem", color: "#fff"}}/>
+                    <Icon name="play-circle" style={{fontSize: "1.5rem", color: "#fff"}}/>
                 </div>
             )}
             <div style={{position: "absolute", inset: 0, background: "rgba(0,0,0,0)", transition: "background 0.15s"}}
@@ -148,8 +148,8 @@ function ActSection({stage, onUploadAct}: {
             border: act.status === "REJECTED" ? "1px solid rgba(234,84,85,0.2)" : act.status === "CONFIRMED" ? "1px solid rgba(46,184,92,0.2)" : "1px solid var(--dash-border)",
         }}>
             <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 8}}>
-                <Icon name={stripBx(statusInfo.icon)} style={{fontSize: "1.1rem", color: statusInfo.color}}/>
-                <span style={{fontWeight: 600, fontSize: "0.88rem", color: "var(--dash-text)"}}>
+                <Icon name={stripBx(statusInfo.icon)} style={{fontSize: "1.125rem", color: statusInfo.color}}/>
+                <span style={{fontWeight: 600, fontSize: "0.875rem", color: "var(--dash-text)"}}>
           Акт по этапу
         </span>
                 <span style={{fontSize: "0.75rem", color: statusInfo.color, fontWeight: 500}}>
@@ -163,7 +163,7 @@ function ActSection({stage, onUploadAct}: {
                     padding: "6px 10px",
                     borderRadius: 6,
                     background: "rgba(234,84,85,0.1)",
-                    fontSize: "0.78rem",
+                    fontSize: "0.75rem",
                     color: "var(--dash-danger)"
                 }}>
                     <Icon name="info-circle" style={{marginRight: 4}}/>
@@ -189,16 +189,15 @@ function ActSection({stage, onUploadAct}: {
                             gap: 6,
                             padding: "6px 12px",
                             borderRadius: 6,
-                            border: "1px solid var(--dash-border)",
                             background: "var(--dash-surface)",
                             color: "var(--dash-text)",
-                            fontSize: "0.82rem",
+                            fontSize: "0.875rem",
                             cursor: uploading ? "not-allowed" : "pointer",
                             fontFamily: "inherit",
                         }}
                     >
                         <Icon name="upload"/>
-                        {uploading ? "Загрузка..." : "Загрузить акт (PDF)"}
+                        {uploading ? "Загрузка…" : "Загрузить акт (PDF)"}
                     </label>
                 </div>
             )}
@@ -209,7 +208,7 @@ function ActSection({stage, onUploadAct}: {
                     padding: "6px 10px",
                     borderRadius: 6,
                     background: "rgba(234,84,85,0.1)",
-                    fontSize: "0.78rem",
+                    fontSize: "0.75rem",
                     color: "var(--dash-danger)"
                 }}>
                     <Icon name="error-circle" style={{marginRight: 4}}/>
@@ -217,10 +216,10 @@ function ActSection({stage, onUploadAct}: {
                 </div>
             )}
 
-            <div style={{marginTop: 8, fontSize: "0.78rem", color: "var(--dash-muted)"}}>
+            <div style={{marginTop: 8, fontSize: "0.75rem", color: "var(--dash-muted)"}}>
                 {act.specialistActS3Key && (
                     <div style={{display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexWrap: "wrap"}}>
-                        <Icon name="file-pdf" style={{color: "#e74c3c", fontSize: "0.9rem"}}/>
+                        <Icon name="file-pdf" style={{color: "var(--dash-danger)", fontSize: "0.875rem"}}/>
                         <span>Акт от дизайнера</span>
                         <a
                             href={`/api/stages/${stage.id}/act/download`}
@@ -238,14 +237,14 @@ function ActSection({stage, onUploadAct}: {
                             <Icon name="download"/>
                             Скачать
                         </a>
-                        <span style={{color: "var(--dash-muted)", fontSize: "0.7rem"}}>
+                        <span style={{color: "var(--dash-muted)", fontSize: "0.75rem"}}>
               {formatDate(act.specialistUploadedAt)}
             </span>
                     </div>
                 )}
                 {act.clientActS3Key && (
                     <div style={{display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexWrap: "wrap"}}>
-                        <Icon name="file-pdf" style={{color: "#27ae60", fontSize: "0.9rem"}}/>
+                        <Icon name="file-pdf" style={{color: "var(--dash-success)", fontSize: "0.875rem"}}/>
                         <span>Акт от заказчика</span>
                         <a
                             href={`/api/stages/${stage.id}/act/download`}
@@ -263,7 +262,7 @@ function ActSection({stage, onUploadAct}: {
                             <Icon name="download"/>
                             Скачать
                         </a>
-                        <span style={{color: "var(--dash-muted)", fontSize: "0.7rem"}}>
+                        <span style={{color: "var(--dash-muted)", fontSize: "0.75rem"}}>
               {formatDate(act.clientSignedAt)}
             </span>
                     </div>
@@ -299,32 +298,19 @@ function ConceptRules({stageType}: { stageType: string }) {
     if (!rules) return null
     return (
         <div style={{marginBottom: 12, borderRadius: 8, border: "1px solid var(--dash-border)", overflow: "hidden"}}>
-            <button type="button" onClick={() => setOpen(o => !o)} style={{
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                padding: "8px 12px",
-                background: "var(--dash-surface2)",
-                border: "none",
-                cursor: "pointer",
-                fontFamily: "inherit",
-                fontSize: "0.82rem",
-                fontWeight: 600,
-                color: "var(--dash-text)",
-                gap: 8
-            }}>
+            <Button type="button" variant="secondary" className="w-full justify-between gap-2"
+                    onClick={() => setOpen(o => !o)}>
         <span style={{display: "flex", alignItems: "center", gap: 6}}>
           <Icon name="book-open" style={{color: "var(--dash-accent)", fontSize: "1rem"}}/>
             {rules.title}
         </span>
                 <Icon name={stripBx(open ? "bx-chevron-up" : "bx-chevron-down")} style={{color: "var(--dash-muted)"}}/>
-            </button>
+            </Button>
             {open && (
                 <ol style={{
                     margin: 0,
                     padding: "10px 12px 10px 28px",
-                    fontSize: "0.8rem",
+                    fontSize: "0.75rem",
                     color: "var(--dash-text2)",
                     lineHeight: 1.6,
                     display: "flex",
@@ -468,7 +454,7 @@ export function SpecialistStageWorkBody({
             const file = f
             return (
                 <div key={file.id} className="dash-file-list__item">
-          <span style={{fontSize: "0.65rem", color: "var(--dash-muted)", fontWeight: 600, minWidth: 18}}>
+          <span style={{fontSize: "0.75rem", color: "var(--dash-muted)", fontWeight: 600, minWidth: 18}}>
             #{vf.length - idx}
           </span>
                     <a href={`/api/stages/${stage.id}/files/${file.id}/download`} target="_blank" rel="noreferrer"
@@ -477,7 +463,7 @@ export function SpecialistStageWorkBody({
                         {file.filename}
                     </a>
                     <span
-                        style={{fontSize: "0.62rem", color: "var(--dash-muted)", marginLeft: 4, whiteSpace: "nowrap"}}>
+                        style={{fontSize: "0.75rem", color: "var(--dash-muted)", marginLeft: 4, whiteSpace: "nowrap"}}>
             {(() => {
                 const t = specialistFileTimeIso(file)
                 return t
@@ -495,9 +481,9 @@ export function SpecialistStageWorkBody({
                             style={{
                                 display: "inline-flex",
                                 alignItems: "center",
-                                gap: 3,
-                                fontSize: "0.68rem",
-                                color: "var(--dash-warn, #ff9f43)",
+                                gap: 4,
+                                fontSize: "0.75rem",
+                                color: "var(--dash-warn)",
                                 marginLeft: 6,
                             }}
                             title="Есть пометки от заказчика"
@@ -533,27 +519,15 @@ export function SpecialistStageWorkBody({
                 ] as const).map((t) => {
                     const active = view === t.key
                     return (
-                        <button
+                        <Button
                             key={t.key}
                             type="button"
+                            variant={active ? "default" : "outline"}
+                            size="sm"
                             onClick={() => setView(t.key)}
-                            style={{
-                                display: "inline-flex",
-                                alignItems: "center",
-                                gap: 8,
-                                padding: "6px 10px",
-                                borderRadius: 999,
-                                border: `1px solid ${active ? "var(--dash-accent-border)" : "var(--dash-border)"}`,
-                                background: active ? "var(--dash-accent-bg)" : "var(--dash-surface2)",
-                                color: active ? "var(--dash-accent)" : "var(--dash-text2)",
-                                cursor: "pointer",
-                                fontSize: "0.78rem",
-                                fontWeight: 700,
-                                fontFamily: "inherit",
-                            }}
                         >
                             {t.label}
-                        </button>
+                        </Button>
                     )
                 })}
             </div>
@@ -561,35 +535,23 @@ export function SpecialistStageWorkBody({
             {view === "fixes" ? (
                 <div style={{marginBottom: 12}}>
                     {annotatedFiles.length === 0 ? (
-                        <div style={{fontSize: "0.82rem", color: "var(--dash-muted)"}}>
+                        <div style={{fontSize: "0.875rem", color: "var(--dash-muted)"}}>
                             Пока нет пометок на изображениях от заказчика.
                         </div>
                     ) : (
                         <div style={{display: "grid", gap: 8}}>
                             {annotatedFiles.map((f) => (
-                                <button
+                                <Button
                                     key={f.id}
                                     type="button"
+                                    variant="outline"
+                                    className="w-full justify-between gap-2.5"
                                     onClick={() => onPreviewMedia({
                                         stageId: stage.id,
                                         fileId: f.id,
                                         filename: f.filename,
                                         url: f.url
                                     })}
-                                    style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "space-between",
-                                        gap: 10,
-                                        padding: "10px 12px",
-                                        borderRadius: 10,
-                                        border: "1px solid var(--dash-border)",
-                                        background: "var(--dash-surface2)",
-                                        color: "var(--dash-text)",
-                                        cursor: "pointer",
-                                        fontFamily: "inherit",
-                                        textAlign: "left",
-                                    }}
                                     title="Открыть пометки на изображении"
                                 >
                   <span style={{display: "inline-flex", alignItems: "center", gap: 8, minWidth: 0}}>
@@ -599,13 +561,13 @@ export function SpecialistStageWorkBody({
                   </span>
                                     <span style={{
                                         flexShrink: 0,
-                                        fontSize: "0.78rem",
+                                        fontSize: "0.75rem",
                                         color: "var(--dash-accent)",
                                         fontWeight: 700
                                     }}>
                     Открыть →
                   </span>
-                                </button>
+                                </Button>
                             ))}
                         </div>
                     )}
@@ -620,19 +582,16 @@ export function SpecialistStageWorkBody({
                             <div style={{
                                 padding: "10px 12px",
                                 borderRadius: 10,
-                                border: "1px solid var(--dash-border)",
                                 background: "var(--dash-surface2)"
                             }}>
                                 <div style={{
-                                    fontSize: "0.7rem",
+                                    fontSize: "0.75rem",
                                     color: "var(--dash-muted)",
-                                    fontWeight: 700,
-                                    textTransform: "uppercase",
-                                    letterSpacing: "0.06em"
+                                    fontWeight: 700
                                 }}>
                                     Первая отправка
                                 </div>
-                                <div style={{marginTop: 4, fontSize: "0.82rem", color: "var(--dash-text)"}}>
+                                <div style={{marginTop: 4, fontSize: "0.875rem", color: "var(--dash-text)"}}>
                                     {new Date(firstSendAt).toLocaleString("ru-RU", {
                                         day: "2-digit",
                                         month: "2-digit",
@@ -678,7 +637,7 @@ export function SpecialistStageWorkBody({
                                                     target="_blank"
                                                     rel="noreferrer"
                                                     className="dash-file-link"
-                                                    style={{fontSize: "0.82rem"}}
+                                                    style={{fontSize: "0.875rem"}}
                                                 >
                                                     <Icon name="paperclip"/>
                                                     {f.filename}
@@ -698,17 +657,16 @@ export function SpecialistStageWorkBody({
                             <div style={{
                                 padding: "10px 12px",
                                 borderRadius: 10,
-                                border: "1px solid rgba(245, 158, 11, 0.35)",
-                                background: "rgba(245, 158, 11, 0.08)"
+                                background: "var(--dash-warn-bg)"
                             }}>
                                 <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 6}}>
                                     <Icon name="error-circle" style={{color: "var(--dash-warn)"}}/>
-                                    <div style={{fontSize: "0.78rem", fontWeight: 800, color: "var(--dash-warn)"}}>
+                                    <div style={{fontSize: "0.75rem", fontWeight: 800, color: "var(--dash-warn)"}}>
                                         Правки администратора (нужно доработать)
                                     </div>
                                 </div>
                                 <div style={{
-                                    fontSize: "0.8rem",
+                                    fontSize: "0.75rem",
                                     color: "var(--dash-text)",
                                     lineHeight: 1.45,
                                     whiteSpace: "pre-wrap"
@@ -722,15 +680,14 @@ export function SpecialistStageWorkBody({
                             <div style={{
                                 padding: "10px 12px",
                                 borderRadius: 10,
-                                border: "1px solid rgba(34, 197, 94, 0.35)",
-                                background: "rgba(34, 197, 94, 0.08)"
+                                background: "var(--dash-success-bg)"
                             }}>
                                 <div style={{display: "flex", alignItems: "center", gap: 8}}>
                                     <Icon name="check-circle" style={{color: "var(--dash-success)"}}/>
-                                    <div style={{fontSize: "0.78rem", fontWeight: 800, color: "var(--dash-success)"}}>
+                                    <div style={{fontSize: "0.75rem", fontWeight: 800, color: "var(--dash-success)"}}>
                                         Одобрено администратором
                                     </div>
-                                    <span style={{fontSize: "0.72rem", color: "var(--dash-muted)"}}>
+                                    <span style={{fontSize: "0.75rem", color: "var(--dash-muted)"}}>
                 {new Date(latestModeratorReview.createdAt).toLocaleString("ru-RU", {
                     day: "2-digit",
                     month: "2-digit",
@@ -746,8 +703,7 @@ export function SpecialistStageWorkBody({
                             <div style={{
                                 padding: "10px 12px",
                                 borderRadius: 10,
-                                border: "1px solid rgba(56, 189, 248, 0.35)",
-                                background: "rgba(56, 189, 248, 0.08)"
+                                background: "var(--dash-accent-bg)"
                             }}>
                                 <div style={{
                                     display: "flex",
@@ -757,39 +713,30 @@ export function SpecialistStageWorkBody({
                                     flexWrap: "wrap"
                                 }}>
                                     <div style={{display: "flex", alignItems: "center", gap: 8}}>
-                                        <Icon name="revision" style={{color: "rgba(56, 189, 248, 0.95)"}}/>
+                                        <Icon name="revision" style={{color: "var(--dash-accent)"}}/>
                                         <div style={{
-                                            fontSize: "0.78rem",
+                                            fontSize: "0.75rem",
                                             fontWeight: 800,
-                                            color: "rgba(56, 189, 248, 0.95)"
+                                            color: "var(--dash-accent)"
                                         }}>
                                             {clientRevisionApprovedByAdmin ? "Правки от заказчика (подтверждены админом)" : "Правки от заказчика"}
                                         </div>
                                     </div>
                                     {annotatedFiles.length > 0 ? (
-                                        <button
+                                        <Button
                                             type="button"
+                                            variant="secondary"
+                                            size="sm"
                                             onClick={() => setView("fixes")}
-                                            style={{
-                                                padding: "6px 10px",
-                                                borderRadius: 999,
-                                                border: "1px solid rgba(56, 189, 248, 0.45)",
-                                                background: "rgba(56, 189, 248, 0.12)",
-                                                color: "rgba(56, 189, 248, 0.95)",
-                                                cursor: "pointer",
-                                                fontSize: "0.78rem",
-                                                fontWeight: 800,
-                                                fontFamily: "inherit",
-                                            }}
                                         >
                                             Открыть пометки →
-                                        </button>
+                                        </Button>
                                     ) : null}
                                 </div>
                                 {latestClientReview?.comment?.trim() ? (
                                     <div style={{
                                         marginTop: 6,
-                                        fontSize: "0.8rem",
+                                        fontSize: "0.75rem",
                                         color: "var(--dash-text)",
                                         lineHeight: 1.45,
                                         whiteSpace: "pre-wrap"
@@ -824,7 +771,7 @@ export function SpecialistStageWorkBody({
                                         </div>
                                         {annotatedFiles.length > 6 ? (
                                             <div
-                                                style={{marginTop: 8, fontSize: "0.72rem", color: "var(--dash-muted)"}}>
+                                                style={{marginTop: 8, fontSize: "0.75rem", color: "var(--dash-muted)"}}>
                                                 Ещё файлов с пометками: {annotatedFiles.length - 6}
                                             </div>
                                         ) : null}
@@ -837,7 +784,7 @@ export function SpecialistStageWorkBody({
                     {stage.rulesS3Key && (
                         <div className="dash-badge" style={{
                             marginBottom: 8,
-                            fontSize: "0.8rem",
+                            fontSize: "0.75rem",
                             display: "flex",
                             alignItems: "center",
                             gap: 10,
@@ -860,25 +807,25 @@ export function SpecialistStageWorkBody({
                                     const same = stage.rulesAckS3Key && stage.rulesS3Key ? stage.rulesAckS3Key === stage.rulesS3Key : false
                                     const label = same ? "Ознакомлен" : "Нужно ознакомиться"
                                     const color = same ? "var(--dash-success)" : "var(--dash-warn)"
-                                    const border = same ? "rgba(34,197,94,0.45)" : "rgba(245,158,11,0.45)"
-                                    const bg = same ? "rgba(34,197,94,0.10)" : "rgba(245,158,11,0.10)"
+                                    const bg = same ? "var(--dash-success-bg)" : "var(--dash-warn-bg)"
 
                                     return (
                                         <>
                   <span style={{
-                      fontSize: "0.72rem",
+                      fontSize: "0.75rem",
                       fontWeight: 800,
                       color,
-                      border: `1px solid ${border}`,
                       background: bg,
-                      padding: "3px 10px",
-                      borderRadius: 999
+                      padding: "4px 10px",
+                      borderRadius: 10
                   }}>
                     {label}
                   </span>
                                             {!same ? (
-                                                <button
+                                                <Button
                                                     type="button"
+                                                    variant="outline"
+                                                    size="sm"
                                                     onClick={async () => {
                                                         try {
                                                             await fetch(`/api/stages/${stage.id}/rules/ack`, {method: "POST"})
@@ -887,20 +834,9 @@ export function SpecialistStageWorkBody({
                                                             // ignore
                                                         }
                                                     }}
-                                                    style={{
-                                                        padding: "5px 10px",
-                                                        borderRadius: 999,
-                                                        border: "1px solid var(--dash-border)",
-                                                        background: "transparent",
-                                                        color: "var(--dash-text)",
-                                                        cursor: "pointer",
-                                                        fontSize: "0.78rem",
-                                                        fontWeight: 800,
-                                                        fontFamily: "inherit",
-                                                    }}
                                                 >
                                                     Ознакомился
-                                                </button>
+                                                </Button>
                                             ) : null}
                                         </>
                                     )
@@ -980,7 +916,7 @@ export function SpecialistStageWorkBody({
                                                     {heading}
                                                 </p>
                                                 <p style={{
-                                                    fontSize: "0.7rem",
+                                                    fontSize: "0.75rem",
                                                     color: "var(--dash-muted)",
                                                     margin: 0,
                                                     fontWeight: 500
@@ -997,13 +933,12 @@ export function SpecialistStageWorkBody({
                                                 {waveMulti && isLastWave && w.isFinalAcceptedBundle && stage.status === "APPROVED" && (
                                                     <span
                                                         style={{
-                                                            fontSize: "0.72rem",
+                                                            fontSize: "0.75rem",
                                                             fontWeight: 700,
                                                             color: "var(--dash-success)",
-                                                            padding: "3px 10px",
-                                                            borderRadius: 999,
-                                                            background: "rgba(46,184,92,0.12)",
-                                                            border: "1px solid var(--dash-success)",
+                                                            padding: "4px 10px",
+                                                            borderRadius: 10,
+                                                            background: "var(--dash-success-bg)",
                                                         }}
                                                     >
                         Принято заказчиком
@@ -1012,13 +947,12 @@ export function SpecialistStageWorkBody({
                                                 {waveMulti && isLastWave && w.isAtClientReview && stage.status === "CLIENT_REVIEW" && (
                                                     <span
                                                         style={{
-                                                            fontSize: "0.72rem",
+                                                            fontSize: "0.75rem",
                                                             fontWeight: 700,
                                                             color: "var(--dash-warn)",
-                                                            padding: "3px 10px",
-                                                            borderRadius: 999,
+                                                            padding: "4px 10px",
+                                                            borderRadius: 10,
                                                             background: "var(--dash-warn-bg)",
-                                                            border: "1px solid var(--dash-warn)",
                                                         }}
                                                     >
                         На согласовании
@@ -1027,13 +961,12 @@ export function SpecialistStageWorkBody({
                                                 {waveMulti && isLastWave && stage.status === "CLIENT_REVISION" && (
                                                     <span
                                                         style={{
-                                                            fontSize: "0.72rem",
+                                                            fontSize: "0.75rem",
                                                             fontWeight: 700,
                                                             color: "var(--dash-muted)",
-                                                            padding: "3px 10px",
-                                                            borderRadius: 999,
+                                                            padding: "4px 10px",
+                                                            borderRadius: 10,
                                                             background: "var(--dash-surface2)",
-                                                            border: "1px solid var(--dash-border)",
                                                         }}
                                                     >
                         Ваша доработка
@@ -1054,23 +987,20 @@ export function SpecialistStageWorkBody({
                                         ) : null}
 
                                         {w.moderatorRejections.length > 0 ? (
-                                            <div style={{
-                                                marginBottom: 10,
-                                                paddingLeft: 10,
-                                                borderLeft: "3px solid rgba(245, 158, 11, 0.9)"
-                                            }}>
+                                            <div style={{marginBottom: 10}}>
                                                 <p style={{
-                                                    fontSize: "0.68rem",
+                                                    fontSize: "0.75rem",
                                                     fontWeight: 600,
                                                     color: "var(--dash-muted)",
                                                     margin: "0 0 6px"
                                                 }}>
+                                                    <Icon name="error-circle" style={{color: "var(--dash-warn)", marginRight: 4}}/>
                                                     Модератор до выпуска
                                                 </p>
                                                 <ul style={{
                                                     margin: 0,
-                                                    paddingLeft: 18,
-                                                    fontSize: "0.78rem",
+                                                    paddingLeft: 20,
+                                                    fontSize: "0.75rem",
                                                     lineHeight: 1.45,
                                                     color: "var(--dash-text)"
                                                 }}>
@@ -1088,23 +1018,20 @@ export function SpecialistStageWorkBody({
                                         ) : null}
 
                                         {w.clientRejections.length > 0 ? (
-                                            <div style={{
-                                                marginBottom: 10,
-                                                paddingLeft: 10,
-                                                borderLeft: "3px solid rgba(56, 189, 248, 0.95)"
-                                            }}>
+                                            <div style={{marginBottom: 10}}>
                                                 <p style={{
-                                                    fontSize: "0.68rem",
+                                                    fontSize: "0.75rem",
                                                     fontWeight: 600,
                                                     color: "var(--dash-muted)",
                                                     margin: "0 0 6px"
                                                 }}>
+                                                    <Icon name="revision" style={{color: "var(--dash-accent)", marginRight: 4}}/>
                                                     Заказчик до выпуска
                                                 </p>
                                                 <ul style={{
                                                     margin: 0,
-                                                    paddingLeft: 18,
-                                                    fontSize: "0.78rem",
+                                                    paddingLeft: 20,
+                                                    fontSize: "0.75rem",
                                                     lineHeight: 1.45,
                                                     color: "var(--dash-text)"
                                                 }}>
@@ -1149,26 +1076,18 @@ export function SpecialistStageWorkBody({
                                                     ))}
                                                 </div>
                                                 {vMedia.length > 12 && (
-                                                    <button
+                                                    <Button
                                                         type="button"
+                                                        variant="outline"
+                                                        size="sm"
+                                                        className="mt-2.5"
                                                         onClick={() => setExpandWaveMedia((prev) => ({
                                                             ...prev,
                                                             [wIdx]: !mediaExpanded
                                                         }))}
-                                                        style={{
-                                                            marginTop: 10,
-                                                            background: "transparent",
-                                                            border: "1px solid var(--dash-border)",
-                                                            color: "var(--dash-muted)",
-                                                            borderRadius: 8,
-                                                            padding: "6px 10px",
-                                                            fontSize: "0.8rem",
-                                                            cursor: "pointer",
-                                                            fontFamily: "inherit",
-                                                        }}
                                                     >
                                                         {mediaExpanded ? "Свернуть" : `Показать ещё (${vMedia.length - 12})`}
-                                                    </button>
+                                                    </Button>
                                                 )}
                                             </div>
                                         )}
@@ -1186,7 +1105,6 @@ export function SpecialistStageWorkBody({
                                         marginBottom: 0,
                                         padding: "12px 12px 10px",
                                         borderRadius: 10,
-                                        border: "1.5px dashed var(--dash-border)",
                                         background: "var(--dash-surface2)",
                                     }}
                                 >
@@ -1194,32 +1112,29 @@ export function SpecialistStageWorkBody({
                                         Черновик
                                     </p>
                                     <p style={{
-                                        fontSize: "0.72rem",
+                                        fontSize: "0.75rem",
                                         color: "var(--dash-muted)",
                                         margin: "0 0 10px",
                                         lineHeight: 1.45
                                     }}>
-                                        После последнего выпуска — ещё не утверждено для показа заказчику
+                                        После последнего выпуска. Ещё не утверждено для показа заказчику
                                     </p>
 
                                     {pendingDraft.moderatorRejections.length > 0 ? (
-                                        <div style={{
-                                            marginBottom: 10,
-                                            paddingLeft: 10,
-                                            borderLeft: "3px solid rgba(245, 158, 11, 0.9)"
-                                        }}>
+                                        <div style={{marginBottom: 10}}>
                                             <p style={{
-                                                fontSize: "0.68rem",
+                                                fontSize: "0.75rem",
                                                 fontWeight: 600,
                                                 color: "var(--dash-muted)",
                                                 margin: "0 0 6px"
                                             }}>
+                                                <Icon name="error-circle" style={{color: "var(--dash-warn)", marginRight: 4}}/>
                                                 Модератор (текущая доработка)
                                             </p>
                                             <ul style={{
                                                 margin: 0,
-                                                paddingLeft: 18,
-                                                fontSize: "0.78rem",
+                                                paddingLeft: 20,
+                                                fontSize: "0.75rem",
                                                 lineHeight: 1.45,
                                                 color: "var(--dash-text)"
                                             }}>
@@ -1264,7 +1179,7 @@ export function SpecialistStageWorkBody({
                                                     marginBottom: 8
                                                 }}>
                                                     <div style={{
-                                                        fontSize: "0.72rem",
+                                                        fontSize: "0.75rem",
                                                         fontWeight: 700,
                                                         color: "var(--dash-text)"
                                                     }}>
@@ -1275,25 +1190,23 @@ export function SpecialistStageWorkBody({
                                                     </div>
                                                     {isRejected ? (
                                                         <span style={{
-                                                            fontSize: "0.7rem",
+                                                            fontSize: "0.75rem",
                                                             fontWeight: 700,
                                                             color: "var(--dash-danger)",
-                                                            padding: "3px 10px",
-                                                            borderRadius: 999,
-                                                            background: "rgba(234,84,85,0.10)",
-                                                            border: "1px solid rgba(234,84,85,0.30)"
+                                                            padding: "4px 10px",
+                                                            borderRadius: 10,
+                                                            background: "var(--dash-danger-bg)",
                                                         }}>
                           Отклонено
                         </span>
                                                     ) : isCurrent ? (
                                                         <span style={{
-                                                            fontSize: "0.7rem",
+                                                            fontSize: "0.75rem",
                                                             fontWeight: 700,
                                                             color: "var(--dash-warn)",
-                                                            padding: "3px 10px",
-                                                            borderRadius: 999,
-                                                            background: "rgba(245,158,11,0.10)",
-                                                            border: "1px solid rgba(245,158,11,0.35)"
+                                                            padding: "4px 10px",
+                                                            borderRadius: 10,
+                                                            background: "var(--dash-warn-bg)",
                                                         }}>
                           Ожидает проверки
                         </span>
@@ -1326,23 +1239,15 @@ export function SpecialistStageWorkBody({
                                                             ))}
                                                         </div>
                                                         {vMedia.length > 12 && (
-                                                            <button
+                                                            <Button
                                                                 type="button"
+                                                                variant="outline"
+                                                                size="sm"
+                                                                className="mt-2.5"
                                                                 onClick={() => setExpandDraftMedia((v) => !v)}
-                                                                style={{
-                                                                    marginTop: 10,
-                                                                    background: "transparent",
-                                                                    border: "1px solid var(--dash-border)",
-                                                                    color: "var(--dash-muted)",
-                                                                    borderRadius: 8,
-                                                                    padding: "6px 10px",
-                                                                    fontSize: "0.8rem",
-                                                                    cursor: "pointer",
-                                                                    fontFamily: "inherit",
-                                                                }}
                                                             >
                                                                 {expandDraftMedia ? "Свернуть" : `Показать ещё (${vMedia.length - 12})`}
-                                                            </button>
+                                                            </Button>
                                                         )}
                                                     </div>
                                                 )}
@@ -1350,23 +1255,18 @@ export function SpecialistStageWorkBody({
                                                 {renderSpecialistFileRows(vf)}
 
                                                 {isRejected && b.moderatorRejection ? (
-                                                    <div style={{
-                                                        marginTop: 10,
-                                                        paddingLeft: 10,
-                                                        borderLeft: "3px solid rgba(234,84,85,0.65)"
-                                                    }}>
+                                                    <div style={{marginTop: 10}}>
                                                         <p style={{
-                                                            fontSize: "0.68rem",
+                                                            fontSize: "0.75rem",
                                                             fontWeight: 800,
                                                             color: "var(--dash-muted)",
-                                                            margin: "0 0 6px",
-                                                            textTransform: "uppercase",
-                                                            letterSpacing: "0.06em"
+                                                            margin: "0 0 6px"
                                                         }}>
+                                                            <Icon name="x-circle" style={{color: "var(--dash-danger)", marginRight: 4}}/>
                                                             Причина отклонения
                                                         </p>
                                                         <div style={{
-                                                            fontSize: "0.82rem",
+                                                            fontSize: "0.875rem",
                                                             color: "var(--dash-text)",
                                                             lineHeight: 1.45
                                                         }}>
@@ -1438,13 +1338,12 @@ export function SpecialistStageWorkBody({
                                             {multiRound && isLastVariant && stage.status === "APPROVED" && (
                                                 <span
                                                     style={{
-                                                        fontSize: "0.72rem",
+                                                        fontSize: "0.75rem",
                                                         fontWeight: 700,
                                                         color: "var(--dash-success)",
-                                                        padding: "3px 10px",
-                                                        borderRadius: 999,
-                                                        background: "rgba(46,184,92,0.12)",
-                                                        border: "1px solid var(--dash-success)",
+                                                        padding: "4px 10px",
+                                                        borderRadius: 10,
+                                                        background: "var(--dash-success-bg)",
                                                     }}
                                                 >
                         Принято заказчиком
@@ -1453,13 +1352,12 @@ export function SpecialistStageWorkBody({
                                             {multiRound && isLastVariant && stage.status === "CLIENT_REVIEW" && (
                                                 <span
                                                     style={{
-                                                        fontSize: "0.72rem",
+                                                        fontSize: "0.75rem",
                                                         fontWeight: 700,
                                                         color: "var(--dash-warn)",
-                                                        padding: "3px 10px",
-                                                        borderRadius: 999,
+                                                        padding: "4px 10px",
+                                                        borderRadius: 10,
                                                         background: "var(--dash-warn-bg)",
-                                                        border: "1px solid var(--dash-warn)",
                                                     }}
                                                 >
                         На согласовании
@@ -1468,13 +1366,12 @@ export function SpecialistStageWorkBody({
                                             {multiRound && isLastVariant && stage.status === "CLIENT_REVISION" && (
                                                 <span
                                                     style={{
-                                                        fontSize: "0.72rem",
+                                                        fontSize: "0.75rem",
                                                         fontWeight: 700,
                                                         color: "var(--dash-muted)",
-                                                        padding: "3px 10px",
-                                                        borderRadius: 999,
+                                                        padding: "4px 10px",
+                                                        borderRadius: 10,
                                                         background: "var(--dash-surface2)",
-                                                        border: "1px solid var(--dash-border)",
                                                     }}
                                                 >
                         Ваша доработка
@@ -1490,7 +1387,7 @@ export function SpecialistStageWorkBody({
                                             margin: "0 0 10px",
                                             lineHeight: 1.45
                                         }}>
-                                            Предыдущая сдача. Заказчик запросил правки — см. замечания ниже.
+                                            Предыдущая сдача. Заказчик запросил правки (см. замечания ниже).
                                         </p>
                                     ) : null}
 
@@ -1501,19 +1398,19 @@ export function SpecialistStageWorkBody({
                                                 padding: "8px 10px",
                                                 borderRadius: 8,
                                                 background: "var(--dash-surface2)",
-                                                borderLeft: "3px solid var(--dash-warn)",
                                             }}
                                         >
                                             <p style={{
-                                                fontSize: "0.68rem",
+                                                fontSize: "0.75rem",
                                                 fontWeight: 600,
                                                 color: "var(--dash-muted)",
                                                 margin: "0 0 4px"
                                             }}>
+                                                <Icon name="error-circle" style={{color: "var(--dash-warn)", marginRight: 4}}/>
                                                 Замечания заказчика к этой версии
                                             </p>
                                             <p style={{
-                                                fontSize: "0.82rem",
+                                                fontSize: "0.875rem",
                                                 color: "var(--dash-text)",
                                                 margin: 0,
                                                 whiteSpace: "pre-wrap"
@@ -1551,26 +1448,18 @@ export function SpecialistStageWorkBody({
                                                 ))}
                                             </div>
                                             {vMedia.length > 12 && (
-                                                <button
+                                                <Button
                                                     type="button"
+                                                    variant="outline"
+                                                    size="sm"
+                                                    className="mt-2.5"
                                                     onClick={() => setExpandVariantMedia((prev) => ({
                                                         ...prev,
                                                         [vIdx]: !mediaExpanded
                                                     }))}
-                                                    style={{
-                                                        marginTop: 10,
-                                                        background: "transparent",
-                                                        border: "1px solid var(--dash-border)",
-                                                        color: "var(--dash-muted)",
-                                                        borderRadius: 8,
-                                                        padding: "6px 10px",
-                                                        fontSize: "0.8rem",
-                                                        cursor: "pointer",
-                                                        fontFamily: "inherit",
-                                                    }}
                                                 >
                                                     {mediaExpanded ? "Свернуть" : `Показать ещё (${vMedia.length - 12})`}
-                                                </button>
+                                                </Button>
                                             )}
                                         </div>
                                     )}
@@ -1585,6 +1474,7 @@ export function SpecialistStageWorkBody({
                         <div
                             className={`dash-review-note${stage.reviews[0].verdict === "APPROVED" ? " dash-review-note--ok" : ""}`}>
                             <p className="dash-review-note__by">
+                                <Icon name={stage.reviews[0].verdict === "APPROVED" ? "check-circle" : "error-circle"} aria-hidden/>
                                 {stage.reviews[0].reviewerRole === "MODERATOR" ? "Модератор" : "Заказчик"}
                             </p>
                             <p className="dash-review-note__text">{stage.reviews[0].comment}</p>
@@ -1615,7 +1505,7 @@ export function SpecialistStageWorkBody({
                                 margin: "0 0 4px",
                                 fontSize: "0.75rem",
                                 fontWeight: 600,
-                                color: "var(--dash-danger, #ea5455)"
+                                color: "var(--dash-danger)"
                             }}>
                                 <Icon name="receipt" style={{marginRight: 4}}/>Дополнительные правки
                             </p>

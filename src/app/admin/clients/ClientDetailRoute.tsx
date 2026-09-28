@@ -18,6 +18,7 @@ import {useClientsShell} from "./ClientsShell"
 import {ClientContractUpload} from "./ClientContractUpload"
 import {userDisplayName} from "@/lib/user-name"
 import {Icon} from "@/components/ui/icon"
+import {Button, buttonVariants} from "@/components/ui/button"
 
 /** Карточка заказчика по адресу /admin/clients/:id; данные и действия — из списка в layout. */
 export function ClientDetailRoute({id}: { id: string }) {
@@ -62,14 +63,14 @@ export function ClientDetailRoute({id}: { id: string }) {
                     {client.phone && <div className="cl-profile-email"
                                           style={{marginTop: 2}}>{client.phone}</div>}
                     {client.archivedAt && <div
-                        style={{fontSize: "0.78rem", color: "var(--adm-muted)", marginTop: 4}}>В
+                        style={{fontSize: "0.75rem", color: "var(--adm-muted)", marginTop: 4}}>В
                         архиве</div>}
                     {fd?.company &&
-                        <div style={{fontSize: "0.78rem", color: "var(--adm-muted)", marginTop: 2}}>
-                            <Icon name="buildings" style={{marginRight: 3}}/>{fd.company}
+                        <div style={{fontSize: "0.75rem", color: "var(--adm-muted)", marginTop: 2}}>
+                            <Icon name="buildings" style={{marginRight: 4}}/>{fd.company}
                         </div>}
                     <div style={{
-                        fontSize: "0.78rem",
+                        fontSize: "0.75rem",
                         color: "var(--adm-muted)",
                         marginTop: 4,
                         lineHeight: 1.35
@@ -96,8 +97,9 @@ export function ClientDetailRoute({id}: { id: string }) {
                         <div className="cl-stat__label">Завершено</div>
                     </div>
                     <div style={{display: "flex", alignItems: "center"}}>
-                        <button
+                        <Button
                             type="button"
+                            variant="outline"
                             onClick={async () => {
                                 const ok = await confirmDialog({
                                     title: client.archivedAt ? "Восстановить клиента из архива?" : "Перенести клиента в архив?",
@@ -106,19 +108,9 @@ export function ClientDetailRoute({id}: { id: string }) {
                                 if (!ok) return
                                 void toggleArchive(client.id, !client.archivedAt)
                             }}
-                            style={{
-                                padding: "8px 14px",
-                                borderRadius: 6,
-                                border: "1px solid var(--adm-sidebar-border)",
-                                background: "transparent",
-                                color: "var(--adm-text)",
-                                fontWeight: 600,
-                                fontSize: "0.78rem",
-                                cursor: "pointer"
-                            }}
                         >
                             {client.archivedAt ? "Восстановить" : "В архив"}
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -139,7 +131,7 @@ export function ClientDetailRoute({id}: { id: string }) {
                             PDF для подписания заказчиком. Пока договор не подписан (в ЛК или
                             кнопкой ниже), отправка брифов из мастера заблокирована.
                         </p>
-                        <div style={{fontSize: "0.78rem", marginBottom: 10}}>
+                        <div style={{fontSize: "0.75rem", marginBottom: 10}}>
                             <span style={{color: "var(--adm-muted)"}}>Статус: </span>
                             <strong style={{color: "var(--adm-text)"}}>
                                 {FW_CONTRACT_STATUS_LABEL[fw?.frameworkContractStatus ?? "NONE"] ?? (fw?.frameworkContractStatus ?? "NONE")}
@@ -155,7 +147,7 @@ export function ClientDetailRoute({id}: { id: string }) {
                             fw.frameworkContractStatus !== "SIGNED_BY_CLIENT" &&
                             fw.frameworkContractStatus !== "SIGNED_BY_ADMIN" && (
                                 <div style={{marginBottom: 12}}>
-                                    <button
+                                    <Button
                                         type="button"
                                         onClick={async () => {
                                             const ok = await confirmDialog({
@@ -174,27 +166,17 @@ export function ClientDetailRoute({id}: { id: string }) {
                                             toast.success(n > 0 ? `Готово. Переведено заказов в «Активен»: ${n}.` : "Статус договора обновлен.")
                                             load()
                                         }}
-                                        style={{
-                                            padding: "8px 14px",
-                                            borderRadius: 6,
-                                            border: "none",
-                                            background: "var(--dash-success, #16a34a)",
-                                            color: "#fff",
-                                            fontWeight: 600,
-                                            fontSize: "0.78rem",
-                                            cursor: "pointer",
-                                        }}
                                     >
                                         Договор подписан
-                                    </button>
+                                    </Button>
                                     <p style={{
-                                        fontSize: "0.7rem",
+                                        fontSize: "0.75rem",
                                         color: "var(--adm-muted)",
                                         margin: "8px 0 0",
                                         maxWidth: 420,
                                         lineHeight: 1.4
                                     }}>
-                                        Если договор подписан на бумаге или вне ЛК — нажмите после
+                                        Если договор подписан на бумаге или вне ЛК, нажмите после
                                         загрузки PDF. Заказы в статусах «Черновик» (с заполненным
                                         брифом), «Бриф» и «Проверка» станут «Активен».
                                     </p>
@@ -216,14 +198,16 @@ export function ClientDetailRoute({id}: { id: string }) {
                                 border: "1px solid rgba(34,197,94,0.25)"
                             }}>
                                 <div style={{
-                                    fontSize: "0.72rem",
+                                    fontSize: "0.75rem",
                                     fontWeight: 600,
-                                    color: "#22c55e",
+                                    color: "var(--bs-success)",
                                     marginBottom: 4
                                 }}>Заказчик загрузил подписанный скан
                                 </div>
-                                <button
+                                <Button
                                     type="button"
+                                    variant="outline"
+                                    size="xs"
                                     onClick={async () => {
                                         const r = await fetch("/api/admin/s3-url?key=" + encodeURIComponent(fw.signedContractS3Key!))
                                         if (r.ok) {
@@ -231,19 +215,9 @@ export function ClientDetailRoute({id}: { id: string }) {
                                             if (url) window.open(url, "_blank")
                                         }
                                     }}
-                                    style={{
-                                        padding: "4px 10px",
-                                        borderRadius: 6,
-                                        border: "1px solid #22c55e",
-                                        background: "transparent",
-                                        color: "#22c55e",
-                                        fontSize: "0.75rem",
-                                        fontWeight: 600,
-                                        cursor: "pointer"
-                                    }}
                                 >
                                     Скачать скан
-                                </button>
+                                </Button>
                             </div>
                         )}
                     </div>
@@ -258,7 +232,7 @@ export function ClientDetailRoute({id}: { id: string }) {
                             margin: 0,
                             lineHeight: 1.45
                         }}>
-                            Счета и акты по заказам — в карточке заказа и во вкладке «Оплата» у
+                            Счета и акты по заказам: в карточке заказа и во вкладке «Оплата» у
                             заказчика. Операторы ЭДО заказчик указывает в настройках профиля (секция
                             ниже «Электронный документооборот»): Контур.Диадок, Такском, СБИС,
                             1С-ЭДО.
@@ -315,7 +289,7 @@ export function ClientDetailRoute({id}: { id: string }) {
                                             <div style={{flex: 1, minWidth: 0}}>
                                                 <Link href={adminOrderHref(o.id)} style={{
                                                     fontWeight: 500,
-                                                    fontSize: "0.85rem",
+                                                    fontSize: "0.875rem",
                                                     overflow: "hidden",
                                                     textOverflow: "ellipsis",
                                                     whiteSpace: "nowrap",
@@ -324,7 +298,7 @@ export function ClientDetailRoute({id}: { id: string }) {
                                                     textDecoration: "none"
                                                 }}>{title}</Link>
                                                 <div style={{
-                                                    fontSize: "0.7rem",
+                                                    fontSize: "0.75rem",
                                                     color: "var(--adm-muted)"
                                                 }}>{new Date(o.createdAt).toLocaleDateString("ru-RU")}</div>
                                             </div>
@@ -332,47 +306,24 @@ export function ClientDetailRoute({id}: { id: string }) {
                                                 variant={ORDER_VARIANT[o.status] ?? "pending"}
                                                 label={ORDER_LABEL[o.status] ?? o.status}/>
                                             {o.briefData && Object.values(o.briefData).some(Boolean) && (
-                                                <button
+                                                <Button
+                                                    variant="outline"
+                                                    size="xs"
                                                     onClick={() => setBriefModal(o)}
-                                                    style={{
-                                                        background: "none",
-                                                        border: "1px solid var(--adm-sidebar-border)",
-                                                        borderRadius: 5,
-                                                        padding: "2px 8px",
-                                                        cursor: "pointer",
-                                                        fontSize: "0.68rem",
-                                                        color: "var(--adm-active-color)",
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        gap: 3
-                                                    }}
                                                 >
                                                     <Icon name="file"/>Бриф
-                                                </button>
+                                                </Button>
                                             )}
                                             <Link
                                                 href={adminOrderHref(o.id)}
-                                                style={{
-                                                    background: "none",
-                                                    border: "1px solid var(--adm-sidebar-border)",
-                                                    borderRadius: 5,
-                                                    padding: "2px 8px",
-                                                    cursor: "pointer",
-                                                    fontSize: "0.68rem",
-                                                    color: "var(--adm-active-color)",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                    gap: 3,
-                                                    textDecoration: "none",
-                                                    whiteSpace: "nowrap"
-                                                }}
+                                                className={buttonVariants({variant: "outline", size: "xs", className: "no-underline"})}
                                             >
                                                 <Icon name="link-external"/>Перейти к заказу
                                             </Link>
                                         </div>
                                         {isDraft && (
                                             <div style={{
-                                                fontSize: "0.72rem",
+                                                fontSize: "0.75rem",
                                                 color: "var(--adm-muted)",
                                                 display: "flex",
                                                 flexDirection: "column",
@@ -390,16 +341,15 @@ export function ClientDetailRoute({id}: { id: string }) {
                                                 </div>
                                                 <div style={{
                                                     height: 3,
-                                                    background: "rgba(99,102,241,0.12)",
-                                                    borderRadius: 3,
+                                                    background: "var(--adm-active-bg)",
+                                                    borderRadius: 4,
                                                     overflow: "hidden"
                                                 }}>
                                                     <div style={{
                                                         height: "100%",
                                                         width: `${briefBarPct}%`,
                                                         background: "var(--adm-active-color)",
-                                                        borderRadius: 3,
-                                                        transition: "width 0.3s"
+                                                        borderRadius: 4
                                                     }}/>
                                                 </div>
                                             </div>
@@ -408,13 +358,13 @@ export function ClientDetailRoute({id}: { id: string }) {
                                             <div style={{
                                                 display: "flex",
                                                 alignItems: "center",
-                                                gap: 5,
+                                                gap: 4,
                                                 padding: "4px 8px",
                                                 borderRadius: 6,
                                                 background: "rgba(234,84,85,0.1)",
                                                 border: "1px solid rgba(234,84,85,0.25)",
-                                                fontSize: "0.72rem",
-                                                color: "#ea5455",
+                                                fontSize: "0.75rem",
+                                                color: "var(--bs-danger)",
                                                 fontWeight: 500
                                             }}>
                                                 <Icon name="support"
@@ -441,10 +391,8 @@ export function ClientDetailRoute({id}: { id: string }) {
                             <Icon name="history"
                                style={{color: "var(--adm-active-color)"}}/>
                             <span style={{
-                                fontSize: "0.72rem",
+                                fontSize: "0.75rem",
                                 fontWeight: 600,
-                                textTransform: "uppercase",
-                                letterSpacing: "0.05em",
                                 color: "var(--adm-muted)"
                             }}>История</span>
                         </div>
@@ -457,7 +405,7 @@ export function ClientDetailRoute({id}: { id: string }) {
                             {client.orders.map(o => (
                                 <div key={o.id} style={{marginBottom: 8}}>
                                     <div style={{
-                                        fontSize: "0.68rem",
+                                        fontSize: "0.75rem",
                                         color: "var(--adm-muted)",
                                         marginBottom: 4
                                     }}>#{o.id.slice(-6).toUpperCase()}</div>

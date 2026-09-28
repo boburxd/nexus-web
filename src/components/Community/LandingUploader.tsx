@@ -366,12 +366,12 @@ export default function LandingUploader({
                 <div style={{textAlign: "center", padding: "32px 16px"}}>
                     <Icon name="globe" style={{
                         fontSize: 40,
-                        color: "var(--dash-muted, #8f95b2)",
+                        color: "var(--dash-muted, var(--muted-foreground))",
                         opacity: 0.4,
                         display: "block",
                         marginBottom: 12
                     }}/>
-                    <p style={{fontSize: "0.85rem", color: "var(--dash-muted, #8f95b2)", margin: "0 0 16px"}}>
+                    <p style={{fontSize: "0.85rem", color: "var(--dash-muted, var(--muted-foreground))", margin: "0 0 16px"}}>
                         Нет сборок для лендинга
                     </p>
                     {canCreate && (
@@ -416,7 +416,7 @@ export default function LandingUploader({
                 {STATUS_LABEL[b.status]}
               </span>
                         </div>
-                        <div style={{fontSize: "0.68rem", color: "var(--dash-muted, #8f95b2)"}}>
+                        <div style={{fontSize: "0.68rem", color: "var(--dash-muted, var(--muted-foreground))"}}>
                             {[b.workFileId && "интерьер", b.videoFileId && "видео", b.items.length > 0 && `${b.items.length} фото`]
                                 .filter(Boolean).join(" · ") || "пустая"}
                         </div>
@@ -505,7 +505,7 @@ export default function LandingUploader({
                                     display: "block",
                                     fontSize: "0.7rem",
                                     fontWeight: 600,
-                                    color: "var(--dash-muted, #8f95b2)",
+                                    color: "var(--dash-muted, var(--muted-foreground))",
                                     marginBottom: 4
                                 }}>Специализация (на лендинге)</label>
                                 <input
@@ -520,7 +520,7 @@ export default function LandingUploader({
                                         borderRadius: 8,
                                         border: "1px solid var(--dash-border, rgba(255,255,255,0.1))",
                                         background: "var(--dash-surface2, rgba(32,29,29,0.015))",
-                                        color: "var(--dash-text, #f3f5ff)",
+                                        color: "var(--dash-text, var(--foreground))",
                                         fontSize: "0.82rem",
                                         fontFamily: "inherit",
                                         outline: "none"
@@ -532,7 +532,7 @@ export default function LandingUploader({
                                     display: "block",
                                     fontSize: "0.7rem",
                                     fontWeight: 600,
-                                    color: "var(--dash-muted, #8f95b2)",
+                                    color: "var(--dash-muted, var(--muted-foreground))",
                                     marginBottom: 4
                                 }}>О себе (на лендинге)</label>
                                 <textarea
@@ -547,7 +547,7 @@ export default function LandingUploader({
                                         borderRadius: 8,
                                         border: "1px solid var(--dash-border, rgba(255,255,255,0.1))",
                                         background: "var(--dash-surface2, rgba(32,29,29,0.015))",
-                                        color: "var(--dash-text, #f3f5ff)",
+                                        color: "var(--dash-text, var(--foreground))",
                                         fontSize: "0.82rem",
                                         fontFamily: "inherit",
                                         outline: "none",
@@ -564,7 +564,7 @@ export default function LandingUploader({
                             {missing.length > 0 && (
                                 <p style={{
                                     margin: "0 0 8px", fontSize: "0.74rem", lineHeight: 1.45,
-                                    color: "var(--dash-muted, #8f95b2)",
+                                    color: "var(--dash-muted, var(--muted-foreground))",
                                 }}>
                                     <Icon name="info-circle" style={{marginRight: 4}}/>
                                     Для отправки не хватает: {missing.join(", ")}

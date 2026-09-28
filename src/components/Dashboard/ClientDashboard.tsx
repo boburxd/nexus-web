@@ -67,7 +67,7 @@ export default function ClientDashboard({
                 <div className="client-dashboard__greeting">
                     <div className="client-dashboard__avatar">{initials}</div>
                     <div>
-                        <h1 className="client-dashboard__title">Добро пожаловать, {name.split(" ")[0]}!</h1>
+                        <h1 className="client-dashboard__title">Добро пожаловать, {name.split(" ")[0]}.</h1>
                         <p className="client-dashboard__subtitle">Ваш личный кабинет на платформе NEXUS</p>
                         {company && <p className="client-dashboard__company">{company}</p>}
                     </div>

@@ -13,6 +13,7 @@ import {StageAdminActions} from "./StageAdminActions"
 import {StageExtraPaymentActions} from "./StageExtraPaymentActions"
 import {StageRulesTemplatesModal} from "./StageRulesTemplatesModal"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 function formatStageDt(iso: string) {
     return new Date(iso).toLocaleString("ru-RU", {
@@ -91,7 +92,7 @@ export function OrderStagesTab({
                  style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
                 <span className="sp-label">Этапы проекта</span>
                 {modStagesCount > 0 && (
-                    <span className="sp-badge sp-badge--danger" style={{fontSize: "0.65rem"}}>
+                    <span className="sp-badge sp-badge--danger" style={{fontSize: "0.75rem"}}>
             {modStagesCount} на проверке
           </span>
                 )}
@@ -115,8 +116,8 @@ export function OrderStagesTab({
                             <div className="sp-stage-detail-panel-hd">
                                 <div>
                                     <span
-                                        style={{fontWeight: 500, fontSize: "0.85rem"}}>{STAGE_LABEL[stage.type]}</span>
-                                    <span style={{fontSize: "0.72rem", color: "var(--adm-muted)", marginLeft: 8}}
+                                        style={{fontWeight: 500, fontSize: "0.875rem"}}>{STAGE_LABEL[stage.type]}</span>
+                                    <span style={{fontSize: "0.75rem", color: "var(--adm-muted)", marginLeft: 8}}
                                           title="Счётчики раундов доработки">
                     мод. {stage.modRound} · клиент {stage.clientRound}
                   </span>
@@ -138,21 +139,21 @@ export function OrderStagesTab({
                                         <span
                                             className="sp-badge sp-badge--info"
                                             title={`Размещено у дизайнера: ${formatStageDt(stage.rulesSentAt)}`}
-                                            style={{fontSize: "0.65rem", padding: "0.15em 0.5em"}}
+                                            style={{fontSize: "0.75rem", padding: "2px 6px"}}
                                         >
                       у дизайнера
                     </span>
                                     ) : null}
-                                    <button
+                                    <Button
                                         type="button"
-                                        className="sp-btn sp-btn-ghost"
+                                        variant="outline"
+                                        size="xs"
                                         title="Открыть шаблоны правил и отправку дизайнеру"
-                                        style={{fontSize: "0.65rem", padding: "0.2em 0.5em"}}
                                         onClick={() => setRulesModalStageId(stage.id)}
                                     >
-                                        <Icon name="magic-wand" style={{marginRight: 3}}/>
+                                        <Icon name="magic-wand"/>
                                         Шаблоны
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
 

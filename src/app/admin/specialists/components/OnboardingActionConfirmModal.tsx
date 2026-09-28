@@ -3,6 +3,7 @@
 import {Modal} from "@/components/ui/modal"
 import {buildOnboardingActionConfirm, type OnboardingConfirmInput} from "../onboarding-confirm"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 /**
  * Красное подтверждение для ручных действий админа над онбордингом.
@@ -26,7 +27,7 @@ export function OnboardingActionConfirmModal({
     const content = request ? buildOnboardingActionConfirm(request) : null
 
     return (
-        <Modal open={!!request} onClose={onCancel} maxWidth={520}>
+        <Modal open={!!request} onClose={onCancel} maxWidth={520} className="dialog-surface">
             {content && request && (
                 <div className="sp-danger-modal">
                     <div className="sp-danger-modal__head">
@@ -43,7 +44,7 @@ export function OnboardingActionConfirmModal({
 
                         {content.forcedSteps.length > 0 && (
                             <div className="sp-danger-modal__forced">
-                                <strong>Специалист не прошёл — будет закрыто администратором:</strong>
+                                <strong>Специалист не прошёл (будет закрыто администратором):</strong>
                                 <ul>
                                     {content.forcedSteps.map((step) => <li key={step}>{step}</li>)}
                                 </ul>
@@ -51,18 +52,18 @@ export function OnboardingActionConfirmModal({
                         )}
 
                         <p className="sp-danger-modal__note">
-                            <Icon name="envelope" style={{marginRight: 5}}/>
+                            <Icon name="envelope" style={{marginRight: 4}}/>
                             Специалист получит письмо об этом на почту.
                         </p>
                     </div>
 
                     <div className="sp-danger-modal__foot">
-                        <button type="button" className="sp-btn sp-btn-ghost" onClick={onCancel}>
+                        <Button type="button" variant="outline" onClick={onCancel}>
                             Нет, отмена
-                        </button>
-                        <button type="button" className="sp-btn sp-btn-danger-solid" onClick={onConfirm}>
+                        </Button>
+                        <Button type="button" variant="destructive" onClick={onConfirm}>
                             {content.confirmLabel}
-                        </button>
+                        </Button>
                     </div>
                 </div>
             )}

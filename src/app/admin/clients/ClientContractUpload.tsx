@@ -5,6 +5,8 @@ import {DocumentUpload} from "@/components/app/DocumentUpload"
 import {canAdminUploadClientContract} from "@/lib/contract-upload-lock"
 import {uploadWithProgress} from "@/lib/upload-progress"
 import {confirmDialog} from "@/lib/dialog-store"
+import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
 
 const CONTRACT_LOCK_HINT: Record<string, string> = {
     AWAITING_SIGNATURE: "Ожидает подписи заказчика — новую версию можно загрузить после отказа",
@@ -102,41 +104,21 @@ export function ClientContractUpload({
             />
             {uploadOpen && (
                 <>
-                    <input
+                    <Input
                         value={number}
                         onChange={(e) => setNumber(e.target.value)}
                         disabled={uploading}
                         placeholder="Номер договора (необязательно)"
-                        style={{
-                            width: "100%",
-                            maxWidth: 320,
-                            padding: "6px 10px",
-                            borderRadius: 6,
-                            border: "1px solid var(--adm-sidebar-border)",
-                            background: "var(--adm-outer)",
-                            color: "var(--adm-text)",
-                            fontSize: "0.8rem",
-                        }}
+                        className="max-w-80"
                     />
                     <div>
-                        <button
+                        <Button
                             type="button"
                             disabled={!file || uploading}
                             onClick={() => void upload()}
-                            style={{
-                                padding: "6px 14px",
-                                borderRadius: 6,
-                                border: "none",
-                                background: "var(--adm-active-color)",
-                                color: "#fff",
-                                fontWeight: 600,
-                                fontSize: "0.78rem",
-                                cursor: !file || uploading ? "not-allowed" : "pointer",
-                                opacity: !file || uploading ? 0.6 : 1,
-                            }}
                         >
                             {uploading ? "Отправка…" : "Отправить договор заказчику"}
-                        </button>
+                        </Button>
                     </div>
                 </>
             )}

@@ -1,6 +1,8 @@
 "use client"
 import {useState} from "react"
 import "./AcademyPage.css"
+import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 const COURSES = [
     {
@@ -8,7 +10,7 @@ const COURSES = [
         title: "Основы дизайна интерьера",
         description: "Вводный курс по основам дизайна интерьера: стили, пространство, цвет.",
         category: "Дизайн",
-        categoryColor: "#7367f0",
+        categoryColor: "var(--dash-accent)",
         rating: 4.4,
         reviews: "1.23k",
         duration: "30 минут",
@@ -21,7 +23,7 @@ const COURSES = [
         title: "Figma для дизайнеров",
         description: "Вводный курс по Figma: компоненты, прототипирование, автолейаут.",
         category: "UI/UX",
-        categoryColor: "#ea5455",
+        categoryColor: "var(--dash-danger)",
         rating: 4.2,
         reviews: "424",
         duration: "16 часов",
@@ -34,7 +36,7 @@ const COURSES = [
         title: "Работа с клиентами",
         description: "Как вести переговоры, составлять бриф и управлять ожиданиями заказчика.",
         category: "Бизнес",
-        categoryColor: "#28c76f",
+        categoryColor: "var(--dash-success)",
         rating: 5.0,
         reviews: "12",
         duration: "7 часов",
@@ -47,7 +49,7 @@ const COURSES = [
         title: "3D-визуализация",
         description: "Создание фотореалистичных визуализаций интерьера в 3ds Max и Corona.",
         category: "3D",
-        categoryColor: "#00cfe8",
+        categoryColor: "var(--dash-text2)",
         rating: 3.8,
         reviews: "634",
         duration: "30 минут",
@@ -60,7 +62,7 @@ const COURSES = [
         title: "Цвет и свет в интерьере",
         description: "Теория цвета, световые сценарии и подбор материалов для проекта.",
         category: "Дизайн",
-        categoryColor: "#7367f0",
+        categoryColor: "var(--dash-accent)",
         rating: 4.7,
         reviews: "34",
         duration: undefined,
@@ -73,7 +75,7 @@ const COURSES = [
         title: "Рабочая документация",
         description: "Как правильно оформлять чертежи, спецификации и альбомы для строителей.",
         category: "Документация",
-        categoryColor: "#ff9f43",
+        categoryColor: "var(--dash-warn)",
         rating: 3.6,
         reviews: "2.5k",
         duration: "16 часов",
@@ -104,7 +106,7 @@ function CourseCard({course}: { course: typeof COURSES[0] }) {
             <div className="course-body">
                 <div className="course-meta">
                     <span className="course-tag" style={{
-                        backgroundColor: course.categoryColor + "22",
+                        backgroundColor: `color-mix(in oklab, ${course.categoryColor} 13%, transparent)`,
                         color: course.categoryColor
                     }}>{course.category}</span>
                     <div style={{display: "flex", alignItems: "center", gap: 4}}>
@@ -122,10 +124,6 @@ function CourseCard({course}: { course: typeof COURSES[0] }) {
                     }
                     <div className="progress-bar-wrap">
                         <div className="progress-bar-fill" style={{width: `${course.progress}%`}}/>
-                    </div>
-                    <div className="course-actions">
-                        <button className="btn-outline">↺ Начать заново</button>
-                        {!course.completed && <button className="btn-primary-acad">Продолжить ›</button>}
                     </div>
                 </div>
             </div>
@@ -154,7 +152,7 @@ export default function AcademyPage() {
         <div className="academy-page">
             {/* Hero */}
             <div className="academy-hero">
-                <div className="hero-left">💡</div>
+                <div className="hero-left"><Icon name="lightning-charge" size={64}/></div>
                 <div className="hero-center">
                     <h1>Образование, навыки и карьерные возможности. <span
                         className="hero-accent">Все в одном месте.</span></h1>
@@ -165,10 +163,10 @@ export default function AcademyPage() {
                             setSearch(e.target.value);
                             setPage(1)
                         }}/>
-                        <button>🔍</button>
+                        <span className="hero-search-icon" aria-hidden="true"><Icon name="search"/></span>
                     </div>
                 </div>
-                <div className="hero-right">🚀</div>
+                <div className="hero-right"><Icon name="paper-plane" size={72}/></div>
             </div>
 
             {/* Courses */}
@@ -210,14 +208,18 @@ export default function AcademyPage() {
 
                 {totalPages > 1 && (
                     <div className="acad-pagination">
-                        <button onClick={() => setPage(1)} disabled={page === 1}>«</button>
-                        <button onClick={() => setPage(p => p - 1)} disabled={page === 1}>‹</button>
+                        <Button variant="outline" size="icon-lg" onClick={() => setPage(1)}
+                                disabled={page === 1}>«</Button>
+                        <Button variant="outline" size="icon-lg" onClick={() => setPage(p => p - 1)}
+                                disabled={page === 1}>‹</Button>
                         {Array.from({length: totalPages}, (_, i) => i + 1).map(p => (
-                            <button key={p} className={page === p ? "active" : ""}
-                                    onClick={() => setPage(p)}>{p}</button>
+                            <Button key={p} variant={page === p ? "default" : "outline"} size="icon-lg"
+                                    onClick={() => setPage(p)}>{p}</Button>
                         ))}
-                        <button onClick={() => setPage(p => p + 1)} disabled={page === totalPages}>›</button>
-                        <button onClick={() => setPage(totalPages)} disabled={page === totalPages}>»</button>
+                        <Button variant="outline" size="icon-lg" onClick={() => setPage(p => p + 1)}
+                                disabled={page === totalPages}>›</Button>
+                        <Button variant="outline" size="icon-lg" onClick={() => setPage(totalPages)}
+                                disabled={page === totalPages}>»</Button>
                     </div>
                 )}
             </div>
@@ -228,19 +230,15 @@ export default function AcademyPage() {
                     <div className="banner-text">
                         <h3>Получите сертификат</h3>
                         <p>Выберите подходящую программу сертификации для специалиста.</p>
-                        <button className="btn-primary-acad" style={{flex: "none", padding: "10px 20px"}}>Смотреть
-                            программы
-                        </button>
                     </div>
-                    <div className="banner-emoji">👩‍💻</div>
+                    <div className="banner-emoji"><Icon name="badge-check" size={72}/></div>
                 </div>
                 <div className="banner banner-pink">
                     <div className="banner-text">
                         <h3>Лучшие курсы</h3>
                         <p>Запишитесь на самые популярные и высокооцененные курсы.</p>
-                        <button className="btn-danger-acad">Смотреть курсы</button>
                     </div>
-                    <div className="banner-emoji">👩‍🎓</div>
+                    <div className="banner-emoji"><Icon name="medal" size={72}/></div>
                 </div>
             </div>
         </div>

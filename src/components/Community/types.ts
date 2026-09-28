@@ -44,7 +44,7 @@ export const ORDER_HUE: Record<string, number> = {
     DRAFT: 60,
     BRIEFING: 35,
     BRIEF_REVIEW: 200,
-    ACTIVE: 247,
+    ACTIVE: 212,
     DONE: 140,
     CANCELLED: 0
 }
@@ -74,9 +74,9 @@ export const ONBOARDING_STEPS = [
     {key: "CONTRACT", label: "Договор", icon: "bx-file"},
 ]
 
-export const DISCOVER_HUES = [{h1: 247, h2: 282}, {h1: 200, h2: 230}, {h1: 120, h2: 160}, {h1: 0, h2: 35}, {
-    h1: 280,
-    h2: 310
+export const DISCOVER_HUES = [{h1: 212, h2: 228}, {h1: 200, h2: 230}, {h1: 120, h2: 160}, {h1: 0, h2: 35}, {
+    h1: 185,
+    h2: 205
 }]
 
 export type SpecContract = {

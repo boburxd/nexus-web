@@ -18,17 +18,15 @@ const headStyle: React.CSSProperties = {
 
 const thStyle: React.CSSProperties = {
     color: "var(--adm-muted)",
-    fontSize: "0.68rem",
+    fontSize: "0.75rem",
     fontWeight: 600,
-    textTransform: "uppercase",
-    letterSpacing: "0.05em",
     padding: "10px 14px",
     whiteSpace: "nowrap",
 }
 
 const tdStyle: React.CSSProperties = {
     padding: "10px 14px",
-    fontSize: "0.8rem",
+    fontSize: "0.75rem",
     color: "var(--adm-text)",
     borderBottom: "1px solid var(--adm-sidebar-border)",
     verticalAlign: "top",

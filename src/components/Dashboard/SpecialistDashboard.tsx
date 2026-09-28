@@ -101,7 +101,7 @@ export default function SpecialistDashboard({
                 <div className="spec-dashboard__greeting">
                     <div className="spec-dashboard__avatar">{initials}</div>
                     <div>
-                        <h1 className="spec-dashboard__title">Добро пожаловать, {name}!</h1>
+                        <h1 className="spec-dashboard__title">Добро пожаловать, {name}.</h1>
                         <p className="spec-dashboard__subtitle">Статус: {onboardingStatus === "ACTIVE" ? "✓ Активный" : "Онбординг"}</p>
                     </div>
                 </div>

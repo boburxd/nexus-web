@@ -268,7 +268,7 @@ export function OrderHistoryTimeline({
             style={{
                 background: "var(--dash-surface)",
                 border: "1px solid var(--dash-border)",
-                borderRadius: 12,
+                borderRadius: 14,
                 padding: "14px 16px",
             }}
         >
@@ -279,7 +279,7 @@ export function OrderHistoryTimeline({
                 gap: 10,
                 marginBottom: 10
             }}>
-                <div style={{fontWeight: 600, fontSize: "0.95rem", color: "var(--dash-text)"}}>
+                <div style={{fontWeight: 600, fontSize: "1rem", color: "var(--dash-text)"}}>
                     {stageId ? "История этапа" : "История"}
                 </div>
                 <button
@@ -291,7 +291,7 @@ export function OrderHistoryTimeline({
                         background: "transparent",
                         borderRadius: 8,
                         padding: "4px 10px",
-                        fontSize: "0.72rem",
+                        fontSize: "0.75rem",
                         color: "var(--dash-muted)",
                         cursor: loading ? "default" : "pointer",
                         fontFamily: "inherit",
@@ -302,19 +302,19 @@ export function OrderHistoryTimeline({
             </div>
 
             {error && (
-                <div style={{fontSize: "0.78rem", color: "var(--dash-danger)", marginBottom: 10}}>{error}</div>
+                <div style={{fontSize: "0.75rem", color: "var(--dash-danger)", marginBottom: 10}}>{error}</div>
             )}
 
             {loading ? (
-                <div style={{fontSize: "0.78rem", color: "var(--dash-muted)", padding: "6px 0"}}>Загрузка…</div>
+                <div style={{fontSize: "0.75rem", color: "var(--dash-muted)", padding: "6px 0"}}>Загрузка…</div>
             ) : logs.length === 0 ? (
-                <div style={{fontSize: "0.78rem", color: "var(--dash-muted)", padding: "6px 0"}}>
+                <div style={{fontSize: "0.75rem", color: "var(--dash-muted)", padding: "6px 0"}}>
                     {stageId
                         ? "Пока нет событий по этому этапу."
                         : "Пока нет записей"}
                 </div>
             ) : (
-                <div style={{position: "relative", paddingLeft: 18}}>
+                <div style={{position: "relative", paddingLeft: 20}}>
                     <div
                         style={{
                             position: "absolute",
@@ -362,7 +362,7 @@ export function OrderHistoryTimeline({
                                     background: "none",
                                     padding: 0,
                                     margin: 0,
-                                    fontSize: "0.68rem",
+                                    fontSize: "0.75rem",
                                     color: "var(--dash-accent)",
                                     cursor: "pointer",
                                     whiteSpace: "nowrap",
@@ -399,15 +399,15 @@ export function OrderHistoryTimeline({
                                         <div style={{
                                             display: "flex",
                                             alignItems: "center",
-                                            gap: 5,
-                                            fontSize: "0.8rem",
+                                            gap: 6,
+                                            fontSize: "0.75rem",
                                             fontWeight: 600
                                         }}>
                                             <Icon name={stripBx(meta.icon)}
-                                               style={{color: meta.color, fontSize: "0.9rem"}}/>
+                                               style={{color: meta.color, fontSize: "0.875rem"}}/>
                                             {meta.label}
                                         </div>
-                                        <div style={{fontSize: "0.68rem", color: "var(--dash-muted)", marginTop: 2}}>
+                                        <div style={{fontSize: "0.75rem", color: "var(--dash-muted)", marginTop: 2}}>
                                             {who}
                                             {role && <span style={{opacity: 0.65}}> · {role}</span>}
                                         </div>
@@ -419,7 +419,7 @@ export function OrderHistoryTimeline({
                                         gap: 4
                                     }}>
                                         <div style={{
-                                            fontSize: "0.65rem",
+                                            fontSize: "0.75rem",
                                             color: "var(--dash-muted)",
                                             whiteSpace: "nowrap",
                                             textAlign: "right"
@@ -439,7 +439,7 @@ export function OrderHistoryTimeline({
                                             const to = humanizeValue(k, v.to)
                                             return (
                                                 <div key={k} style={{
-                                                    fontSize: "0.68rem",
+                                                    fontSize: "0.75rem",
                                                     color: "var(--dash-muted)",
                                                     lineHeight: 1.45
                                                 }}>
@@ -460,7 +460,7 @@ export function OrderHistoryTimeline({
                                         })}
                                         {changes.length > 4 && (
                                             <div style={{
-                                                fontSize: "0.65rem",
+                                                fontSize: "0.75rem",
                                                 color: "var(--dash-muted)",
                                                 opacity: 0.65
                                             }}>
@@ -483,12 +483,12 @@ export function OrderHistoryTimeline({
                     style={{
                         marginTop: 12,
                         width: "100%",
-                        padding: "0.45em",
+                        padding: "6px",
                         borderRadius: 8,
                         border: "1px solid var(--dash-border)",
                         background: "var(--dash-surface2)",
                         color: "var(--dash-text2)",
-                        fontSize: "0.78rem",
+                        fontSize: "0.75rem",
                         fontWeight: 500,
                         cursor: loadingMore ? "default" : "pointer",
                         fontFamily: "inherit",

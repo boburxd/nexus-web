@@ -51,7 +51,7 @@ export function DesktopProfileLayout({
                     style={{
                         width: 360,
                         flexShrink: 0,
-                        background: "#000",
+                        background: "var(--card)",
                         borderLeft: "1px solid rgba(255,255,255,0.08)",
                         position: "relative",
                     }}

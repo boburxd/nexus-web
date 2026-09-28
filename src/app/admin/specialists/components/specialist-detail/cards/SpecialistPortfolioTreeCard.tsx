@@ -4,6 +4,7 @@ import {type CSSProperties, useCallback, useEffect, useState} from "react"
 import {ImageLightbox} from "@/components/ui/ImageLightbox"
 import {openAdminFileDownload} from "../utils"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 type PortfolioFile = {
     id: string
@@ -86,7 +87,7 @@ const rowStyle: CSSProperties = {
     gap: 8,
     padding: "6px 0",
     borderBottom: "1px solid var(--adm-sidebar-border, rgba(0,0,0,0.08))",
-    fontSize: "0.8rem",
+    fontSize: "0.75rem",
 }
 
 function AdminCoverThumb({file}: { file: PortfolioFile }) {
@@ -121,7 +122,7 @@ function AdminCoverThumb({file}: { file: PortfolioFile }) {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    background: "linear-gradient(165deg, rgba(99,102,241,0.12) 0%, var(--adm-outer, #f3f4f6) 55%, var(--adm-sidebar, #fff) 100%)",
+                    background: "var(--adm-outer)",
                 }}
             >
                 <Icon name="image" style={{fontSize: 36, opacity: 0.35, color: "var(--adm-muted)"}}
@@ -149,8 +150,7 @@ const GRID_STYLE = `
     border-radius: 14px;
     overflow: hidden;
     position: relative;
-    border: 1px solid var(--adm-sidebar-border, rgba(0,0,0,0.1));
-    background: var(--adm-sidebar, #f9fafb);
+    background: var(--adm-sidebar);
   }
   .adm-pf-card { cursor: pointer; }
   .adm-pf-cover { position: absolute; inset: 0; }
@@ -161,7 +161,7 @@ const GRID_STYLE = `
   }
   .adm-pf-title {
     position: absolute; left: 8px; right: 8px; bottom: 44px;
-    font-size: 0.72rem; font-weight: 600; color: #f8fafc;
+    font-size: 0.75rem; font-weight: 600; color: #fff;
     text-shadow: 0 1px 6px rgba(0,0,0,0.65);
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
     overflow: hidden; line-height: 1.25;
@@ -173,11 +173,10 @@ const GRID_STYLE = `
     pointer-events: none;
   }
   .adm-pf-badge {
-    font-size: 0.65rem; font-weight: 600;
+    font-size: 0.75rem; font-weight: 600;
     padding: 2px 8px; border-radius: 10px;
-    background: var(--adm-active-bg, rgba(99,102,241,0.12));
-    color: var(--adm-active-color, #6366f1);
-    border: 1px solid var(--adm-sidebar-border, rgba(0,0,0,0.08));
+    background: var(--adm-active-bg);
+    color: var(--adm-active-color);
   }
 `
 
@@ -222,7 +221,7 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
 
     if (loading) {
         return (
-            <div style={{fontSize: "0.82rem", color: "var(--adm-muted)", padding: "8px 0"}}>
+            <div style={{fontSize: "0.875rem", color: "var(--adm-muted)", padding: "8px 0"}}>
                 Загрузка портфолио…
             </div>
         )
@@ -232,17 +231,17 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
         return (
             <div className="sp-warn" style={{marginBottom: 0}}>
                 {err}
-                <button type="button" className="sp-btn sp-btn-ghost" style={{marginLeft: 10}}
+                <Button type="button" variant="outline" className="ml-2.5"
                         onClick={() => void load()}>
                     Повторить
-                </button>
+                </Button>
             </div>
         )
     }
 
     if (!projects || projects.length === 0) {
         return (
-            <div style={{fontSize: "0.82rem", color: "var(--adm-muted)", lineHeight: 1.5}}>
+            <div style={{fontSize: "0.875rem", color: "var(--adm-muted)", lineHeight: 1.5}}>
                 В личном кабинете нет папок портфолио, работ и прикреплённых материалов.
             </div>
         )
@@ -256,15 +255,15 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
             <style>{GRID_STYLE}</style>
 
             {summary ? (
-                <div style={{fontSize: "0.72rem", color: "var(--adm-muted)", lineHeight: 1.4}}>
+                <div style={{fontSize: "0.75rem", color: "var(--adm-muted)", lineHeight: 1.4}}>
                     Итого (папки портфолио в ЛК): {summary}
                 </div>
             ) : null}
 
             {!opened ? (
                 <>
-                    <p style={{fontSize: "0.78rem", color: "var(--adm-muted)", margin: 0, lineHeight: 1.45}}>
-                        Плитки в том же формате, что в кабинете дизайнера. Нажмите папку — откроются работы и материалы.
+                    <p style={{fontSize: "0.75rem", color: "var(--adm-muted)", margin: 0, lineHeight: 1.45}}>
+                        Плитки в том же формате, что в кабинете дизайнера. Нажмите папку: откроются работы и материалы.
                     </p>
                     <div className="adm-pf-grid">
                         {projects.map((project) => {
@@ -291,14 +290,13 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
                                                 display: "flex",
                                                 alignItems: "center",
                                                 justifyContent: "center",
-                                                background:
-                                                    "linear-gradient(165deg, rgba(99,102,241,0.2) 0%, rgba(241,245,249,0.95) 52%, rgba(248,250,252,0.98) 100%)",
+                                                background: "var(--adm-outer)",
                                             }}
                                         >
                                             <Icon name="folder" style={{
                                                 fontSize: 52,
                                                 opacity: 0.42,
-                                                color: "var(--adm-active-color, #6366f1)"
+                                                color: "var(--adm-active-color)"
                                             }} aria-hidden/>
                                         </div>
                                     </div>
@@ -315,31 +313,29 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
             ) : (
                 <>
                     <div style={{display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
-                        <button type="button" className="sp-btn sp-btn-ghost" style={{fontSize: "0.8rem"}}
+                        <Button type="button" variant="outline"
                                 onClick={() => setOpenedProjectId(null)}>
-                            <Icon name="chevrons-left" style={{marginRight: 4}}/>
+                            <Icon name="chevrons-left"/>
                             Все объекты
-                        </button>
+                        </Button>
                         <span
-                            style={{fontWeight: 600, fontSize: "0.9rem", color: "var(--adm-text)"}}>{opened.name}</span>
+                            style={{fontWeight: 600, fontSize: "0.875rem", color: "var(--adm-text)"}}>{opened.name}</span>
                     </div>
 
-                    <p style={{fontSize: "0.78rem", color: "var(--adm-muted)", margin: 0, lineHeight: 1.45}}>
-                        Работы — портретные плитки, как у дизайнера. Ниже — материалы на всю папку и списки файлов по
+                    <p style={{fontSize: "0.75rem", color: "var(--adm-muted)", margin: 0, lineHeight: 1.45}}>
+                        Работы: портретные плитки, как у дизайнера. Ниже: материалы на всю папку и списки файлов по
                         работам.
                     </p>
 
                     <div style={{
-                        fontSize: "0.68rem",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.04em",
+                        fontSize: "0.75rem",
                         color: "var(--adm-muted)",
                         marginBottom: 6
                     }}>
                         Работы
                     </div>
                     {opened.cards.length === 0 ? (
-                        <div style={{fontSize: "0.8rem", color: "var(--adm-muted)", fontStyle: "italic"}}>В этой папке
+                        <div style={{fontSize: "0.75rem", color: "var(--adm-muted)", fontStyle: "italic"}}>В этой папке
                             нет работ</div>
                     ) : (
                         <div className="adm-pf-grid">
@@ -359,7 +355,7 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
                                                         display: "flex",
                                                         alignItems: "center",
                                                         justifyContent: "center",
-                                                        background: "var(--adm-outer, #f3f4f6)",
+                                                        background: "var(--adm-outer)",
                                                     }}
                                                 >
                                                     <Icon name="image"
@@ -383,9 +379,7 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
                     {opened.attachments.length > 0 && (
                         <div style={{marginTop: 8}}>
                             <div style={{
-                                fontSize: "0.68rem",
-                                textTransform: "uppercase",
-                                letterSpacing: "0.04em",
+                                fontSize: "0.75rem",
                                 color: "var(--adm-muted)",
                                 marginBottom: 8
                             }}>
@@ -399,19 +393,22 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
                       {a.file.mimeType ? (
                           <span style={{
                               color: "var(--adm-muted)",
-                              fontSize: "0.72rem",
+                              fontSize: "0.75rem",
                               marginLeft: 6
                           }}>{a.file.mimeType}</span>
                       ) : null}
                   </span>
-                                    <button
+                                    <Button
                                         type="button"
-                                        className="sp-btn sp-btn-ghost"
-                                        style={{flexShrink: 0, fontSize: "0.7rem", padding: "3px 8px"}}
+                                        variant="outline"
+                                        size="icon-xs"
+                                        className="shrink-0"
+                                        aria-label="Скачать"
+                                        title="Скачать"
                                         onClick={() => void openAdminFileDownload(a.file.id)}
                                     >
                                         <Icon name="download"/>
-                                    </button>
+                                    </Button>
                                 </div>
                             ))}
                         </div>
@@ -419,9 +416,7 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
 
                     <div style={{marginTop: 12}}>
                         <div style={{
-                            fontSize: "0.68rem",
-                            textTransform: "uppercase",
-                            letterSpacing: "0.04em",
+                            fontSize: "0.75rem",
                             color: "var(--adm-muted)",
                             marginBottom: 8
                         }}>
@@ -433,12 +428,11 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
                                 style={{
                                     marginBottom: 14,
                                     padding: "10px 12px",
-                                    border: "1px solid var(--adm-sidebar-border, rgba(0,0,0,0.1))",
                                     borderRadius: 8,
                                     background: "var(--adm-outer, rgba(0,0,0,0.02))",
                                 }}
                             >
-                                <div style={{fontWeight: 600, fontSize: "0.82rem", marginBottom: 8}}>{card.title}</div>
+                                <div style={{fontWeight: 600, fontSize: "0.875rem", marginBottom: 8}}>{card.title}</div>
                                 {card.attachments.length === 0 ? (
                                     <div style={{fontSize: "0.75rem", color: "var(--adm-muted)"}}>Без вложений</div>
                                 ) : (
@@ -460,19 +454,22 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
                           <Icon name="file" style={{marginRight: 6, color: "var(--adm-muted)"}}/>
                             {att.file.filename}
                         </span>
-                                                <span style={{fontSize: "0.68rem", color: "var(--adm-muted)"}}>
+                                                <span style={{fontSize: "0.75rem", color: "var(--adm-muted)"}}>
                           {att.linkedVisualFileId ? "к фото в работе" : "общая сетка работы"}
                                                     {att.file.mimeType ? ` · ${att.file.mimeType}` : ""}
                         </span>
                                             </div>
-                                            <button
+                                            <Button
                                                 type="button"
-                                                className="sp-btn sp-btn-ghost"
-                                                style={{flexShrink: 0, fontSize: "0.7rem", padding: "3px 8px"}}
+                                                variant="outline"
+                                                size="icon-xs"
+                                                className="shrink-0"
+                                                aria-label="Скачать"
+                                                title="Скачать"
                                                 onClick={() => void openAdminFileDownload(att.file.id)}
                                             >
                                                 <Icon name="download"/>
-                                            </button>
+                                            </Button>
                                         </div>
                                     ))
                                 )}

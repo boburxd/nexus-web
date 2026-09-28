@@ -123,7 +123,7 @@ export function PortfolioRemoteFilePreview({
     const open =
         url && !err ? (
             <a href={url} target="_blank" rel="noopener noreferrer" className="small"
-               style={{color: "var(--bs-primary, #8b7cf6)"}}>
+               style={{color: "var(--bs-primary, var(--primary))"}}>
                 Открыть
             </a>
         ) : (

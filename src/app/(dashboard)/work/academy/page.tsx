@@ -33,7 +33,7 @@ export default async function Academy() {
                     display: "inline-flex",
                     alignItems: "center",
                     gap: 4,
-                    fontSize: "0.78rem",
+                    fontSize: "0.75rem",
                     color: "var(--dash-muted)",
                     textDecoration: "none",
                     marginBottom: 12

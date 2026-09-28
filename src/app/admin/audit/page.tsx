@@ -15,6 +15,7 @@ import {
 import {StatusBadge, type StatusVariant} from "@/components/app/AppCard"
 import {userDisplayName} from "@/lib/user-name"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 interface AuditLogEntry {
     id: string
@@ -77,7 +78,7 @@ export default function AuditPage() {
                 {/* Header */}
                 <div style={{marginBottom: 24}}>
                     <h2 style={{
-                        fontSize: "1.4rem",
+                        fontSize: "1.5rem",
                         fontWeight: 700,
                         margin: "0 0 4px",
                         color: "var(--adm-text)"
@@ -110,9 +111,9 @@ export default function AuditPage() {
                                 {[25, 50, 100, 200].map(n => <option key={n} value={n}>{n}</option>)}
                             </select>
                         </div>
-                        <button onClick={load} disabled={loading} className="sp-btn sp-btn-primary">
+                        <Button type="button" onClick={load} disabled={loading}>
                             {loading ? "Загрузка…" : "Обновить"}
-                        </button>
+                        </Button>
                     </div>
                 </div>
 
@@ -120,15 +121,15 @@ export default function AuditPage() {
                 {loading ? (
                     <div className="sp-card">
                         <div className="sp-card-bd" style={{textAlign: "center", padding: 40}}>
-                            <Icon name="loader-alt" className="bx-spin"
-                               style={{fontSize: 32, color: "var(--adm-muted)"}}/>
+                            <Icon name="loader-alt" className="bx-spin" size={32}
+                               style={{color: "var(--adm-muted)"}}/>
                             <p style={{marginTop: 12, color: "var(--adm-muted)"}}>Загрузка…</p>
                         </div>
                     </div>
                 ) : logs.length === 0 ? (
                     <div className="sp-card">
                         <div className="sp-card-bd" style={{textAlign: "center", padding: 40}}>
-                            <Icon name="inbox" style={{fontSize: 48, color: "var(--adm-muted)", opacity: 0.3}}/>
+                            <Icon name="inbox" size={48} style={{color: "var(--adm-muted)", opacity: 0.3}}/>
                             <p style={{marginTop: 8, color: "var(--adm-muted)"}}>Нет записей</p>
                         </div>
                     </div>
@@ -152,7 +153,7 @@ export default function AuditPage() {
                                         <AdminTableCell>
                                             <div style={{fontWeight: 500}}>{userDisplayName(log.user, "Система")}</div>
                                             <div style={{
-                                                fontSize: "0.72rem",
+                                                fontSize: "0.75rem",
                                                 color: "var(--adm-muted)",
                                                 fontFamily: "monospace"
                                             }}>{log.user.email}</div>
@@ -162,7 +163,7 @@ export default function AuditPage() {
                                             <StatusBadge variant={actionVariant(log.action)} label={log.action}/>
                                         </AdminTableCell>
                                         <AdminTableCell>
-                                            <code className="sp-tag" style={{fontSize: "0.68rem", cursor: "pointer"}}
+                                            <code className="sp-tag" style={{fontSize: "0.75rem", cursor: "pointer"}}
                                                   title={log.entityId}
                                                   onClick={() => navigator.clipboard?.writeText(log.entityId)}>
                                                 {log.entityId}
@@ -170,7 +171,7 @@ export default function AuditPage() {
                                         </AdminTableCell>
                                         <AdminTableCell style={{maxWidth: 420}}>
                                             {log.changes ? (
-                                                <div style={{fontSize: "0.78rem", lineHeight: 1.6}}>
+                                                <div style={{fontSize: "0.75rem", lineHeight: 1.6}}>
                                                     {Object.entries(log.changes).map(([key, val]) => {
                                                         const v = val as { from?: unknown; to?: unknown } | unknown
                                                         if (v && typeof v === "object" && ("from" in v || "to" in v)) {
@@ -180,12 +181,12 @@ export default function AuditPage() {
                                                                     <span
                                                                         style={{color: "var(--adm-muted)"}}>{key}: </span>
                                                                     {from != null && <span style={{
-                                                                        color: "#ef4444",
+                                                                        color: "var(--bs-danger)",
                                                                         textDecoration: "line-through",
                                                                         marginRight: 4
                                                                     }}>{String(from)}</span>}
                                                                     {to != null && <span
-                                                                        style={{color: "#16a34a"}}>{String(to)}</span>}
+                                                                        style={{color: "var(--bs-success)"}}>{String(to)}</span>}
                                                                 </div>
                                                             )
                                                         }

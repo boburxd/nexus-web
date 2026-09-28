@@ -29,91 +29,102 @@ export default async function AdminLayout({children}: { children: ReactNode }) {
           --bs-link-color: hsl(212, 70%, 45%);
         }
 
+        /* Кнопки shadcn (Button) внутри админки берут нейтральные цвета из --adm-*,
+           чтобы outline/ghost/secondary читались и в светлой, и в тёмной теме. */
+        .adm-root [data-slot="button"] {
+          --background: var(--adm-content-bg);
+          --foreground: var(--adm-text);
+          --muted: var(--adm-hover-bg);
+          --secondary: var(--adm-active-bg);
+          --secondary-foreground: var(--adm-active-color);
+          --border: var(--adm-sidebar-border);
+          --input: var(--adm-sidebar-border);
+        }
+
         h1,h2,h3,h4,h5,h6,.card-title {
           font-family: 'PP Neue Montreal', var(--font-inter), 'Inter', sans-serif;
           font-weight: 500;
         }
 
-        /* ── Dark mode: Bootstrap component overrides ── */
+        /* ── Dark mode: Bootstrap component overrides ──
+           Всё содержимое /admin рендерится внутри .adm-root (AdminLayout), поэтому цвета
+           берутся из тёмного набора --adm-* — тех же токенов, что у шапки и сайдбара. */
         @media (prefers-color-scheme: dark) {
           /* Cards */
           .card {
-            --bs-card-bg: #1e293b;
-            --bs-card-border-color: #334155;
-            --bs-card-color: #e2e8f0;
-            background-color: #1e293b !important;
-            border-color: #334155 !important;
-            color: #e2e8f0;
+            --bs-card-bg: var(--adm-card-bg);
+            --bs-card-border-color: var(--adm-sidebar-border);
+            --bs-card-color: var(--adm-text);
+            background-color: var(--adm-card-bg) !important;
+            border-color: var(--adm-sidebar-border) !important;
+            color: var(--adm-text);
           }
           .card-header {
-            background-color: #263348 !important;
-            border-bottom-color: #334155 !important;
-            color: #e2e8f0;
+            background-color: var(--adm-sidebar) !important;
+            border-bottom-color: var(--adm-sidebar-border) !important;
+            color: var(--adm-text);
           }
-          .card-body { color: #e2e8f0; }
+          .card-body { color: var(--adm-text); }
 
           /* Tables */
           .table {
             --bs-table-bg: transparent;
-            --bs-table-color: #e2e8f0;
-            --bs-table-border-color: #334155;
-            color: #e2e8f0;
+            --bs-table-color: var(--adm-text);
+            --bs-table-border-color: var(--adm-sidebar-border);
+            color: var(--adm-text);
           }
           .table thead th {
-            color: #94a3b8;
-            border-bottom-color: #334155;
+            color: var(--adm-muted);
+            border-bottom-color: var(--adm-sidebar-border);
           }
-          .table td { border-bottom-color: #334155; }
-          .table-hover > tbody > tr:hover > td { background-color: rgba(255,255,255,0.04); }
+          .table td { border-bottom-color: var(--adm-sidebar-border); }
+          .table-hover > tbody > tr:hover > td { background-color: var(--adm-hover-bg); }
 
-          /* Form controls */
+          /* Form controls — фокус показывается цветом рамки, без свечения */
           .form-control, .form-select {
-            background-color: #1e293b;
-            border-color: #475569;
-            color: #e2e8f0;
+            background-color: var(--adm-card-bg);
+            border-color: var(--adm-sidebar-border);
+            color: var(--adm-text);
           }
           .form-control:focus, .form-select:focus {
-            background-color: #263348;
-            border-color: hsl(205, 85%, 66%);
-            color: #f1f5f9;
-            box-shadow: 0 0 0 0.2rem rgba(99,102,241,0.25);
+            background-color: var(--adm-sidebar);
+            border-color: var(--adm-active-color);
+            color: var(--adm-text);
+            box-shadow: none;
           }
-          .form-control::placeholder { color: #64748b; }
-          textarea.form-control { background-color: #1e293b; color: #e2e8f0; }
+          .form-control::placeholder { color: var(--adm-muted); }
+          textarea.form-control { background-color: var(--adm-card-bg); color: var(--adm-text); }
 
           /* Borders */
-          .border, .border-bottom, .border-top { border-color: #334155 !important; }
-          .rounded, .border-bottom { border-color: #334155; }
+          .border, .border-bottom, .border-top { border-color: var(--adm-sidebar-border) !important; }
+          .rounded, .border-bottom { border-color: var(--adm-sidebar-border); }
 
           /* Text utilities */
-          .text-muted { color: #94a3b8 !important; }
-          .text-dark  { color: #e2e8f0 !important; }
-          .fw-semibold, .fw-medium, .fw-bold { color: #f1f5f9; }
+          .text-muted { color: var(--adm-muted) !important; }
+          .text-dark  { color: var(--adm-text) !important; }
+          .fw-semibold, .fw-medium, .fw-bold { color: var(--adm-text); }
 
           /* Buttons */
           .btn-outline-secondary {
-            color: #94a3b8;
-            border-color: #475569;
+            color: var(--adm-muted);
+            border-color: var(--adm-sidebar-border);
           }
           .btn-outline-secondary:hover {
-            background-color: #334155;
-            border-color: #64748b;
-            color: #e2e8f0;
+            background-color: var(--adm-sidebar-border);
+            border-color: var(--adm-muted);
+            color: var(--adm-text);
           }
 
           /* Badges */
-          .bg-label-secondary { background-color: rgba(255,255,255,0.07) !important; color: #cbd5e1 !important; }
-          .bg-label-primary   { background-color: hsla(205, 85%, 62%, 0.18) !important; color: hsl(205, 85%, 66%) !important; }
-          .bg-label-warning   { background-color: rgba(245,158,11,0.18) !important; color: #fbbf24 !important; }
-          .bg-label-danger    { background-color: rgba(239,68,68,0.18) !important;  color: #f87171 !important; }
-          .bg-label-success   { background-color: rgba(34,197,94,0.18) !important;  color: #4ade80 !important; }
-          .bg-label-info      { background-color: rgba(14,165,233,0.18) !important; color: #38bdf8 !important; }
+          .bg-label-secondary { background-color: color-mix(in oklab, var(--adm-text) 7%, transparent) !important; color: var(--adm-name-color) !important; }
+          .bg-label-primary   { background-color: var(--adm-active-bg) !important; color: var(--adm-active-color) !important; }
+          .bg-label-warning   { background-color: color-mix(in oklab, var(--warning) 18%, transparent) !important; color: var(--warning) !important; }
+          .bg-label-danger    { background-color: color-mix(in oklab, var(--destructive) 18%, transparent) !important; color: color-mix(in oklab, var(--destructive) 60%, var(--adm-text)) !important; }
+          .bg-label-success   { background-color: color-mix(in oklab, var(--success) 18%, transparent) !important; color: var(--success) !important; }
+          .bg-label-info      { background-color: color-mix(in oklab, var(--ring) 18%, transparent) !important; color: var(--ring) !important; }
 
           /* Alert */
-          .alert-warning { background-color: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.25); color: #fbbf24; }
-
-          /* Split panel list bg */
-          [style*="background: #fafafa"] { background: #141e30 !important; }
+          .alert-warning { background-color: color-mix(in oklab, var(--warning) 12%, transparent); border-color: color-mix(in oklab, var(--warning) 25%, transparent); color: var(--warning); }
         }
       `}</style>
             <AdminViewerProvider viewer={viewer}>{children}</AdminViewerProvider>

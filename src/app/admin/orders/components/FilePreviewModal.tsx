@@ -4,6 +4,7 @@ import dynamic from "next/dynamic"
 import {isStageImageFilename} from "@/lib/stage-file-helpers"
 import {isVideoFilename} from "./media"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 const StageImageMarkup = dynamic(() => import("@/components/stage/StageImageMarkup"), {ssr: false})
 
@@ -31,11 +32,12 @@ export function FilePreviewModal({
     return (
         <div
             onClick={onClose}
+            role="presentation"
             style={{
                 position: "fixed",
                 inset: 0,
                 background: "rgba(0,0,0,0.85)",
-                zIndex: 1000,
+                zIndex: "var(--z-dropdown)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -52,22 +54,16 @@ export function FilePreviewModal({
                     overflowX: "hidden",
                 }}
             >
-                <button
+                <Button
+                    type="button"
+                    variant="outline"
+                    size="icon-sm"
+                    aria-label="Закрыть"
                     onClick={onClose}
-                    style={{
-                        position: "absolute",
-                        top: -36,
-                        right: 0,
-                        background: "none",
-                        border: "none",
-                        color: "#fff",
-                        fontSize: "1.5rem",
-                        cursor: "pointer",
-                        lineHeight: 1,
-                    }}
+                    style={{position: "absolute", top: -36, right: 0}}
                 >
-                    ✕
-                </button>
+                    <Icon name="x"/>
+                </Button>
                 {showMarkupViewer ? (
                     <StageImageMarkup
                         stageId={stageId}
@@ -103,21 +99,21 @@ export function FilePreviewModal({
                         {!isImage && !isVideo && (
                             <div
                                 style={{
-                                    background: "#1a1a2e",
+                                    background: "var(--adm-sidebar)",
                                     borderRadius: 8,
                                     padding: "2rem 3rem",
-                                    color: "#fff",
+                                    color: "var(--adm-text)",
                                     textAlign: "center",
                                 }}
                             >
-                                <Icon name="file"
-                                   style={{fontSize: "3rem", marginBottom: 12, display: "block"}}/>
+                                <Icon name="file" size={48}
+                                   style={{marginBottom: 12, display: "block"}}/>
                                 <p style={{margin: "0 0 16px"}}>{filename}</p>
                                 <a
                                     href={url}
                                     target="_blank"
                                     rel="noreferrer"
-                                    style={{color: "#6ee7b7", textDecoration: "none"}}
+                                    style={{color: "var(--adm-active-color)", textDecoration: "none"}}
                                 >
                                     Скачать файл
                                 </a>

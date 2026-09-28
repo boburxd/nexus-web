@@ -2,6 +2,7 @@
 
 import {useEffect, useMemo, useRef, useState} from "react"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 import {userDisplayName} from "@/lib/user-name"
 import {parseMultiValue} from "@/lib/specialist-options"
 import type {SpecialistForAssignment} from "../types"
@@ -17,9 +18,9 @@ function specialistTags(s: SpecialistForAssignment): string {
 function StarRating({rating}: { rating: number | null }) {
     const filled = Math.round(rating ?? 0)
     return (
-        <span style={{display: "inline-flex", gap: 1, fontSize: "0.78rem", lineHeight: 1}} aria-hidden>
+        <span style={{display: "inline-flex", gap: 2, fontSize: "0.75rem", lineHeight: 1}} aria-hidden>
             {Array.from({length: 5}, (_, i) => (
-                <span key={i} style={{color: i < filled ? "#f59e0b" : "var(--adm-sidebar-border)"}}>★</span>
+                <span key={i} style={{color: i < filled ? "var(--bs-warning)" : "var(--adm-sidebar-border)"}}>★</span>
             ))}
         </span>
     )
@@ -119,12 +120,11 @@ export function SpecialistPicker({
                     minHeight: 42,
                     width: "100%",
                     boxSizing: "border-box",
-                    padding: "0.4em 2em 0.4em 0.5em",
+                    padding: "6px 32px 6px 8px",
                     borderRadius: 8,
-                    border: "1px solid var(--adm-sidebar-border)",
                     background: open ? "var(--adm-hover-bg)" : "var(--adm-sidebar)",
                     color: "var(--adm-text)",
-                    fontSize: "0.85rem",
+                    fontSize: "0.875rem",
                     fontFamily: "inherit",
                     cursor: disabled ? "default" : "pointer",
                     opacity: disabled ? 0.6 : 1,
@@ -157,7 +157,6 @@ export function SpecialistPicker({
                         left: 0,
                         right: 0,
                         borderRadius: 8,
-                        border: "1px solid var(--adm-sidebar-border)",
                         background: "var(--adm-sidebar)",
                         boxShadow: "0 12px 32px rgba(0,0,0,0.25)",
                         overflow: "hidden",
@@ -173,12 +172,12 @@ export function SpecialistPicker({
                             style={{
                                 width: "100%",
                                 boxSizing: "border-box",
-                                padding: "0.45em 0.7em",
+                                padding: "6px 10px",
                                 borderRadius: 6,
-                                border: "1px solid var(--adm-sidebar-border)",
+                                border: "none",
                                 background: "var(--adm-outer)",
                                 color: "var(--adm-text)",
-                                fontSize: "0.82rem",
+                                fontSize: "0.875rem",
                                 fontFamily: "inherit",
                                 outline: "none",
                             }}
@@ -187,7 +186,7 @@ export function SpecialistPicker({
 
                     <div style={{maxHeight: 280, overflowY: "auto", padding: 4}}>
                         {filtered.length === 0 && (
-                            <div style={{padding: "0.6em 0.7em", fontSize: "0.8rem", color: "var(--adm-muted)"}}>
+                            <div style={{padding: 8, fontSize: "0.75rem", color: "var(--adm-muted)"}}>
                                 Ничего не найдено
                             </div>
                         )}
@@ -196,33 +195,15 @@ export function SpecialistPicker({
                             const tags = specialistTags(s)
                             const isSelected = s.id === value
                             return (
-                                <button
+                                <Button
                                     key={s.id}
                                     type="button"
+                                    variant={isSelected ? "secondary" : "ghost"}
+                                    aria-pressed={isSelected}
+                                    className="h-auto w-full items-start justify-start gap-2 py-1.5 text-left"
                                     onClick={() => {
                                         onChange(s.id)
                                         setOpen(false)
-                                    }}
-                                    style={{
-                                        display: "flex",
-                                        alignItems: "flex-start",
-                                        gap: 8,
-                                        width: "100%",
-                                        textAlign: "left",
-                                        padding: "0.4em 0.6em",
-                                        borderRadius: 6,
-                                        border: "none",
-                                        background: isSelected ? "var(--adm-active-bg)" : "transparent",
-                                        color: isSelected ? "var(--adm-active-color)" : "var(--adm-text)",
-                                        fontSize: "0.82rem",
-                                        fontFamily: "inherit",
-                                        cursor: "pointer",
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        if (!isSelected) e.currentTarget.style.background = "var(--adm-hover-bg)"
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        if (!isSelected) e.currentTarget.style.background = "transparent"
                                     }}
                                 >
                                     <SpecialistAvatar name={name} avatarUrl={avatarUrls[s.id]}/>
@@ -243,7 +224,7 @@ export function SpecialistPicker({
                                         </span>
                                         {tags && (
                                             <span style={{
-                                                fontSize: "0.72rem",
+                                                fontSize: "0.75rem",
                                                 color: isSelected ? "inherit" : "var(--adm-muted)",
                                                 opacity: isSelected ? 0.85 : 1,
                                                 overflow: "hidden",
@@ -252,7 +233,7 @@ export function SpecialistPicker({
                                             }}>{tags}</span>
                                         )}
                                     </span>
-                                </button>
+                                </Button>
                             )
                         })}
                     </div>

@@ -6,6 +6,7 @@ export function DashProjectCard({
                                     hue,
                                     watermark,
                                     title,
+                                    label,
                                     subtitle,
                                     className = "",
                                     onClick,
@@ -15,6 +16,8 @@ export function DashProjectCard({
     hue: number
     watermark: string
     title: string
+    /** Доступное имя кнопки-карточки, если `title` пустой (заголовок выводится в children). */
+    label?: string
     subtitle?: ReactNode
     className?: string
     onClick?: () => void
@@ -26,8 +29,15 @@ export function DashProjectCard({
         <li
             className={cls}
             style={{"--hue": hue, cursor: onClick ? "pointer" : undefined} as CSSProperties}
-            onClick={onClick}
         >
+            {onClick ? (
+                <button
+                    type="button"
+                    className="dash-card__hit"
+                    aria-label={label || title || watermark}
+                    onClick={onClick}
+                />
+            ) : null}
             <div className="dash-card__img">{watermark}</div>
             <div className="dash-card__img-overlay"/>
             {topLeftContent ? <div className="dash-card__top-left">{topLeftContent}</div> : null}

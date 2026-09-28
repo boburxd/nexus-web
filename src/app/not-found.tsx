@@ -1,11 +1,7 @@
-"use client"
-
-import {useRouter} from "next/navigation"
+import Link from "next/link"
 import {Button} from "@/components/ui/button"
 
-export default function ForbiddenPage() {
-    const router = useRouter()
-
+export default function NotFound() {
     return (
         <main
             style={{
@@ -27,7 +23,7 @@ export default function ForbiddenPage() {
                 lineHeight: 1,
                 color: "var(--foreground)",
             }}>
-                403
+                404
             </p>
             <h1 style={{
                 margin: "0.75rem 0 0",
@@ -35,7 +31,7 @@ export default function ForbiddenPage() {
                 fontWeight: 500,
                 color: "var(--foreground)",
             }}>
-                Доступ запрещён
+                Страница не найдена
             </h1>
             <p style={{
                 margin: "1rem 0 2rem",
@@ -44,11 +40,11 @@ export default function ForbiddenPage() {
                 lineHeight: 1.55,
                 color: "var(--muted-foreground)",
             }}>
-                У вас нет прав для выполнения этого действия. Если считаете, что это ошибка, обратитесь к администратору.
+                Такой страницы нет или она была перемещена. Проверьте адрес или вернитесь на главную.
             </p>
-            <Button type="button" variant="outline" size="lg" onClick={() => router.back()}>
-                Назад
+            <Button variant="outline" size="lg" nativeButton={false} render={<Link href="/"/>}>
+                На главную
             </Button>
         </main>
-    );
+    )
 }

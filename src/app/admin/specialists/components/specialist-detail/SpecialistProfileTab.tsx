@@ -139,18 +139,15 @@ export function SpecialistProfileTab({
                 <div className="rwd-sidebar__aside" style={{
                     position: "sticky",
                     top: 24,
-                    border: "1px solid var(--adm-sidebar-border, rgba(0,0,0,0.08))",
                     borderRadius: 8,
-                    background: "var(--adm-sidebar)",
+                    background: "var(--adm-card-bg)",
                     padding: 14
                 }}>
                     <div style={{display: "flex", alignItems: "center", gap: 6, marginBottom: 10}}>
                         <Icon name="history" style={{color: "var(--adm-active-color)"}}/>
                         <span style={{
-                            fontSize: "0.72rem",
+                            fontSize: "0.75rem",
                             fontWeight: 600,
-                            textTransform: "uppercase",
-                            letterSpacing: "0.05em",
                             color: "var(--adm-muted)"
                         }}>История</span>
                     </div>

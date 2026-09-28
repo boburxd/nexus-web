@@ -36,7 +36,6 @@ export function FileThumbnail({
                 borderRadius: 8,
                 overflow: "hidden",
                 cursor: "pointer",
-                border: "1px solid var(--dash-border)",
                 flexShrink: 0,
                 position: "relative",
                 background: "var(--dash-surface2)",
@@ -62,7 +61,7 @@ export function FileThumbnail({
                         background: "rgba(0,0,0,0.4)",
                     }}
                 >
-                    <Icon name="play-circle" style={{fontSize: "2rem", color: "#fff"}}/>
+                    <Icon name="play-circle" style={{fontSize: "1.5rem", color: "#fff"}}/>
                 </div>
             )}
             <div

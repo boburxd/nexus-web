@@ -1,4 +1,5 @@
 import {Switch} from "@/components/ui/switch"
+import {Button} from "@/components/ui/button"
 import type {OnboardingStatus} from "@/components/app/SpecialistCard"
 import type {RawSpecialist} from "../../../types"
 
@@ -23,7 +24,7 @@ export function RatingLandingCard({
                  style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
                 <span className="sp-label">Оценка и лендинг</span>
                 {!isActiveSpec && (
-                    <span style={{fontSize: "0.68rem", color: "var(--adm-muted)", fontWeight: 400}}>редактирование после «Активен»</span>
+                    <span style={{fontSize: "0.75rem", color: "var(--adm-muted)", fontWeight: 400}}>редактирование после «Активен»</span>
                 )}
             </div>
             <div className="sp-card-bd">
@@ -31,20 +32,19 @@ export function RatingLandingCard({
                     <div className="sp-info-label" style={{marginBottom: 8}}>Рейтинг</div>
                     <div className="sp-stars">
                         {[1, 2, 3, 4, 5].map((star) => (
-                            <button
+                            <Button
                                 key={star}
                                 type="button"
+                                variant="ghost"
+                                size="icon-sm"
                                 onClick={() => onUpdateProfile(specialistId, {rating: star})}
                                 disabled={ratingUpdating || !isActiveSpec}
                                 title={isActiveSpec ? `Поставить ${star}` : "Доступно для верифицированных"}
-                                className={`sp-star${(profile?.rating ?? 0) >= star ? " sp-star--on" : ""}`}
-                                style={{
-                                    opacity: isActiveSpec ? 1 : 0.45,
-                                    cursor: isActiveSpec ? "pointer" : "not-allowed"
-                                }}
+                                aria-label={`Поставить ${star}`}
                             >
-                                ★
-                            </button>
+                                <span className={`sp-star${(profile?.rating ?? 0) >= star ? " sp-star--on" : ""}`}
+                                      aria-hidden="true">★</span>
+                            </Button>
                         ))}
                         <span className="sp-star-value">
               {typeof profile?.rating === "number" ? profile.rating.toFixed(1) : "не выставлен"}
@@ -57,7 +57,7 @@ export function RatingLandingCard({
                         alignItems: "center",
                         gap: 8,
                         cursor: isActiveSpec ? "pointer" : "default",
-                        fontSize: "0.82rem"
+                        fontSize: "0.875rem"
                     }}>
                         <Switch
                             checked={profile?.featuredOnLanding ?? false}
@@ -66,8 +66,8 @@ export function RatingLandingCard({
                         />
                         Показывать на главной
                     </label>
-                    <p style={{margin: "4px 0 0", fontSize: "0.7rem", color: "var(--adm-muted, #9ca3af)"}}>
-                        Управляется через <a href="/admin/landing" style={{color: "var(--adm-active-color, #6366f1)"}}>модерацию
+                    <p style={{margin: "4px 0 0", fontSize: "0.75rem", color: "var(--adm-muted)"}}>
+                        Управляется через <a href="/admin/landing" style={{color: "var(--adm-active-color)"}}>модерацию
                         сборок</a>. Ручное переключение перезаписывает статус.
                     </p>
                 </div>

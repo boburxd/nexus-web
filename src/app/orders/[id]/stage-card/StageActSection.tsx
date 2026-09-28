@@ -7,6 +7,7 @@ import {actWaitingMessage} from "./actWaitingMessage"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 import {uploadWithProgress} from "@/lib/upload-progress"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 export function StageActSection({
                                     stage,
@@ -43,16 +44,13 @@ export function StageActSection({
                     : clientCanUploadSignedAct
                         ? "var(--dash-accent-bg)"
                         : "var(--dash-surface2)",
-                border: `1.5px solid ${
-                    clientActSubmitted ? "var(--dash-success)" : clientCanUploadSignedAct ? "var(--dash-accent)" : "var(--dash-border)"
-                }`,
             }}
         >
             <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 6}}>
                 <Icon
                     name={clientActSubmitted ? "check-circle" : clientCanUploadSignedAct ? "edit" : "time-five"}
                     style={{
-                        fontSize: "1.1rem",
+                        fontSize: "1.125rem",
                         color: clientActSubmitted ? "var(--dash-success)" : clientCanUploadSignedAct ? "var(--dash-accent)" : "var(--dash-muted)",
                     }}
                 />
@@ -78,38 +76,38 @@ export function StageActSection({
             {clientActSubmitted ? (
                 <>
                     {(effectiveAct.clientSignedAt || effectiveAct.signedAt) && (
-                        <p style={{fontSize: "0.82rem", color: "var(--dash-muted)", margin: "0 0 6px"}}>
+                        <p style={{fontSize: "0.875rem", color: "var(--dash-muted)", margin: "0 0 6px"}}>
                             Подписан{" "}
                             {new Date(effectiveAct.clientSignedAt || effectiveAct.signedAt!).toLocaleDateString("ru-RU")}
                         </p>
                     )}
                     {effectiveAct.status === "CLIENT_SIGNED" && (
-                        <p style={{fontSize: "0.78rem", color: "var(--dash-muted)", margin: 0}}>
-                            Ожидайте подтверждения администратором — после этого будет зафиксирован перевод оплаты
+                        <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", margin: 0}}>
+                            Ожидайте подтверждения администратором: после этого будет зафиксирован перевод оплаты
                             специалисту.
                         </p>
                     )}
                     {effectiveAct.status === "CONFIRMED" && (
-                        <p style={{fontSize: "0.78rem", color: "var(--dash-muted)", margin: 0}}>Акт подтверждён
+                        <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", margin: 0}}>Акт подтверждён
                             администратором.</p>
                     )}
                 </>
             ) : clientCanUploadSignedAct ? (
                 <>
-                    <p style={{fontSize: "0.82rem", color: "var(--dash-muted)", margin: "0 0 10px"}}>
-                        Скачайте акт, подпишите и загрузите PDF — это нужно для перевода оплаты специалисту после
+                    <p style={{fontSize: "0.875rem", color: "var(--dash-muted)", margin: "0 0 10px"}}>
+                        Скачайте акт, подпишите и загрузите PDF. Это нужно для перевода оплаты специалисту после
                         проверки администратором.
                     </p>
                     {effectiveAct.specialistActS3Key ? (
                         <div style={{
                             marginBottom: 10,
-                            fontSize: "0.82rem",
+                            fontSize: "0.875rem",
                             display: "flex",
                             alignItems: "center",
                             gap: 8,
                             flexWrap: "wrap"
                         }}>
-                            <Icon name="file-pdf" style={{color: "#e74c3c"}}/>
+                            <Icon name="file-pdf" style={{color: "var(--dash-danger)"}}/>
                             <a
                                 href={`/api/stages/${stage.id}/act/download`}
                                 target="_blank"
@@ -186,26 +184,15 @@ export function StageActSection({
                             if (parsed?.act) onActUploaded(parsed.act)
                         }}
                     />
-                    <label
-                        htmlFor={inputId}
-                        style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: 6,
-                            padding: "0.55em 1.25em",
-                            borderRadius: 8,
-                            border: "1px solid var(--dash-border)",
-                            background: actUploading ? "var(--dash-border)" : "var(--dash-accent)",
-                            color: actUploading ? "var(--dash-muted)" : "#fff",
-                            fontSize: "0.875rem",
-                            fontWeight: 600,
-                            cursor: actUploading ? "not-allowed" : "pointer",
-                            fontFamily: "inherit",
-                        }}
+                    <Button
+                        size="lg"
+                        nativeButton={false}
+                        render={<label htmlFor={inputId}/>}
+                        disabled={actUploading}
                     >
                         <Icon name="upload"/>
                         {actUploading ? "Загрузка…" : "Загрузить подписанный акт (PDF)"}
-                    </label>
+                    </Button>
                     {uploadItem ? (
                         <div style={{marginTop: 10}}>
                             <UploadingCards items={[uploadItem]}/>
@@ -213,7 +200,7 @@ export function StageActSection({
                     ) : null}
                     {actUploadError ? (
                         <p style={{
-                            fontSize: "0.78rem",
+                            fontSize: "0.75rem",
                             color: "var(--dash-danger)",
                             margin: "8px 0 0"
                         }}>{actUploadError}</p>
@@ -221,10 +208,10 @@ export function StageActSection({
                 </>
             ) : (
                 <>
-                    <p style={{fontSize: "0.82rem", color: "var(--dash-muted)", margin: "0 0 6px"}}>
+                    <p style={{fontSize: "0.875rem", color: "var(--dash-muted)", margin: "0 0 6px"}}>
                         {actWaitingMessage(effectiveAct)}
                     </p>
-                    <p style={{fontSize: "0.72rem", color: "var(--dash-muted)", margin: 0}}>
+                    <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", margin: 0}}>
                         Текущий статус: {ACT_STATUS_LABEL[effectiveAct.status] ?? effectiveAct.status}
                     </p>
                 </>

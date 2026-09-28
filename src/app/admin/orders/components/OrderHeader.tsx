@@ -5,6 +5,7 @@ import {formatBriefWizardProgress} from "@/lib/clientBriefDisplay"
 import type {Order} from "../types"
 import {ORDER_LABEL, ORDER_VARIANT} from "../types"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 export function OrderHeader({
                                 order,
@@ -29,11 +30,10 @@ export function OrderHeader({
                 <h5 style={{fontWeight: 600, margin: 0}}>{title}</h5>
                 <StatusBadge variant={ORDER_VARIANT[order.status]} label={ORDER_LABEL[order.status]}/>
                 <span style={{flex: 1}}/>
-                <button
+                <Button
                     type="button"
-                    className="sp-btn sp-btn-primary"
+                    size="sm"
                     onClick={onOpenChat}
-                    style={{display: "inline-flex", alignItems: "center", gap: 8}}
                 >
                     <Icon name="message-dots" aria-hidden/>
                     Чат
@@ -44,10 +44,10 @@ export function OrderHeader({
                                 minWidth: 18,
                                 height: 18,
                                 padding: "0 6px",
-                                borderRadius: 999,
-                                background: "#ef4444",
+                                borderRadius: 10,
+                                background: "var(--bs-danger)",
                                 color: "#fff",
-                                fontSize: "0.68rem",
+                                fontSize: "0.75rem",
                                 fontWeight: 800,
                                 lineHeight: "18px",
                                 display: "inline-flex",
@@ -58,17 +58,17 @@ export function OrderHeader({
                             {unreadChatCount > 99 ? "99+" : unreadChatCount}
                         </span>
                     )}
-                </button>
+                </Button>
             </div>
             <small style={{color: "var(--adm-muted)"}}>
-                <Icon name="user" style={{marginRight: 3}}/>
+                <Icon name="user" style={{marginRight: 4}}/>
                 {order.client.name ?? order.client.email}
                 {" → "}
-                <Icon name="brush" style={{marginRight: 3}}/>
+                <Icon name="brush" style={{marginRight: 4}}/>
                 {order.specialist ? (
                     order.specialist.name ?? order.specialist.email
                 ) : (
-                    <span style={{color: "#ef4444"}}>не назначен</span>
+                    <span style={{color: "var(--bs-danger)"}}>не назначен</span>
                 )}
                 {" · "}
                 {new Date(order.createdAt).toLocaleDateString("ru-RU")}
@@ -78,8 +78,8 @@ export function OrderHeader({
                 <div
                     style={{
                         marginTop: 10,
-                        fontSize: "0.82rem",
-                        color: "var(--adm-text, #334)",
+                        fontSize: "0.875rem",
+                        color: "var(--adm-text)",
                         display: "flex",
                         alignItems: "center",
                         gap: 8,
@@ -91,27 +91,22 @@ export function OrderHeader({
             <strong>Заполнение брифа:</strong> {formatBriefWizardProgress(order.briefStep)}
           </span>
                     {order.briefHelpRequested && (
-                        <span className="sp-badge sp-badge--danger" style={{fontSize: "0.65rem"}}>
-              <Icon name="support" style={{marginRight: 3}}/>
+                        <span className="sp-badge sp-badge--danger" style={{fontSize: "0.75rem"}}>
+              <Icon name="support" style={{marginRight: 4}}/>
               нужна помощь
             </span>
                     )}
                     {order.briefHelpRequested && (
-                        <button
+                        <Button
                             type="button"
-                            className="sp-btn sp-btn-ghost"
-                            style={{
-                                fontSize: "0.65rem",
-                                padding: "0.2em 0.6em",
-                                borderColor: "rgba(34,197,94,0.4)",
-                                color: "#22c55e",
-                            }}
+                            variant="outline"
+                            size="xs"
                             onClick={() => onResolveHelp(order.id)}
                             disabled={acting !== null}
                         >
-                            <Icon name="check" style={{marginRight: 3}}/>
+                            <Icon name="check"/>
                             Закрыть запрос
-                        </button>
+                        </Button>
                     )}
                 </div>
             )}

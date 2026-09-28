@@ -1,5 +1,6 @@
 "use client"
 
+import {Button} from "@/components/ui/button"
 import type {Designer} from "./types"
 
 interface ProfileBodyProps {
@@ -31,14 +32,12 @@ export function ProfileBody({designer: d, works, onOpenWork}: ProfileBodyProps) 
                     <div key={item.label} style={{minWidth: 100}}>
                         <p style={{
                             color: "rgba(255,255,255,0.4)",
-                            fontSize: "0.7rem",
-                            textTransform: "uppercase",
-                            letterSpacing: "0.07em",
+                            fontSize: "0.75rem",
                             margin: "0 0 4px"
                         }}>
                             {item.label}
                         </p>
-                        <span style={{color: "#f4f4f4", fontWeight: 600, fontSize: "0.9rem"}}>{item.value}</span>
+                        <span style={{color: "var(--card-foreground)", fontWeight: 600, fontSize: "0.875rem"}}>{item.value}</span>
                     </div>
                 ))}
             </div>
@@ -47,16 +46,14 @@ export function ProfileBody({designer: d, works, onOpenWork}: ProfileBodyProps) 
                 <div style={{marginBottom: 24}}>
                     <p style={{
                         color: "rgba(255,255,255,0.4)",
-                        fontSize: "0.7rem",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.07em",
+                        fontSize: "0.75rem",
                         margin: "0 0 10px"
                     }}>
                         О себе
                     </p>
                     <p style={{
                         color: "rgba(255,255,255,0.75)",
-                        fontSize: "0.9rem",
+                        fontSize: "0.875rem",
                         lineHeight: 1.65,
                         margin: 0
                     }}>{d.bio}</p>
@@ -67,34 +64,26 @@ export function ProfileBody({designer: d, works, onOpenWork}: ProfileBodyProps) 
                 <div>
                     <p style={{
                         color: "rgba(255,255,255,0.4)",
-                        fontSize: "0.7rem",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.07em",
+                        fontSize: "0.75rem",
                         margin: "0 0 10px"
                     }}>
                         Работы
                     </p>
                     <div style={{display: "grid", gridTemplateColumns: `repeat(${works.length}, 1fr)`, gap: 8}}>
                         {works.map((src, i) => (
-                            <button
+                            <Button
                                 key={i}
                                 type="button"
+                                variant="ghost"
+                                size="icon"
                                 onClick={() => onOpenWork(i)}
                                 aria-label={`Открыть работу ${i + 1}`}
-                                style={{
-                                    aspectRatio: "4/3",
-                                    borderRadius: 10,
-                                    overflow: "hidden",
-                                    background: "rgba(255,255,255,0.05)",
-                                    border: "1px solid rgba(255,255,255,0.08)",
-                                    padding: 0,
-                                    cursor: "pointer",
-                                }}
+                                className="aspect-[4/3] h-auto w-full overflow-hidden"
                             >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img src={src} alt={`Работа ${i + 1}`}
                                      style={{width: "100%", height: "100%", objectFit: "cover", display: "block"}}/>
-                            </button>
+                            </Button>
                         ))}
                     </div>
                 </div>

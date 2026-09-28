@@ -12,18 +12,17 @@ export function StagePipelineView({stages}: { stages: OrderStage[] }) {
                 return (
                     <div key={type} style={{display: "flex", alignItems: "center", gap: "0.5rem"}}>
                         <div style={{
-                            padding: "0.4em 0.9em",
-                            borderRadius: 100,
-                            fontSize: "0.78rem",
+                            padding: "6px 14px",
+                            borderRadius: 14,
+                            fontSize: "0.75rem",
                             fontWeight: 500,
                             whiteSpace: "nowrap",
-                            border: `1.5px solid ${isDone ? "var(--dash-success)" : isActive ? "var(--dash-warn)" : "var(--dash-border)"}`,
-                            background: isDone ? "var(--dash-success-bg)" : isActive ? "var(--dash-warn-bg)" : "transparent",
+                            background: isDone ? "var(--dash-success-bg)" : isActive ? "var(--dash-warn-bg)" : "var(--dash-surface2)",
                             color: isDone ? "var(--dash-success)" : isActive ? "var(--dash-warn)" : "var(--dash-muted)",
                         }}>
-                            <span style={{marginRight: "0.35em"}}>{i + 1}.</span>
+                            <span style={{marginRight: "6px"}}>{i + 1}.</span>
                             {STAGE_LABEL[type]}
-                            <span style={{marginLeft: "0.4em", fontSize: "0.72rem", opacity: 0.75}}>— {st.label}</span>
+                            <span style={{marginLeft: "6px", fontSize: "0.75rem", opacity: 0.75}}>({st.label})</span>
                         </div>
                         {i < STAGE_ORDER.length - 1 &&
                             <span style={{color: "var(--dash-muted)", fontSize: "0.75rem"}}>→</span>}

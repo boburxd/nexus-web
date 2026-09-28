@@ -3,6 +3,7 @@
 import {type ChangeEvent, useRef, useState} from "react"
 import type {FileUploadModalProps} from "./types"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 export function FileUploadModal({
                                     open,
@@ -51,6 +52,7 @@ export function FileUploadModal({
 
     return (
         <div
+            role="presentation"
             style={{
                 position: "fixed",
                 top: 0,
@@ -61,18 +63,18 @@ export function FileUploadModal({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                zIndex: 1000,
+                zIndex: "var(--z-dropdown)",
             }}
             onClick={onClose}
         >
             <div
                 style={{
-                    background: "#1a1a1a",
-                    borderRadius: 12,
+                    background: "var(--adm-sidebar)",
+                    borderRadius: 14,
                     padding: 24,
                     width: 420,
                     maxWidth: "90vw",
-                    color: "#fff",
+                    color: "var(--adm-text)",
                 }}
                 onClick={(e) => e.stopPropagation()}
             >
@@ -84,21 +86,12 @@ export function FileUploadModal({
                         marginBottom: 16,
                     }}
                 >
-                    <h3 style={{margin: 0, fontSize: "1.1rem"}}>{title}</h3>
-                    <button
-                        onClick={onClose}
-                        style={{
-                            background: "none",
-                            border: "none",
-                            color: "#999",
-                            cursor: "pointer",
-                            fontSize: "1.2rem",
-                        }}
-                    >
+                    <h3 style={{margin: 0, fontSize: "1.125rem"}}>{title}</h3>
+                    <Button variant="ghost" size="icon-sm" aria-label="Закрыть" onClick={onClose}>
                         ×
-                    </button>
+                    </Button>
                 </div>
-                <p style={{color: "#999", fontSize: "0.85rem", marginBottom: 16}}>{description}</p>
+                <p style={{color: "var(--adm-muted)", fontSize: "0.875rem", marginBottom: 16}}>{description}</p>
                 <input
                     ref={fileInputRef}
                     type="file"
@@ -106,29 +99,16 @@ export function FileUploadModal({
                     onChange={handleFileChange}
                     style={{display: "none"}}
                 />
-                <button
+                <Button
+                    variant="outline"
+                    size="lg"
+                    className="mb-3 w-full"
                     onClick={() => fileInputRef.current?.click()}
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: 8,
-                        width: "100%",
-                        padding: 12,
-                        border: "2px dashed #444",
-                        borderRadius: 8,
-                        background: "#222",
-                        color: "#999",
-                        cursor: "pointer",
-                        fontSize: "0.9rem",
-                        marginBottom: 12,
-                        minHeight: 48,
-                    }}
                 >
                     <Icon name="upload"/>
                     {file ? file.name : "Выберите файл (PDF, до 10МБ)"}
-                </button>
-                {error && <p style={{color: "#f44336", fontSize: "0.85rem", marginBottom: 12}}>{error}</p>}
+                </Button>
+                {error && <p style={{color: "var(--destructive)", fontSize: "0.875rem", marginBottom: 12}}>{error}</p>}
                 <div
                     style={{
                         display: "flex",
@@ -136,37 +116,12 @@ export function FileUploadModal({
                         justifyContent: "flex-end",
                     }}
                 >
-                    <button
-                        onClick={onClose}
-                        disabled={loading}
-                        style={{
-                            padding: "8px 16px",
-                            borderRadius: 6,
-                            border: "1px solid #444",
-                            background: "#222",
-                            color: "#999",
-                            cursor: "pointer",
-                            fontSize: "0.85rem",
-                        }}
-                    >
+                    <Button variant="outline" onClick={onClose} disabled={loading}>
                         Отмена
-                    </button>
-                    <button
-                        onClick={handleSubmit}
-                        disabled={!file || loading}
-                        style={{
-                            padding: "8px 16px",
-                            borderRadius: 6,
-                            border: "none",
-                            background: "#34d399",
-                            color: "#fff",
-                            cursor: !file || loading ? "not-allowed" : "pointer",
-                            fontSize: "0.85rem",
-                            fontWeight: 600,
-                        }}
-                    >
+                    </Button>
+                    <Button onClick={handleSubmit} disabled={!file || loading}>
                         {loading ? "Загрузка…" : "Загрузить"}
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

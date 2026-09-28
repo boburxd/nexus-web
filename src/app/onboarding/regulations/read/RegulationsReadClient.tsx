@@ -5,6 +5,8 @@ import {useRouter} from "next/navigation"
 import {OnboardingShell} from "@/components/app/OnboardingShell"
 import {AppCard} from "@/components/app/AppCard"
 import {Markdown} from "@/components/ui/Markdown"
+import {Button} from "@/components/ui/button"
+import {Checkbox} from "@/components/ui/checkbox"
 
 export default function RegulationsReadClient({title, content}: { title: string; content: string }) {
     const router = useRouter()
@@ -37,19 +39,19 @@ export default function RegulationsReadClient({title, content}: { title: string;
         <OnboardingShell title="Регламент" backHref="/onboarding" backLabel="Онбординг" withBg>
             <div className="mx-auto max-w-3xl px-6 py-12">
                 <div className="mb-8">
-                    <h1 style={{color: "#f4f4f4", fontSize: "clamp(1.4rem,3vw,1.9rem)", fontWeight: 500, margin: 0}}>
-                        Шаг 4 — Ознакомление с регламентом
+                    <h1 style={{color: "var(--foreground)", fontSize: "clamp(1.4rem,3vw,1.9rem)", fontWeight: 500, margin: 0}}>
+                        Шаг 4. Ознакомление с регламентом
                     </h1>
                     <p style={{
                         color: "rgba(255,255,255,0.45)",
-                        marginTop: "0.5em",
-                        fontSize: "0.9rem",
+                        marginTop: "8px",
+                        fontSize: "0.875rem",
                         lineHeight: 1.55
                     }}>
                         Перед тестом прочитайте регламент платформы. Пролистайте текст до конца и подтвердите
                         ознакомление.
                     </p>
-                    <p style={{color: "rgba(255,255,255,0.35)", marginTop: "0.4em", fontSize: "0.8rem"}}>
+                    <p style={{color: "rgba(255,255,255,0.35)", marginTop: "6px", fontSize: "0.75rem"}}>
                         {title} · объём: ~{pages} стр.
                     </p>
                 </div>
@@ -68,9 +70,9 @@ export default function RegulationsReadClient({title, content}: { title: string;
                     >
                         <Markdown content={content} className="reg-read-md"/>
                         <style>{`
-                            .reg-read-md h1, .reg-read-md h2, .reg-read-md h3, .reg-read-md h4 { color: #f4f4f4; }
+                            .reg-read-md h1, .reg-read-md h2, .reg-read-md h3, .reg-read-md h4 { color: var(--foreground); }
                             .reg-read-md strong { color: rgba(255,255,255,0.92); }
-                            .reg-read-md a { color: #a5b4fc; }
+                            .reg-read-md a { color: var(--primary); }
                         `}</style>
                     </div>
 
@@ -81,16 +83,15 @@ export default function RegulationsReadClient({title, content}: { title: string;
                             alignItems: "flex-start",
                             cursor: scrolledToEnd ? "pointer" : "not-allowed"
                         }}>
-                            <input
-                                type="checkbox"
+                            <Checkbox
                                 checked={confirmed}
                                 disabled={!scrolledToEnd}
                                 onChange={(e) => setConfirmed(e.target.checked)}
-                                style={{marginTop: 3}}
+                                className="mt-1"
                             />
                             <span style={{
                                 color: scrolledToEnd ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.35)",
-                                fontSize: "0.85rem",
+                                fontSize: "0.875rem",
                                 lineHeight: 1.45
                             }}>
                 Я ознакомился(ась) с регламентом и обязуюсь соблюдать правила платформы.
@@ -99,7 +100,7 @@ export default function RegulationsReadClient({title, content}: { title: string;
                                         display: "block",
                                         marginTop: 4,
                                         color: "rgba(255,255,255,0.28)",
-                                        fontSize: "0.8rem"
+                                        fontSize: "0.75rem"
                                     }}>
                     Пролистайте текст до конца, чтобы активировать подтверждение.
                   </span>
@@ -107,26 +108,15 @@ export default function RegulationsReadClient({title, content}: { title: string;
               </span>
                         </label>
 
-                        <button
+                        <Button
                             type="button"
+                            size="lg"
                             onClick={onContinue}
                             disabled={!confirmed || !scrolledToEnd || submitting}
-                            style={{
-                                width: "100%",
-                                marginTop: 12,
-                                padding: "0.85em 1.5em",
-                                borderRadius: 999,
-                                border: "1px solid rgba(52,211,153,0.35)",
-                                background: confirmed && scrolledToEnd ? "rgba(52,211,153,0.15)" : "rgba(255,255,255,0.06)",
-                                color: confirmed && scrolledToEnd ? "#6ee7b7" : "rgba(255,255,255,0.35)",
-                                fontWeight: 600,
-                                fontSize: "0.9rem",
-                                cursor: confirmed && scrolledToEnd && !submitting ? "pointer" : "default",
-                                opacity: submitting ? 0.75 : 1,
-                            }}
+                            className="mt-3 w-full"
                         >
                             {submitting ? "Сохранение…" : "Перейти к тесту →"}
-                        </button>
+                        </Button>
                     </div>
                 </AppCard>
             </div>

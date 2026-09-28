@@ -200,7 +200,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
 
     /** Состояние работы с ИИ в теле диалога: выбранный результат, подсказка, ошибка, загрузка. */
     const renderAiBlock = (variant: "modal" | "inline") => {
-        const muted = variant === "modal" ? "rgba(255,255,255,0.55)" : "var(--bs-secondary-color, #6c757d)"
+        const muted = variant === "modal" ? "rgba(255,255,255,0.55)" : "var(--bs-secondary-color, var(--muted-foreground))"
         if (!aiResult && completedCrop && !aiError && !uploadItem) return null
 
         return (

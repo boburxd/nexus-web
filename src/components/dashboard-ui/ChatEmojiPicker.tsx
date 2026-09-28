@@ -79,7 +79,7 @@ export function ChatEmojiPicker({disabled, onSelect}: ChatEmojiPickerProps) {
                     background: open ? "var(--dash-accent-bg)" : "var(--dash-surface2)",
                     color: "var(--dash-text)",
                     cursor: disabled ? "default" : "pointer",
-                    fontSize: "1.2rem",
+                    fontSize: "1.125rem",
                     lineHeight: 1,
                     opacity: disabled ? 0.6 : 1,
                 }}
@@ -153,10 +153,10 @@ export function ChatEmojiPicker({disabled, onSelect}: ChatEmojiPickerProps) {
                                     height: 36,
                                     padding: 0,
                                     border: 0,
-                                    borderRadius: 7,
+                                    borderRadius: 8,
                                     background: "transparent",
                                     cursor: "pointer",
-                                    fontSize: "1.25rem",
+                                    fontSize: "1.125rem",
                                     lineHeight: 1,
                                 }}
                             >

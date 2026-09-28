@@ -8,17 +8,15 @@ import {
 } from "@/lib/framework-contract"
 
 const blockTitleStyle: CSSProperties = {
-    fontSize: "0.72rem",
+    fontSize: "0.75rem",
     fontWeight: 700,
-    letterSpacing: "0.06em",
-    textTransform: "uppercase",
     color: "var(--dash-accent)",
     margin: 0,
 }
 
 const blockBodyStyle: CSSProperties = {
     margin: "6px 0 0",
-    fontSize: "0.84rem",
+    fontSize: "0.875rem",
     lineHeight: 1.55,
     color: "var(--dash-text2)",
 }
@@ -39,7 +37,7 @@ export function FrameworkContractClientGuide({
             <p
                 style={{
                     margin: "0 0 " + (compact ? 12 : 16) + "px",
-                    fontSize: compact ? "0.82rem" : "0.86rem",
+                    fontSize: "0.875rem",
                     lineHeight: 1.5,
                     color: "var(--dash-text2)",
                 }}
@@ -49,7 +47,7 @@ export function FrameworkContractClientGuide({
         )
     }
 
-    const gap = compact ? 14 : 18
+    const gap = compact ? 14 : 20
     return (
         <div
             style={{
@@ -61,8 +59,8 @@ export function FrameworkContractClientGuide({
             {showIntro ? (
                 <p
                     style={{
-                        margin: "0 0 " + (compact ? 14 : 18) + "px",
-                        fontSize: compact ? "0.84rem" : "0.88rem",
+                        margin: "0 0 " + (compact ? 14 : 20) + "px",
+                        fontSize: "0.875rem",
                         lineHeight: 1.55,
                         color: "var(--dash-text)",
                         fontWeight: 500,

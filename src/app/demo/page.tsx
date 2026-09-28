@@ -3,6 +3,8 @@
 import {useState} from "react"
 import {confirmDialog} from "@/lib/dialog-store"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
 import {stripBx} from "@/lib/icon-map"
 
 const ROLES = [
@@ -10,21 +12,21 @@ const ROLES = [
         role: "CLIENT",
         label: "Заказчик",
         icon: "bx-briefcase",
-        color: "#6366f1",
+        color: "var(--primary)",
         desc: "Создание проекта, заполнение брифа, согласование этапов"
     },
     {
         role: "SPECIALIST",
         label: "Специалист",
         icon: "bx-palette",
-        color: "#f59e0b",
+        color: "var(--warning)",
         desc: "Онбординг с нуля, тест, интервью, выполнение заказов"
     },
     {
         role: "ADMIN",
         label: "Администратор",
         icon: "bx-shield",
-        color: "#22c55e",
+        color: "var(--success)",
         desc: "Текущий аккаунт админа — управление платформой"
     },
 ] as const
@@ -104,7 +106,7 @@ export default function DemoPage() {
     return (
         <div style={{
             minHeight: "100vh",
-            background: "#0c0e1a",
+            background: "var(--background)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -113,18 +115,18 @@ export default function DemoPage() {
             <div style={{maxWidth: 720, width: "100%"}}>
                 <div style={{textAlign: "center", marginBottom: 40}}>
                     <h1 style={{
-                        color: "#f4f4f4",
-                        fontSize: "2rem",
+                        color: "var(--foreground)",
+                        fontSize: "1.5rem",
                         fontWeight: 700,
                         margin: "0 0 8px",
                         letterSpacing: "0.04em"
                     }}>NEXUS Demo</h1>
-                    <p style={{color: "rgba(255,255,255,0.45)", fontSize: "0.9rem"}}>Выберите роль для входа на
+                    <p style={{color: "var(--muted-foreground)", fontSize: "0.875rem"}}>Выберите роль для входа на
                         платформу</p>
                 </div>
 
                 <div style={{display: "flex", justifyContent: "center", marginBottom: 32}}>
-                    <input
+                    <Input
                         type="password"
                         placeholder="Ключ доступа"
                         value={key}
@@ -132,90 +134,66 @@ export default function DemoPage() {
                             setKey(e.target.value);
                             setError(null)
                         }}
-                        style={{
-                            width: 280,
-                            padding: "0.7em 1em",
-                            borderRadius: 10,
-                            border: "1px solid rgba(255,255,255,0.15)",
-                            background: "rgba(255,255,255,0.06)",
-                            color: "#f4f4f4",
-                            fontSize: "0.9rem",
-                            fontFamily: "inherit",
-                            outline: "none",
-                            textAlign: "center",
-                        }}
+                        className="w-70 text-center"
                     />
                 </div>
 
                 <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 32}}>
                     {ROLES.map(r => (
-                        <button
+                        <Button
                             key={r.role}
                             type="button"
+                            variant="outline"
                             disabled={!!loading}
                             onClick={() => handleLogin(r.role)}
-                            style={{
-                                padding: "2rem 1.25rem", borderRadius: 16,
-                                border: `1px solid ${r.color}33`, background: `${r.color}0a`,
-                                cursor: loading ? "wait" : "pointer", textAlign: "center",
-                                transition: "transform 0.15s, border-color 0.15s",
-                            }}
-                            onMouseEnter={e => {
-                                e.currentTarget.style.borderColor = `${r.color}66`;
-                                e.currentTarget.style.transform = "translateY(-2px)"
-                            }}
-                            onMouseLeave={e => {
-                                e.currentTarget.style.borderColor = `${r.color}33`;
-                                e.currentTarget.style.transform = "translateY(0)"
-                            }}
+                            className="h-auto flex-col whitespace-normal"
+                            style={{cursor: loading ? "wait" : "pointer", textAlign: "center"}}
                         >
-                            <Icon name={stripBx(r.icon)}
-                               style={{fontSize: "2rem", color: r.color, display: "block", marginBottom: 12}}/>
-                            <div style={{
-                                color: "#f4f4f4",
-                                fontSize: "1rem",
-                                fontWeight: 600,
-                                marginBottom: 6
-                            }}>{r.label}</div>
-                            <div style={{
-                                color: "rgba(255,255,255,0.4)",
-                                fontSize: "0.78rem",
-                                lineHeight: 1.4
-                            }}>{r.desc}</div>
-                            {loading === r.role &&
-                                <div style={{color: r.color, fontSize: "0.8rem", marginTop: 10}}>Вход…</div>}
-                        </button>
+                            <div style={{padding: "32px 10px"}}>
+                                <Icon name={stripBx(r.icon)}
+                                   style={{fontSize: "1.5rem", color: r.color, display: "block", marginBottom: 12}}/>
+                                <div style={{
+                                    color: "var(--foreground)",
+                                    fontSize: "1rem",
+                                    fontWeight: 600,
+                                    marginBottom: 6
+                                }}>{r.label}</div>
+                                <div style={{
+                                    color: "var(--muted-foreground)",
+                                    fontSize: "0.75rem",
+                                    lineHeight: 1.4
+                                }}>{r.desc}</div>
+                                {loading === r.role &&
+                                    <div style={{color: r.color, fontSize: "0.75rem", marginTop: 10}}>Вход…</div>}
+                            </div>
+                        </Button>
                     ))}
                 </div>
 
                 {error && (
                     <div style={{
                         textAlign: "center",
-                        color: "#fca5a5",
-                        fontSize: "0.85rem",
+                        color: "var(--destructive)",
+                        fontSize: "0.875rem",
                         marginBottom: 16
                     }}>{error}</div>
                 )}
                 {resetDone && (
-                    <div style={{textAlign: "center", color: "#6ee7b7", fontSize: "0.85rem", marginBottom: 16}}>✓
+                    <div style={{textAlign: "center", color: "var(--success)", fontSize: "0.875rem", marginBottom: 16}}>✓
                         Demo-данные удалены</div>
                 )}
 
                 <div style={{textAlign: "center"}}>
-                    <button
+                    <Button
                         type="button"
+                        variant="destructive"
                         disabled={resetting}
                         onClick={handleReset}
-                        style={{
-                            padding: "0.55em 1.5em", borderRadius: 999,
-                            border: "1px solid rgba(248,113,113,0.3)", background: "rgba(248,113,113,0.08)",
-                            color: "#fca5a5", fontSize: "0.82rem", fontWeight: 500,
-                            cursor: resetting ? "wait" : "pointer", fontFamily: "inherit",
-                        }}
+                        style={{cursor: resetting ? "wait" : "pointer"}}
                     >
-                        <Icon name="trash" style={{marginRight: 6}}/>
+                        <Icon name="trash"/>
                         {resetting ? "Удаление…" : "Сбросить demo-данные"}
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

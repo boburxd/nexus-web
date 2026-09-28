@@ -1,6 +1,5 @@
 "use client"
 
-import type {CSSProperties} from "react"
 import {useCallback, useEffect, useState} from "react"
 import Link from "next/link"
 import {useRouter} from "next/navigation"
@@ -8,6 +7,8 @@ import {toast} from "sonner"
 import {confirmDialog} from "@/lib/dialog-store"
 import {OnboardingShell} from "@/components/app/OnboardingShell"
 import {AppCard} from "@/components/app/AppCard"
+import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
 import {SPECIALIST_CABINET_HOME_HREF} from "@/lib/cabinet-shell"
 import {DocumentUpload} from "@/components/app/DocumentUpload"
 import {uploadWithProgress} from "@/lib/upload-progress"
@@ -27,7 +28,7 @@ const STATUS_HINT: Record<string, { title: string; detail: string }> = {
     },
     SIGNED_BY_ADMIN: {
         title: "Договор зафиксирован",
-        detail: "Все этапы пройдены. Добро пожаловать на платформу!",
+        detail: "Все этапы пройдены. Добро пожаловать на платформу.",
     },
     DECLINED_BY_SPECIALIST: {
         title: "Вы отказались от договора",
@@ -130,7 +131,7 @@ export default function OnboardingContractPage() {
         }
         const ok = await confirmDialog({
             title: "Отправить подписанный договор?",
-            description: "Это действие нельзя отменить — после отправки файл уйдёт администратору на проверку.",
+            description: "Это действие нельзя отменить: после отправки файл уйдёт администратору на проверку.",
             variant: "warning",
         })
         if (!ok) return
@@ -170,95 +171,69 @@ export default function OnboardingContractPage() {
 
     const hint = STATUS_HINT[state.status] ?? {title: state.status, detail: ""}
 
-    const inputStyle: CSSProperties = {
-        background: "rgba(255,255,255,0.05)",
-        border: "1px solid rgba(255,255,255,0.1)",
-        borderRadius: 8,
-        color: "#f4f4f4",
-        fontSize: "0.85rem",
-        padding: "0.65em 1em",
-        outline: "none",
-        width: "100%",
-        boxSizing: "border-box",
-        fontFamily: "inherit",
-    }
-
     return (
         <OnboardingShell title="Договор" backHref="/onboarding" backLabel="Онбординг" withBg>
             <div style={{maxWidth: 720, margin: "0 auto", padding: "3rem 2rem"}}>
                 <div style={{marginBottom: "2rem"}}>
-                    <h1 style={{color: "#f4f4f4", fontSize: "clamp(1.4rem,3vw,1.8rem)", fontWeight: 500, margin: 0}}>
+                    <h1 style={{color: "var(--foreground)", fontSize: "clamp(1.4rem,3vw,1.8rem)", fontWeight: 500, margin: 0}}>
                         Договор с платформой
                     </h1>
-                    <p style={{color: "rgba(255,255,255,0.45)", marginTop: "0.5em", fontSize: "0.9rem"}}>
+                    <p style={{color: "rgba(255,255,255,0.45)", marginTop: "8px", fontSize: "0.875rem"}}>
                         Администратор размещает исходный документ, а вы загружаете подписанный PDF обратно для проверки.
                     </p>
                 </div>
 
                 {loading ? (
                     <AppCard glass>
-                        <p style={{color: "rgba(255,255,255,0.5)", margin: 0}}>Загрузка...</p>
+                        <p style={{color: "rgba(255,255,255,0.5)", margin: 0}}>Загрузка…</p>
                     </AppCard>
                 ) : (
                     <>
                         <AppCard glass style={{marginBottom: "1.25rem"}}>
                             <div style={{
                                 color: "rgba(255,255,255,0.35)",
-                                fontSize: "0.7rem",
-                                letterSpacing: "0.06em",
-                                textTransform: "uppercase",
+                                fontSize: "0.75rem",
                                 marginBottom: 8
                             }}>
                                 Статус
                             </div>
                             <div style={{
-                                color: "#f4f4f4",
+                                color: "var(--foreground)",
                                 fontWeight: 600,
                                 fontSize: "1rem",
                                 marginBottom: 8
                             }}>{hint.title}</div>
                             <p style={{
                                 color: "rgba(255,255,255,0.45)",
-                                fontSize: "0.88rem",
+                                fontSize: "0.875rem",
                                 margin: 0,
                                 lineHeight: 1.5
                             }}>{hint.detail}</p>
                             {state.number && (
                                 <p style={{
                                     color: "rgba(255,255,255,0.35)",
-                                    fontSize: "0.82rem",
+                                    fontSize: "0.875rem",
                                     marginTop: 12,
                                     marginBottom: 0
                                 }}>
-                                    Номер договора: <span style={{color: "#f4f4f4"}}>{state.number}</span>
+                                    Номер договора: <span style={{color: "var(--foreground)"}}>{state.number}</span>
                                 </p>
                             )}
                         </AppCard>
 
                         {state.hasFile && (
                             <AppCard glass style={{marginBottom: "1.25rem"}}>
-                                <div style={{color: "#f4f4f4", fontWeight: 500, marginBottom: 12}}>Исходный PDF
+                                <div style={{color: "var(--foreground)", fontWeight: 500, marginBottom: 12}}>Исходный PDF
                                     договора
                                 </div>
-                                <button
+                                <Button
                                     type="button"
+                                    variant="secondary"
+                                    size="lg"
                                     onClick={() => download(state.downloadUrl)}
-                                    style={{
-                                        display: "inline-flex",
-                                        alignItems: "center",
-                                        gap: 8,
-                                        padding: "0.75em 1.2em",
-                                        background: "rgba(255,255,255,0.08)",
-                                        border: "1px solid rgba(255,255,255,0.2)",
-                                        borderRadius: 10,
-                                        color: "#f4f4f4",
-                                        fontSize: "0.88rem",
-                                        cursor: "pointer",
-                                        fontFamily: "inherit",
-                                    }}
                                 >
                                     <span>↓</span> Скачать PDF
-                                </button>
+                                </Button>
                             </AppCard>
                         )}
 
@@ -269,18 +244,17 @@ export default function OnboardingContractPage() {
                                         <label style={{
                                             display: "block",
                                             color: "rgba(255,255,255,0.45)",
-                                            fontSize: "0.78rem",
+                                            fontSize: "0.75rem",
                                             fontWeight: 600,
                                             marginBottom: 8
                                         }}>
                                             Оператор ЭДО
                                         </label>
-                                        <input
+                                        <Input
                                             type="text"
                                             placeholder="Например: Контур.Диадок"
                                             value={edoOperator}
                                             onChange={(e) => setEdoOperator(e.target.value)}
-                                            style={{...inputStyle, ...(busy ? {opacity: 0.6, cursor: "not-allowed"} : {})}}
                                             maxLength={500}
                                             disabled={busy}
                                         />
@@ -311,86 +285,41 @@ export default function OnboardingContractPage() {
                                 </div>
                                 {awaitingSignature && (
                                     <div style={{display: "flex", flexWrap: "wrap", gap: 10, marginTop: 16}}>
-                                        <button
+                                        <Button
                                             type="button"
+                                            size="lg"
                                             disabled={busy || !signedFile}
                                             onClick={() => void uploadSigned()}
-                                            style={{
-                                                padding: "0.75em 1.4em",
-                                                background: "rgba(52,211,153,0.15)",
-                                                border: "1px solid rgba(52,211,153,0.35)",
-                                                borderRadius: 10,
-                                                color: "#34d399",
-                                                fontSize: "0.88rem",
-                                                fontWeight: 600,
-                                                cursor: busy || !signedFile ? "not-allowed" : "pointer",
-                                                fontFamily: "inherit",
-                                                opacity: busy || !signedFile ? 0.6 : 1,
-                                            }}
                                         >
                                             {busy ? "Отправка…" : "Отправить подписанный PDF"}
-                                        </button>
-                                        <button
+                                        </Button>
+                                        <Button
                                             type="button"
+                                            variant="destructive"
+                                            size="lg"
                                             disabled={busy}
                                             onClick={() => void decline()}
-                                            style={{
-                                                padding: "0.75em 1.4em",
-                                                background: "transparent",
-                                                border: "1px solid rgba(248,113,113,0.4)",
-                                                borderRadius: 10,
-                                                color: "#f87171",
-                                                fontSize: "0.88rem",
-                                                fontWeight: 500,
-                                                cursor: busy ? "not-allowed" : "pointer",
-                                                fontFamily: "inherit",
-                                            }}
                                         >
                                             Отказаться
-                                        </button>
+                                        </Button>
                                     </div>
                                 )}
                             </AppCard>
                         )}
 
-                        <button
-                            type="button"
-                            onClick={() => load()}
-                            style={{
-                                background: "transparent",
-                                border: "1px solid rgba(255,255,255,0.12)",
-                                borderRadius: 8,
-                                color: "rgba(255,255,255,0.45)",
-                                fontSize: "0.82rem",
-                                padding: "0.5em 1em",
-                                cursor: "pointer",
-                                fontFamily: "inherit",
-                            }}
-                        >
+                        <Button type="button" variant="outline" onClick={() => load()}>
                             Обновить статус
-                        </button>
+                        </Button>
 
                         {state.status === "SIGNED_BY_ADMIN" && (
-                            <Link
-                                href={SPECIALIST_CABINET_HOME_HREF}
-                                style={{
-                                    display: "inline-flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    gap: 8,
-                                    marginTop: 12,
-                                    padding: "0.9em 1.5em",
-                                    background: "rgba(52,211,153,0.15)",
-                                    border: "1px solid rgba(52,211,153,0.35)",
-                                    borderRadius: 10,
-                                    color: "#34d399",
-                                    fontSize: "0.9rem",
-                                    fontWeight: 600,
-                                    textDecoration: "none",
-                                }}
+                            <Button
+                                size="lg"
+                                nativeButton={false}
+                                render={<Link href={SPECIALIST_CABINET_HOME_HREF}/>}
+                                className="mt-3"
                             >
                                 Перейти в личный кабинет →
-                            </Link>
+                            </Button>
                         )}
                     </>
                 )}

@@ -7,6 +7,7 @@ import PhoneInput, {getCountryCallingCode} from "react-phone-number-input"
 import en from "react-phone-number-input/locale/en"
 import ru from "react-phone-number-input/locale/ru"
 import "react-phone-number-input/style.css"
+import {Input} from "@/components/ui/input"
 
 const labels = {...en, ...ru}
 
@@ -22,7 +23,7 @@ function CountryOption({country, selected, onClick}: { country: Country; selecte
                 display: "flex", alignItems: "center", gap: 10, width: "100%",
                 padding: "8px 12px", border: "none", cursor: "pointer", fontFamily: "inherit",
                 background: selected ? "rgba(255,255,255,0.1)" : "transparent",
-                color: "#f4f4f4", fontSize: "0.82rem", textAlign: "left",
+                color: "var(--card-foreground)", fontSize: "0.875rem", textAlign: "left",
             }}
             onMouseEnter={e => {
                 if (!selected) e.currentTarget.style.background = "rgba(255,255,255,0.06)"
@@ -32,9 +33,9 @@ function CountryOption({country, selected, onClick}: { country: Country; selecte
             }}
         >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={flag} alt="" style={{width: 22, height: 15, borderRadius: 2, objectFit: "cover", flexShrink: 0}}/>
+            <img src={flag} alt="" style={{width: 22, height: 15, borderRadius: 4, objectFit: "cover", flexShrink: 0}}/>
             <span style={{flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>{name}</span>
-            <span style={{color: "rgba(255,255,255,0.35)", fontSize: "0.78rem", flexShrink: 0}}>+{code}</span>
+            <span style={{color: "rgba(255,255,255,0.35)", fontSize: "0.75rem", flexShrink: 0}}>+{code}</span>
         </button>
     )
 }
@@ -148,8 +149,8 @@ function CustomCountrySelect({value, onChange, options}: {
                     left: menuPos.left,
                     width: menuPos.width,
                     maxHeight: menuPos.maxHeight,
-                    zIndex: 5000,
-                    borderRadius: 12,
+                    zIndex: "var(--z-picker)",
+                    borderRadius: 14,
                     overflow: "hidden",
                     background: "rgba(22, 22, 28, 0.94)",
                     backdropFilter: "blur(16px)",
@@ -159,24 +160,12 @@ function CustomCountrySelect({value, onChange, options}: {
                 }}
             >
                 <div style={{padding: "8px 10px", borderBottom: "1px solid rgba(255,255,255,0.08)", flexShrink: 0}}>
-                    <input
+                    <Input
                         ref={searchRef}
                         type="text"
-                        placeholder="Поиск страны..."
+                        placeholder="Поиск страны…"
                         value={search}
                         onChange={e => setSearch(e.target.value)}
-                        style={{
-                            width: "100%",
-                            padding: "8px 10px",
-                            border: "none",
-                            borderRadius: 10,
-                            background: "rgba(255,255,255,0.06)",
-                            color: "#f4f4f4",
-                            fontSize: "0.85rem",
-                            outline: "none",
-                            fontFamily: "inherit",
-                            boxSizing: "border-box",
-                        }}
                     />
                 </div>
                 <div
@@ -200,7 +189,7 @@ function CustomCountrySelect({value, onChange, options}: {
                     {countries.length === 0 && (
                         <p style={{
                             color: "rgba(255,255,255,0.3)",
-                            fontSize: "0.8rem",
+                            fontSize: "0.75rem",
                             textAlign: "center",
                             padding: 16
                         }}>Не найдено</p>
@@ -227,15 +216,15 @@ function CustomCountrySelect({value, onChange, options}: {
                     padding: "0 12px",
                     boxSizing: "border-box",
                     border: "none",
-                    borderRadius: 12,
+                    borderRadius: 10,
                     cursor: "pointer",
-                    color: "#f4f4f4",
+                    color: "var(--card-foreground)",
                     background: "transparent",
                 }}
             >
                 {flag && (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={flag} alt="" style={{width: 22, height: 15, borderRadius: 2, objectFit: "cover"}}/>
+                    <img src={flag} alt="" style={{width: 22, height: 15, borderRadius: 4, objectFit: "cover"}}/>
                 )}
                 <svg width="10" height="6" viewBox="0 0 10 6" fill="none" style={{opacity: 0.45}}>
                     <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"

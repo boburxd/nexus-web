@@ -3,6 +3,7 @@
 import {useEffect, useRef, useState} from "react"
 import {useRouter} from "next/navigation"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 interface NotificationItem {
     id: string;
@@ -92,15 +93,8 @@ export default function NotificationBell({buttonClassName}: {
 
     return (
         <div ref={ref} style={{position: "relative"}}>
-            <button onClick={() => setOpen(!open)} className={buttonClassName} style={buttonClassName ? undefined : {
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                position: "relative",
-                padding: 4,
-                color: "inherit",
-                fontSize: "1.3rem"
-            }} aria-label="Уведомления" aria-expanded={open}>
+            <Button variant="ghost" size="icon" onClick={() => setOpen(!open)}
+                    className={buttonClassName ?? "relative"} aria-label="Уведомления" aria-expanded={open}>
                 <Icon name="bell"/>
                 {unread > 0 && (
                     <span style={{
@@ -110,7 +104,7 @@ export default function NotificationBell({buttonClassName}: {
                         width: 16,
                         height: 16,
                         borderRadius: "50%",
-                        background: "#ea5455",
+                        background: "var(--dash-danger, var(--destructive))",
                         color: "#fff",
                         fontSize: "0.6rem",
                         fontWeight: 700,
@@ -121,7 +115,7 @@ export default function NotificationBell({buttonClassName}: {
             {unread > 9 ? "9+" : unread}
           </span>
                 )}
-            </button>
+            </Button>
 
             {open && (
                 <div style={{
@@ -131,8 +125,8 @@ export default function NotificationBell({buttonClassName}: {
                     width: 340,
                     maxHeight: 420,
                     overflowY: "auto",
-                    background: "var(--dash-surface3, #211d3d)",
-                    borderRadius: 12,
+                    background: "var(--dash-surface3, var(--popover))",
+                    borderRadius: 14,
                     zIndex: 100
                 }}>
                     <div style={{
@@ -140,20 +134,13 @@ export default function NotificationBell({buttonClassName}: {
                         justifyContent: "space-between",
                         alignItems: "center",
                         padding: "12px 16px",
-                        borderBottom: "1px solid var(--dash-border, rgba(255,255,255,0.08))"
+                        borderBottom: "1px solid var(--dash-border, var(--border))"
                     }}>
                         <span style={{fontWeight: 600, fontSize: "0.85rem"}}>Уведомления</span>
                         {unread > 0 && (
-                            <button onClick={markAllRead} style={{
-                                background: "none",
-                                border: "none",
-                                color: "var(--dash-accent, #5b4fcf)",
-                                cursor: "pointer",
-                                fontSize: "0.75rem",
-                                fontFamily: "inherit"
-                            }}>
+                            <Button variant="link" size="xs" onClick={markAllRead}>
                                 Прочитать все
-                            </button>
+                            </Button>
                         )}
                     </div>
 
@@ -161,7 +148,7 @@ export default function NotificationBell({buttonClassName}: {
                         <div style={{
                             padding: "32px 16px",
                             textAlign: "center",
-                            color: "var(--dash-muted, #8f95b2)",
+                            color: "var(--dash-muted, var(--muted-foreground))",
                             fontSize: "0.82rem"
                         }}>
                             Нет уведомлений
@@ -175,8 +162,8 @@ export default function NotificationBell({buttonClassName}: {
                             }
                         } : undefined} style={{
                             padding: "10px 16px", cursor: item.link ? "pointer" : "default",
-                            borderBottom: "1px solid var(--dash-border, rgba(255,255,255,0.05))",
-                            background: item.readAt ? "transparent" : "rgba(91,79,207,0.06)",
+                            borderBottom: "1px solid var(--dash-border, var(--border))",
+                            background: item.readAt ? "transparent" : "color-mix(in oklab, var(--dash-accent, var(--primary)) 6%, transparent)",
                         }}>
                             <div style={{
                                 display: "flex",
@@ -189,24 +176,24 @@ export default function NotificationBell({buttonClassName}: {
                                         margin: 0,
                                         fontSize: "0.8rem",
                                         fontWeight: item.readAt ? 400 : 600,
-                                        color: "var(--dash-text, #f3f5ff)"
+                                        color: "var(--dash-text, var(--foreground))"
                                     }}>{item.title}</p>
                                     {item.message && <p style={{
                                         margin: "2px 0 0",
                                         fontSize: "0.73rem",
-                                        color: "var(--dash-muted, #8f95b2)"
+                                        color: "var(--dash-muted, var(--muted-foreground))"
                                     }}>{item.message}</p>}
                                 </div>
                                 {!item.readAt && <div style={{
                                     width: 6,
                                     height: 6,
                                     borderRadius: "50%",
-                                    background: "var(--dash-accent, #5b4fcf)",
+                                    background: "var(--dash-accent, var(--primary))",
                                     flexShrink: 0,
                                     marginTop: 6
                                 }}/>}
                             </div>
-                            <p style={{margin: "4px 0 0", fontSize: "0.65rem", color: "var(--dash-muted, #8f95b2)"}}>
+                            <p style={{margin: "4px 0 0", fontSize: "0.65rem", color: "var(--dash-muted, var(--muted-foreground))"}}>
                                 {new Date(item.createdAt).toLocaleString("ru-RU", {
                                     day: "numeric",
                                     month: "short",

@@ -9,7 +9,7 @@ import {
     countFilledBriefFields,
     formatDraftBriefPreviewLine,
 } from "@/lib/clientBriefDisplay"
-import {ORDER_HUE, ORDER_STATUS_MAP} from "./constants"
+import {ORDER_STATUS_MAP} from "./constants"
 import {FILTER_EMPTY_HINT, type OrderListFilter} from "./order-filter"
 import type {ClientOrder} from "./types"
 import {DeleteButton, HelpButton} from "./OrderListActions"
@@ -37,7 +37,6 @@ export function OrdersListView({
     return (
         <ul className={listClass}>
             {orders.map(order => {
-                const hue = ORDER_HUE[order.status] ?? 247
                 const st = ORDER_STATUS_MAP[order.status] ?? {variant: "pending" as const, label: order.status}
                 const brief = order.briefData as Record<string, unknown> | null
                 const abbr = order.id.slice(-3).toUpperCase()
@@ -53,7 +52,7 @@ export function OrdersListView({
                         <div className="dash-list__head-row">
                             <div
                                 className="dash-list__thumb"
-                                style={{background: `linear-gradient(135deg, hsl(${hue},60%,58%), hsl(${hue + 35},60%,48%))`}}
+                                style={{background: "var(--dash-surface3)"}}
                             >
                                 {abbr}
                             </div>
@@ -121,14 +120,14 @@ export function OrdersListView({
 
                         {isDraft && (
                             <div className="dash-list__indent">
-                                <div style={{fontSize: "0.72rem", color: "var(--dash-muted)", marginBottom: 4}}>
+                                <div style={{fontSize: "0.75rem", color: "var(--dash-muted)", marginBottom: 4}}>
                                     Бриф:
                                     шаг {Math.min(order.briefStep + 1, BRIEF_WIZARD_STEP_COUNT)}/{BRIEF_WIZARD_STEP_COUNT} · {briefFields} полей
                                 </div>
                                 <div style={{
                                     height: 3,
                                     background: "var(--dash-border)",
-                                    borderRadius: 3,
+                                    borderRadius: 4,
                                     overflow: "hidden"
                                 }}>
                                     <div
@@ -136,8 +135,7 @@ export function OrdersListView({
                                             height: "100%",
                                             width: `${briefBarPct}%`,
                                             background: "var(--dash-warn)",
-                                            borderRadius: 3,
-                                            transition: "width 0.3s",
+                                            borderRadius: 4,
                                         }}
                                     />
                                 </div>
@@ -151,13 +149,13 @@ export function OrdersListView({
                                 const pct = Math.round((approved / total) * 100)
                                 return (
                                     <div className="dash-list__indent">
-                                        <div style={{fontSize: "0.72rem", color: "var(--dash-muted)", marginBottom: 4}}>
+                                        <div style={{fontSize: "0.75rem", color: "var(--dash-muted)", marginBottom: 4}}>
                                             Прогресс: {approved}/{total} этапов
                                         </div>
                                         <div style={{
                                             height: 3,
                                             background: "var(--dash-border)",
-                                            borderRadius: 3,
+                                            borderRadius: 4,
                                             overflow: "hidden"
                                         }}>
                                             <div
@@ -165,8 +163,7 @@ export function OrdersListView({
                                                     height: "100%",
                                                     width: `${pct}%`,
                                                     background: pct === 100 ? "var(--dash-success)" : "var(--dash-accent)",
-                                                    borderRadius: 3,
-                                                    transition: "width 0.3s",
+                                                    borderRadius: 4,
                                                 }}
                                             />
                                         </div>

@@ -18,6 +18,7 @@ import type {QuizLevelAttempt, QuizLevelCode} from "@/lib/onboarding/levels/type
 import {parseStoredTestComment} from "@/lib/onboarding/nexus-quiz"
 import {LEVEL_TITLE} from "@/lib/onboarding/levels/titles"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 const LEVEL_LABELS = LEVEL_TITLE
 
@@ -79,8 +80,8 @@ export function TestAnswersModal({testModal, onClose}: Readonly<{
     const detailQuestions = detailLevel ? getLevelBank(detailLevel).questions : []
 
     return (
-        <Modal open={!!testModal} onClose={onClose} maxWidth={620}>
-            <div className="sp-modal-body" style={{padding: "16px 18px"}}>
+        <Modal open={!!testModal} onClose={onClose} maxWidth={620} className="dialog-surface">
+            <div className="sp-modal-body" style={{padding: "16px 20px"}}>
                 <h5 className="sp-modal-title" style={{color: "#fff"}}>Квалификационный тест (по уровням)</h5>
 
                 {attempts.length === 0 ? (
@@ -142,7 +143,7 @@ export function TestAnswersModal({testModal, onClose}: Readonly<{
                                                 {expanded && (
                                                     <AdminTableRow>
                                                         <AdminTableCell colSpan={4} style={{padding: 0}}>
-                                                            <div style={{padding: "2px 8px 10px 34px", background: "rgba(0,0,0,0.15)"}}>
+                                                            <div style={{padding: "2px 8px 10px 32px", background: "rgba(0,0,0,0.15)"}}>
                                                                 <AdminTable>
                                                                     <AdminTableHeader>
                                                                         <AdminTableRow>
@@ -255,8 +256,8 @@ export function TestAnswersModal({testModal, onClose}: Readonly<{
           <span className="sp-modal-score">
             Пройдено уровней: {passedLevels.size} из {QUIZ_LEVEL_ORDER.length} · Попыток: {attempts.length}
           </span>
-                    <button className="sp-btn sp-btn-ghost" onClick={onClose} style={{marginLeft: "auto"}}>Закрыть
-                    </button>
+                    <Button type="button" variant="outline" className="ml-auto" onClick={onClose}>Закрыть
+                    </Button>
                 </div>
             </div>
         </Modal>

@@ -4,6 +4,7 @@ import {AdminBriefSummaryPanel} from "@/components/admin/AdminBriefSummaryPanel"
 import {ContractPanel} from "@/components/admin/ContractPanel"
 import type {Order} from "../types"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 export function OrderOverviewTab({
                                      order,
@@ -37,12 +38,11 @@ export function OrderOverviewTab({
                         display: "flex",
                         alignItems: "center",
                         gap: 8,
-                        background: "rgba(234,179,8,0.10)",
-                        border: "1px solid rgba(234,179,8,0.30)",
-                        color: "#ca8a04",
+                        background: "color-mix(in oklab, var(--bs-warning) 10%, transparent)",
+                        color: "var(--bs-warning)",
                         borderRadius: 6,
                         padding: "8px 12px",
-                        fontSize: "0.82rem",
+                        fontSize: "0.875rem",
                         marginBottom: 12,
                     }}
                 >
@@ -64,18 +64,18 @@ export function OrderOverviewTab({
             {order.status === "BRIEF_REVIEW" && (
                 <div className="sp-brief-actions">
                     <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 8}}>
-                        <Icon name="file" style={{color: "var(--adm-active-color)", fontSize: "1.1rem"}}/>
-                        <span style={{fontWeight: 500, fontSize: "0.85rem"}}>Бриф на проверке</span>
+                        <Icon name="file" style={{color: "var(--adm-active-color)", fontSize: "1.125rem"}}/>
+                        <span style={{fontWeight: 500, fontSize: "0.875rem"}}>Бриф на проверке</span>
                     </div>
                     <div style={{display: "flex", gap: 8}}>
-                        <button onClick={() => onBriefApprove(order.id)} disabled={acting !== null}
-                                className="sp-btn sp-btn-success">
+                        <Button type="button" size="sm" onClick={() => onBriefApprove(order.id)}
+                                disabled={acting !== null}>
                             {acting === "brief-approve" ? "…" : "Одобрить бриф"}
-                        </button>
-                        <button onClick={() => onBriefReject(order.id)} disabled={acting !== null}
-                                className="sp-btn sp-btn-danger">
+                        </Button>
+                        <Button type="button" size="sm" variant="destructive" onClick={() => onBriefReject(order.id)}
+                                disabled={acting !== null}>
                             Вернуть бриф
-                        </button>
+                        </Button>
                     </div>
                 </div>
             )}
@@ -96,18 +96,17 @@ export function OrderOverviewTab({
             {order.payments.length > 0 && (
                 <div className="sp-card" style={{padding: "10px 12px", marginBottom: 16}}>
                     <div style={{
-                        fontSize: "0.65rem",
+                        fontSize: "0.75rem",
                         color: "var(--adm-muted)",
-                        textTransform: "uppercase",
                         marginBottom: 6
                     }}>
                         Платежи
                     </div>
-                    <div style={{display: "flex", gap: 16, fontSize: "0.82rem"}}>
+                    <div style={{display: "flex", gap: 16, fontSize: "0.875rem"}}>
                         {[
                             {s: "HELD", l: "Удержано", c: "var(--adm-active-color)"},
-                            {s: "RELEASED", l: "Выплачено", c: "#22c55e"},
-                            {s: "PENDING", l: "Ожидает", c: "#f59e0b"},
+                            {s: "RELEASED", l: "Выплачено", c: "var(--bs-success)"},
+                            {s: "PENDING", l: "Ожидает", c: "var(--bs-warning)"},
                         ].map((p) => {
                             const sum = order.payments.filter((x) => x.status === p.s).reduce((a, x) => a + x.amount, 0)
                             return sum > 0 ? (

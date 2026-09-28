@@ -350,7 +350,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                 <>
                     {cardTitle("bx-grid-alt", "Работы для портфолио", `Выберите до ${MAX_LANDING_PORTFOLIO} фото`)}
                     {portfolioImages.length === 0 && (
-                        <p style={{fontSize: "0.78rem", color: "var(--dash-muted, #aaa)", margin: "0 0 8px"}}>
+                        <p style={{fontSize: "0.78rem", color: "var(--dash-muted, var(--muted-foreground))", margin: "0 0 8px"}}>
                             Добавьте фото во вкладке «Портфолио», чтобы выбрать их сюда.
                         </p>
                     )}
