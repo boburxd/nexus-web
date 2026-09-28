@@ -163,3 +163,29 @@ Heaviest coverage is on `stage-machine` transitions and API route handlers (`__t
 ### Deploy
 
 Multistage `Dockerfile` (deps → builder [`prisma generate` + `next build`] → runner, Next `output: standalone`, runs as non-root `nextjs`, entry `scripts/start-production.mjs`). `docker-compose.yml` services: `app`, `migrate` (one-shot `prisma migrate deploy`, runs before `app`), `postgres`, `redis`, `minio`/`minio-init` (dev/staging only), `zitadel` (dev only), `billing-svc` (commented out, production only). Sentry is wired through `withSentryConfig` with `tunnelRoute: "/monitoring"` — that path must stay allowed by any proxy in front of the app. GitLab CI (`.gitlab-ci.yml`): `lint` → `test` (runs `prisma generate` first) → `build` (docker image, push to registry) → `deploy` (manual for `main`/production, automatic for `develop`/staging; both deploy jobs are still `echo` placeholders).
+
+
+## UI work (Broom design-system pack)
+
+boburxd/nexus-web already has a design system, and new UI is built from it. Broom read it from the product on 2026-09-28; the audit, with every finding, is `SLOP_REPORT.md`.
+
+### Where the system is
+
+- Components: 60 shared components, such as `Icon` (`@/components/ui/icon`), `StatusBadge` (`@/components/app/AppCard`), `Modal` (`@/components/ui/modal`), `UploadingCards` (`@/components/app/UploadingCard`). Every one, with its import path: `.claude/skills/boburxd-nexus-web-build/references/components.md`.
+- Tokens: 71 colour tokens, PP Neue Montreal and Geist Mono and Inter, 5 font sizes, 8 radii; every value in `.claude/skills/boburxd-nexus-web-build/references/tokens.md`.
+
+### Skills
+
+They live in `.claude/skills/`; load the one that matches the task.
+
+- `boburxd-nexus-web-build` — any task that adds or changes a screen, a component or a style.
+- `boburxd-nexus-web-states` — empty, loading, error, long-content and no-permission states.
+- `boburxd-nexus-web-edge-cases` — the hard cases a screen has to survive before it is finished.
+- `boburxd-nexus-web-consistency` — collapsing the same thing done two ways onto one.
+- `boburxd-nexus-web-review` — reviewing a screen, a diff or a pull request.
+- `boburxd-nexus-web-finish` — the last pass before you call UI work done.
+- `boburxd-nexus-web-slop-check` — the slop check, and fixing what it prints.
+
+### Before you finish
+
+Run `node .claude/skills/boburxd-nexus-web-slop-check/detect.mjs <the files you changed>` and fix every line it prints. It exits 0 when they are clean.
