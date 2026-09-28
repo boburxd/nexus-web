@@ -137,6 +137,20 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
           --adm-content-bg:     #ffffff;
           --adm-card-bg:        hsl(214, 30%, 97%);
           --adm-name-color:     hsl(215, 20%, 32%);
+
+          /* shadcn-токены → админские: Button/Input/Badge читаются и в светлой, и в тёмной теме
+             (тёмный @media ниже переопределяет только --adm-*, эти ссылки подхватывают их сами). */
+          --background: var(--adm-content-bg);
+          --foreground: var(--adm-text);
+          --muted: var(--adm-hover-bg);
+          --muted-foreground: var(--adm-muted);
+          --secondary: var(--adm-active-bg);
+          --secondary-foreground: var(--adm-active-color);
+          --border: var(--adm-sidebar-border);
+          --input: var(--adm-sidebar-border);
+          --primary: var(--bs-primary);
+          --primary-foreground: #ffffff;
+          --ring: var(--adm-active-color);
         }
         @media (prefers-color-scheme: dark) {
           .adm-root {

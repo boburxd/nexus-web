@@ -192,7 +192,7 @@ export function StageActAdminCard({
                     <div style={{display: "flex", gap: 6, flexWrap: "wrap"}}>
                         {act.status === "SPECIALIST_UPLOADED" && (
                             <>
-                                <Button size="sm" onClick={() => void handleApprove()} disabled={acting}>
+                                <Button size="sm" variant="success" onClick={() => void handleApprove()} disabled={acting}>
                                     {acting ? "…" : "Одобрить"}
                                 </Button>
                                 <Button
@@ -209,7 +209,7 @@ export function StageActAdminCard({
                             </>
                         )}
                         {act.status === "CLIENT_SIGNED" && (
-                            <Button size="sm" onClick={() => void handleConfirm()} disabled={acting}>
+                            <Button size="sm" variant="success" onClick={() => void handleConfirm()} disabled={acting}>
                                 {acting ? "…" : "Подтвердить"}
                             </Button>
                         )}
