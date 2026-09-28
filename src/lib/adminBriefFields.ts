@@ -18,7 +18,7 @@ const BUDGET_RANGE = ["До 5 млн руб.", "5–15 млн руб.", "15–30
 const SQM_BUDGET = ["До 30 000 руб./м² — эконом", "30 000–60 000 руб./м² — стандарт", "60 000–120 000 руб./м² — бизнес", "120 000–250 000 руб./м² — премиум", "Более 250 000 руб./м² — luxury"]
 const BUDGET_FLEX = ["Жесткий бюджет, отклонение невозможно", "Допустимо отклонение до 10% при обосновании", "Бюджет гибкий при убедительном решении", "Приоритет — результат, бюджет вторичен"]
 const PRIORITY = ["Срок жесткий — есть привязка к событию / договору", "Готов сдвинуть срок ради качества результата", "Равнозначно важны оба параметра"]
-const START_READY = ["Немедленно", "В течение 2 недель", "В течение месяца", "Через 1–3 месяца", "Пока изучаю рынок"]
+const START_READY = ["В течение 3 дней", "В течение 2 недель", "В течение месяца", "Через 1–3 месяца", "Собираю КП"]
 
 export const ADMIN_BRIEF_FIELD_GROUPS: AdminBriefFieldGroup[] = [
     {
@@ -69,7 +69,7 @@ export const ADMIN_BRIEF_FIELD_GROUPS: AdminBriefFieldGroup[] = [
             {key: "sqmBudget", label: "руб./м²", type: "select", options: SQM_BUDGET},
             {key: "budgetFlex", label: "Гибкость бюджета", type: "select", options: BUDGET_FLEX},
             {key: "deadlineDesign", label: "Срок дизайн-проекта", type: "date"},
-            {key: "deadlineOpen", label: "Желаемое открытие", type: "date"},
+            {key: "deadlineOpen", label: "Желаемое открытие реализованного проекта", type: "date"},
             {key: "priority", label: "Качество или срок", type: "select", options: PRIORITY},
             {key: "startReady", label: "Готовность начать", type: "select", options: START_READY},
         ],

@@ -75,9 +75,8 @@ function Chip({label, active, onClick}: { label: string; active: boolean; onClic
     )
 }
 
-function Field({label, hint, required, children}: {
+function Field({label, required, children}: {
     label: string;
-    hint?: string;
     required?: boolean;
     children: React.ReactNode
 }) {
@@ -95,8 +94,6 @@ function Field({label, hint, required, children}: {
                 {label}{required && <span style={{color: "var(--dash-danger, #c00)", marginLeft: 4}}>*</span>}
             </label>
             {children}
-            {hint &&
-                <p style={{fontSize: "0.73rem", color: "var(--dash-muted)", marginTop: 4, marginBottom: 0}}>{hint}</p>}
         </div>
     )
 }
@@ -135,33 +132,29 @@ function StepObject({d, set}: { d: D; set: (k: string, v: string) => void }) {
                 ))}
             </div>
         </Field>
-        <Field label="Сегмент бизнеса" required hint="Укажите отрасль: HoReCa, ретейл, IT, медицина и т.д."><input
+        <Field label="Сегмент бизнеса" required><input
             style={inputStyle} placeholder="HoReCa, ретейл, IT…" value={d.companySegment ?? ""}
             onChange={e => set("companySegment", e.target.value)}/></Field>
-        <Field label="Описание бизнеса"
-               hint="Чем занимается компания, кто ваши клиенты — это поможет дизайнеру понять контекст"><textarea
+        <Field label="Описание бизнеса"><textarea
             style={taStyle} placeholder="Чем занимается компания, целевая аудитория…" value={d.companyDesc ?? ""}
             onChange={e => set("companyDesc", e.target.value)}/></Field>
-        <Field label="Адрес объекта" required hint="Город и адрес — нужен для выезда дизайнера на замеры"><input
+        <Field label="Адрес объекта" required><input
             style={inputStyle} placeholder="Москва, ул. Примерная, д. 1" value={d.objAddress ?? ""}
             onChange={e => set("objAddress", e.target.value)}/></Field>
-        <Field label="Стадия объекта" required hint="На какой стадии находится помещение сейчас"><Select
+        <Field label="Стадия объекта" required><Select
             value={d.objStage ?? ""} options={OBJ_STAGES} onChange={v => set("objStage", v)}/></Field>
         <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
-            <Field label="Площадь, м²" required hint="Общая площадь всех помещений"><input type="number"
-                                                                                           style={inputStyle}
-                                                                                           placeholder="150"
-                                                                                           value={d.objArea ?? ""}
-                                                                                           onChange={e => set("objArea", e.target.value)}/></Field>
-            <Field label="Этажей" hint="Количество уровней в помещении"><input type="number" style={inputStyle}
-                                                                               placeholder="1" value={d.objFloors ?? ""}
-                                                                               onChange={e => set("objFloors", e.target.value)}/></Field>
+            <Field label="Площадь, м²" required><input type="number" style={inputStyle} placeholder="150"
+                                                         value={d.objArea ?? ""}
+                                                         onChange={e => set("objArea", e.target.value)}/></Field>
+            <Field label="Этажей"><input type="number" style={inputStyle}
+                                          placeholder="1" value={d.objFloors ?? ""}
+                                          onChange={e => set("objFloors", e.target.value)}/></Field>
         </div>
-        <Field label="Описание объекта"
-               hint="Особенности: высота потолков, наличие окон, несущие стены, коммуникации"><textarea style={taStyle}
-                                                                                                        placeholder="Особенности помещения, текущее состояние…"
-                                                                                                        value={d.objDesc ?? ""}
-                                                                                                        onChange={e => set("objDesc", e.target.value)}/></Field>
+        <Field label="Описание объекта"><textarea style={taStyle}
+                                                    placeholder="Особенности помещения, текущее состояние…"
+                                                    value={d.objDesc ?? ""}
+                                                    onChange={e => set("objDesc", e.target.value)}/></Field>
     </>
 }
 
@@ -172,27 +165,25 @@ function StepTasks({d, set, toggle}: {
 }) {
     const active = new Set((d.tasks ?? "").split(",").map(s => s.trim()).filter(Boolean))
     return <>
-        <Field label="Задачи проекта" hint="Выберите все подходящие">
+        <Field label="Задачи проекта">
             <div style={{display: "flex", flexWrap: "wrap", gap: "0.4rem"}}>
                 {TASKS.map(t => <Chip key={t} label={t} active={active.has(t)} onClick={() => toggle("tasks", t)}/>)}
             </div>
         </Field>
-        <Field label="Главная цель проекта" required hint="Одно предложение: что должен решить дизайн-проект"><input
+        <Field label="Главная цель проекта" required><input
             style={inputStyle} placeholder="Создать уютное пространство для команды из 30 человек"
             value={d.taskMain ?? ""} onChange={e => set("taskMain", e.target.value)}/></Field>
-        <Field label="Целевая аудитория объекта" required
-               hint="Кто будет пользоваться пространством: сотрудники, клиенты, посетители"><textarea style={taStyle}
-                                                                                                      placeholder="Молодые специалисты 25-35 лет, ценящие комфорт"
-                                                                                                      value={d.targetAudience ?? ""}
-                                                                                                      onChange={e => set("targetAudience", e.target.value)}/></Field>
-        <Field label="Конкуренты / референсные объекты" hint="Примеры похожих объектов, которые вам нравятся"><textarea
+        <Field label="Целевая аудитория объекта" required><textarea style={taStyle}
+                                                                      placeholder="Молодые специалисты 25-35 лет, ценящие комфорт"
+                                                                      value={d.targetAudience ?? ""}
+                                                                      onChange={e => set("targetAudience", e.target.value)}/></Field>
+        <Field label="Конкуренты / референсные объекты"><textarea
             style={taStyle} placeholder="Офис Яндекса, коворкинг SOK, ресторан White Rabbit" value={d.competitors ?? ""}
             onChange={e => set("competitors", e.target.value)}/></Field>
-        <Field label="Что не устраивает в пространстве?"
-               hint="Что хотите изменить: планировка, освещение, стиль, функциональность"><textarea style={taStyle}
-                                                                                                    placeholder="Тёмные коридоры, неудобная планировка, устаревший ремонт"
-                                                                                                    value={d.currentProblem ?? ""}
-                                                                                                    onChange={e => set("currentProblem", e.target.value)}/></Field>
+        <Field label="Что не устраивает в пространстве?"><textarea style={taStyle}
+                                                                     placeholder="Тёмные коридоры, неудобная планировка, устаревший ремонт"
+                                                                     value={d.currentProblem ?? ""}
+                                                                     onChange={e => set("currentProblem", e.target.value)}/></Field>
     </>
 }
 
@@ -203,64 +194,63 @@ function StepStyle({d, set, toggle}: {
 }) {
     const active = new Set((d.styleDir ?? "").split(",").map(s => s.trim()).filter(Boolean))
     return <>
-        <Field label="Стилевое направление" hint="Выберите одно или несколько">
+        <Field label="Стилевое направление">
             <div style={{display: "flex", flexWrap: "wrap", gap: "0.4rem"}}>
                 {STYLES.map(s => <Chip key={s} label={s} active={active.has(s)}
                                        onClick={() => toggle("styleDir", s)}/>)}
             </div>
         </Field>
-        <Field label="Пожелания по цветовой гамме" hint="Основные цвета, которые хотите видеть в интерьере"><input
+        <Field label="Пожелания по цветовой гамме"><input
             style={inputStyle} placeholder="Тёплые бежевые тона, акценты терракотового" value={d.colorPalette ?? ""}
             onChange={e => set("colorPalette", e.target.value)}/></Field>
-        <Field label="Нежелательные цвета / элементы" hint="Что точно не должно быть в проекте"><input
+        <Field label="Нежелательные цвета / элементы"><input
             style={inputStyle} placeholder="Ярко-красный, неон, пластик" value={d.colorAvoid ?? ""}
             onChange={e => set("colorAvoid", e.target.value)}/></Field>
-        <Field label="Освещение" hint="Какую атмосферу создать светом"><Select value={d.lightingPref ?? ""}
-                                                                               options={LIGHTING}
-                                                                               onChange={v => set("lightingPref", v)}/></Field>
-        <Field label="Предпочтительные материалы" hint="Натуральные, искусственные, комбинация"><input
+        <Field label="Освещение"><Select value={d.lightingPref ?? ""}
+                                          options={LIGHTING}
+                                          onChange={v => set("lightingPref", v)}/></Field>
+        <Field label="Предпочтительные материалы"><input
             style={inputStyle} placeholder="Дерево, камень, металл…" value={d.materials ?? ""}
             onChange={e => set("materials", e.target.value)}/></Field>
-        <Field label="Образ / история пространства" hint="Самое важное — здесь рождается концепция">
+        <Field label="Образ / история пространства">
             <textarea style={{...taStyle, minHeight: 100}} value={d.styleStory ?? ""}
                       onChange={e => set("styleStory", e.target.value)}/>
         </Field>
-        <Field label="Ссылки на референсы" hint="Ссылки на Pinterest, Behance, Instagram — то, что нравится"><input
+        <Field label="Ссылки на референсы"><input
             style={inputStyle} placeholder="https://pin.it/..., https://behance.net/..." value={d.references ?? ""}
             onChange={e => set("references", e.target.value)}/></Field>
-        <Field label="Антиреференсы" hint="Примеры того, что категорически не подходит"><input style={inputStyle}
-                                                                                               placeholder="Слишком холодный минимализм, тяжёлая классика"
-                                                                                               value={d.antiReferences ?? ""}
-                                                                                               onChange={e => set("antiReferences", e.target.value)}/></Field>
+        <Field label="Антиреференсы"><input style={inputStyle}
+                                             placeholder="Слишком холодный минимализм, тяжёлая классика"
+                                             value={d.antiReferences ?? ""}
+                                             onChange={e => set("antiReferences", e.target.value)}/></Field>
     </>
 }
 
 function StepBudget({d, set}: { d: D; set: (k: string, v: string) => void }) {
     return <>
-        <Field label="Что включает бюджет?" required hint="Определите, что входит в стоимость проекта"><Select
+        <Field label="Что включает бюджет?" required><Select
             value={d.budgetScope ?? ""} options={BUDGET_SCOPE} onChange={v => set("budgetScope", v)}/></Field>
-        <Field label="Бюджет на строительство / реализацию"
-               hint="Общая сумма на реализацию (без дизайн-проекта)"><Select value={d.budgetRange ?? ""}
-                                                                             options={BUDGET_RANGE}
-                                                                             onChange={v => set("budgetRange", v)}/></Field>
-        <Field label="Бюджет на отделку руб./м²" hint="Стоимость отделки за квадратный метр"><Select
+        <Field label="Бюджет на строительство / реализацию"><Select value={d.budgetRange ?? ""}
+                                                                      options={BUDGET_RANGE}
+                                                                      onChange={v => set("budgetRange", v)}/></Field>
+        <Field label="Бюджет на отделку руб./м²"><Select
             value={d.sqmBudget ?? ""} options={SQM_BUDGET} onChange={v => set("sqmBudget", v)}/></Field>
-        <Field label="Гибкость бюджета" hint="Насколько возможно отклонение от заявленного бюджета"><Select
+        <Field label="Гибкость бюджета"><Select
             value={d.budgetFlex ?? ""} options={BUDGET_FLEX} onChange={v => set("budgetFlex", v)}/></Field>
         <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
-            <Field label="Срок дизайн-проекта" hint="Когда нужен готовый проект"><input type="date" style={inputStyle}
-                                                                                        value={d.deadlineDesign ?? ""}
-                                                                                        onChange={e => set("deadlineDesign", e.target.value)}/></Field>
-            <Field label="Желаемое открытие" required hint="Дата, к которой объект должен быть готов"><input type="date"
-                                                                                                             style={inputStyle}
-                                                                                                             value={d.deadlineOpen ?? ""}
-                                                                                                             onChange={e => set("deadlineOpen", e.target.value)}/></Field>
+            <Field label="Срок дизайн-проекта"><input type="date" style={inputStyle}
+                                                        value={d.deadlineDesign ?? ""}
+                                                        onChange={e => set("deadlineDesign", e.target.value)}/></Field>
+            <Field label="Желаемое открытие реализованного проекта" required><input type="date"
+                                                                                     style={inputStyle}
+                                                                                     value={d.deadlineOpen ?? ""}
+                                                                                     onChange={e => set("deadlineOpen", e.target.value)}/></Field>
         </div>
-        <Field label="Что важнее: качество или срок?" hint="Поможет дизайнеру расставить приоритеты"><Select
+        <Field label="Что важнее: качество или срок?"><Select
             value={d.priority ?? ""} options={PRIORITY} onChange={v => set("priority", v)}/></Field>
-        <Field label="Когда готовы начать?" hint="Когда можно приступить к работе"><Select value={d.startReady ?? ""}
-                                                                                           options={START_READY}
-                                                                                           onChange={v => set("startReady", v)}/></Field>
+        <Field label="Когда готовы начать?"><Select value={d.startReady ?? ""}
+                                                      options={START_READY}
+                                                      onChange={v => set("startReady", v)}/></Field>
     </>
 }
 
@@ -323,7 +313,6 @@ function StepFiles({
 
         <Field
             label="Документы к брифу (массовая загрузка)"
-            hint="PDF, DWG, DXF, JPG, PNG, ZIP, RAR, MP4, WEBM, MOV — до 500МБ за файл. Можно перетаскивать пачкой."
         >
             <input
                 ref={filesInputRef}
@@ -457,8 +446,7 @@ function StepFiles({
             )}
         </Field>
 
-        <Field label="Видео к брифу (опционально)"
-               hint="Коротко покажите пространство и расскажите задачи. Формат: mp4/webm/mov, до 50МБ">
+        <Field label="Видео к брифу (опционально)">
             <div style={{display: "flex", flexDirection: "column", gap: 8}}>
                 <input
                     type="file"
@@ -526,15 +514,14 @@ function StepFiles({
             </div>
         </Field>
 
-        <Field label="Сохраняемые элементы / ограничения"
-               hint="Что нельзя менять: несущие стены, вентиляция, существующая мебель"><textarea style={taStyle}
-                                                                                                  placeholder="Несущая стена между залом и кухней, вентиляционный короб"
-                                                                                                  value={d.constraints ?? ""}
-                                                                                                  onChange={e => set("constraints", e.target.value)}/></Field>
-        <Field label="Особые требования" hint="Нормативы, доступная среда, пожарная безопасность, акустика"><textarea
+        <Field label="Сохраняемые элементы / ограничения"><textarea style={taStyle}
+                                                                      placeholder="Несущая стена между залом и кухней, вентиляционный короб"
+                                                                      value={d.constraints ?? ""}
+                                                                      onChange={e => set("constraints", e.target.value)}/></Field>
+        <Field label="Особые требования"><textarea
             style={taStyle} placeholder="Доступная среда для МГН, пожарные нормы для ресторана"
             value={d.specialReqs ?? ""} onChange={e => set("specialReqs", e.target.value)}/></Field>
-        <Field label="Что еще важно знать дизайнеру?" hint="Любая информация, которая поможет в работе"><textarea
+        <Field label="Что еще важно знать дизайнеру?"><textarea
             style={{...taStyle, minHeight: 100}} placeholder="Планируем расширение через год, нужна модульная мебель"
             value={d.additionalComments ?? ""} onChange={e => set("additionalComments", e.target.value)}/></Field>
     </>
