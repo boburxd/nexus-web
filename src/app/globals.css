@@ -169,26 +169,19 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 /* Sneat dashboard isolation — reset Tailwind overrides inside layout-wrapper.
-   `.layout-wrapper`'s own font-family always beats the `body { font-family: ... }`
-   override in admin/(dashboard) layouts (inheritance loses to any rule matching
-   the element itself, regardless of selector specificity) — so the platform font
-   has to be set here, not just on body. */
+   The wrapper's own font rule always beats the one set on body in the
+   admin/(dashboard) layouts (inheritance loses to any rule matching the element
+   itself, regardless of selector specificity), so the platform font token has
+   to be applied here, not just on body. */
 .layout-wrapper {
     all: revert;
-    font-family: 'PP Neue Montreal', var(--font-inter), 'Inter', -apple-system, sans-serif;
+    font-family: var(--font-sans);
 }
 
 .layout-wrapper * {
     box-sizing: border-box;
 }
 
-.admin-nav-card {
-    transition: transform 0.15s;
-}
-
-.admin-nav-card:hover {
-    transform: translateY(-2px);
-}
 
 /* react-phone-number-input — shared with onboarding / auth (PhoneField + className onb-phone) */
 .onb-phone.PhoneInput {
@@ -212,15 +205,20 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     height: auto;
     background: rgba(255, 255, 255, 0.06) !important;
     border: none !important;
-    border-radius: 12px;
-    color: #f4f4f4 !important;
-    -webkit-text-fill-color: #f4f4f4;
-    font-size: 0.9rem;
+    border-radius: 10px;
+    color: var(--foreground) !important;
+    -webkit-text-fill-color: var(--foreground);
+    font-size: 14px;
     line-height: 1.35;
     padding: 12px 14px;
     outline: none;
     font-family: inherit;
     box-sizing: border-box;
+}
+
+.onb-phone input.PhoneInputInput:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
 }
 
 .onb-phone input.PhoneInputInput::placeholder {

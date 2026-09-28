@@ -31,11 +31,8 @@ export function OsmoHero({visible, slides, failed = false, onBrightnessChange}: 
 
     return (
         <div
-            className="fixed inset-0 overflow-hidden"
-            style={{
-                fontFamily: "'PP Neue Montreal', 'Inter', Arial, sans-serif",
-                minHeight: "100dvh",
-            }}
+            className="fixed inset-0 overflow-hidden font-sans"
+            style={{minHeight: "100dvh"}}
         >
             {/* Full-screen slider — на главной только реальные дизайнеры платформы */}
             <div ref={imgRef} className="absolute inset-0" style={{opacity: 0}}>

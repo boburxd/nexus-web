@@ -754,7 +754,12 @@ What a pattern cannot see — hierarchy, copy, missing states, one row that disa
 
 boburxd/nexus-web's own system decides these on purpose, so they are not findings here and `detect.mjs` does not check them:
 
-- Your system declares --color-accent as #181f4a, a purple: it is your brand, so purple is not flagged.
-- Your system declares --dash-shadow (0 4px 12px hsla(270, 30%, 3%, 0.35)), so shadows are part of it.
+- The palette moved from violet to cool slate / steel blue on 2026-09-28 at the owner's request (the old "--color-accent #181f4a is a purple brand" exception no longer applies). The new token values in `src/app/globals.css`, `src/components/dashboard-ui/styles/dashboard-base.css`, `src/components/admin/AdminLayout.tsx` and `public/sneat/core.css` are written in `hsl()`: the Broom v1 audit still holds the old hex values as the token list, so a new hex inside a token definition would read as off-system until the next audit.
+- Your system declares --dash-shadow (0 4px 12px hsla(220, 40%, 3%, 0.35)), so shadows are part of it.
+- `src/components/dashboard-ui/ChatEmojiPicker.tsx:10-36` — the emoji are the picker's data: what a person inserts into a chat message. They are content, not decoration; replacing them with icons would remove the feature.
+- `src/lib/onboarding/regulations-questions.ts:92,216,218` and `src/lib/onboarding/nexus-quiz.ts:182,517` — percentages and figures in the platform's own regulations and the qualification quiz answer keys (e.g. «100% предоплата клиентом за каждый этап»). Changing them changes the rules and the quiz.
+- `src/lib/email-template.ts` `font-family: Arial, Helvetica, sans-serif` — HTML e-mail: mail clients cannot load the product font or read CSS variables.
+- `src/components/Kanban/MvpKanban.tsx:302` "nested card" (server check) — the line is `useState<Card | null>` (a type named `Card`); the board renders kanban cards in columns, not a card inside a card.
+- `src/components/landing/OsmoHeader.tsx` wordmark `clamp(1.5rem, 3vw, 2.6rem)` and other `clamp()` display sizes on the landing — display type above the 24px step of the text scale, sized fluidly on purpose.
 
 Nothing outside this list is an exception: a line the check prints is a line to fix. When you decide on a departure, add it here — what, where and why — instead of an override in the file you happen to be working in. This section carries the marker, so a re-run leaves it.
