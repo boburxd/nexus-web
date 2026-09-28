@@ -39,7 +39,7 @@ export function SettingsCol1({
             </div>
             <div style={{display: "flex", alignItems: "center", gap: 12, marginBottom: 14}}>
                 <AvatarUpload initials={initials} currentUrl={avatarUrl} onUploaded={onAvatarChange}/>
-                <span style={{fontSize: 12.5, color: "var(--dash-muted)"}}>Нажмите на фото, чтобы изменить</span>
+                <span style={{fontSize: 12, color: "var(--dash-muted)"}}>Нажмите на фото, чтобы изменить</span>
             </div>
             <ul className="dash-list">
                 {metaItems.map(item => (
@@ -73,7 +73,7 @@ export function SettingsCol1({
                             <div style={{flex: 1}}>
                                 <span style={{
                                     color: done ? "var(--dash-text)" : failed ? "var(--dash-danger, var(--destructive))" : "var(--dash-muted)",
-                                    fontSize: 13
+                                    fontSize: 14
                                 }}>{step.label}</span>
                                 {failed && stepData?.comment && (
                                     <p style={{
@@ -127,7 +127,7 @@ export function SettingsCol2({name, email, formData, status, onboardingSteps, fe
                        style={{color: featuredOnLanding ? "var(--dash-success)" : "var(--dash-muted)"}}/>
                     На главной странице
                 </div>
-                <p style={{margin: "0 0 10px", fontSize: 12.5, color: "var(--dash-muted)"}}>
+                <p style={{margin: "0 0 10px", fontSize: 12, color: "var(--dash-muted)"}}>
                     {featuredOnLanding
                         ? "Ваш профиль виден клиентам в карусели специалистов."
                         : "Модератор добавит вас на лендинг после верификации."}
@@ -138,7 +138,7 @@ export function SettingsCol2({name, email, formData, status, onboardingSteps, fe
                         {done: hasAbout, label: "Заполнено «О себе»"},
                     ].map(item => (
                         <li key={item.label}
-                            style={{display: "flex", alignItems: "center", gap: 6, padding: "3px 0", fontSize: 12.5}}>
+                            style={{display: "flex", alignItems: "center", gap: 6, padding: "4px 0", fontSize: 12}}>
                             <Icon name={stripBx(item.done ? "bx-check" : "bx-x")}
                                style={{color: item.done ? "var(--dash-success)" : "var(--dash-muted)"}}/>
                             <span

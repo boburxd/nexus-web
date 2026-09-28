@@ -3,41 +3,25 @@
 import {useEffect, useMemo, useState} from "react"
 import {toast} from "sonner"
 import {DashSettingsSection} from "@/components/dashboard-ui/DashSettingsSection"
+import {Button} from "@/components/ui/button"
+import {Icon} from "@/components/ui/icon"
+import {Input} from "@/components/ui/input"
 import {validateClientRequisitesForm} from "@/lib/client-requisites-validation"
 import {EDO_PROVIDER_OPTIONS, parseEdoProviders} from "@/lib/edo-providers"
 import {LEGAL_FORMS, POSITION_CHIPS} from "./constants"
 
-const settingsInputStyle: React.CSSProperties = {
-    width: "100%",
-    padding: "8px 12px",
-    borderRadius: 8,
-    fontSize: "0.875rem",
-    color: "var(--dash-text)",
-    background: "var(--dash-surface2)",
-    fontFamily: "inherit",
-    boxSizing: "border-box",
-}
-
 function SettingsChip({label, active, onClick}: { label: string; active: boolean; onClick: () => void }) {
     return (
-        <button
+        <Button
             type="button"
+            variant={active ? "default" : "outline"}
+            size="xs"
+            aria-pressed={active}
             onClick={onClick}
-            style={{
-                padding: "4px 10px",
-                borderRadius: 14,
-                fontSize: "0.75rem",
-                fontWeight: 500,
-                cursor: "pointer",
-                fontFamily: "inherit",
-                border: active ? "1.5px solid var(--dash-accent)" : "1.5px solid var(--dash-border)",
-                background: active ? "var(--dash-accent-bg)" : "transparent",
-                color: active ? "var(--dash-accent)" : "var(--dash-text2)",
-            }}
         >
-            {active && <span style={{marginRight: "4px"}}>✓</span>}
+            {active && <Icon name="check"/>}
             {label}
-        </button>
+        </Button>
     )
 }
 
@@ -205,49 +189,43 @@ export function SettingsTab({name, email, formData}: {
                     <DashSettingsSection title="Контактные данные" iconClass="bx bx-user"
                                          className="dash-surface-card--pad-md">
                         <F label="Имя">
-                            <input
+                            <Input
                                 type="text"
                                 autoComplete="given-name"
                                 value={form.firstName || ""}
                                 onChange={e => setForm(p => ({...p, firstName: e.target.value}))}
-                                style={settingsInputStyle}
                             />
                         </F>
                         <F label="Фамилия">
-                            <input
+                            <Input
                                 type="text"
                                 autoComplete="family-name"
                                 value={form.lastName || ""}
                                 onChange={e => setForm(p => ({...p, lastName: e.target.value}))}
-                                style={settingsInputStyle}
                             />
                         </F>
                         <F label="Email">
-                            <input
+                            <Input
                                 type="email"
                                 value={form.email || email}
                                 onChange={e => setForm(p => ({...p, email: e.target.value}))}
-                                style={settingsInputStyle}
                             />
                         </F>
                         <F label="Телефон">
-                            <input type="tel" value={form.phone || ""}
-                                   onChange={e => setForm(p => ({...p, phone: e.target.value}))}
-                                   style={settingsInputStyle}/>
+                            <Input type="tel" value={form.phone || ""}
+                                   onChange={e => setForm(p => ({...p, phone: e.target.value}))}/>
                         </F>
                         <F label="Сайт">
-                            <input
+                            <Input
                                 type="url"
                                 placeholder="https://..."
                                 value={form.website || ""}
                                 onChange={e => setForm(p => ({...p, website: e.target.value}))}
-                                style={settingsInputStyle}
                             />
                         </F>
                         <F label="Город">
-                            <input type="text" value={form.city || ""}
-                                   onChange={e => setForm(p => ({...p, city: e.target.value}))}
-                                   style={settingsInputStyle}/>
+                            <Input type="text" value={form.city || ""}
+                                   onChange={e => setForm(p => ({...p, city: e.target.value}))}/>
                         </F>
                         <F label="ЭДО">
                             <p style={{
@@ -315,22 +293,20 @@ export function SettingsTab({name, email, formData}: {
                         {(isLegal || isIP) && (
                             <>
                                 <F label={isIP ? "Наименование / ФИО ИП" : "Наименование организации"} required>
-                                    <input
+                                    <Input
                                         type="text"
                                         required
                                         value={form.company || ""}
                                         onChange={e => setForm(p => ({...p, company: e.target.value}))}
-                                        style={settingsInputStyle}
                                         placeholder={isIP ? "Как в ЕГРИП" : "Как в ЕГРЮЛ"}
                                     />
                                 </F>
                                 <F label="ИНН" required>
-                                    <input
+                                    <Input
                                         type="text"
                                         required
                                         value={form.inn || ""}
                                         onChange={e => lookupInn(e.target.value)}
-                                        style={settingsInputStyle}
                                         maxLength={isIP ? 12 : 10}
                                         inputMode="numeric"
                                     />
@@ -338,22 +314,20 @@ export function SettingsTab({name, email, formData}: {
                                 {isLegal && (
                                     <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 0.75rem"}}>
                                         <F label="КПП" required>
-                                            <input
+                                            <Input
                                                 type="text"
                                                 required
                                                 value={form.kpp || ""}
                                                 onChange={e => setForm(f => ({...f, kpp: e.target.value}))}
-                                                style={settingsInputStyle}
                                                 maxLength={9}
                                             />
                                         </F>
                                         <F label="ОГРН" required>
-                                            <input
+                                            <Input
                                                 type="text"
                                                 required
                                                 value={form.ogrn || ""}
                                                 onChange={e => setForm(f => ({...f, ogrn: e.target.value}))}
-                                                style={settingsInputStyle}
                                                 maxLength={13}
                                             />
                                         </F>
@@ -361,64 +335,58 @@ export function SettingsTab({name, email, formData}: {
                                 )}
                                 {isIP && (
                                     <F label="ОГРНИП" required>
-                                        <input
+                                        <Input
                                             type="text"
                                             required
                                             value={form.ogrn || ""}
                                             onChange={e => setForm(f => ({...f, ogrn: e.target.value}))}
-                                            style={settingsInputStyle}
                                             maxLength={15}
                                         />
                                     </F>
                                 )}
                                 <F label={isIP ? "Адрес регистрации" : "Юр. адрес"} required>
-                                    <input
+                                    <Input
                                         type="text"
                                         required
                                         value={form.legalAddress || ""}
                                         onChange={e => setForm(f => ({...f, legalAddress: e.target.value}))}
-                                        style={settingsInputStyle}
                                     />
                                 </F>
                                 <F label="Р/с" required>
-                                    <input
+                                    <Input
                                         type="text"
                                         required
                                         value={form.bankAccount || ""}
                                         onChange={e => setForm(f => ({...f, bankAccount: e.target.value}))}
-                                        style={settingsInputStyle}
                                         maxLength={20}
                                     />
                                 </F>
                                 <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 0.75rem"}}>
                                     <F label="Банк" required>
-                                        <input
+                                        <Input
                                             type="text"
                                             required
                                             value={form.bankName || ""}
                                             onChange={e => setForm(f => ({...f, bankName: e.target.value}))}
-                                            style={settingsInputStyle}
                                         />
                                     </F>
                                     <F label="БИК" required>
-                                        <input
+                                        <Input
                                             type="text"
                                             required
                                             value={form.bankBik || ""}
                                             onChange={e => lookupBik(e.target.value)}
-                                            style={settingsInputStyle}
                                             maxLength={9}
                                             inputMode="numeric"
                                         />
                                     </F>
                                 </div>
                                 <F label="Корр. счет" required>
-                                    <input
+                                    <Input
                                         type="text"
                                         required
                                         value={form.corrAccount || ""}
                                         onChange={e => setForm(f => ({...f, corrAccount: e.target.value}))}
-                                        style={settingsInputStyle}
                                         maxLength={20}
                                     />
                                 </F>
@@ -431,7 +399,6 @@ export function SettingsTab({name, email, formData}: {
                     <div
                         style={{
                             background: "var(--dash-danger-bg)",
-                            border: "1px solid var(--dash-danger)",
                             borderRadius: 8,
                             padding: "10px 1rem",
                             marginTop: 12,
@@ -443,25 +410,14 @@ export function SettingsTab({name, email, formData}: {
                     </div>
                 )}
 
-                <button
+                <Button
                     data-tour="btn-save-requisites"
                     type="submit"
                     disabled={saving || saved}
-                    style={{
-                        marginTop: 16,
-                        padding: "10px 32px",
-                        borderRadius: 8,
-                        fontSize: "0.875rem",
-                        fontWeight: 600,
-                        fontFamily: "inherit",
-                        background: saved ? "var(--dash-success)" : "var(--dash-accent)",
-                        color: "var(--dash-bg)",
-                        cursor: saving || saved ? "default" : "pointer",
-                        opacity: saving ? 0.7 : 1,
-                    }}
+                    className="mt-4"
                 >
                     {saved ? "✓ Сохранено" : saving ? "Сохранение…" : "Сохранить изменения"}
-                </button>
+                </Button>
             </form>
         </div>
     )

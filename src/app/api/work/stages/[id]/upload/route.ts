@@ -61,7 +61,7 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
         const safeName = `${Date.now()}-video-${video.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
         const s3Key = `orders/${stage.order.id}/stages/${stage.type}/${stage.version}/${safeName}`;
         await putObject(s3Key, Buffer.from(await video.arrayBuffer()), video.type || "video/mp4");
-        await prisma.stageFile.create({data: {stageId, s3Key, filename: `🎬 ${video.name}`}});
+        await prisma.stageFile.create({data: {stageId, s3Key, filename: video.name}});
     }
 
     // Только первый залив переводит PENDING → UPLOADED. При доработках статус не затирать:

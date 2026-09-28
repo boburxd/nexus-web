@@ -4,6 +4,7 @@ import {useMemo, useState} from "react"
 import {ADMIN_BRIEF_FIELD_GROUPS, getAdminBriefCompletion} from "@/lib/adminBriefFields"
 import {formatBriefWizardProgress} from "@/lib/clientBriefDisplay"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 import {stripBx} from "@/lib/icon-map"
 
 function trunc(s: string, n: number): string {
@@ -82,11 +83,10 @@ export function AdminBriefSummaryPanel({
                 gap: 8
             }}>
                 <span className="sp-label">Бриф заказчика</span>
-                <button type="button" className="sp-btn sp-btn-primary" onClick={onOpenFullEditor}
-                        style={{padding: "4px 12px", fontSize: "0.75rem"}}>
-                    <Icon name="expand-alt" style={{marginRight: 4}}/>
+                <Button type="button" size="xs" onClick={onOpenFullEditor}>
+                    <Icon name="expand-alt"/>
                     Полный бриф
-                </button>
+                </Button>
             </div>
             <div className="sp-card-bd" style={{paddingTop: 4}}>
                 <div style={{
@@ -178,15 +178,15 @@ export function AdminBriefSummaryPanel({
                                 </div>
                             </div>
                         </div>
-                        <button
+                        <Button
                             type="button"
-                            className="sp-btn sp-btn-ghost"
-                            style={{fontSize: "0.75rem", padding: "4px 8px"}}
+                            size="xs"
+                            variant="ghost"
                             onClick={() => void loadBriefFiles()}
                         >
-                            <Icon name="refresh" style={{marginRight: 4}}/>
+                            <Icon name="refresh"/>
                             Показать
-                        </button>
+                        </Button>
                     </div>
                     {filesLoaded && briefFiles.length > 0 ? (
                         <div style={{display: "grid", gap: 6}}>
@@ -231,7 +231,6 @@ export function AdminBriefSummaryPanel({
                             padding: "8px 12px",
                             borderRadius: 8,
                             background: "color-mix(in oklab, var(--destructive) 8%, transparent)",
-                            border: "1px solid color-mix(in oklab, var(--destructive) 25%, transparent)",
                             fontSize: "0.75rem",
                             color: "var(--destructive)",
                             display: "flex",
@@ -257,24 +256,12 @@ export function AdminBriefSummaryPanel({
                             borderRadius: 8,
                             overflow: "hidden"
                         }}>
-                            <button
+                            <Button
                                 type="button"
+                                variant="ghost"
+                                className="w-full justify-between"
+                                aria-expanded={expanded}
                                 onClick={() => toggle(group.label)}
-                                style={{
-                                    width: "100%",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "space-between",
-                                    gap: 8,
-                                    padding: "8px 10px",
-                                    background: "var(--adm-hover-bg, rgba(0,0,0,0.03))",
-                                    border: "none",
-                                    cursor: "pointer",
-                                    fontFamily: "inherit",
-                                    fontSize: "0.75rem",
-                                    fontWeight: 600,
-                                    color: "var(--adm-muted)",
-                                }}
                             >
                 <span style={{display: "flex", alignItems: "center", gap: 6}}>
                   <Icon name={stripBx(group.icon)} style={{color: "var(--adm-active-color)"}}/>
@@ -284,7 +271,7 @@ export function AdminBriefSummaryPanel({
                   </span>
                 </span>
                                 <Icon name={stripBx(expanded ? "bx-chevron-up" : "bx-chevron-down")}/>
-                            </button>
+                            </Button>
                             {expanded && (
                                 <div style={{padding: "6px 10px 10px"}}>
                                     {groupRows.map((r, ri) => (

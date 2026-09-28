@@ -106,7 +106,7 @@ export default function NotificationBell({buttonClassName}: {
                         borderRadius: "50%",
                         background: "var(--dash-danger, var(--destructive))",
                         color: "#fff",
-                        fontSize: "0.6rem",
+                        fontSize: "0.75rem",
                         fontWeight: 700,
                         display: "flex",
                         alignItems: "center",
@@ -136,7 +136,7 @@ export default function NotificationBell({buttonClassName}: {
                         padding: "12px 16px",
                         borderBottom: "1px solid var(--dash-border, var(--border))"
                     }}>
-                        <span style={{fontWeight: 600, fontSize: "0.85rem"}}>Уведомления</span>
+                        <span style={{fontWeight: 600, fontSize: "0.875rem"}}>Уведомления</span>
                         {unread > 0 && (
                             <Button variant="link" size="xs" onClick={markAllRead}>
                                 Прочитать все
@@ -149,7 +149,7 @@ export default function NotificationBell({buttonClassName}: {
                             padding: "32px 16px",
                             textAlign: "center",
                             color: "var(--dash-muted, var(--muted-foreground))",
-                            fontSize: "0.82rem"
+                            fontSize: "0.875rem"
                         }}>
                             Нет уведомлений
                         </div>
@@ -174,13 +174,13 @@ export default function NotificationBell({buttonClassName}: {
                                 <div style={{flex: 1, minWidth: 0}}>
                                     <p style={{
                                         margin: 0,
-                                        fontSize: "0.8rem",
+                                        fontSize: "0.875rem",
                                         fontWeight: item.readAt ? 400 : 600,
                                         color: "var(--dash-text, var(--foreground))"
                                     }}>{item.title}</p>
                                     {item.message && <p style={{
                                         margin: "2px 0 0",
-                                        fontSize: "0.73rem",
+                                        fontSize: "0.75rem",
                                         color: "var(--dash-muted, var(--muted-foreground))"
                                     }}>{item.message}</p>}
                                 </div>
@@ -193,7 +193,7 @@ export default function NotificationBell({buttonClassName}: {
                                     marginTop: 6
                                 }}/>}
                             </div>
-                            <p style={{margin: "4px 0 0", fontSize: "0.65rem", color: "var(--dash-muted, var(--muted-foreground))"}}>
+                            <p style={{margin: "4px 0 0", fontSize: "0.75rem", color: "var(--dash-muted, var(--muted-foreground))"}}>
                                 {new Date(item.createdAt).toLocaleString("ru-RU", {
                                     day: "numeric",
                                     month: "short",

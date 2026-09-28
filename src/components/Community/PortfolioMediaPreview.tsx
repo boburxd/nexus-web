@@ -88,7 +88,7 @@ export function PortfolioRemoteFilePreview({
     if (loading && !url) {
         return (
             <div style={{...boxStyle}}>
-                <Icon name="loader-alt" className="bx-spin" style={{fontSize: 22, color: "rgba(255,255,255,0.5)"}}
+                <Icon name="loader-alt" className="bx-spin" size={22} style={{color: "rgba(255,255,255,0.5)"}}
                    aria-hidden/>
             </div>
         )
@@ -108,9 +108,9 @@ export function PortfolioRemoteFilePreview({
                 <span
                     className="position-absolute bottom-0 start-0 end-0 text-center"
                     style={{
-                        background: "linear-gradient(transparent, rgba(0,0,0,0.75))",
+                        background: "rgba(0,0,0,0.6)",
                         color: "#fff",
-                        fontSize: 10,
+                        fontSize: 12,
                         padding: "4px 2px"
                     }}
                 >
@@ -172,7 +172,7 @@ export function PortfolioLocalFilePreview({file, size = 112}: { file: File; size
 
     return (
         <div style={{...boxStyle, display: "flex", alignItems: "center", justifyContent: "center"}}>
-            <Icon name="file" style={{fontSize: 28, opacity: 0.7, color: "rgba(255,255,255,0.75)"}}
+            <Icon name="file" size={28} style={{opacity: 0.7, color: "rgba(255,255,255,0.75)"}}
                aria-hidden/>
         </div>
     )

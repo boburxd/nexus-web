@@ -261,7 +261,7 @@ export default function OrderWorkStageClient({
                                                     color: "var(--dash-muted)",
                                                     lineHeight: 1.45
                                                 }}>
-                                                    Рекомендуем посмотреть перед согласованием — там описаны формат и
+                                                    Рекомендуем посмотреть перед согласованием: там описаны формат и
                                                     состав материалов по этапу.
                                                 </div>
                                             </div>
@@ -306,7 +306,6 @@ export default function OrderWorkStageClient({
                                                             marginBottom: 12,
                                                             padding: "12px 14px",
                                                             borderRadius: 10,
-                                                            border: "1px solid var(--dash-success)",
                                                             background: "var(--dash-success-bg)",
                                                             display: "flex",
                                                             alignItems: "center",
@@ -331,7 +330,7 @@ export default function OrderWorkStageClient({
                                                                     fontSize: "0.75rem",
                                                                     color: "var(--dash-muted)"
                                                                 }}>
-                                                                    {nextStage ? `Далее — «${STAGE_LABEL[nextStage.type]}».` : "Все этапы завершены — можно вернуться к проекту."}
+                                                                    {nextStage ? `Далее: «${STAGE_LABEL[nextStage.type]}».` : "Все этапы завершены, можно вернуться к проекту."}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -372,7 +371,6 @@ export default function OrderWorkStageClient({
                                     <div
                                         style={{
                                             background: "var(--dash-surface)",
-                                            border: "1px solid var(--dash-border)",
                                             borderRadius: 14,
                                             padding: 16,
                                             color: "var(--dash-muted)",

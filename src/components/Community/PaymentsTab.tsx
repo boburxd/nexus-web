@@ -25,7 +25,7 @@ const CON_BADGE: Record<string, { variant: "done" | "pending" | "current" | "rej
 function Section({title, icon, children}: { title: string; icon: string; children: React.ReactNode }) {
     return (
         <DashSurfaceCard padding="md" className="dash-surface-card--mb">
-            <h3 style={{fontSize: "0.82rem", fontWeight: 600, margin: "0 0 10px", color: "var(--dash-text)"}}>
+            <h3 style={{fontSize: "0.875rem", fontWeight: 600, margin: "0 0 10px", color: "var(--dash-text)"}}>
                 <Icon name={stripBx(icon)} style={{marginRight: 6, color: "var(--dash-accent)"}}/>{title}
             </h3>
             {children}
@@ -199,14 +199,14 @@ export function PaymentsCol1({payments, formData, contracts, acts}: {
                 {hasReqs ? (
                     <div
                         className="rwd-grid-2"
-                        style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 16px", fontSize: "0.78rem"}}>
+                        style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 16px", fontSize: "0.75rem"}}>
                         {reqRows.map(r => r.value ? (
                             <div key={r.label}><span style={{color: "var(--dash-muted)"}}>{r.label}: </span>{r.value}
                             </div>
                         ) : null)}
                     </div>
                 ) : (
-                    <p style={{fontSize: "0.8rem", color: "var(--dash-muted)", margin: 0}}>Не заполнены: укажите в
+                    <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", margin: 0}}>Не заполнены: укажите в
                         Настройках</p>
                 )}
             </Section>
@@ -214,7 +214,7 @@ export function PaymentsCol1({payments, formData, contracts, acts}: {
             {/* Contracts */}
             <Section title="Договоры" icon="bx-file">
                 {contracts.length === 0 ? (
-                    <p style={{fontSize: "0.8rem", color: "var(--dash-muted)", margin: 0}}>Договоров пока нет</p>
+                    <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", margin: 0}}>Договоров пока нет</p>
                 ) : (
                     <div className="dash-finance-list">
                         {contracts.map(c => {
@@ -246,7 +246,7 @@ export function PaymentsCol1({payments, formData, contracts, acts}: {
             {/* Acts */}
             <Section title="Акты выполненных работ" icon="bx-check-shield">
                 {acts.length === 0 ? (
-                    <p style={{fontSize: "0.8rem", color: "var(--dash-muted)", margin: 0}}>Актов пока нет</p>
+                    <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", margin: 0}}>Актов пока нет</p>
                 ) : (
                     <div className="dash-finance-list">
                         {acts.map(a => (
@@ -273,7 +273,7 @@ export function PaymentsCol1({payments, formData, contracts, acts}: {
             {/* Payments */}
             <Section title="История выплат" icon="bx-credit-card">
                 {payments.length === 0 ? (
-                    <p style={{fontSize: "0.8rem", color: "var(--dash-muted)", margin: 0}}>Выплат пока нет</p>
+                    <p style={{fontSize: "0.75rem", color: "var(--dash-muted)", margin: 0}}>Выплат пока нет</p>
                 ) : (
                     <div className="dash-finance-list">
                         {payments.map(p => {

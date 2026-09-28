@@ -8,6 +8,7 @@ import {FRAMEWORK_CONTRACT_BADGE} from "./constants"
 import {DocSection} from "./DocSection"
 import {FrameworkContractClientGuide} from "./FrameworkContractClientGuide"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 
 const SCAN_ACCEPT = ".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
 /** После ответа на договор скан больше не принимается — форма показывается заблокированной. */
@@ -124,11 +125,6 @@ export function FrameworkContractSection({
         }
     }
 
-    const buttonBase = {
-        padding: "6px 14px", borderRadius: 8, fontSize: "0.75rem", fontWeight: 600,
-        cursor: busy ? "not-allowed" : "pointer", fontFamily: "inherit", opacity: busy ? 0.6 : 1,
-    } as const
-
     return (
         <DocSection title={title} icon="bx-file-blank">
             {!compact ? <FrameworkContractClientGuide contractStatus={state.status}/> : null}
@@ -148,18 +144,15 @@ export function FrameworkContractSection({
             {!compact && awaiting && (
                 <p style={{fontSize: "0.875rem", color: "var(--dash-text2)", margin: "0 0 12px", lineHeight: 1.5}}>
                     Договор размещён: скачайте PDF, при необходимости приложите скан с подписью и нажмите «Подписан»
-                    (или «Отказать», если не согласны, с вами свяжется менеджер).
+                    (или «Отказать», если не согласны: с вами свяжется менеджер).
                 </p>
             )}
 
             {state.hasFile && (
                 <div style={{marginBottom: awaiting || responded ? 12 : 0}}>
-                    <button type="button" onClick={() => void download()} style={{
-                        ...buttonBase, cursor: "pointer", opacity: 1,
-                        background: "var(--dash-accent-bg)", color: "var(--dash-accent)",
-                    }}>
-                        <Icon name="download" style={{marginRight: 4}}/>Скачать PDF
-                    </button>
+                    <Button type="button" variant="outline" size="sm" onClick={() => void download()}>
+                        <Icon name="download"/>Скачать PDF
+                    </Button>
                 </div>
             )}
 
@@ -189,16 +182,13 @@ export function FrameworkContractSection({
 
             {awaiting && (
                 <div style={{display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12}}>
-                    <button type="button" disabled={busy} onClick={() => void respond("sign")} style={{
-                        ...buttonBase, background: "var(--dash-success)", color: "#fff",
-                    }}>
+                    <Button type="button" size="sm" disabled={busy} onClick={() => void respond("sign")}>
                         {busy ? "Отправка…" : "Подписан"}
-                    </button>
-                    <button type="button" disabled={busy} onClick={() => void respond("decline")} style={{
-                        ...buttonBase, border: "1px solid var(--dash-danger)", background: "transparent", color: "var(--dash-danger)",
-                    }}>
+                    </Button>
+                    <Button type="button" variant="destructive" size="sm" disabled={busy}
+                            onClick={() => void respond("decline")}>
                         Отказать
-                    </button>
+                    </Button>
                 </div>
             )}
 

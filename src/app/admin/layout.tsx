@@ -47,79 +47,79 @@ export default async function AdminLayout({children}: { children: ReactNode }) {
         }
 
         /* ── Dark mode: Bootstrap component overrides ──
-           Всё содержимое /admin рендерится внутри .adm-root (AdminLayout), поэтому цвета
-           берутся из тёмного набора --adm-* — тех же токенов, что у шапки и сайдбара. */
+           Цвета — тёмный набор --adm-* (AdminLayout, .adm-root). Модалки и ящики порталятся в body,
+           вне .adm-root, поэтому у каждого токена запасное значение, равное его тёмному значению. */
         @media (prefers-color-scheme: dark) {
           /* Cards */
           .card {
-            --bs-card-bg: var(--adm-card-bg);
-            --bs-card-border-color: var(--adm-sidebar-border);
-            --bs-card-color: var(--adm-text);
-            background-color: var(--adm-card-bg) !important;
-            border-color: var(--adm-sidebar-border) !important;
-            color: var(--adm-text);
+            --bs-card-bg: var(--adm-card-bg, hsl(219, 36%, 13%));
+            --bs-card-border-color: var(--adm-sidebar-border, hsl(216, 24%, 24%));
+            --bs-card-color: var(--adm-text, hsl(210, 30%, 94%));
+            background-color: var(--adm-card-bg, hsl(219, 36%, 13%)) !important;
+            border-color: var(--adm-sidebar-border, hsl(216, 24%, 24%)) !important;
+            color: var(--adm-text, hsl(210, 30%, 94%));
           }
           .card-header {
-            background-color: var(--adm-sidebar) !important;
-            border-bottom-color: var(--adm-sidebar-border) !important;
-            color: var(--adm-text);
+            background-color: var(--adm-sidebar, hsl(218, 32%, 14%)) !important;
+            border-bottom-color: var(--adm-sidebar-border, hsl(216, 24%, 24%)) !important;
+            color: var(--adm-text, hsl(210, 30%, 94%));
           }
-          .card-body { color: var(--adm-text); }
+          .card-body { color: var(--adm-text, hsl(210, 30%, 94%)); }
 
           /* Tables */
           .table {
             --bs-table-bg: transparent;
-            --bs-table-color: var(--adm-text);
-            --bs-table-border-color: var(--adm-sidebar-border);
-            color: var(--adm-text);
+            --bs-table-color: var(--adm-text, hsl(210, 30%, 94%));
+            --bs-table-border-color: var(--adm-sidebar-border, hsl(216, 24%, 24%));
+            color: var(--adm-text, hsl(210, 30%, 94%));
           }
           .table thead th {
-            color: var(--adm-muted);
-            border-bottom-color: var(--adm-sidebar-border);
+            color: var(--adm-muted, hsl(214, 16%, 66%));
+            border-bottom-color: var(--adm-sidebar-border, hsl(216, 24%, 24%));
           }
-          .table td { border-bottom-color: var(--adm-sidebar-border); }
-          .table-hover > tbody > tr:hover > td { background-color: var(--adm-hover-bg); }
+          .table td { border-bottom-color: var(--adm-sidebar-border, hsl(216, 24%, 24%)); }
+          .table-hover > tbody > tr:hover > td { background-color: var(--adm-hover-bg, hsla(205, 85%, 62%, 0.09)); }
 
           /* Form controls — фокус показывается цветом рамки, без свечения */
           .form-control, .form-select {
-            background-color: var(--adm-card-bg);
-            border-color: var(--adm-sidebar-border);
-            color: var(--adm-text);
+            background-color: var(--adm-card-bg, hsl(219, 36%, 13%));
+            border-color: var(--adm-sidebar-border, hsl(216, 24%, 24%));
+            color: var(--adm-text, hsl(210, 30%, 94%));
           }
           .form-control:focus, .form-select:focus {
-            background-color: var(--adm-sidebar);
-            border-color: var(--adm-active-color);
-            color: var(--adm-text);
+            background-color: var(--adm-sidebar, hsl(218, 32%, 14%));
+            border-color: var(--adm-active-color, hsl(205, 85%, 66%));
+            color: var(--adm-text, hsl(210, 30%, 94%));
             box-shadow: none;
           }
-          .form-control::placeholder { color: var(--adm-muted); }
-          textarea.form-control { background-color: var(--adm-card-bg); color: var(--adm-text); }
+          .form-control::placeholder { color: var(--adm-muted, hsl(214, 16%, 66%)); }
+          textarea.form-control { background-color: var(--adm-card-bg, hsl(219, 36%, 13%)); color: var(--adm-text, hsl(210, 30%, 94%)); }
 
           /* Borders */
-          .border, .border-bottom, .border-top { border-color: var(--adm-sidebar-border) !important; }
-          .rounded, .border-bottom { border-color: var(--adm-sidebar-border); }
+          .border, .border-bottom, .border-top { border-color: var(--adm-sidebar-border, hsl(216, 24%, 24%)) !important; }
+          .rounded, .border-bottom { border-color: var(--adm-sidebar-border, hsl(216, 24%, 24%)); }
 
           /* Text utilities */
-          .text-muted { color: var(--adm-muted) !important; }
-          .text-dark  { color: var(--adm-text) !important; }
-          .fw-semibold, .fw-medium, .fw-bold { color: var(--adm-text); }
+          .text-muted { color: var(--adm-muted, hsl(214, 16%, 66%)) !important; }
+          .text-dark  { color: var(--adm-text, hsl(210, 30%, 94%)) !important; }
+          .fw-semibold, .fw-medium, .fw-bold { color: var(--adm-text, hsl(210, 30%, 94%)); }
 
           /* Buttons */
           .btn-outline-secondary {
-            color: var(--adm-muted);
-            border-color: var(--adm-sidebar-border);
+            color: var(--adm-muted, hsl(214, 16%, 66%));
+            border-color: var(--adm-sidebar-border, hsl(216, 24%, 24%));
           }
           .btn-outline-secondary:hover {
-            background-color: var(--adm-sidebar-border);
-            border-color: var(--adm-muted);
-            color: var(--adm-text);
+            background-color: var(--adm-sidebar-border, hsl(216, 24%, 24%));
+            border-color: var(--adm-muted, hsl(214, 16%, 66%));
+            color: var(--adm-text, hsl(210, 30%, 94%));
           }
 
           /* Badges */
-          .bg-label-secondary { background-color: color-mix(in oklab, var(--adm-text) 7%, transparent) !important; color: var(--adm-name-color) !important; }
-          .bg-label-primary   { background-color: var(--adm-active-bg) !important; color: var(--adm-active-color) !important; }
+          .bg-label-secondary { background-color: color-mix(in oklab, var(--adm-text, hsl(210, 30%, 94%)) 7%, transparent) !important; color: var(--adm-name-color, hsl(212, 22%, 80%)) !important; }
+          .bg-label-primary   { background-color: var(--adm-active-bg, hsla(205, 85%, 62%, 0.16)) !important; color: var(--adm-active-color, hsl(205, 85%, 66%)) !important; }
           .bg-label-warning   { background-color: color-mix(in oklab, var(--warning) 18%, transparent) !important; color: var(--warning) !important; }
-          .bg-label-danger    { background-color: color-mix(in oklab, var(--destructive) 18%, transparent) !important; color: color-mix(in oklab, var(--destructive) 60%, var(--adm-text)) !important; }
+          .bg-label-danger    { background-color: color-mix(in oklab, var(--destructive) 18%, transparent) !important; color: color-mix(in oklab, var(--destructive) 60%, var(--adm-text, hsl(210, 30%, 94%))) !important; }
           .bg-label-success   { background-color: color-mix(in oklab, var(--success) 18%, transparent) !important; color: var(--success) !important; }
           .bg-label-info      { background-color: color-mix(in oklab, var(--ring) 18%, transparent) !important; color: var(--ring) !important; }
 

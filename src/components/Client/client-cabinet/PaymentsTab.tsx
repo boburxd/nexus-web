@@ -1,6 +1,7 @@
 "use client"
 
 import {StatusBadge} from "@/components/app/AppCard"
+import {Button} from "@/components/ui/button"
 import {DashActionLink} from "@/components/dashboard-ui/DashActionLink"
 import {DashDataTable} from "@/components/dashboard-ui/DashDataTable"
 import {DashStatsRow} from "@/components/dashboard-ui/DashStatsRow"
@@ -107,21 +108,9 @@ export function PaymentsTab({
                                 margin: "0 0 12px"
                             }}>{requisitesError}</p>
                         )}
-                        <button
-                            onClick={onSwitchToSettings}
-                            style={{
-                                padding: "6px 14px",
-                                borderRadius: 8,
-                                background: "var(--dash-accent-bg)",
-                                color: "var(--dash-accent)",
-                                fontSize: "0.75rem",
-                                fontWeight: 600,
-                                cursor: "pointer",
-                                fontFamily: "inherit",
-                            }}
-                        >
+                        <Button type="button" variant="outline" size="sm" onClick={onSwitchToSettings}>
                             Заполнить реквизиты
-                        </button>
+                        </Button>
                     </div>
                 ) : (
                     <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 16px"}}>

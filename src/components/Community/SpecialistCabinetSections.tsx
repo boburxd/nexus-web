@@ -66,7 +66,7 @@ export function SpecialistLandingSection({portfolioProjectsCount}: { portfolioPr
             <div style={{gridColumn: "1 / -1"}}>
                 <DashEmptyState
                     iconClass="bx-image-alt"
-                    message="Сначала создайте проект портфолио — лендинг собирается из его материалов."
+                    message="Сначала создайте проект портфолио: лендинг собирается из его материалов."
                 >
                     <DashActionLink href={specialistSectionHref("portfolio")} iconClass="bx-plus">
                         Создать проект портфолио

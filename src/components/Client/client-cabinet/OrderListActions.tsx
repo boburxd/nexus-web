@@ -4,6 +4,7 @@ import {useState} from "react"
 import {useRouter} from "next/navigation"
 import {toast} from "sonner"
 import {Icon} from "@/components/ui/icon"
+import {Button} from "@/components/ui/button"
 import {stripBx} from "@/lib/icon-map"
 
 export function HelpButton({
@@ -47,8 +48,10 @@ export function HelpButton({
     const disabled = Boolean(disabledProp) || done
 
     return (
-        <button
+        <Button
             type="button"
+            variant={done ? "secondary" : confirming ? "default" : "outline"}
+            size="xs"
             onClick={onClick}
             onBlur={() => setConfirming(false)}
             disabled={disabled}
@@ -61,13 +64,7 @@ export function HelpButton({
                             ? "Нажмите еще раз для подтверждения"
                             : "Отправить запрос на помощь менеджера"
             }
-            className={[
-                "dash-inline-action",
-                "dash-inline-action--help",
-                done ? "is-done" : "",
-                confirming ? "is-confirming" : "",
-                className ?? "",
-            ].join(" ").trim()}
+            className={className}
         >
             {done ? (
                 <>
@@ -75,16 +72,16 @@ export function HelpButton({
                 </>
             ) : confirming ? (
                 <>
-                    <Icon name="error" style={{marginRight: 4}}/>
+                    <Icon name="error"/>
                     Подтвердить запрос
                 </>
             ) : (
                 <>
-                    <Icon name="help-circle" style={{marginRight: 4}}/>
+                    <Icon name="help-circle"/>
                     Нужна помощь менеджера
                 </>
             )}
-        </button>
+        </Button>
     )
 }
 
@@ -124,17 +121,19 @@ export function DeleteButton({
         }
     }
     return (
-        <button
+        <Button
+            type="button"
+            variant={confirming ? "destructive" : "ghost"}
+            size="xs"
             onClick={onClick}
             onBlur={() => {
                 if (!deleting) setConfirming(false)
             }}
             disabled={deleting}
-            className={["dash-inline-action", "dash-inline-action--delete", confirming ? "is-confirming" : "", className ?? ""].join(" ").trim()}
+            className={className}
         >
-            <Icon name={stripBx(deleting ? "bx-loader-circle bx-spin" : confirming ? "bx-check" : "bx-trash")}
-               style={{marginRight: 4}}/>
+            <Icon name={stripBx(deleting ? "bx-loader-circle bx-spin" : confirming ? "bx-check" : "bx-trash")}/>
             {deleting ? "Удаление…" : confirming ? "Точно?" : "Удалить"}
-        </button>
+        </Button>
     )
 }

@@ -1,5 +1,5 @@
 export function isVideoFilename(name: string) {
-    return /\.(mp4|webm|mov)$/i.test(name.replace(/^🎬\s*/, ""))
+    return /\.(mp4|webm|mov)$/i.test(name)
 }
 
 export function formatWaveDt(iso: string) {

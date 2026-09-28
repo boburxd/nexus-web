@@ -875,69 +875,6 @@
     border-radius: 10px;
 }
 
-.dash-inline-action {
-    display: inline-flex;
-    align-items: center;
-    white-space: nowrap;
-    border-radius: 8px;
-    font-size: 12px;
-    font-family: inherit;
-    cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease, transform 0.12s ease, opacity 0.15s ease;
-}
-
-.dash-inline-action--help {
-    background: transparent;
-    border: 1px solid var(--dash-border);
-    color: var(--dash-accent);
-    padding: 4px 10px;
-    font-weight: 500;
-}
-
-.dash-inline-action--help.is-confirming {
-    border-color: var(--dash-warn);
-    color: var(--dash-warn);
-}
-
-.dash-inline-action--help:hover:not(:disabled) {
-    border-color: color-mix(in oklab, var(--dash-accent) 68%, #fff 18%);
-    background: color-mix(in oklab, var(--dash-accent-bg) 72%, transparent);
-    color: #fff;
-}
-
-.dash-inline-action--help.is-done {
-    background: var(--dash-success-bg);
-    border-color: var(--dash-success);
-    color: var(--dash-success);
-    cursor: default;
-}
-
-.dash-inline-action--delete {
-    background: transparent;
-    border: none;
-    color: var(--dash-muted);
-    padding: 0;
-}
-
-.dash-inline-action--delete:hover {
-    color: var(--dash-danger);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-}
-
-.dash-inline-action--delete.is-confirming {
-    color: var(--dash-danger);
-}
-
-.dash-inline-action:focus-visible {
-    outline: 2px solid rgba(147, 197, 253, 0.85);
-    outline-offset: 2px;
-}
-
-.dash-card.dash-card--lk-order .dash-order-card-actions__btn {
-    font-size: 0.75rem;
-}
-
 .dash-order-card-actions-menu {
     display: flex;
     justify-content: flex-end;
