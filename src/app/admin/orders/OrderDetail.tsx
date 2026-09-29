@@ -5,7 +5,7 @@ import type {AdminOrderTab} from "@/lib/admin-routes"
 import {BriefEditor} from "@/components/admin/BriefEditor"
 import {Modal} from "@/components/ui/modal"
 import {STAGE_ORDER} from "@/lib/stage-constants"
-import type {Order, OrderStatus, SpecialistForAssignment} from "./types"
+import type {Order, OrderStatus} from "./types"
 import {adminManualStatusTargets} from "./types"
 import {OrderAlerts} from "./components/OrderAlerts"
 import {OrderHeader} from "./components/OrderHeader"
@@ -26,14 +26,9 @@ interface Props {
     /** Вкладка из адреса /admin/orders/:id[/:tab]. */
     activeTab: AdminOrderTab
     tabHref: (tab: AdminOrderTab) => string
-    specialists: SpecialistForAssignment[]
-    specialistAvatarUrls: Record<string, string>
-    assignMap: Record<string, string>
-    assigning: string | null
     acting: string | null
     contractGenerating: string | null
-    onAssignMapChange: (orderId: string, specId: string) => void
-    onAssign: (orderId: string) => void
+    onOpenAssignModal: (orderId: string) => void
     onReviewStage: (stageId: string, action: "modApprove" | "modRevision", stageName: string) => void
     onExtraPayment: (stageId: string, stageName: string) => void
     onClientRevision?: (stageId: string, action: "accept" | "reject", stageName: string) => void
@@ -51,8 +46,8 @@ interface Props {
 }
 
 export function OrderDetail({
-                                order, activeTab, tabHref, specialists, specialistAvatarUrls, assignMap, assigning, acting,
-                                onAssignMapChange, onAssign, onReviewStage, onExtraPayment, onChangeStatus,
+                                order, activeTab, tabHref, acting,
+                                onOpenAssignModal, onReviewStage, onExtraPayment, onChangeStatus,
                                 onBriefApprove, onBriefReject, onBriefSaved, onResolveHelp,
                                 onGenerateContract, onSendContractToClient, onConfirmContract,
                                 onApproveAct, onRejectAct, onConfirmAct,
@@ -192,14 +187,7 @@ export function OrderDetail({
 
     const manageTabProps = {
         order,
-        specialists,
-        specialistAvatarUrls,
-        assignMap,
-        assigning,
-        needsAssign,
         statusTargets,
-        onAssignMapChange,
-        onAssign,
         onChangeStatus,
     } as const
 
@@ -228,7 +216,7 @@ export function OrderDetail({
                     <div style={{flex: 1, minWidth: 0}}>
 
                         {/* Info cards */}
-                        <OrderInfoCards order={order}/>
+                        <OrderInfoCards order={order} onOpenAssignModal={onOpenAssignModal}/>
 
                         {/* Tabs */}
                         <OrderTabs activeTab={activeTab} modStagesCount={modStages.length} tabHref={tabHref}/>

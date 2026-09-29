@@ -1,10 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import {adminClientHref, adminOrderHref, adminSpecialistHref} from "@/lib/admin-routes"
+import {adminClientHref, adminSpecialistHref} from "@/lib/admin-routes"
 import type {Order} from "../types"
 
-export function OrderInfoCards({order}: { order: Order }) {
+export function OrderInfoCards({order, onOpenAssignModal}: { order: Order; onOpenAssignModal: (orderId: string) => void }) {
     return (
         <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 16}}>
             <div className="sp-card" style={{padding: "10px 12px"}}>
@@ -37,8 +37,9 @@ export function OrderInfoCards({order}: { order: Order }) {
                         Специалист
                     </div>
                     {!order.specialist && (
-                        <Link
-                            href={adminOrderHref(order.id, "manage")}
+                        <button
+                            type="button"
+                            onClick={() => onOpenAssignModal(order.id)}
                             style={{
                                 background: "none",
                                 border: "1px solid var(--adm-sidebar-border)",
@@ -46,12 +47,12 @@ export function OrderInfoCards({order}: { order: Order }) {
                                 padding: "2px 8px",
                                 fontSize: "0.68rem",
                                 color: "var(--adm-active-color)",
-                                textDecoration: "none",
+                                cursor: "pointer",
                                 whiteSpace: "nowrap"
                             }}
                         >
                             Назначить специалиста
-                        </Link>
+                        </button>
                     )}
                 </div>
                 {order.specialist ? (

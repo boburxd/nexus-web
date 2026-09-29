@@ -9,6 +9,7 @@ import type {Order, OrderStatus, SpecialistForAssignment} from "./types"
 import {ORDER_LABEL, STAGE_STATUS_LABEL} from "./types"
 import {OrderList} from "./OrderList"
 import type {OrderDetail} from "./OrderDetail"
+import {AssignSpecialistModal} from "./components/AssignSpecialistModal"
 import {adminOrderHref} from "@/lib/admin-routes"
 import {replaceQueryParams} from "@/lib/client/url-query"
 import "./orders.css"
@@ -62,8 +63,8 @@ export function OrdersShell({children}: { children: ReactNode }) {
     const [loading, setLoading] = useState(true)
     const [specialists, setSpecialists] = useState<SpecialistForAssignment[]>([])
     const [specialistAvatarUrls, setSpecialistAvatarUrls] = useState<Record<string, string>>({})
-    const [assignMap, setAssignMap] = useState<Record<string, string>>({})
-    const [assigning, setAssigning] = useState<string | null>(null)
+    const [assignModalOrderId, setAssignModalOrderId] = useState<string | null>(null)
+    const [assigningSpecialistId, setAssigningSpecialistId] = useState<string | null>(null)
     const [acting, setActing] = useState<string | null>(null)
     const [revisionModal, setRevisionModal] = useState<{ stageId: string; stageName: string } | null>(null)
     const [revisionComment, setRevisionComment] = useState("")
@@ -119,17 +120,21 @@ export function OrdersShell({children}: { children: ReactNode }) {
             return title.toLowerCase().includes(q) || o.client.email.toLowerCase().includes(q) || (o.specialist?.email ?? "").toLowerCase().includes(q)
         })
 
-    const assign = async (orderId: string) => {
-        const specialistId = assignMap[orderId]
-        if (!specialistId) return
-        setAssigning(orderId)
-        await fetch(`/api/admin/orders/${orderId}/assign`, {
+    const assignSpecialist = async (orderId: string, specialistId: string) => {
+        setAssigningSpecialistId(specialistId)
+        const res = await fetch(`/api/admin/orders/${orderId}/assign`, {
             method: "PATCH",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({specialistId})
         })
-        await load();
-        setAssigning(null)
+        if (res.ok) {
+            await load()
+            setAssignModalOrderId(null)
+        } else {
+            const err = await res.json().catch(() => ({}))
+            toast.error(err.error || "Не удалось назначить специалиста")
+        }
+        setAssigningSpecialistId(null)
     }
 
     const reviewStage = async (stageId: string, action: "modApprove" | "modRevision", stageName: string) => {
@@ -362,13 +367,8 @@ export function OrdersShell({children}: { children: ReactNode }) {
         orders,
         loading,
         detailProps: {
-            specialists,
-            specialistAvatarUrls,
-            assignMap,
-            assigning,
             acting,
-            onAssignMapChange: (oid, sid) => setAssignMap(p => ({...p, [oid]: sid})),
-            onAssign: assign,
+            onOpenAssignModal: (orderId) => setAssignModalOrderId(orderId),
             onReviewStage: reviewStage,
             onClientRevision: clientRevision,
             onExtraPayment: (sid, name) => {
@@ -557,6 +557,18 @@ export function OrdersShell({children}: { children: ReactNode }) {
                     </div>
                 </div>
             </Modal>
+
+            {/* Assign specialist modal */}
+            <AssignSpecialistModal
+                open={!!assignModalOrderId}
+                onClose={() => setAssignModalOrderId(null)}
+                specialists={specialists}
+                avatarUrls={specialistAvatarUrls}
+                assigningSpecialistId={assigningSpecialistId}
+                onAssign={(specialistId) => {
+                    if (assignModalOrderId) void assignSpecialist(assignModalOrderId, specialistId)
+                }}
+            />
 
             <div className="sp-wrap">
                 <OrderList

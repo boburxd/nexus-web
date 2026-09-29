@@ -1,59 +1,19 @@
 "use client"
 
-import type {Order, OrderStatus, SpecialistForAssignment} from "../types"
+import type {Order, OrderStatus} from "../types"
 import {ORDER_LABEL} from "../types"
-import {SpecialistPicker} from "./SpecialistPicker"
 
 export function OrderManageTab({
                                    order,
-                                   specialists,
-                                   specialistAvatarUrls,
-                                   assignMap,
-                                   assigning,
-                                   needsAssign,
                                    statusTargets,
-                                   onAssignMapChange,
-                                   onAssign,
                                    onChangeStatus,
                                }: {
     order: Order
-    specialists: SpecialistForAssignment[]
-    specialistAvatarUrls: Record<string, string>
-    assignMap: Record<string, string>
-    assigning: string | null
-    needsAssign: boolean
     statusTargets: OrderStatus[]
-    onAssignMapChange: (orderId: string, specId: string) => void
-    onAssign: (orderId: string) => void
     onChangeStatus: (orderId: string, status: OrderStatus) => void
 }) {
     return (
         <>
-            {needsAssign && order.status !== "DRAFT" && (
-                <div className="sp-card" style={{marginTop: 12}}>
-                    <div className="sp-card-hd">
-                        <span className="sp-label">Назначить специалиста</span>
-                    </div>
-                    <div className="sp-card-bd">
-                        <div style={{display: "flex", gap: 8}}>
-                            <SpecialistPicker
-                                specialists={specialists}
-                                avatarUrls={specialistAvatarUrls}
-                                value={assignMap[order.id] ?? ""}
-                                onChange={(specId) => onAssignMapChange(order.id, specId)}
-                            />
-                            <button
-                                onClick={() => onAssign(order.id)}
-                                disabled={!assignMap[order.id] || assigning === order.id}
-                                className="sp-btn sp-btn-primary"
-                            >
-                                {assigning === order.id ? "…" : "Назначить"}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
             {statusTargets.length > 0 && (
                 <div className="sp-card" style={{marginTop: 12}}>
                     <div className="sp-card-hd">
@@ -127,4 +87,3 @@ export function OrderManageTab({
         </>
     )
 }
-
