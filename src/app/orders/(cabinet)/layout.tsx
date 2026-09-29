@@ -111,20 +111,10 @@ export default async function ClientCabinetLayout({children}: { children: ReactN
         orderBy: {createdAt: "desc"},
     })
 
-    const contracts = (await prisma.contract.findMany({
-        where: {order: {clientId: dbUser.id, deletedAt: null}},
+    const contractsForClient: ClientContract[] = (await prisma.contract.findMany({
+        where: {order: {clientId: dbUser.id, deletedAt: null}, audience: "CLIENT"},
         orderBy: {createdAt: "desc"},
     })).map(c => ({
-        id: c.id,
-        number: c.number,
-        orderId: c.orderId,
-        status: c.status,
-        s3Key: c.s3Key,
-        createdAt: c.createdAt,
-        signedAt: c.clientSignedAt ?? c.specialistSignedAt ?? null,
-    }))
-
-    const contractsForClient: ClientContract[] = contracts.map(c => ({
         id: c.id,
         number: c.number,
         orderId: c.orderId,

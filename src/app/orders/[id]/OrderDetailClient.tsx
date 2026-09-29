@@ -149,7 +149,7 @@ export default function OrderDetailClient({
         hasSignedFile: false,
     }
     const contractsComplete = isFrameworkContractEffectiveSigned(frameworkContract.status)
-        && (projectContract?.status === "CLIENT_SIGNED" || projectContract?.status === "CONFIRMED")
+        && (projectContract?.status === "SIGNED" || projectContract?.status === "CONFIRMED")
 
     const submitBrief = async () => {
         setSubmitting(true);

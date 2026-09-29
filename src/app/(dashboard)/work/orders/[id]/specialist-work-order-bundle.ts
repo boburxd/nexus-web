@@ -66,14 +66,11 @@ export type SpecialistWorkOrderBundle = {
         contract: {
             id: string
             number: string
-            status: string
+            status: "DRAFT" | "SENT" | "SIGNED" | "CONFIRMED" | "CANCELLED"
             s3Key: string | null
-            specialistSignedS3Key: string | null
-            clientSignedS3Key: string | null
-            sentToSpecialistAt: string | null
-            specialistSignedAt: string | null
-            sentToClientAt: string | null
-            clientSignedAt: string | null
+            signedS3Key: string | null
+            sentAt: string | null
+            signedAt: string | null
             confirmedAt: string | null
         } | null
     }
@@ -116,19 +113,16 @@ export async function loadSpecialistWorkOrderBundle(orderId: string, specialistU
             },
             payments: {orderBy: {createdAt: "desc"}, select: {id: true, amount: true, status: true}},
             contracts: {
-                orderBy: {createdAt: "desc"},
+                where: {audience: "SPECIALIST"},
                 take: 1,
                 select: {
                     id: true,
                     number: true,
                     status: true,
                     s3Key: true,
-                    specialistSignedS3Key: true,
-                    clientSignedS3Key: true,
-                    sentToSpecialistAt: true,
-                    specialistSignedAt: true,
-                    sentToClientAt: true,
-                    clientSignedAt: true,
+                    signedS3Key: true,
+                    sentAt: true,
+                    signedAt: true,
                     confirmedAt: true,
                 },
             },
@@ -247,12 +241,9 @@ export async function loadSpecialistWorkOrderBundle(orderId: string, specialistU
                     number: order.contracts[0].number,
                     status: order.contracts[0].status,
                     s3Key: order.contracts[0].s3Key ?? null,
-                    specialistSignedS3Key: order.contracts[0].specialistSignedS3Key ?? null,
-                    clientSignedS3Key: order.contracts[0].clientSignedS3Key ?? null,
-                    sentToSpecialistAt: order.contracts[0].sentToSpecialistAt?.toISOString() ?? null,
-                    specialistSignedAt: order.contracts[0].specialistSignedAt?.toISOString() ?? null,
-                    sentToClientAt: order.contracts[0].sentToClientAt?.toISOString() ?? null,
-                    clientSignedAt: order.contracts[0].clientSignedAt?.toISOString() ?? null,
+                    signedS3Key: order.contracts[0].signedS3Key ?? null,
+                    sentAt: order.contracts[0].sentAt?.toISOString() ?? null,
+                    signedAt: order.contracts[0].signedAt?.toISOString() ?? null,
                     confirmedAt: order.contracts[0].confirmedAt?.toISOString() ?? null,
                 }
                 : null,

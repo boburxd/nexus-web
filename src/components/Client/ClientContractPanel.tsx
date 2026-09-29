@@ -1,14 +1,27 @@
 "use client"
 
 import {useState} from "react"
-import type {Contract, ContractStatus} from "@/app/orders/[id]/types"
 import {DocumentUpload} from "@/components/app/DocumentUpload"
 import {confirmDialog} from "@/lib/dialog-store"
 import {Icon} from "@/components/ui/icon"
 import {stripBx} from "@/lib/icon-map"
 
+export type ContractStatus = "DRAFT" | "SENT" | "SIGNED" | "CONFIRMED" | "CANCELLED"
+
+/** Договор, уже отфильтрованный по нужной стороне (специалист/заказчик) на сервере. */
+export type PartyContract = {
+    id: string
+    number: string
+    status: ContractStatus
+    s3Key: string | null
+    signedS3Key: string | null
+    sentAt: string | null
+    signedAt: string | null
+    confirmedAt: string | null
+}
+
 interface Props {
-    contract: Contract | null
+    contract: PartyContract | null
     orderId: string
     userRole: "CLIENT" | "SPECIALIST"
     onUploadSigned?: (file: File) => Promise<{ success: boolean; error?: string }>
@@ -17,10 +30,8 @@ interface Props {
 
 const STATUS_ACTIONS: Record<ContractStatus, { label: string; icon: string }> = {
     DRAFT: {label: "Не создан", icon: "bx bx-file-blank"},
-    SENT_TO_SPECIALIST: {label: "Ожидает подписи дизайнера", icon: "bx bx-hourglass"},
-    SPECIALIST_SIGNED: {label: "Ожидает подписи заказчика", icon: "bx bx-hourglass"},
-    SENT_TO_CLIENT: {label: "Требует вашей подписи", icon: "bx bx-edit"},
-    CLIENT_SIGNED: {label: "Ожидает подтверждения", icon: "bx bx-check-circle"},
+    SENT: {label: "Требует вашей подписи", icon: "bx bx-edit"},
+    SIGNED: {label: "Ожидает подтверждения", icon: "bx bx-check-circle"},
     CONFIRMED: {label: "Договор активен", icon: "bx bx-check-double"},
     CANCELLED: {label: "Отменен", icon: "bx bx-x-circle"},
 }
@@ -208,17 +219,12 @@ export function ClientContractPanel({contract, orderId, userRole, onUploadSigned
         )
     }
 
-    const statusAction = STATUS_ACTIONS[contract.status]
-    const {label, icon} = userRole === "SPECIALIST" && contract.status === "SENT_TO_SPECIALIST"
-        ? {label: "Требует вашей подписи", icon: "bx bx-edit"}
-        : statusAction
+    const {label, icon} = STATUS_ACTIONS[contract.status]
 
-    // Загрузка открыта ровно в тех статусах, которые принимает сервер (…/contract/<role>/sign).
-    const canUpload = userRole === "SPECIALIST" && contract.status === "SENT_TO_SPECIALIST"
-        || userRole === "CLIENT" && contract.status === "SENT_TO_CLIENT"
-    // Своя подпись уже отправлена — форма остаётся видимой, но заблокированной.
-    const ownSignedAt = userRole === "SPECIALIST" ? contract.specialistSignedAt : contract.clientSignedAt
-    const ownSubmitted = !canUpload && Boolean(userRole === "SPECIALIST" ? contract.specialistSignedS3Key : contract.clientSignedS3Key)
+    // Загрузка открыта ровно в том статусе, который принимает сервер (…/contract/<role>/sign).
+    const canUpload = contract.status === "SENT"
+    // Подпись уже отправлена — форма остаётся видимой, но заблокированной.
+    const ownSubmitted = !canUpload && Boolean(contract.signedS3Key)
 
     return (
         <div style={{
@@ -259,7 +265,7 @@ export function ClientContractPanel({contract, orderId, userRole, onUploadSigned
                     onFileChange={() => undefined}
                     submitted={{
                         title: "Подписанный договор отправлен",
-                        submittedAt: ownSignedAt,
+                        submittedAt: contract.signedAt,
                         hint: contract.status === "CONFIRMED" ? "Договор подтверждён" : "Ожидает проверки администратором",
                     }}
                 />

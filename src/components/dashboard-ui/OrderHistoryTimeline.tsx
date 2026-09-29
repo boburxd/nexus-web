@@ -30,11 +30,20 @@ const ACTION_LABEL: Record<string, { label: string; icon: string; color: string 
         icon: "bx-check-shield",
         color: "var(--dash-success)"
     },
-    contract_generated: {label: "Договор сформирован", icon: "bx-file", color: "var(--dash-accent)"},
+    contract_specialist_generated: {label: "Договор специалиста сформирован", icon: "bx-file", color: "var(--dash-accent)"},
     contract_specialist_signed: {label: "Договор подписан специалистом", icon: "bx-pen", color: "var(--dash-accent)"},
-    contract_sent_to_client: {label: "Договор отправлен вам", icon: "bx-mail-send", color: "var(--dash-accent)"},
+    contract_specialist_confirmed: {
+        label: "Договор специалиста подтверждён",
+        icon: "bx-check-double",
+        color: "var(--dash-success)"
+    },
+    contract_client_generated: {label: "Договор заказчика сформирован", icon: "bx-file", color: "var(--dash-accent)"},
     contract_client_signed: {label: "Договор подписан вами", icon: "bx-check", color: "var(--dash-success)"},
-    contract_confirmed: {label: "Договор активирован", icon: "bx-check-double", color: "var(--dash-success)"},
+    contract_client_confirmed: {
+        label: "Договор заказчика подтверждён",
+        icon: "bx-check-double",
+        color: "var(--dash-success)"
+    },
     act_admin_approved: {label: "Акт проверен", icon: "bx-check-circle", color: "var(--dash-success)"},
     act_admin_rejected: {label: "Акт возвращён", icon: "bx-x-circle", color: "var(--dash-warn)"},
     act_client_signed: {label: "Акт подписан вами", icon: "bx-edit", color: "var(--dash-accent)"},
@@ -53,7 +62,6 @@ const ACTION_LABEL: Record<string, { label: string; icon: string; color: string 
 
 /** Тексты «вам» / «вами» — от лица заказчика; для специалиста и админа — от третьего лица. */
 const ACTION_LABEL_NON_CLIENT: Partial<Record<string, string>> = {
-    contract_sent_to_client: "Договор отправлен заказчику",
     contract_client_signed: "Договор подписан заказчиком",
     act_client_signed: "Акт подписан заказчиком",
     stage_client_approved: "Этап принят заказчиком",
@@ -117,11 +125,9 @@ const ACT_STATUS_LABEL: Record<string, string> = {
 
 const CONTRACT_STATUS_LABEL: Record<string, string> = {
     DRAFT: "Черновик",
-    SENT_TO_SPECIALIST: "У специалиста",
-    SPECIALIST_SIGNED: "Подписан специалистом",
-    SENT_TO_CLIENT: "У заказчика",
-    CLIENT_SIGNED: "Подписан заказчиком",
-    CONFIRMED: "Активен",
+    SENT: "Отправлен",
+    SIGNED: "Подписан",
+    CONFIRMED: "Подтверждён",
     CANCELLED: "Отменён",
 }
 

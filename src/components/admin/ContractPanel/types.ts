@@ -1,37 +1,29 @@
-import type {Contract, ContractStatus} from "@/app/admin/orders/types"
+import type {Contract, ContractAudience, ContractStatus} from "@/app/admin/orders/types"
 
 export interface ContractPanelProps {
     contract: Contract | null
     orderId: string
-    canGenerate: boolean
-    canSendToClient: boolean
-    canConfirm: boolean
+    audience: ContractAudience
     onGenerate: (file: File) => Promise<boolean>
-    onSendToClient: () => void
     onConfirm: () => void
-}
-
-export interface FileUploadModalProps {
-    open: boolean
-    onClose: () => void
-    onUpload: (file: File) => Promise<{ success: boolean; error?: string }>
-    title: string
-    description: string
-    accept?: string
 }
 
 export interface ContractFileLinkProps {
     contractId: string
     s3Key: string | null
+    kind: "original" | "signed"
     label: string
+}
+
+export const CONTRACT_AUDIENCE_LABEL: Record<ContractAudience, { title: string; party: string; genitive: string }> = {
+    SPECIALIST: {title: "Договор со специалистом", party: "специалисту", genitive: "специалиста"},
+    CLIENT: {title: "Договор с заказчиком", party: "заказчику", genitive: "заказчика"},
 }
 
 export const CONTRACT_ACTIONS: Record<ContractStatus, { label: string; icon: string }> = {
     DRAFT: {label: "Не создан", icon: "bx bx-file-blank"},
-    SENT_TO_SPECIALIST: {label: "Ожидает подписи дизайнера", icon: "bx bx-user-check"},
-    SPECIALIST_SIGNED: {label: "Ожидает отправки заказчику", icon: "bx bx-paper-plane"},
-    SENT_TO_CLIENT: {label: "Ожидает подписи заказчика", icon: "bx bx-user-check"},
-    CLIENT_SIGNED: {label: "Ожидает подтверждения", icon: "bx bx-check-circle"},
-    CONFIRMED: {label: "Договор активен", icon: "bx bx-check-double"},
+    SENT: {label: "Ожидает подписи", icon: "bx bx-user-check"},
+    SIGNED: {label: "Ожидает подтверждения", icon: "bx bx-check-circle"},
+    CONFIRMED: {label: "Договор подтверждён", icon: "bx bx-check-double"},
     CANCELLED: {label: "Отменен", icon: "bx bx-x-circle"},
 }

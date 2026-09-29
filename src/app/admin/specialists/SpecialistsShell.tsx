@@ -46,6 +46,8 @@ type SpecialistsShellContextValue = {
     setTestModal: (data: TestModalData | null) => void
     avatarUrls: Record<string, string>
     onRefresh: () => Promise<void>
+    onGenerateOrderContract: (orderId: string, audience: "specialist" | "client", file: File) => Promise<boolean>
+    onConfirmOrderContract: (orderId: string, audience: "specialist" | "client") => Promise<void>
 }
 
 const SpecialistsShellContext = createContext<SpecialistsShellContextValue | null>(null)
@@ -122,7 +124,7 @@ export function SpecialistsShell({children}: { children: ReactNode }) {
 
     const refreshAll = useCallback(async () => {
         await load()
-        if (detailTab === "orders" && selected) {
+        if ((detailTab === "orders" || detailTab === "contract") && selected) {
             setOrdersLoading(true)
             try {
                 const r = await fetch("/api/admin/orders")
@@ -135,6 +137,33 @@ export function SpecialistsShell({children}: { children: ReactNode }) {
             }
         }
     }, [load, detailTab, selected])
+
+    /** Договор по конкретному заказу специалиста — та же логика, что и на странице заказа. */
+    const generateOrderContract = async (orderId: string, audience: "specialist" | "client", file: File): Promise<boolean> => {
+        const formData = new FormData()
+        formData.append("file", file)
+        const res = await fetch(`/api/admin/orders/${orderId}/contract/${audience}/generate`, {
+            method: "POST",
+            body: formData,
+        })
+        if (res.ok) {
+            await refreshAll()
+        } else {
+            const err = await res.json()
+            toast.error(err.error || "Ошибка генерации договора")
+        }
+        return res.ok
+    }
+
+    const confirmOrderContract = async (orderId: string, audience: "specialist" | "client") => {
+        const res = await fetch(`/api/admin/orders/${orderId}/contract/${audience}/confirm`, {method: "POST"})
+        if (res.ok) {
+            await refreshAll()
+        } else {
+            const err = await res.json()
+            toast.error(err.error || "Ошибка подтверждения договора")
+        }
+    }
 
     useRegisterAdminRefresh(refreshAll)
 
@@ -261,19 +290,12 @@ export function SpecialistsShell({children}: { children: ReactNode }) {
     }, [router, selected])
 
     useEffect(() => {
-        if (detailTab !== "orders" || !selectedSpec) return
+        if ((detailTab !== "orders" && detailTab !== "contract") || !selectedSpec) return
         let cancelled = false
         setOrdersLoading(true)
         fetch("/api/admin/orders")
             .then((r) => (r.ok ? r.json() : []))
-            .then((all: {
-                id: string
-                status: string
-                title: string | null
-                briefData: Record<string, string> | null
-                specialist: { id: string } | null
-                client: { id: string; email: string; name: string | null }
-            }[]) => {
+            .then((all: (SpecialistOrder & { specialist: { id: string } | null })[]) => {
                 if (!cancelled) setSpecOrders(all.filter((o) => o.specialist?.id === selectedSpec.id))
             })
             .finally(() => {
@@ -300,6 +322,8 @@ export function SpecialistsShell({children}: { children: ReactNode }) {
         setTestModal,
         avatarUrls,
         onRefresh: refreshAll,
+        onGenerateOrderContract: generateOrderContract,
+        onConfirmOrderContract: confirmOrderContract,
     }
 
     return (

@@ -56,9 +56,9 @@ export async function canAccessS3Key(key: string, user: SessionUser): Promise<bo
     });
     if (invoice) return isOrderParty(invoice.order, user.id);
 
-    // 4. Contract — original + signed copies.
+    // 4. Contract — original + signed copy.
     const contract = await prisma.contract.findFirst({
-        where: {OR: [{s3Key: key}, {specialistSignedS3Key: key}, {clientSignedS3Key: key}]},
+        where: {OR: [{s3Key: key}, {signedS3Key: key}]},
         select: {order: orderParty},
     });
     if (contract) return isOrderParty(contract.order, user.id);

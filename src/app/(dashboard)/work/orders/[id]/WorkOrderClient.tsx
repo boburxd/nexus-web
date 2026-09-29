@@ -180,14 +180,11 @@ type WorkOrder = {
     contract: {
         id: string
         number: string
-        status: string
+        status: "DRAFT" | "SENT" | "SIGNED" | "CONFIRMED" | "CANCELLED"
         s3Key: string | null
-        specialistSignedS3Key: string | null
-        clientSignedS3Key: string | null
-        sentToSpecialistAt: string | null
-        specialistSignedAt: string | null
-        sentToClientAt: string | null
-        clientSignedAt: string | null
+        signedS3Key: string | null
+        sentAt: string | null
+        signedAt: string | null
         confirmedAt: string | null
     } | null
 }
@@ -524,7 +521,7 @@ export default function WorkOrderClient({
                                 </DashSurfaceCard>
 
                                 <ClientContractPanel
-                                    contract={order.contract as never}
+                                    contract={order.contract}
                                     orderId={order.id}
                                     userRole="SPECIALIST"
                                     onUploadSigned={async (file) => {

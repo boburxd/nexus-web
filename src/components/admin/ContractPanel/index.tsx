@@ -2,7 +2,7 @@
 
 import {useState} from "react"
 import type {ContractFileLinkProps, ContractPanelProps} from "./types"
-import {CONTRACT_ACTIONS} from "./types"
+import {CONTRACT_ACTIONS, CONTRACT_AUDIENCE_LABEL} from "./types"
 import {formatDate} from "./utils"
 import {ContractFileLink} from "./ContractFileLink"
 import {confirmDialog} from "@/lib/dialog-store"
@@ -10,23 +10,15 @@ import {Icon} from "@/components/ui/icon"
 import {stripBx} from "@/lib/icon-map"
 import {DocumentUpload} from "@/components/app/DocumentUpload"
 
-export function ContractPanel({
-                                  contract,
-                                  orderId,
-                                  canGenerate,
-                                  canSendToClient,
-                                  canConfirm,
-                                  onGenerate,
-                                  onSendToClient,
-                                  onConfirm,
-                              }: ContractPanelProps) {
+export function ContractPanel({contract, orderId, audience, onGenerate, onConfirm}: ContractPanelProps) {
     const [file, setFile] = useState<File | null>(null)
     const [generating, setGenerating] = useState(false)
+    const {title, party, genitive} = CONTRACT_AUDIENCE_LABEL[audience]
 
     const handleGenerate = async () => {
         if (!file) return
         const ok = await confirmDialog({
-            title: "Создать и отправить договор дизайнеру?",
+            title: `Создать и отправить договор ${party}?`,
             description: "Это действие нельзя отменить.",
             variant: "warning",
         })
@@ -40,20 +32,9 @@ export function ContractPanel({
         }
     }
 
-    const handleSendToClient = async () => {
-        const ok = await confirmDialog({
-            title: "Отправить договор заказчику для подписания?",
-            description: "Это действие нельзя отменить.",
-            variant: "warning",
-        })
-        if (ok) {
-            await onSendToClient()
-        }
-    }
-
     const handleConfirm = async () => {
         const ok = await confirmDialog({
-            title: "Подтвердить договор и активировать заказ?",
+            title: `Подтвердить подписанный договор ${genitive}?`,
             description: "Это действие нельзя отменить.",
             variant: "destructive",
         })
@@ -66,33 +47,31 @@ export function ContractPanel({
         return (
             <div className="sp-card" style={{marginTop: 12}}>
                 <div className="sp-card-hd">
-                    <span className="sp-label">Договор</span>
+                    <span className="sp-label">{title}</span>
                 </div>
                 <div className="sp-card-bd">
                     <p style={{color: "var(--adm-muted)", margin: 0, fontSize: "0.85rem"}}>
                         Договор не создан
                     </p>
-                    {canGenerate && (
-                        <div style={{marginTop: 12, display: "flex", flexDirection: "column", gap: 10}}>
-                            <DocumentUpload
-                                tone="admin"
-                                size="sm"
-                                label="PDF договора"
-                                file={file}
-                                onFileChange={setFile}
-                                disabled={generating}
-                            />
-                            <div>
-                                <button
-                                    onClick={handleGenerate}
-                                    disabled={!file || generating}
-                                    className="sp-btn sp-btn-primary"
-                                >
-                                    {generating ? "…" : "Создать и отправить договор дизайнеру"}
-                                </button>
-                            </div>
+                    <div style={{marginTop: 12, display: "flex", flexDirection: "column", gap: 10}}>
+                        <DocumentUpload
+                            tone="admin"
+                            size="sm"
+                            label="PDF договора"
+                            file={file}
+                            onFileChange={setFile}
+                            disabled={generating}
+                        />
+                        <div>
+                            <button
+                                onClick={handleGenerate}
+                                disabled={!file || generating}
+                                className="sp-btn sp-btn-primary"
+                            >
+                                {generating ? "…" : `Создать и отправить договор ${party}`}
+                            </button>
                         </div>
-                    )}
+                    </div>
                 </div>
             </div>
         )
@@ -103,7 +82,7 @@ export function ContractPanel({
     return (
         <div className="sp-card" style={{marginTop: 12}}>
             <div className="sp-card-hd">
-                <span className="sp-label">Договор</span>
+                <span className="sp-label">{title}</span>
             </div>
             <div className="sp-card-bd">
                 <div
@@ -136,28 +115,16 @@ export function ContractPanel({
                         <div style={{color: "var(--adm-muted)", marginBottom: 2}}>Создан</div>
                         <div>{formatDate(contract.createdAt)}</div>
                     </div>
-                    {contract.sentToSpecialistAt && (
+                    {contract.sentAt && (
                         <div>
-                            <div style={{color: "var(--adm-muted)", marginBottom: 2}}>Отправлен дизайнеру</div>
-                            <div>{formatDate(contract.sentToSpecialistAt)}</div>
+                            <div style={{color: "var(--adm-muted)", marginBottom: 2}}>Отправлен</div>
+                            <div>{formatDate(contract.sentAt)}</div>
                         </div>
                     )}
-                    {contract.specialistSignedAt && (
+                    {contract.signedAt && (
                         <div>
-                            <div style={{color: "var(--adm-muted)", marginBottom: 2}}>Подписан дизайнером</div>
-                            <div>{formatDate(contract.specialistSignedAt)}</div>
-                        </div>
-                    )}
-                    {contract.sentToClientAt && (
-                        <div>
-                            <div style={{color: "var(--adm-muted)", marginBottom: 2}}>Отправлен заказчику</div>
-                            <div>{formatDate(contract.sentToClientAt)}</div>
-                        </div>
-                    )}
-                    {contract.clientSignedAt && (
-                        <div>
-                            <div style={{color: "var(--adm-muted)", marginBottom: 2}}>Подписан заказчиком</div>
-                            <div>{formatDate(contract.clientSignedAt)}</div>
+                            <div style={{color: "var(--adm-muted)", marginBottom: 2}}>Подписан</div>
+                            <div>{formatDate(contract.signedAt)}</div>
                         </div>
                     )}
                     {contract.confirmedAt && (
@@ -178,76 +145,29 @@ export function ContractPanel({
                     }}
                 >
                     {contract.s3Key && (
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 4,
-                                color: "var(--adm-muted)",
-                            }}
-                        >
-                            <ContractFileLink contractId={contract.id} s3Key={contract.s3Key} label="Оригинал"/>
-                        </div>
+                        <ContractFileLink contractId={contract.id} s3Key={contract.s3Key} kind="original"
+                                          label="Оригинал"/>
                     )}
-                    {contract.specialistSignedS3Key && (
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 4,
-                                color: "var(--adm-muted)",
-                            }}
-                        >
-                            <ContractFileLink contractId={contract.id} s3Key={contract.specialistSignedS3Key}
-                                              label="Подпись дизайнера"/>
-                        </div>
-                    )}
-                    {contract.clientSignedS3Key && (
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 4,
-                                color: "var(--adm-muted)",
-                            }}
-                        >
-                            <ContractFileLink
-                                contractId={contract.id}
-                                s3Key={contract.clientSignedS3Key}
-                                label="Подпись заказчика"
-                            />
-                        </div>
+                    {contract.signedS3Key && (
+                        <ContractFileLink contractId={contract.id} s3Key={contract.signedS3Key} kind="signed"
+                                          label="Подписанный скан"/>
                     )}
                 </div>
 
-                <div
-                    style={{
-                        display: "flex",
-                        gap: 6,
-                        flexWrap: "wrap",
-                    }}
-                >
-                    {contract.status === "SPECIALIST_SIGNED" && canSendToClient && (
-                        <button
-                            onClick={handleSendToClient}
-                            className="sp-btn sp-btn-primary sp-btn-sm"
-                        >
-                            Отправить заказчику
-                        </button>
-                    )}
-                    {contract.status === "CLIENT_SIGNED" && canConfirm && (
+                {contract.status === "SIGNED" && (
+                    <div style={{display: "flex", gap: 6, flexWrap: "wrap"}}>
                         <button
                             onClick={handleConfirm}
                             className="sp-btn sp-btn-success sp-btn-sm"
                         >
-                            Подтвердить и активировать
+                            Подтвердить
                         </button>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
         </div>
     )
 }
 
 export {formatDate} from "./utils"
-export type {ContractPanelProps, FileUploadModalProps, ContractFileLinkProps} from "./types"
+export type {ContractPanelProps, ContractFileLinkProps} from "./types"

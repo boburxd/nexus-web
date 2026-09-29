@@ -21,19 +21,21 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
 
     const order = await prisma.order.findUnique({
         where: {id: orderId, deletedAt: null, specialistId: user.id},
-        include: {contracts: {orderBy: {createdAt: "desc"}, take: 1}},
+        select: {id: true},
     })
     if (!order) {
         return NextResponse.json({error: "Заказ не найден или не ваш"}, {status: 404})
     }
 
-    const contract = order.contracts[0]
+    const contract = await prisma.contract.findUnique({
+        where: {orderId_audience: {orderId, audience: "SPECIALIST"}},
+    })
     if (!contract) {
         return NextResponse.json({error: "Договор по заказу не найден"}, {status: 404})
     }
 
     // Проверяем, что договор в подходящем статусе
-    if (contract.status !== ContractStatus.SENT_TO_SPECIALIST) {
+    if (contract.status !== ContractStatus.SENT) {
         return NextResponse.json(
             {
                 error: "Договор не в статусе для подписания",
@@ -62,7 +64,7 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
 
     // Загружаем подписанный файл в S3
     const buffer = Buffer.from(await file.arrayBuffer())
-    const s3Key = `orders/${orderId}/contracts/${contract.number}-specialist-signed.pdf`
+    const s3Key = `orders/${orderId}/contracts/specialist/${contract.number}-signed.pdf`
     await uploadToS3(s3Key, buffer, "application/pdf")
 
     // Обновляем договор
@@ -70,16 +72,16 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
     const updatedContract = await prisma.contract.update({
         where: {id: contract.id},
         data: {
-            specialistSignedS3Key: s3Key,
-            specialistSignedAt: now,
-            status: ContractStatus.SPECIALIST_SIGNED,
+            signedS3Key: s3Key,
+            signedAt: now,
+            status: ContractStatus.SIGNED,
         },
     })
 
     // Аудит
     await audit(user.id, "contract_specialist_signed", "Contract", contract.id, {
         orderId: {to: orderId},
-        status: {from: ContractStatus.SENT_TO_SPECIALIST, to: ContractStatus.SPECIALIST_SIGNED},
+        status: {from: ContractStatus.SENT, to: ContractStatus.SIGNED},
     })
 
     // Уведомление администратору

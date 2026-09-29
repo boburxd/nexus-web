@@ -64,28 +64,22 @@ export interface OrderStage {
     extraPayments?: ExtraPaymentInfo[]
 }
 
-export type ContractStatus =
-    "DRAFT"
-    | "SENT_TO_SPECIALIST"
-    | "SPECIALIST_SIGNED"
-    | "SENT_TO_CLIENT"
-    | "CLIENT_SIGNED"
-    | "CONFIRMED"
-    | "CANCELLED"
+export type ContractAudience = "SPECIALIST" | "CLIENT"
 
+export type ContractStatus = "DRAFT" | "SENT" | "SIGNED" | "CONFIRMED" | "CANCELLED"
+
+/** Один из двух независимых договоров на заказ — со специалистом или с заказчиком (см. audience). */
 export interface Contract {
     id: string
     number: string
     orderId: string
+    audience: ContractAudience
     status: ContractStatus
     s3Key: string | null
-    specialistSignedS3Key: string | null
-    clientSignedS3Key: string | null
+    signedS3Key: string | null
     createdAt: string
-    sentToSpecialistAt: string | null
-    specialistSignedAt: string | null
-    sentToClientAt: string | null
-    clientSignedAt: string | null
+    sentAt: string | null
+    signedAt: string | null
     confirmedAt: string | null
 }
 
@@ -138,16 +132,6 @@ export interface OrderData {
         hasSignedFile: boolean
     }
     invoices: OrderInvoiceBrief[]
-}
-
-export const CONTRACT_STATUS_LABEL: Record<ContractStatus, string> = {
-    DRAFT: "Черновик",
-    SENT_TO_SPECIALIST: "На подписании у дизайнера",
-    SPECIALIST_SIGNED: "Ожидает вашей подписи",
-    SENT_TO_CLIENT: "Ожидает вашей подписи",
-    CLIENT_SIGNED: "Ожидает подтверждения",
-    CONFIRMED: "Активен",
-    CANCELLED: "Отменен",
 }
 
 export const ORDER_STATUS: Record<OrderStatus, { label: string; color: string; bg: string }> = {

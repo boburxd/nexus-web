@@ -26,6 +26,12 @@ const ACTION_LABEL: Record<string, { label: string; icon: string; color: string 
     specialist_profile_edited_by_admin: {label: "Анкета отредактирована", icon: "bx-edit", color: "#f59e0b"},
     regulations_updated: {label: "Регламент обновлен", icon: "bx-book-open", color: "#6366f1"},
     specialist_contract_admin_signed: {label: "Договор подтвержден", icon: "bx-check-shield", color: "#22c55e"},
+    contract_specialist_generated: {label: "Договор специалиста сформирован", icon: "bx-file", color: "#6366f1"},
+    contract_specialist_signed: {label: "Договор подписан специалистом", icon: "bx-edit-alt", color: "#6366f1"},
+    contract_specialist_confirmed: {label: "Договор специалиста подтвержден", icon: "bx-check-shield", color: "#22c55e"},
+    contract_client_generated: {label: "Договор заказчика сформирован", icon: "bx-file", color: "#6366f1"},
+    contract_client_signed: {label: "Договор подписан заказчиком", icon: "bx-edit-alt", color: "#6366f1"},
+    contract_client_confirmed: {label: "Договор заказчика подтвержден", icon: "bx-check-shield", color: "#22c55e"},
     framework_contract_admin_signed: {
         label: "Договор оказания услуг подтвержден",
         icon: "bx-check-shield",

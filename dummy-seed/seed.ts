@@ -26,6 +26,7 @@ const DEMO_PASSWORD = process.env.DEMO_SEED_PASSWORD ?? "Demo12345!"
 const ASSETS_ROOT = path.resolve(process.cwd(), "dummy-seed", "assets")
 const EMAIL_DOMAIN = "nexus-dummy.ru"
 const VISUAL_COUNT = 17
+const VIDEO_COUNT = 3
 
 type Designer = {
     slug: string
@@ -40,7 +41,6 @@ type Designer = {
     hasRd: boolean
     about: string
     avatarFile: string
-    videoFile?: string
 }
 
 /** Полный уровень квалификации (L1-L4 пройдены) — формат под parseQuizLevelState(). */
@@ -71,6 +71,11 @@ function pickVisuals(index: number): string[] {
         const n = ((start + offset) % VISUAL_COUNT) + 1
         return `visual-${String(n).padStart(2, "0")}.jpg`
     })
+}
+
+/** Видео-визиток всего 3 на 11 дизайнеров — раздаём по кругу, чтобы у каждого было видео. */
+function pickVideo(index: number): string {
+    return `video-${String((index % VIDEO_COUNT) + 1).padStart(2, "0")}.mp4`
 }
 
 function projectName(specialty: string): string {
@@ -155,12 +160,9 @@ async function seedDesigner(designer: Designer, index: number, adminId: string):
         galleryVisuals.map((v) => uploadFile(user.id, "PORTFOLIO", path.join(ASSETS_ROOT, "visuals", v), "image/jpeg")),
     )
 
-    let videoFileId: string | null = null
-    if (designer.videoFile) {
-        videoFileId = await uploadFile(
-            user.id, "INTRO_VIDEO", path.join(ASSETS_ROOT, "videos", designer.videoFile), "video/mp4",
-        )
-    }
+    const videoFileId = await uploadFile(
+        user.id, "INTRO_VIDEO", path.join(ASSETS_ROOT, "videos", pickVideo(index)), "video/mp4",
+    )
 
     // Портфолио-проект: обложка + галерейные работы, все в одной папке.
     const allCardFileIds = [workFileId, ...galleryFileIds]
@@ -195,7 +197,7 @@ async function seedDesigner(designer: Designer, index: number, adminId: string):
         },
     })
 
-    console.log(`✓ ${email} — аватар, ${allCardFileIds.length} работы в портфолио, лендинг одобрен${videoFileId ? ", с видео" : ""}`)
+    console.log(`✓ ${email} — аватар, ${allCardFileIds.length} работы в портфолио, лендинг одобрен, с видео`)
 }
 
 async function main() {

@@ -273,13 +273,10 @@ export function OrdersShell({children}: { children: ReactNode }) {
     }
 
     // ==================== Contract actions ====================
-    const [contractGenerating, setContractGenerating] = useState<string | null>(null)
-
-    const generateContract = async (orderId: string, file: File): Promise<boolean> => {
-        setContractGenerating(orderId)
+    const generateContract = async (orderId: string, audience: "specialist" | "client", file: File): Promise<boolean> => {
         const formData = new FormData()
         formData.append("file", file)
-        const res = await fetch(`/api/admin/orders/${orderId}/contract/generate`, {
+        const res = await fetch(`/api/admin/orders/${orderId}/contract/${audience}/generate`, {
             method: "POST",
             body: formData,
         })
@@ -289,22 +286,11 @@ export function OrdersShell({children}: { children: ReactNode }) {
             const err = await res.json()
             toast.error(err.error || "Ошибка генерации договора")
         }
-        setContractGenerating(null)
         return res.ok
     }
 
-    const sendContractToClient = async (orderId: string) => {
-        const res = await fetch(`/api/admin/orders/${orderId}/contract/send-to-client`, {method: "POST"})
-        if (res.ok) {
-            await load()
-        } else {
-            const err = await res.json()
-            toast.error(err.error || "Ошибка отправки договора")
-        }
-    }
-
-    const confirmContract = async (orderId: string) => {
-        const res = await fetch(`/api/admin/orders/${orderId}/contract/confirm`, {method: "POST"})
+    const confirmContract = async (orderId: string, audience: "specialist" | "client") => {
+        const res = await fetch(`/api/admin/orders/${orderId}/contract/${audience}/confirm`, {method: "POST"})
         if (res.ok) {
             await load()
         } else {
@@ -379,13 +365,13 @@ export function OrdersShell({children}: { children: ReactNode }) {
                 await load()
                 setActing(null)
             },
-            onGenerateContract: generateContract,
-            onSendContractToClient: sendContractToClient,
-            onConfirmContract: confirmContract,
+            onGenerateSpecialistContract: (orderId, file) => generateContract(orderId, "specialist", file),
+            onConfirmSpecialistContract: (orderId) => confirmContract(orderId, "specialist"),
+            onGenerateClientContract: (orderId, file) => generateContract(orderId, "client", file),
+            onConfirmClientContract: (orderId) => confirmContract(orderId, "client"),
             onApproveAct: approveAct,
             onRejectAct: rejectAct,
             onConfirmAct: confirmAct,
-            contractGenerating,
         },
     }
 

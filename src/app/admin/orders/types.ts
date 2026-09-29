@@ -101,28 +101,22 @@ export interface Stage {
     rulesSentS3Key?: string | null
 }
 
-export type ContractStatus =
-    "DRAFT"
-    | "SENT_TO_SPECIALIST"
-    | "SPECIALIST_SIGNED"
-    | "SENT_TO_CLIENT"
-    | "CLIENT_SIGNED"
-    | "CONFIRMED"
-    | "CANCELLED"
+export type ContractAudience = "SPECIALIST" | "CLIENT"
 
+export type ContractStatus = "DRAFT" | "SENT" | "SIGNED" | "CONFIRMED" | "CANCELLED"
+
+/** Один из двух независимых договоров на заказ — со специалистом или с заказчиком (см. audience). */
 export interface Contract {
     id: string
     number: string
     orderId: string
+    audience: ContractAudience
     status: ContractStatus
     s3Key: string | null
-    specialistSignedS3Key: string | null
-    clientSignedS3Key: string | null
+    signedS3Key: string | null
     createdAt: string
-    sentToSpecialistAt: string | null
-    specialistSignedAt: string | null
-    sentToClientAt: string | null
-    clientSignedAt: string | null
+    sentAt: string | null
+    signedAt: string | null
     confirmedAt: string | null
 }
 
@@ -149,25 +143,6 @@ export const ORDER_LABEL: Record<string, string> = {
     ACTIVE: "Активен", DONE: "Завершен", CANCELLED: "Отменен",
 }
 
-export const CONTRACT_STATUS_LABEL: Record<ContractStatus, string> = {
-    DRAFT: "Черновик",
-    SENT_TO_SPECIALIST: "Отправлен дизайнеру",
-    SPECIALIST_SIGNED: "Подписан дизайнером",
-    SENT_TO_CLIENT: "Отправлен заказчику",
-    CLIENT_SIGNED: "Подписан заказчиком",
-    CONFIRMED: "Подтвержден",
-    CANCELLED: "Отменен",
-}
-
-export const CONTRACT_STATUS_VARIANT: Record<ContractStatus, StatusVariant> = {
-    DRAFT: "pending",
-    SENT_TO_SPECIALIST: "current",
-    SPECIALIST_SIGNED: "current",
-    SENT_TO_CLIENT: "current",
-    CLIENT_SIGNED: "current",
-    CONFIRMED: "done",
-    CANCELLED: "rejected",
-}
 export const ORDER_VARIANT: Record<OrderStatus, StatusVariant> = {
     DRAFT: "pending", BRIEFING: "pending", BRIEF_REVIEW: "current",
     ACTIVE: "active", DONE: "done", CANCELLED: "rejected",

@@ -587,38 +587,43 @@ model Invoice {
   @@index([orderId])
 }
 
+enum ContractAudience {
+  SPECIALIST
+  CLIENT
+}
+
 enum ContractStatus {
   DRAFT
-  SENT_TO_SPECIALIST
-  SPECIALIST_SIGNED
-  SENT_TO_CLIENT
-  CLIENT_SIGNED
+  SENT
+  SIGNED
   CONFIRMED
   CANCELLED
 }
 
+// Два независимых договора на заказ — один со специалистом, один с заказчиком (ContractAudience).
+// Каждый — свой PDF от админа, своя подпись стороны, своё подтверждение; заказ активируется,
+// когда оба договора подтверждены (см. src/lib/order-contracts.ts).
 model Contract {
-  id                     String         @id @default(cuid())
-  number                 String         @unique
-  orderId                String
-  order                  Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  status                 ContractStatus @default(DRAFT)
-  
-  // Original contract file from admin
-  s3Key                  String?
-  
-  // Signed files
-  specialistSignedS3Key   String?
-  clientSignedS3Key       String?
-  
-  // Timestamps
-  createdAt               DateTime       @default(now())
-  sentToSpecialistAt      DateTime?
-  specialistSignedAt      DateTime?
-  sentToClientAt          DateTime?
-  clientSignedAt          DateTime?
-  confirmedAt             DateTime?
+  id          String           @id @default(cuid())
+  number      String           @unique
+  orderId     String
+  order       Order            @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  audience    ContractAudience
+  status      ContractStatus   @default(DRAFT)
 
+  // Original contract file from admin
+  s3Key       String?
+
+  // Signed scan uploaded back by that party
+  signedS3Key String?
+
+  // Timestamps
+  createdAt   DateTime  @default(now())
+  sentAt      DateTime?
+  signedAt    DateTime?
+  confirmedAt DateTime?
+
+  @@unique([orderId, audience])
   @@index([orderId])
 }
 

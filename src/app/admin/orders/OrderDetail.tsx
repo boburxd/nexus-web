@@ -27,7 +27,6 @@ interface Props {
     activeTab: AdminOrderTab
     tabHref: (tab: AdminOrderTab) => string
     acting: string | null
-    contractGenerating: string | null
     onOpenAssignModal: (orderId: string) => void
     onReviewStage: (stageId: string, action: "modApprove" | "modRevision", stageName: string) => void
     onExtraPayment: (stageId: string, stageName: string) => void
@@ -37,9 +36,10 @@ interface Props {
     onBriefReject: (orderId: string) => void
     onBriefSaved?: () => void
     onResolveHelp: (orderId: string) => void
-    onGenerateContract: (orderId: string, file: File) => Promise<boolean>
-    onSendContractToClient: (orderId: string) => void
-    onConfirmContract: (orderId: string) => void
+    onGenerateSpecialistContract: (orderId: string, file: File) => Promise<boolean>
+    onConfirmSpecialistContract: (orderId: string) => void
+    onGenerateClientContract: (orderId: string, file: File) => Promise<boolean>
+    onConfirmClientContract: (orderId: string) => void
     onApproveAct: (stageId: string, actId: string) => void
     onRejectAct: (stageId: string, actId: string, comment: string) => void
     onConfirmAct: (stageId: string, actId: string) => void
@@ -49,7 +49,8 @@ export function OrderDetail({
                                 order, activeTab, tabHref, acting,
                                 onOpenAssignModal, onReviewStage, onExtraPayment, onChangeStatus,
                                 onBriefApprove, onBriefReject, onBriefSaved, onResolveHelp,
-                                onGenerateContract, onSendContractToClient, onConfirmContract,
+                                onGenerateSpecialistContract, onConfirmSpecialistContract,
+                                onGenerateClientContract, onConfirmClientContract,
                                 onApproveAct, onRejectAct, onConfirmAct,
                                 onClientRevision,
                             }: Props) {
@@ -166,9 +167,10 @@ export function OrderDetail({
         onBriefApprove,
         onBriefReject,
         onBriefSaved,
-        onGenerateContract,
-        onSendContractToClient,
-        onConfirmContract,
+        onGenerateSpecialistContract,
+        onConfirmSpecialistContract,
+        onGenerateClientContract,
+        onConfirmClientContract,
     } as const
 
     const stagesTabProps = {

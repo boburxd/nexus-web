@@ -3,11 +3,11 @@
 import type {ContractFileLinkProps} from "./types"
 import {Icon} from "@/components/ui/icon"
 
-export function ContractFileLink({contractId, s3Key, label}: ContractFileLinkProps) {
+export function ContractFileLink({contractId, s3Key, kind, label}: ContractFileLinkProps) {
     if (!s3Key) return null
     return (
         <a
-            href={`/api/contracts/${contractId}/download`}
+            href={`/api/contracts/${contractId}/download?kind=${kind}`}
             target="_blank"
             rel="noreferrer"
             style={{

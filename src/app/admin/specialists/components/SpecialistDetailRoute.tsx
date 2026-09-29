@@ -34,6 +34,8 @@ export function SpecialistDetailRoute({id}: { id: string }) {
             setTestModal={shell.setTestModal}
             avatarUrl={shell.avatarUrls[specialist.id] ?? null}
             onRefresh={shell.onRefresh}
+            onGenerateOrderContract={shell.onGenerateOrderContract}
+            onConfirmOrderContract={shell.onConfirmOrderContract}
         />
     )
 }

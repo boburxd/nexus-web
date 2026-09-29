@@ -61,7 +61,7 @@ export default async function SpecialistCabinetLayout({children}: { children: Re
     const avatarUrl = avatarFile ? (await getDownloadUrl(avatarFile.s3Key)).url : null
 
     const projectContracts = dbUser ? await prisma.contract.findMany({
-        where: {order: {specialistId: dbUser.id}},
+        where: {order: {specialistId: dbUser.id}, audience: "SPECIALIST"},
         orderBy: {createdAt: "desc"},
     }) : []
 
@@ -88,7 +88,7 @@ export default async function SpecialistCabinetLayout({children}: { children: Re
             status: c.status,
             s3Key: c.s3Key,
             createdAt: c.createdAt,
-            signedAt: c.clientSignedAt ?? c.specialistSignedAt ?? null,
+            signedAt: c.signedAt,
             kind: "PROJECT" as const,
         })),
     ]

@@ -40,6 +40,8 @@ export function SpecialistDetail({
                                      setTestModal,
                                      avatarUrl,
                                      onRefresh,
+                                     onGenerateOrderContract,
+                                     onConfirmOrderContract,
                                  }: {
     specialist: RawSpecialist | null
     detailTab: SpecialistDetailTab
@@ -55,6 +57,8 @@ export function SpecialistDetail({
     setTestModal: (data: TestModalData | null) => void
     avatarUrl?: string | null
     onRefresh?: () => Promise<void>
+    onGenerateOrderContract: (orderId: string, audience: "specialist" | "client", file: File) => Promise<boolean>
+    onConfirmOrderContract: (orderId: string, audience: "specialist" | "client") => Promise<void>
 }) {
     const [quizResetting, setQuizResetting] = useState(false)
     const [quizApproving, setQuizApproving] = useState(false)
@@ -240,7 +244,16 @@ export function SpecialistDetail({
                     />
                 )}
 
-                {detailTab === "contract" && <SpecialistContractTab specialist={sp} onRefresh={onRefresh}/>}
+                {detailTab === "contract" && (
+                    <SpecialistContractTab
+                        specialist={sp}
+                        onRefresh={onRefresh}
+                        ordersLoading={ordersLoading}
+                        specOrders={specOrders}
+                        onGenerateOrderContract={onGenerateOrderContract}
+                        onConfirmOrderContract={onConfirmOrderContract}
+                    />
+                )}
 
                 {detailTab === "onboarding" && <SpecialistOnboardingStepsTab steps={steps} formData={fd}/>}
 

@@ -12,9 +12,10 @@ export function OrderOverviewTab({
                                      onBriefApprove,
                                      onBriefReject,
                                      onBriefSaved,
-                                     onGenerateContract,
-                                     onSendContractToClient,
-                                     onConfirmContract,
+                                     onGenerateSpecialistContract,
+                                     onConfirmSpecialistContract,
+                                     onGenerateClientContract,
+                                     onConfirmClientContract,
                                  }: {
     order: Order
     acting: string | null
@@ -22,16 +23,17 @@ export function OrderOverviewTab({
     onBriefApprove: (orderId: string) => void
     onBriefReject: (orderId: string) => void
     onBriefSaved?: () => void
-    onGenerateContract: (orderId: string, file: File) => Promise<boolean>
-    onSendContractToClient: (orderId: string) => void
-    onConfirmContract: (orderId: string) => void
+    onGenerateSpecialistContract: (orderId: string, file: File) => Promise<boolean>
+    onConfirmSpecialistContract: (orderId: string) => void
+    onGenerateClientContract: (orderId: string, file: File) => Promise<boolean>
+    onConfirmClientContract: (orderId: string) => void
 }) {
     const bd = order.briefData
-    const hasContract = order.contracts.length > 0
+    const hasAnyContract = order.contracts.length > 0
 
     return (
         <>
-            {!hasContract && (
+            {!hasAnyContract && (
                 <div
                     style={{
                         display: "flex",
@@ -47,7 +49,7 @@ export function OrderOverviewTab({
                     }}
                 >
                     <Icon name="error"/>
-                    По этому заказу ещё нет договора со специалистом
+                    По этому заказу ещё нет договоров
                 </div>
             )}
 
@@ -81,16 +83,22 @@ export function OrderOverviewTab({
             )}
 
             {order.status !== "DRAFT" && (
-                <ContractPanel
-                    contract={order.contracts?.[0] ?? null}
-                    orderId={order.id}
-                    canGenerate={true}
-                    canSendToClient={true}
-                    canConfirm={true}
-                    onGenerate={(file) => onGenerateContract(order.id, file)}
-                    onSendToClient={() => onSendContractToClient(order.id)}
-                    onConfirm={() => onConfirmContract(order.id)}
-                />
+                <>
+                    <ContractPanel
+                        contract={order.contracts.find((c) => c.audience === "SPECIALIST") ?? null}
+                        orderId={order.id}
+                        audience="SPECIALIST"
+                        onGenerate={(file) => onGenerateSpecialistContract(order.id, file)}
+                        onConfirm={() => onConfirmSpecialistContract(order.id)}
+                    />
+                    <ContractPanel
+                        contract={order.contracts.find((c) => c.audience === "CLIENT") ?? null}
+                        orderId={order.id}
+                        audience="CLIENT"
+                        onGenerate={(file) => onGenerateClientContract(order.id, file)}
+                        onConfirm={() => onConfirmClientContract(order.id)}
+                    />
+                </>
             )}
 
             {order.payments.length > 0 && (

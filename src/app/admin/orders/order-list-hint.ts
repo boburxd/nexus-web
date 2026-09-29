@@ -28,7 +28,8 @@ function sortStagesLikePipeline(stages: Order["stages"]): Stage[] {
 export function orderListRowHint(order: Order): OrderListHint {
     const stagesSorted = sortStagesLikePipeline(order.stages)
     const needsAssign = !order.specialist && order.status !== "DRAFT" && order.status !== "CANCELLED"
-    const contract = order.contracts?.[0] ?? null
+    const specialistContract = order.contracts?.find((c) => c.audience === "SPECIALIST") ?? null
+    const clientContract = order.contracts?.find((c) => c.audience === "CLIENT") ?? null
 
     if (order.briefHelpRequested) {
         return {kind: "admin", text: "Вам: ответить по запросу помощи (бриф)"}
@@ -60,14 +61,17 @@ export function orderListRowHint(order: Order): OrderListHint {
         return {kind: "admin", text: `Вам: доплата за правки · ${STAGE_LABEL[extra.type]}`}
     }
 
-    if (contract?.status === "SPECIALIST_SIGNED") {
-        return {kind: "admin", text: "Вам: отправить договор заказчику"}
+    if (specialistContract?.status === "SIGNED") {
+        return {kind: "admin", text: "Вам: подтвердить договор специалиста"}
     }
-    if (contract?.status === "CLIENT_SIGNED") {
-        return {kind: "admin", text: "Вам: подтвердить договор"}
+    if (clientContract?.status === "SIGNED") {
+        return {kind: "admin", text: "Вам: подтвердить договор заказчика"}
     }
-    if (order.status !== "DRAFT" && order.status !== "CANCELLED" && contract?.status === "DRAFT" && order.specialist) {
-        return {kind: "admin", text: "Вам: создать и отправить договор дизайнеру"}
+    if (order.status !== "DRAFT" && order.status !== "CANCELLED" && order.specialist && !specialistContract) {
+        return {kind: "admin", text: "Вам: создать и отправить договор специалисту"}
+    }
+    if (order.status !== "DRAFT" && order.status !== "CANCELLED" && !clientContract) {
+        return {kind: "admin", text: "Вам: создать и отправить договор заказчику"}
     }
 
     type Cand = { t: number; hint: OrderListHint }

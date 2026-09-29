@@ -1,4 +1,5 @@
 import type {OnboardingStatus} from "@/components/app/SpecialistCard"
+import type {Contract} from "../orders/types"
 
 /** Вкладки карточки специалиста: основной блок, договор, шаги, оценка, файлы, портфолио ЛК, заказы. */
 export type SpecialistDetailTab =
@@ -45,6 +46,7 @@ export type SpecialistOrder = {
     title: string | null
     briefData: Record<string, string> | null
     client: { id: string; email: string; name: string | null }
+    contracts: Contract[]
 }
 
 export type TestModalData = {

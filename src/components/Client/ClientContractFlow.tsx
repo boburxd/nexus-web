@@ -1,10 +1,9 @@
 "use client"
 
 import {useState} from "react"
-import {ClientContractPanel} from "@/components/Client/ClientContractPanel"
+import {ClientContractPanel, type PartyContract} from "@/components/Client/ClientContractPanel"
 import {FrameworkContractSection} from "@/components/Client/client-cabinet/FrameworkContractSection"
 import {isFrameworkContractEffectiveSigned} from "@/lib/framework-contract"
-import type {Contract} from "@/app/orders/[id]/types"
 
 type FrameworkContract = {
     status: string
@@ -21,14 +20,14 @@ export function ClientContractFlow({
                                        onFrameworkContractChange,
                                    }: {
     frameworkContract: FrameworkContract
-    projectContract: Contract | null
+    projectContract: PartyContract | null
     orderId: string
     onUploadProjectContract: (file: File) => Promise<{ success: boolean; error?: string }>
     onFrameworkContractChange?: (contract: FrameworkContract) => void
 }) {
     const [frameworkContract, setFrameworkContract] = useState(initialFrameworkContract)
     const platformSigned = isFrameworkContractEffectiveSigned(frameworkContract.status)
-    const projectSigned = projectContract?.status === "CLIENT_SIGNED" || projectContract?.status === "CONFIRMED"
+    const projectSigned = projectContract?.status === "SIGNED" || projectContract?.status === "CONFIRMED"
     const updateFrameworkContract = (next: FrameworkContract) => {
         setFrameworkContract(next)
         onFrameworkContractChange?.(next)

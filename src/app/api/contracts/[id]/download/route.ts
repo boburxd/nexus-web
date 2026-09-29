@@ -26,9 +26,12 @@ export async function GET(req: Request, {params}: { params: Promise<{ id: string
 
     const isOwner = user.role === "ADMIN" || contract.order.specialistId === user.id || contract.order.clientId === user.id
     if (!isOwner) return NextResponse.json({error: "Нет доступа"}, {status: 403})
-    if (!contract.s3Key) return NextResponse.json({error: "Файл не загружен"}, {status: 404})
 
-    const {url} = await getDownloadUrl(contract.s3Key)
+    const kind = new URL(req.url).searchParams.get("kind") === "signed" ? "signed" : "original"
+    const s3Key = kind === "signed" ? contract.signedS3Key : contract.s3Key
+    if (!s3Key) return NextResponse.json({error: "Файл не загружен"}, {status: 404})
+
+    const {url} = await getDownloadUrl(s3Key)
     if (shouldRedirectToFile(req)) {
         return NextResponse.redirect(url, {status: 302})
     }
