@@ -608,7 +608,7 @@ model Contract {
   number      String           @unique
   orderId     String
   order       Order            @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  audience    ContractAudience
+  audience    ContractAudience @default(SPECIALIST)
   status      ContractStatus   @default(DRAFT)
 
   // Original contract file from admin
