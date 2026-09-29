@@ -22,7 +22,7 @@ export function OrderOverviewTab({
     onBriefApprove: (orderId: string) => void
     onBriefReject: (orderId: string) => void
     onBriefSaved?: () => void
-    onGenerateContract: (orderId: string) => void
+    onGenerateContract: (orderId: string, file: File) => Promise<boolean>
     onSendContractToClient: (orderId: string) => void
     onConfirmContract: (orderId: string) => void
 }) {
@@ -87,7 +87,7 @@ export function OrderOverviewTab({
                     canGenerate={true}
                     canSendToClient={true}
                     canConfirm={true}
-                    onGenerate={() => onGenerateContract(order.id)}
+                    onGenerate={(file) => onGenerateContract(order.id, file)}
                     onSendToClient={() => onSendContractToClient(order.id)}
                     onConfirm={() => onConfirmContract(order.id)}
                 />

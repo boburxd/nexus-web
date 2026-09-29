@@ -275,33 +275,22 @@ export function OrdersShell({children}: { children: ReactNode }) {
     // ==================== Contract actions ====================
     const [contractGenerating, setContractGenerating] = useState<string | null>(null)
 
-    const generateContract = async (orderId: string) => {
-        const input = document.createElement("input")
-        input.type = "file"
-        input.accept = ".pdf,application/pdf"
-        input.onchange = async (e) => {
-            const file = (e.target as HTMLInputElement).files?.[0]
-            if (!file) return
-            if (file.size > 10 * 1024 * 1024) {
-                toast.error("Размер файла не должен превышать 10МБ")
-                return
-            }
-            setContractGenerating(orderId)
-            const formData = new FormData()
-            formData.append("file", file)
-            const res = await fetch(`/api/admin/orders/${orderId}/contract/generate`, {
-                method: "POST",
-                body: formData,
-            })
-            if (res.ok) {
-                await load()
-            } else {
-                const err = await res.json()
-                toast.error(err.error || "Ошибка генерации договора")
-            }
-            setContractGenerating(null)
+    const generateContract = async (orderId: string, file: File): Promise<boolean> => {
+        setContractGenerating(orderId)
+        const formData = new FormData()
+        formData.append("file", file)
+        const res = await fetch(`/api/admin/orders/${orderId}/contract/generate`, {
+            method: "POST",
+            body: formData,
+        })
+        if (res.ok) {
+            await load()
+        } else {
+            const err = await res.json()
+            toast.error(err.error || "Ошибка генерации договора")
         }
-        input.click()
+        setContractGenerating(null)
+        return res.ok
     }
 
     const sendContractToClient = async (orderId: string) => {

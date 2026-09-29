@@ -314,6 +314,16 @@ export function DashTopHeader({
               {statusChip.label}
             </span>
                     ) : null}
+                    <Link
+                        href="/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="dash-header__icon-btn"
+                        title="Открыть сайт"
+                        aria-label="Открыть сайт"
+                    >
+                        <Icon name="website" aria-hidden/>
+                    </Link>
                     {showNotifications ? (
                         <div className="dash-header__notif-slot">
                             <span data-tour="header-bell">

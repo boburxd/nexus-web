@@ -176,6 +176,16 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
                         ))}
                     </nav>
                     <div className="adm-header-right">
+                        <Link
+                            href="/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="adm-header-icon-btn adm-header-outline"
+                            title="Открыть сайт"
+                            aria-label="Открыть сайт"
+                        >
+                            <Icon name="website"/>
+                        </Link>
                         <NotificationBell buttonClassName="adm-header-icon-btn adm-header-bell"/>
                         <AdminProfileMenu theme={theme} onThemeChange={setTheme}/>
                     </div>
@@ -288,12 +298,12 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
           box-shadow: 0 0 0 3px var(--adm-hover-bg);
         }
         .adm-header-icon-btn:focus-visible { outline: 2px solid var(--adm-active-color); outline-offset: 2px; }
-        .adm-header-bell {
+        .adm-header-bell, .adm-header-outline {
           background: transparent;
           border-color: var(--adm-sidebar-border);
           color: var(--adm-muted);
         }
-        .adm-header-bell:hover,
+        .adm-header-bell:hover, .adm-header-outline:hover,
         .adm-header-bell[aria-expanded="true"] { color: var(--adm-active-color); background: var(--adm-hover-bg); box-shadow: none; }
         /* Счётчик непрочитанных — на краю круга, а не внутри. */
         .adm-header-bell > span { top: -3px !important; right: -3px !important; }

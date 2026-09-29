@@ -1,8 +1,6 @@
 "use client"
 
 import {useState} from "react"
-import {StatusBadge} from "@/components/app/AppCard"
-import {CONTRACT_STATUS_LABEL, CONTRACT_STATUS_VARIANT} from "@/app/admin/orders/types"
 import type {ContractFileLinkProps, ContractPanelProps} from "./types"
 import {CONTRACT_ACTIONS} from "./types"
 import {formatDate} from "./utils"
@@ -10,6 +8,7 @@ import {ContractFileLink} from "./ContractFileLink"
 import {confirmDialog} from "@/lib/dialog-store"
 import {Icon} from "@/components/ui/icon"
 import {stripBx} from "@/lib/icon-map"
+import {DocumentUpload} from "@/components/app/DocumentUpload"
 
 export function ContractPanel({
                                   contract,
@@ -21,9 +20,11 @@ export function ContractPanel({
                                   onSendToClient,
                                   onConfirm,
                               }: ContractPanelProps) {
+    const [file, setFile] = useState<File | null>(null)
     const [generating, setGenerating] = useState(false)
 
     const handleGenerate = async () => {
+        if (!file) return
         const ok = await confirmDialog({
             title: "Создать и отправить договор дизайнеру?",
             description: "Это действие нельзя отменить.",
@@ -32,7 +33,8 @@ export function ContractPanel({
         if (!ok) return
         setGenerating(true)
         try {
-            await onGenerate()
+            const success = await onGenerate(file)
+            if (success) setFile(null)
         } finally {
             setGenerating(false)
         }
@@ -71,14 +73,24 @@ export function ContractPanel({
                         Договор не создан
                     </p>
                     {canGenerate && (
-                        <div style={{marginTop: 12}}>
-                            <button
-                                onClick={handleGenerate}
+                        <div style={{marginTop: 12, display: "flex", flexDirection: "column", gap: 10}}>
+                            <DocumentUpload
+                                tone="admin"
+                                size="sm"
+                                label="PDF договора"
+                                file={file}
+                                onFileChange={setFile}
                                 disabled={generating}
-                                className="sp-btn sp-btn-primary"
-                            >
-                                {generating ? "…" : "Создать и отправить договор дизайнеру"}
-                            </button>
+                            />
+                            <div>
+                                <button
+                                    onClick={handleGenerate}
+                                    disabled={!file || generating}
+                                    className="sp-btn sp-btn-primary"
+                                >
+                                    {generating ? "…" : "Создать и отправить договор дизайнеру"}
+                                </button>
+                            </div>
                         </div>
                     )}
                 </div>
@@ -92,10 +104,6 @@ export function ContractPanel({
         <div className="sp-card" style={{marginTop: 12}}>
             <div className="sp-card-hd">
                 <span className="sp-label">Договор</span>
-                <StatusBadge
-                    variant={CONTRACT_STATUS_VARIANT[contract.status]}
-                    label={CONTRACT_STATUS_LABEL[contract.status]}
-                />
             </div>
             <div className="sp-card-bd">
                 <div

@@ -6,7 +6,7 @@ export interface ContractPanelProps {
     canGenerate: boolean
     canSendToClient: boolean
     canConfirm: boolean
-    onGenerate: () => void
+    onGenerate: (file: File) => Promise<boolean>
     onSendToClient: () => void
     onConfirm: () => void
 }

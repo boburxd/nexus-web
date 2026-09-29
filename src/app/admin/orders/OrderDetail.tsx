@@ -37,7 +37,7 @@ interface Props {
     onBriefReject: (orderId: string) => void
     onBriefSaved?: () => void
     onResolveHelp: (orderId: string) => void
-    onGenerateContract: (orderId: string) => void
+    onGenerateContract: (orderId: string, file: File) => Promise<boolean>
     onSendContractToClient: (orderId: string) => void
     onConfirmContract: (orderId: string) => void
     onApproveAct: (stageId: string, actId: string) => void
