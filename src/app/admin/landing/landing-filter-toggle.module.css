@@ -1,0 +1,58 @@
+/* Сегментированный переключатель фильтра — тот же приём (скользящий индикатор),
+   что и переключатель роли на /login, но на токенах адм-темы. */
+.toggle {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(var(--tab-count), minmax(0, 1fr));
+    padding: 3px;
+    border-radius: 10px;
+    border: 1px solid var(--adm-sidebar-border, #e5e7eb);
+    background: var(--adm-outer, #f3f4f6);
+}
+
+.indicator {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: 3px;
+    width: calc((100% - 6px) / var(--tab-count));
+    box-sizing: border-box;
+    border-radius: 7px;
+    background: var(--adm-active-color, #6366f1);
+    transform: translateX(calc(100% * var(--tab-index)));
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+}
+
+.tab {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    padding: 0 12px;
+    border: none;
+    background: transparent;
+    border-radius: 7px;
+    color: var(--adm-muted, #9ca3af);
+    font-size: 0.78rem;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.tab:hover {
+    color: var(--adm-text, #111827);
+}
+
+.tab:focus-visible {
+    outline: 2px solid var(--adm-active-color, #6366f1);
+    outline-offset: -2px;
+}
+
+.tabActive,
+.tabActive:hover {
+    color: #fff;
+}

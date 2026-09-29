@@ -1,11 +1,12 @@
 "use client"
 
-import {useCallback, useEffect, useState} from "react"
+import {type CSSProperties, useCallback, useEffect, useState} from "react"
 import {toast} from "sonner"
 import {ImageLightbox} from "@/components/ui/ImageLightbox"
 import {DesignerProfileModal, type DesignerSlide} from "@/components/landing/designer-profile-modal"
 import {userDisplayName} from "@/lib/user-name"
 import {Icon} from "@/components/ui/icon"
+import toggleStyles from "./landing-filter-toggle.module.css"
 
 interface BundleItem {
     id: string;
@@ -42,6 +43,34 @@ const STATUS_CLASS: Record<Bundle["status"], string> = {
 }
 
 type Filter = "ALL" | Bundle["status"]
+
+function FilterToggle({value, onChange, options}: {
+    value: Filter
+    onChange: (f: Filter) => void
+    options: { value: Filter; label: string }[]
+}) {
+    const tabStyle = {
+        "--tab-count": options.length,
+        "--tab-index": options.findIndex((o) => o.value === value),
+    } as CSSProperties
+    return (
+        <div className={toggleStyles.toggle} style={tabStyle} role="tablist" aria-label="Фильтр по статусу">
+            <span className={toggleStyles.indicator} aria-hidden/>
+            {options.map((o) => (
+                <button
+                    key={o.value}
+                    type="button"
+                    role="tab"
+                    aria-selected={value === o.value}
+                    className={`${toggleStyles.tab} ${value === o.value ? toggleStyles.tabActive : ""}`}
+                    onClick={() => onChange(o.value)}
+                >
+                    {o.label}
+                </button>
+            ))}
+        </div>
+    )
+}
 
 export default function LandingBundlesClient() {
     const [bundles, setBundles] = useState<Bundle[]>([])
@@ -142,17 +171,14 @@ export default function LandingBundlesClient() {
         <div>
             <div className="d-flex align-items-center justify-content-between mb-3">
                 <h5 className="mb-0 fw-semibold">Сборки для лендинга</h5>
-                <div className="d-flex gap-1">
-                    {filters.map(f => (
-                        <button key={f.value} onClick={() => {
-                            setFilter(f.value);
-                            setSelected(null)
-                        }}
-                                className={`btn btn-sm ${filter === f.value ? "btn-primary" : "btn-outline-secondary"}`}>
-                            {f.label}
-                        </button>
-                    ))}
-                </div>
+                <FilterToggle
+                    value={filter}
+                    options={filters}
+                    onChange={(f) => {
+                        setFilter(f)
+                        setSelected(null)
+                    }}
+                />
             </div>
 
             {loading ? (
